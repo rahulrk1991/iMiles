@@ -25,6 +25,8 @@ var questions_choices_mcq_End_Point = "/"+"question/question_mcq/choice/";
 var questions_choices_mcq_API = API_Start + questions_choices_mcq_End_Point;
 
 //OTHER VARIABLES
+var absolute_path = "iMiles/";
+
 var mcq_kind = "mcq";
 var descriptive_kind = "descriptive";
 var question_types = [mcq_kind, descriptive_kind];
@@ -33,15 +35,15 @@ var getQuestionInfo = {};
 
     getQuestionInfo['mcq'] = {   
                                 title : mcq_kind,
-                                templateFile : "AngularJS/questionstructure_fragment_mcq.html",
-                                postFragment : "AngularJS/questionpost_structure_MCQ.html"
+                                templateFile : absolute_path+"questionstructure_fragment_mcq.html",
+                                postFragment : absolute_path+"questionpost_structure_MCQ.html"
                             };
     getQuestionInfo['descriptive'] = {
                                 title : descriptive_kind,
-                                templateFile : "AngularJS/questionstructure_fragment_descriptive.html",
-                                postFragment : "AngularJS/questionpost_structure_non_MCQ.html"
+                                templateFile : absolute_path+"questionstructure_fragment_descriptive.html",
+                                postFragment : absolute_path+"questionpost_structure_non_MCQ.html"
                             };
 
-var choice_structure_file = 'AngularJS/choice_structure.html';
+var choice_structure_file = absolute_path+'choice_structure.html';
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;

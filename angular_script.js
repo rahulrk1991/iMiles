@@ -4,11 +4,11 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/QnACrunch", {
-                templateUrl:"AngularJS/qnacrunch.html",
+                templateUrl: absolute_path+"qnacrunch.html",
                 controller:"questionsController"
             })
             .when("/postQuestion", {
-                templateUrl:"AngularJS/post_question.html",
+                templateUrl: absolute_path+"post_question.html",
                 controller:"postQuestion"
             })
             $locationProvider.html5Mode(true);
