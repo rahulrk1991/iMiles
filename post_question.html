@@ -1,0 +1,15 @@
+<div ng-controller="postQuestion" id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
+    <div>
+        <h2>Add your Question here</h2>
+    </div>
+    <br>
+    <ul class="nav nav-tabs nav-justified">
+        <li ng-repeat="question_type in question_types" ng-click="selectQuestionToPost(question_type)">
+            <a>{{question_type | uppercase}}</a>
+        </li>
+    </ul>
+    <br> <br>
+    <div ng-include="load_question">
+        
+    </div>
+</div>
