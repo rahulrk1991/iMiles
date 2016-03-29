@@ -1,6 +1,6 @@
 
 var app = angular
-        .module("QnACrunch_Module",["ngRoute"])
+        .module("iMiles_Module",["ngRoute"])
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/QnACrunch", {
