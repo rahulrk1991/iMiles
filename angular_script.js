@@ -7,17 +7,27 @@ var app = angular
                 templateUrl: absolute_path+"qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/postQuestion", {
+            .when("/PostQuestion", {
                 templateUrl: absolute_path+"post_question.html",
                 controller:"postQuestion"
             })
-            .when("/contactUs", {
+            .when("/ContactUs", {
                 templateUrl: absolute_path+"ContactUs/contactus.html",
-                controller:"postQuestion"
+                controller:"contactUsController"
+            })
+            .when("/AboutUs", {
+                templateUrl: absolute_path+"AboutUs/aboutusnew.html",
+                controller:"aboutUsController"
             })
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
          })
+        .controller("contactUsController",function($scope) {
+            //dummy controller for contact us page
+        })
+        .controller("aboutUsController",function($scope) {
+            //dummy controller for about us page
+        })
         .controller("questionsController",function($scope,$http) {
             //get data using http
             $http.get(questions_API)
