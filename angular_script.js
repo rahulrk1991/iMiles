@@ -11,6 +11,10 @@ var app = angular
                 templateUrl: absolute_path+"post_question.html",
                 controller:"postQuestion"
             })
+            .when("/contactUs", {
+                templateUrl: absolute_path+"ContactUs/contactus.html",
+                controller:"postQuestion"
+            })
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
          })
