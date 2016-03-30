@@ -19,6 +19,10 @@ var app = angular
                 templateUrl: absolute_path+"AboutUs/aboutusnew.html",
                 controller:"aboutUsController"
             })
+            .when("/Profile", {
+                templateUrl: absolute_path+"profile.html",
+                controller:"profileController"
+            })
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
          })
@@ -27,6 +31,9 @@ var app = angular
         })
         .controller("aboutUsController",function($scope) {
             //dummy controller for about us page
+        })
+        .controller("profileController",function($scope) {
+            //dummy controller for profile page
         })
         .controller("questionsController",function($scope,$http) {
             //get data using http
