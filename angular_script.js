@@ -27,7 +27,10 @@ var app = angular
             //$locationProvider.baseHref("Angular");
          })
         .controller("contactUsController",function($scope) {
-            //dummy controller for contact us page
+            
+            $scope.submitMessage = function() {
+                alert($scope.contact.fullName,$scope.contact.email,$scope.contact.subject,$scope.contact.message);
+            }
         })
         .controller("aboutUsController",function($scope) {
             //dummy controller for about us page

@@ -58,34 +58,34 @@
                <tr>
                   <td class="form_td">
                      <div class="input-group-lg">
-                        <input type="text" class="form-control" placeholder="Name" aria-describedby="sizing-addon2">
+                        <input ng-model="contact.fullName" type="text" class="form-control" placeholder="Name" >
                      </div>
                   </td>
                </tr>
                <tr>
                   <td class="form_td">
                      <div class="input-group-lg">
-                        <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
+                        <input ng-model="contact.email" type="text" class="form-control" placeholder="Email" >
                      </div>
                   </td>
                </tr>
                <tr>
                   <td class="form_td">
                      <div class="input-group-lg">
-                        <input type="text" class="form-control" placeholder="Title" aria-describedby="sizing-addon2">
+                        <input ng-model="contact.subject" type="text" class="form-control" placeholder="Title" >
                      </div>
                   </td>
                <tr>
                   <td class="form_td">
                      <div class="input-group-lg">
-                        <textarea style="height:150px" type="text" class="form-control" placeholder="Message" aria-describedby="sizing-addon2"></textarea>
+                        <textarea ng-model="contact.message" style="height:150px" type="text" class="form-control" placeholder="Message"></textarea>
                      </div>
                   </td>
                </tr>
          
             </table>
             <br>
-            <button style="float:right" type="button" class="btn btn-lg">Submit</button>
+            <button ng-click="submitMessage()" style="float:right" type="button" class="btn btn-lg">Submit</button>
             <button onClick="resetForm()" style="float:right;margin-right:10px" type="button" class="btn btn-lg">Reset</button>
          </form>
       </div>
