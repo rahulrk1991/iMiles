@@ -31,6 +31,13 @@ var app = angular
             $scope.submitMessage = function() {
                 alert($scope.contact.fullName,$scope.contact.email,$scope.contact.subject,$scope.contact.message);
             }
+
+            $scope.resetForm = function() {
+                $scope.contact.fullName = "";
+                $scope.contact.email = "";
+                $scope.contact.subject = "";
+                $scope.contact.message = "";
+            }
         })
         .controller("aboutUsController",function($scope) {
             //dummy controller for about us page
