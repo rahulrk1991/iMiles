@@ -1,94 +1,85 @@
-
-
-<head>
-    <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
-    <style>
-        .form_td {
-            padding:5px;
-        }
-        .social_td {
-            text-align: center;
-        }
-        img {
-            border-radius: 50%;
-            -webkit-transition: -webkit-transform .8s ease-in-out;
-            transition: transform .8s ease-in-out;
-         }
-         img:hover {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-         }
-         *{
-            font-family: Raleway;
-        }
-    </style>
-</head>
-
-<body>
-
+<link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
+<style>
+    .form_td {
+        padding:5px;
+    }
+    .social_td {
+        text-align: center;
+    }
+    img {
+        border-radius: 50%;
+        -webkit-transition: -webkit-transform .8s ease-in-out;
+        transition: transform .8s ease-in-out;
+     }
+     img:hover {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+     }
+     *{
+        font-family: Raleway;
+    }
+</style>
 
 <div id="main_container" style="width:900px;margin:50 auto;" class="container">
-<div class="container-fluid">
-   <div class="row">
+    <div class="container-fluid">
+       <div class="row">
 
-      <h3 style="display:inline"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></h3>
-      <h1 style="display:inline">Contact Us</h1>
-      <hr>
+          <h3 style="display:inline"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></h3>
+          <h1 style="display:inline;padding:10px">Contact Us</h1>
+          <hr>
 
-      <div id="left_container" style="width:50%" class="col-md-6">
-         <h3>We'd love to hear from you!</h3>
-         <br>
+          <div id="left_container" style="width:50%" class="col-md-6">
+             <h3>We'd love to hear from you!</h3>
+             <br>
 
-         <h4 style="text-align:justify;line-height:150%;padding-right:10px">At <b>InterviewMiles</b>, we're always looking to improve ourselves. You can help us in that process by sharing with us your valuable feedback, suggestions and comments about how you want the site to be. You can even get in touch with us on the social network.</h4>
-         <hr>
-         <table width="100%;">
-            <tr>
-               <td class="social_td"><img src="iMiles/ContactUs/Facebook_32x32" alt="Facebook"></td>
-               <td class="social_td"><img src="iMiles/ContactUs/linkedin.png" alt="LinkedIn"></td>
-               <td class="social_td"><img src="iMiles/ContactUs/twitter.png" alt="Twitter"></td>              
-            </tr>
-         </table>
-      </div>
-      <div id="form_container" style="width:50%" class="col-md-6">
-   
-         <form>
-            <table style="width:100%">
-               <tr>
-                  <td class="form_td">
-                     <div class="input-group-lg">
-                        <input ng-model="contact.fullName" type="text" class="form-control" placeholder="Name" >
-                     </div>
-                  </td>
-               </tr>
-               <tr>
-                  <td class="form_td">
-                     <div class="input-group-lg">
-                        <input ng-model="contact.email" type="text" class="form-control" placeholder="Email" >
-                     </div>
-                  </td>
-               </tr>
-               <tr>
-                  <td class="form_td">
-                     <div class="input-group-lg">
-                        <input ng-model="contact.subject" type="text" class="form-control" placeholder="Title" >
-                     </div>
-                  </td>
-               <tr>
-                  <td class="form_td">
-                     <div class="input-group-lg">
-                        <textarea ng-model="contact.message" style="height:150px" type="text" class="form-control" placeholder="Message"></textarea>
-                     </div>
-                  </td>
-               </tr>
-         
-            </table>
-            <br>
-            <button ng-click="submitMessage()" style="float:right" type="button" class="btn btn-lg">Submit</button>
-            <button ng-click="resetForm()" style="float:right;margin-right:10px" type="button" class="btn btn-lg">Reset</button>
-         </form>
-      </div>
-   </div>
+             <h4 style="text-align:justify;line-height:150%;padding-right:10px">At <b>InterviewMiles</b>, we're always looking to improve ourselves. You can help us in that process by sharing with us your valuable feedback, suggestions and comments about how you want the site to be. You can even get in touch with us on the social network.</h4>
+             <hr>
+             <table width="100%;">
+                <tr>
+                   <td class="social_td"><img src="iMiles/ContactUs/Facebook_32x32" alt="Facebook"></td>
+                   <td class="social_td"><img src="iMiles/ContactUs/linkedin.png" alt="LinkedIn"></td>
+                   <td class="social_td"><img src="iMiles/ContactUs/twitter.png" alt="Twitter"></td>              
+                </tr>
+             </table>
+          </div>
+          <div id="form_container" style="width:50%" class="col-md-6">
+       
+             <form>
+                <table style="width:100%">
+                   <tr>
+                      <td class="form_td">
+                         <div class="input-group-lg">
+                            <input ng-model="contact.fullName" type="text" class="form-control" placeholder="Name" >
+                         </div>
+                      </td>
+                   </tr>
+                   <tr>
+                      <td class="form_td">
+                         <div class="input-group-lg">
+                            <input ng-model="contact.email" type="text" class="form-control" placeholder="Email" >
+                         </div>
+                      </td>
+                   </tr>
+                   <tr>
+                      <td class="form_td">
+                         <div class="input-group-lg">
+                            <input ng-model="contact.subject" type="text" class="form-control" placeholder="Title" >
+                         </div>
+                      </td>
+                   <tr>
+                      <td class="form_td">
+                         <div class="input-group-lg">
+                            <textarea ng-model="contact.message" style="height:150px" type="text" class="form-control" placeholder="Message"></textarea>
+                         </div>
+                      </td>
+                   </tr>
+             
+                </table>
+                <br>
+                <button ng-click="submitMessage()" style="float:right" type="button" class="btn btn-lg">Submit</button>
+                <button ng-click="resetForm()" style="float:right;margin-right:10px" type="button" class="btn btn-lg">Reset</button>
+             </form>
+          </div>
+       </div>
+    </div>
 </div>
-</div>
-
-</body>
