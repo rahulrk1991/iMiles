@@ -17,9 +17,9 @@
              <hr>
              <table width="100%;">
                 <tr>
-                   <td class="social_td"><img src="iMiles/ContactUs/images/Facebook_32x32.jpg" alt="Facebook"></td>
-                   <td class="social_td"><img src="iMiles/ContactUs/images/linkedin.png" alt="LinkedIn"></td>
-                   <td class="social_td"><img src="iMiles/ContactUs/images/twitter.png" alt="Twitter"></td>              
+                   <td ng-repeat="thumbnail in thumbnails" class="social_td">
+                        <img ng-src="{{thumbnail}}">
+                    </td>              
                 </tr>
              </table>
           </div>

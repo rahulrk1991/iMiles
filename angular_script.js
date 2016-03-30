@@ -28,6 +28,12 @@ var app = angular
          })
         .controller("contactUsController",function($scope) {
             
+            $scope.thumbnails = [
+                absolute_path+"ContactUs/images/Facebook_32x32.jpg",
+                absolute_path+"ContactUs/images/linkedin.png",
+                absolute_path+"ContactUs/images/twitter.png"
+            ];
+            
             $scope.submitMessage = function() {
                 alert($scope.contact.fullName,$scope.contact.email,$scope.contact.subject,$scope.contact.message);
             }
