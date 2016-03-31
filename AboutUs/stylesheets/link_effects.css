@@ -1,0 +1,19 @@
+*{
+   font-family: Raleway;
+}
+ul {
+   list-style-type: none;
+}
+a,a:hover,a:visited {
+   text-decoration: none !important;
+   color:inherit;
+}
+a:active {
+   color:red;
+}
+h3:hover,h4:hover {
+   color:red;
+}
+.active {
+   color: red;
+}
