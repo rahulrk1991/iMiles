@@ -46,7 +46,16 @@ var app = angular
             }
         })
         .controller("aboutUsController",function($scope) {
-            //dummy controller for about us page
+            $scope.selectedPage = "why_we_started_it.html";
+
+            $scope.changeSelectedPage = function(page) {
+                $scope.selectedPage = page;
+            }
+
+            $scope.returnSelectedPage = function() {
+                return absolute_path+"AboutUs/"+ $scope.selectedPage;
+            }
+
         })
         .controller("profileController",function($scope) {
             //dummy controller for profile page
