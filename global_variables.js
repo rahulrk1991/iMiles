@@ -36,14 +36,14 @@ var getQuestionInfo = {};
     getQuestionInfo['mcq'] = {   
                                 title : mcq_kind,
                                 templateFile : absolute_path+"QnACrunch/questionstructure_fragment_mcq.html",
-                                postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_MCQ.html"
+                                postFragment : absolute_path+"PostQuestion/MCQTemplate/"+"questionpost_structure_MCQ.html"
                             };
     getQuestionInfo['descriptive'] = {
                                 title : descriptive_kind,
                                 templateFile : absolute_path+"QnACrunch/questionstructure_fragment_descriptive.html",
-                                postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_non_MCQ.html"
+                                postFragment : absolute_path+"PostQuestion/DescriptiveTemplate/"+"questionpost_structure_non_MCQ.html"
                             };
 
-var choice_structure_file = absolute_path+"PostQuestion/"+"choice_structure.html";
+var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTemplate/"+"choice_structure.html";
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;
