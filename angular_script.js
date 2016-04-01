@@ -20,7 +20,7 @@ var app = angular
                 controller:"aboutUsController"
             })
             .when("/Profile", {
-                templateUrl: absolute_path+"profile.html",
+                templateUrl: absolute_path+"Profile/profile.html",
                 controller:"profileController"
             })
             $locationProvider.html5Mode(true);
