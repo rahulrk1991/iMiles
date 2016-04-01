@@ -29,9 +29,9 @@ var app = angular
         .controller("contactUsController",function($scope) {
             
             $scope.thumbnails = [
-                absolute_path+"ContactUs/images/Facebook_32x32.jpg",
-                absolute_path+"ContactUs/images/linkedin.png",
-                absolute_path+"ContactUs/images/twitter.png"
+                absolute_path+"ContactUs/Images/Facebook_32x32.jpg",
+                absolute_path+"ContactUs/Images/linkedin.png",
+                absolute_path+"ContactUs/Images/twitter.png"
             ];
             
             $scope.submitMessage = function() {
@@ -53,7 +53,7 @@ var app = angular
             }
 
             $scope.returnSelectedPage = function() {
-                return absolute_path+"AboutUs/subPages/"+ $scope.selectedPage;
+                return absolute_path+"AboutUs/SubPages/"+ $scope.selectedPage;
             }
 
         })

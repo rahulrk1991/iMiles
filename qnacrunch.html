@@ -1,0 +1,16 @@
+
+<div class="input-group input-group-lg container" style="width:700px">
+    <span class="input-group-addon" id="sizing-addon1">
+        <span class="glyphicon glyphicon-search"></span>
+    </span>
+        <input type="text" class="form-control" placeholder="Filter your search.." aria-describedby="sizing-addon1">
+</div>
+<br>
+<br>
+<div ng-controller="questionsController" >
+    <div ng-repeat="question in questions" class="container" style="width:700px">
+ 
+        <div ng-include="getQuestionTemplateByType(question)"></div>            
+ 
+    </div>
+</div>
