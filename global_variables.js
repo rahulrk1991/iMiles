@@ -44,6 +44,6 @@ var getQuestionInfo = {};
                                 postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_non_MCQ.html"
                             };
 
-var choice_structure_file = absolute_path+'choice_structure.html';
+var choice_structure_file = absolute_path+"PostQuestion/"+"choice_structure.html";
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;
