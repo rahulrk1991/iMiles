@@ -8,7 +8,7 @@ var app = angular
                 controller:"questionsController"
             })
             .when("/PostQuestion", {
-                templateUrl: absolute_path+"post_question.html",
+                templateUrl: absolute_path+"PostQuestion/post_question.html",
                 controller:"postQuestion"
             })
             .when("/ContactUs", {
