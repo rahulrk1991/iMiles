@@ -53,7 +53,7 @@ var app = angular
             }
 
             $scope.returnSelectedPage = function() {
-                return absolute_path+"AboutUs/"+ $scope.selectedPage;
+                return absolute_path+"AboutUs/subPages/"+ $scope.selectedPage;
             }
 
         })
