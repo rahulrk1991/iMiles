@@ -36,12 +36,12 @@ var getQuestionInfo = {};
     getQuestionInfo['mcq'] = {   
                                 title : mcq_kind,
                                 templateFile : absolute_path+"questionstructure_fragment_mcq.html",
-                                postFragment : absolute_path+"questionpost_structure_MCQ.html"
+                                postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_MCQ.html"
                             };
     getQuestionInfo['descriptive'] = {
                                 title : descriptive_kind,
                                 templateFile : absolute_path+"questionstructure_fragment_descriptive.html",
-                                postFragment : absolute_path+"questionpost_structure_non_MCQ.html"
+                                postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_non_MCQ.html"
                             };
 
 var choice_structure_file = absolute_path+'choice_structure.html';
