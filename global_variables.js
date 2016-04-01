@@ -35,12 +35,12 @@ var getQuestionInfo = {};
 
     getQuestionInfo['mcq'] = {   
                                 title : mcq_kind,
-                                templateFile : absolute_path+"questionstructure_fragment_mcq.html",
+                                templateFile : absolute_path+"QnACrunch/questionstructure_fragment_mcq.html",
                                 postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_MCQ.html"
                             };
     getQuestionInfo['descriptive'] = {
                                 title : descriptive_kind,
-                                templateFile : absolute_path+"questionstructure_fragment_descriptive.html",
+                                templateFile : absolute_path+"QnACrunch/questionstructure_fragment_descriptive.html",
                                 postFragment : absolute_path+"PostQuestion/"+"questionpost_structure_non_MCQ.html"
                             };
 
