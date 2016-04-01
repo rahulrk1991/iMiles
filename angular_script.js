@@ -16,7 +16,7 @@ var app = angular
                 controller:"contactUsController"
             })
             .when("/AboutUs", {
-                templateUrl: absolute_path+"AboutUs/aboutusnew.html",
+                templateUrl: absolute_path+"AboutUs/aboutus.html",
                 controller:"aboutUsController"
             })
             .when("/Profile", {
