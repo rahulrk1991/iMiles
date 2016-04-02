@@ -1,11 +1,15 @@
 
 var app = angular
         .module("iMiles_Module",["ngRoute"])
-        .config(function ($routeProvider,$locationProvider) {
+        .config(function ($routeProvider,$locationProvider,$httpProvider) {
             $routeProvider
             .when("/QnACrunch", {
                 templateUrl: absolute_path+"QnACrunch/qnacrunch.html",
                 controller:"questionsController"
+            })
+            .when("/EditQuestion/:question_number", {
+                templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
+                controller:"editQuestionsController"
             })
             .when("/PostQuestion", {
                 templateUrl: absolute_path+"PostQuestion/post_question.html",
@@ -25,7 +29,55 @@ var app = angular
             })
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
+
+            $httpProvider.defaults.headers.common = {};
+            $httpProvider.defaults.headers.post = {};
+            $httpProvider.defaults.headers.put = {};
+            $httpProvider.defaults.headers.patch = {};
          })
+        .controller("editQuestionsController",function($scope,$http,$routeParams) {
+            //$scope.questionID = $routeParams.question_number;
+            $scope.question = {};
+
+            $http.get(post_descriptive_questions_API+ $routeParams.question_number)
+            .then(function(response) {
+                
+                $scope.question = response.data;
+                console.log($scope.question);
+                console.log($scope.question.id);
+
+            });
+
+            $scope.changeDifficulty = function(operation) {                     //decreases difficulty rating by 1
+                if(operation=='minus') {
+                    if( $scope.question.difficulty_level >1)
+                        $scope.question.difficulty_level--;
+                }             
+                else {
+                    if( $scope.question.difficulty_level <10)                         //increases difficulty rating by 1
+                    $scope.question.difficulty_level++;
+                }      
+            }
+
+            $scope.putDescriptiveQuestion = function() {
+                url = post_descriptive_questions_API+ $routeParams.question_number;
+                body =  [{
+                    "title": $scope.question.title,
+                    "description": $scope.question.description,
+                    "difficulty_level": $scope.question.difficulty_level,
+                    "answer": "This is a dummy answer"
+                }];
+                $http.put( url, body)
+                     .success(function(response) {
+                        console.log("Descriptive question edited successfully");        //on successfull posting of question
+                        alert("Question edited successfully");
+                        })
+                     .error(function(response) {
+                        console.log("The question could not be edited");                //in case there is an error
+                        alert("Error in editing question");
+                     });
+            }
+        })
         .controller("contactUsController",function($scope) {
             
             $scope.thumbnails = [
@@ -91,6 +143,13 @@ var app = angular
 
             $scope.validateChoice = function(question,choice) {     //returing if the selected choice is the correct choice
                 alert(choice.is_correct);
+            }
+
+
+            //Edit Question
+
+            $scope.editQuestion = function(questionID) {
+                alert("Editing Question:"+questionID);
             }
         })
         .controller("postQuestion",function($scope,$http) {

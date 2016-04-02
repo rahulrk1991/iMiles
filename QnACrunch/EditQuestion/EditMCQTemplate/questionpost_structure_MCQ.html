@@ -1,0 +1,75 @@
+
+<div id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
+
+	<div id="questionBlock">
+
+		<div style="display:inline">
+			<div id="questionTags" class="input-group" style="width:500px;float:left">
+				<span class="input-group-addon" id="basic-addon1"><span
+					class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
+					<input id="questionTagText" type="text" class="form-control" placeholder="Add tags here.." aria-describedby="basic-addon1">
+			</div>
+			
+			<div id="difficulty_rating" style="float:right" >
+			
+				<h5 style="display:inline">Difficulty:</h5>
+
+				<button ng-click="changeDifficulty('minus')" type="button" class="btn btn-default " aria-label="minus button">
+					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				</button>
+			
+				<h4 style="display:inline"><span id="difficulty_span" class="label label-danger">{{question.difficulty}}</span></h4>
+			
+				<button ng-click="changeDifficulty('plus')" type="button" class="btn btn-default " aria-label="plus button">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</button>						
+			
+			</div>
+
+		</div>
+		<br>
+		<br>
+		<br>
+		<div class="input-group">
+			<input ng-model="question.questionText" id="questionText" type="text" class="form-control"
+				placeholder="Question" aria-describedby="basic-addon1"> <span
+				class="input-group-addon" id="basic-addon1"><span
+				class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></span>
+		</div>
+		<br>
+		<div id="answerstothemcq" style="overflow: hidden">
+
+			<div class="col-lg-6">
+
+				<div ng-repeat="t in getTimes() track by $index">
+				
+				<div ng-include="getChoiceStructure()"></div>
+
+				</div> 
+
+				<!-- <div ng-repeat="option in options" class="input-group">
+					<span class="input-group-addon"> <input type="radio" id="option1" name="mcqanswers" aria-label="..."></span>
+					<input type="text" id="optiontext1" name="radiotexts" class="form-control" aria-label="...">
+				</div> -->
+				
+				<br>
+
+				
+				<div id="buttonsForChoices">
+					<button ng-click="increaseChoices()" type="submit" class="btn btn-primary">+</button>
+					<button ng-click="decreaseChoices()" type="submit" class="btn btn-primary">-</button>
+				</div>
+			</div>
+			<!-- /.col-lg-6 -->
+		</div>
+	</div>
+	<br> <br>
+	<div id="button">
+		<button ng-click="doSomethingElse()" type="submit" class="btn btn-primary">Submit</button>
+		<button type="button" class="btn btn-primary">Clear</button>
+	</div>
+
+</div>
+
+</script>
+
