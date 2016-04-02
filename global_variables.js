@@ -37,13 +37,15 @@ var getQuestionInfo = {};
                                 title : mcq_kind,
                                 templateFile : absolute_path+"QnACrunch/MCQTemplate/questionstructure_fragment_mcq.html",
                                 postFragment : absolute_path+"PostQuestion/MCQTemplate/"+"questionpost_structure_MCQ.html",
-                                editFragment : absolute_path+"QnACrunch/EditQuestion/EditMCQTemplate/questionpost_structure_MCQ.html"
+                                editFragment : absolute_path+"QnACrunch/EditQuestion/EditMCQTemplate/questionpost_structure_MCQ.html",
+                                viewFragment : absolute_path+"QnACrunch/ViewQuestion/MCQTemplate/questionstructure_fragment_mcq.html"
                             };
     getQuestionInfo['descriptive'] = {
                                 title : descriptive_kind,
                                 templateFile : absolute_path+"QnACrunch/DescriptiveTemplate/questionstructure_fragment_descriptive.html",
                                 postFragment : absolute_path+"PostQuestion/DescriptiveTemplate/"+"questionpost_structure_non_MCQ.html",
-                                editFragment : absolute_path+"QnACrunch/EditQuestion/EditDescriptiveTemplate/questionpost_structure_non_MCQ.html"
+                                editFragment : absolute_path+"QnACrunch/EditQuestion/EditDescriptiveTemplate/questionpost_structure_non_MCQ.html",
+                                viewFragment : absolute_path+"QnACrunch/ViewQuestion/DescriptiveTemplate/questionstructure_fragment_descriptive.html"
                             };
 
 var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTemplate/"+"choice_structure.html";

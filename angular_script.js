@@ -11,6 +11,10 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
                 controller:"editQuestionsController"
             })
+            .when("/ViewQuestion/:kind/:questionID", {
+                templateUrl: absolute_path+"QnACrunch/ViewQuestion/view_question.html",
+                controller:"viewQuestionsController"
+            })
             .when("/PostQuestion", {
                 templateUrl: absolute_path+"PostQuestion/post_question.html",
                 controller:"postQuestion"
@@ -31,6 +35,43 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("viewQuestionsController",function($scope,$http,$routeParams) {
+            $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
+            $scope.question = {};
+
+            console.log($routeParams.questionID);
+            console.log($routeParams.kind);
+
+            $scope.question = {};
+            if($routeParams.kind=="descriptive") {
+                url = post_descriptive_questions_API+ $routeParams.questionID;
+            }
+            else if($routeParams.kind=="mcq") {
+                url = post_mcq_Questions_API+ $routeParams.questionID;
+            }
+
+            $http.get(url)
+            .then(function(response) {
+                
+                $scope.question = response.data;
+                console.log($scope.question);
+                console.log($scope.question.id);
+
+            });
+
+            if($routeParams.kind=="mcq") {
+                $http.get(questions_choices_mcq_API+$routeParams.questionID)
+                .then(function(response) {
+                    $scope.choices = response.data;
+                    console.log($scope.choices[0]);
+                });
+            }
+
+            $scope.getChoiceStructure = function() {
+                return absolute_path+"QnACrunch/ViewQuestion/MCQTemplate/ChoiceTemplate/choice_structure.html"
+            }
+
+        })
         .controller("editQuestionsController",function($scope,$http,$routeParams) {
             var url;
             $scope.choices = {};
