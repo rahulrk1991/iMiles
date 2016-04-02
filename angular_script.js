@@ -38,6 +38,7 @@ var app = angular
         .controller("editQuestionsController",function($scope,$http,$routeParams) {
             //$scope.questionID = $routeParams.question_number;
             $scope.question = {};
+            $scope.load_question = absolute_path+"QnACrunch/EditQuestion/EditDescriptiveTemplate/questionpost_structure_non_MCQ.html";
 
             $http.get(post_descriptive_questions_API+ $routeParams.question_number)
             .then(function(response) {

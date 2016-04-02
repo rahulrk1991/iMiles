@@ -1,53 +1,53 @@
 
 <div id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
 
-	<div id="questionBlock">
-		<div style="display:inline">
-			<div id="questionTags" class="input-group" style="width:500px;float:left">
-				<span class="input-group-addon" id="basic-addon1"><span
-					class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
-					<input id="questionTagText" type="text" class="form-control" placeholder="Add tags here.." aria-describedby="basic-addon1">
-			</div>
-			
-			<div id="difficulty_rating" style="float:right" >
-			
-				<h5 style="display:inline">Difficulty:</h5>
+    <div id="questionBlock">
+        <div style="display:inline">
+            <div id="questionTags" class="input-group" style="width:500px;float:left">
+                <span class="input-group-addon" id="basic-addon1"><span
+                    class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
+                    <input id="questionTagText" type="text" class="form-control" placeholder="Add tags here.." aria-describedby="basic-addon1">
+            </div>
+            
+            <div id="difficulty_rating" style="float:right" >
+            
+                <h5 style="display:inline">Difficulty:</h5>
 
-				<button ng-click="changeDifficulty('minus')" type="button" class="btn btn-default " aria-label="minus button">
-					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-				</button>
-			
-				<h4 style="display:inline"><span id="difficulty_span" class="label label-danger">{{question.difficulty}}</span></h4>
-			
-				<button ng-click="changeDifficulty('plus')" type="button" class="btn btn-default " aria-label="plus button">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				</button>						
-			
-			</div>
+                <button ng-click="changeDifficulty('minus')" type="button" class="btn btn-default " aria-label="minus button">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+            
+                <h4 style="display:inline"><span id="difficulty_span" class="label label-danger">{{question.difficulty_level}}</span></h4>
+            
+                <button ng-click="changeDifficulty('plus')" type="button" class="btn btn-default " aria-label="plus button">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>                       
+            
+            </div>
 
-		</div>
-		<br>
-		<br>
-		<br>
-		<div id="questionTitle" class="input-group">
-			<input ng-model="question.questionText" id="questionText" type="text" class="form-control"
-				placeholder="Question" aria-describedby="basic-addon1">
-			<span class="input-group-addon" id="basic-addon1"><span
-				class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></span>
-		</div>
-		<br>
-		<div id="question_explanation">
+        </div>
+        <br>
+        <br>
+        <br>
+        <div id="questionTitle" class="input-group">
+            <input ng-model="question.title" id="questionText" type="text" class="form-control"
+                placeholder="Question" aria-describedby="basic-addon1">
+            <span class="input-group-addon" id="basic-addon1"><span
+                class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></span>
+        </div>
+        <br>
+        <div id="question_explanation">
 
-			<textarea ng-model="question.questionDescription" id="descriptionText" style="height: 200px"
-				class="form-control" placeholder="Explanation"
-				aria-describedby="basic-addon1"></textarea>
+            <textarea ng-model="question.description" id="descriptionText" style="height: 200px"
+                class="form-control" placeholder="Explanation"
+                aria-describedby="basic-addon1"></textarea>
 
-		</div>
-		<br>
-		
-		<div id="button">
-			<button ng-click="postDescriptiveQuestion()" type="submit" class="btn btn-primary">Submit</button>
-			<button type="button" class="btn btn-primary">Clear</button>
-		</div>
-	</div>
+        </div>
+        <br>
+        
+        <div id="button">
+            <button ng-click="putDescriptiveQuestion()" type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-primary">Clear</button>
+        </div>
+    </div>
 </div>
