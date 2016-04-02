@@ -1,13 +1,13 @@
 
 var app = angular
         .module("iMiles_Module",["ngRoute"])
-        .config(function ($routeProvider,$locationProvider,$httpProvider) {
+        .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/QnACrunch", {
                 templateUrl: absolute_path+"QnACrunch/qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/EditQuestion/:question_number", {
+            .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
                 controller:"editQuestionsController"
             })
@@ -30,17 +30,22 @@ var app = angular
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
 
-            $httpProvider.defaults.headers.common = {};
-            $httpProvider.defaults.headers.post = {};
-            $httpProvider.defaults.headers.put = {};
-            $httpProvider.defaults.headers.patch = {};
          })
         .controller("editQuestionsController",function($scope,$http,$routeParams) {
+            var url;
+            console.log($routeParams.questionID);
+            console.log($routeParams.kind);
             //$scope.questionID = $routeParams.question_number;
             $scope.question = {};
-            $scope.load_question = absolute_path+"QnACrunch/EditQuestion/EditDescriptiveTemplate/questionpost_structure_non_MCQ.html";
+            if($routeParams.kind=="descriptive") {
+                url = post_descriptive_questions_API+ $routeParams.questionID;
+            }
+            else if($routeParams.kind=="mcq") {
+                url = post_mcq_Questions_API+ $routeParams.questionID;
+            }
+            $scope.load_question = getQuestionInfo[$routeParams.kind].editFragment;
 
-            $http.get(post_descriptive_questions_API+ $routeParams.question_number)
+            $http.get(url)
             .then(function(response) {
                 
                 $scope.question = response.data;
