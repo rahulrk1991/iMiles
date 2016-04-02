@@ -33,6 +33,7 @@ var app = angular
          })
         .controller("editQuestionsController",function($scope,$http,$routeParams) {
             var url;
+            $scope.choices = {};
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
             //$scope.questionID = $routeParams.question_number;
@@ -53,6 +54,18 @@ var app = angular
                 console.log($scope.question.id);
 
             });
+
+            if($routeParams.kind=="mcq") {
+                $http.get(questions_choices_mcq_API+$routeParams.questionID)
+                .then(function(response) {
+                    $scope.choices = response.data;
+                    console.log($scope.choices[0]);
+                });
+            }
+
+            $scope.getChoiceStructure = function() {
+                return absolute_path+"QnACrunch/EditQuestion/EditMCQTemplate/ChoiceTemplate/choice_structure.html"
+            }
 
             $scope.changeDifficulty = function(operation) {                     //decreases difficulty rating by 1
                 if(operation=='minus') {
@@ -132,7 +145,7 @@ var app = angular
                         var the_url = questions_choices_mcq_API + singleQuestion.id;
                         $http.get(the_url)
                             .then(function(response) {
-                                var allChoices = response.data;                     //get all the choices of a question in allChoices
+                                var allChoices = response.data;                    //get all the choices of a question in allChoices
                                 dict[allChoices[0].question] = allChoices;          //allChoices[0]. question is the question id
                             })
                     }
