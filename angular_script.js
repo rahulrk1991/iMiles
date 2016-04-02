@@ -120,7 +120,7 @@ var app = angular
             }
 
             $scope.putDescriptiveQuestion = function() {
-                url = post_descriptive_questions_API+ $routeParams.question_number;
+                //url = post_descriptive_questions_API+ $routeParams.question_number;
                 body =  [{
                     "title": $scope.question.title,
                     "description": $scope.question.description,
@@ -135,6 +135,18 @@ var app = angular
                      .error(function(response) {
                         console.log("The question could not be edited");                //in case there is an error
                         alert("Error in editing question");
+                     });
+            }
+
+            $scope.deleteQuestion = function() {
+                $http.delete( url)
+                     .success(function(response) {
+                        console.log("Descriptive question deleted successfully");        //on successfull posting of question
+                        alert("Question deleted successfully");
+                        })
+                     .error(function(response) {
+                        console.log("The question could not be deleted");                //in case there is an error
+                        alert("Error in deleted question");
                      });
             }
         })
