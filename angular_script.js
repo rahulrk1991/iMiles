@@ -4,7 +4,7 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/QnACrunch", {
-                templateUrl: absolute_path+"QnACrunch/qnacrunch.html",
+                templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
             .when("/EditQuestion/:kind/:questionID", {
