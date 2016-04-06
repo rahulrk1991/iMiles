@@ -195,16 +195,17 @@ var app = angular
                     var singleQuestion = allQuestions[i];
                     if(singleQuestion.kind==mcq_kind) {
                         //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
-                        var the_url = questions_choices_mcq_API + singleQuestion.id;
+                        var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
                         $http.get(the_url)
                             .then(function(response) {
                                 var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                dict[allChoices[0].question] = allChoices;          //allChoices[0]. question is the question id
+                                //console.log(response.data);
+                                dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
                             })
                     }
                 }
-                $scope.choiceDict = dict;                   //assign this dictionary to the scope to access in the view
-
+                $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
+                //console.log("Choice Dict"+$scope.choiceDict);
             });
             
             $scope.getQuestionTemplateByType = function(question) {
