@@ -323,7 +323,8 @@ var app = angular
                     var isTrue = $scope.question.choices.choicesCorrect[i];
                     var singleChoice = {
                         "choiceText" : text,
-                        "isTrue" : isTrue 
+                        "isTrue" : isTrue,
+                        "questionId" : $scope.question.id
                     }
                     choiceBody[i] = singleChoice;
 
@@ -345,10 +346,38 @@ var app = angular
                     "kind": mcq_kind,
                 }];
                 $http.post( url, body)
-                     .success(function(response) {
+                     .success(function(data,status,header,config) {
                         console.log("MCQ question posted successfully");
 
-                        //Add the choices to the question here!
+                        $scope.postResponse = data[0];
+                        console.log($scope.postResponse.id);
+
+                        ///add choices here
+                        for(i=0;i<$scope.number_of_choices;i++) {
+                            if(!$scope.question.choices.choicesCorrect[i])
+                                $scope.question.choices.choicesCorrect[i]=false;   
+                        }
+
+                        var choiceBody = [];
+
+                        for(i=0;i<$scope.number_of_choices;i++) {
+                            var text = $scope.question.choices.choiceText[i];
+                            if(text==null || text=="")
+                                continue;
+                            var isTrue = $scope.question.choices.choicesCorrect[i];
+                            var singleChoice = {
+                                "choice_text" : text,
+                                "is_correct" : isTrue,
+                                "questionId" : $scope.postResponse.id
+                            }
+                            choiceBody.push(singleChoice);
+
+                        }
+
+                        $http.post("http://localhost:8000/question/choice/",choiceBody)
+                        .success(function(data,status,header,config) {
+                            console.log("MCQs Posted");
+                        })
 
                         alert("Question posted successfully");
                         })
