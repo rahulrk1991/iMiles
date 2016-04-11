@@ -305,33 +305,6 @@ var app = angular
                 return new Array(n);
             };
 
-            //$scope.choices_MCQ = {};
-            $scope.doSomethingElse = function() {                       //temporary function
-                //x = $scope.choiceText
-                console.log($scope.question.choices.choiceText);
-                console.log($scope.question.choices.choicesCorrect);
-
-                for(i=0;i<n;i++) {
-                    if(!$scope.question.choices.choicesCorrect[i])
-                        $scope.question.choices.choicesCorrect[i]=false;   
-                }
-
-                var choiceBody = [];
-
-                for(i=0;i<n;i++) {
-                    var text = $scope.question.choices.choiceText[i];
-                    var isTrue = $scope.question.choices.choicesCorrect[i];
-                    var singleChoice = {
-                        "choiceText" : text,
-                        "isTrue" : isTrue,
-                        "questionId" : $scope.question.id
-                    }
-                    choiceBody[i] = singleChoice;
-
-                }
-                console.log(choiceBody);
-                return choiceBody;
-            }
 
             $scope.postMCQQuestion = function () {
                 console.log("Trying to post MCQ question...");
@@ -347,10 +320,9 @@ var app = angular
                 }];
                 $http.post( url, body)
                      .success(function(data,status,header,config) {
-                        console.log("MCQ question posted successfully");
+                        console.log("Question posted successfully");
 
                         $scope.postResponse = data[0];
-                        console.log($scope.postResponse.id);
 
                         ///add choices here
                         for(i=0;i<$scope.number_of_choices;i++) {
@@ -376,14 +348,13 @@ var app = angular
 
                         $http.post("http://localhost:8000/question/choice/",choiceBody)
                         .success(function(data,status,header,config) {
-                            console.log("MCQs Posted");
+                            console.log("Option posted successfully");
                         })
 
-                        alert("Question posted successfully");
-                        })
+                    })
                      .error(function(response) {
                         console.log("The question could not be posted");
-                        //Delete the questions since choices were not added!
+                        //Delete the question since choices were not added!
                         alert("Error in posting question");
                      });
             }
