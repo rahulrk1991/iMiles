@@ -1,6 +1,6 @@
 
 var app = angular
-        .module("iMiles_Module",["ngRoute"])
+        .module("iMiles_Module",["ngRoute","mgcrea.ngStrap"])
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/QnACrunch", {
@@ -233,8 +233,25 @@ var app = angular
             $scope.question = {};
             $scope.question.difficulty = DEFAULT_DIFFICULTY;
             $scope.number_of_choices = DEFAULT_NUMBER_OF_CHOICES;
-            
+            $scope.tags = {};
+            $scope.tags.filterValue = "";
+            $scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+            $scope.tags.tagsToAddToQuestion = [];
 
+            $scope.updateCategories = function() {
+                var filterString = $scope.tags.filterValue;
+                var lastIndex = filterString.slice(-1);
+                if(filterString==" ") {
+                    $scope.tags.filterValue = "";
+                    return;
+                }
+                if(lastIndex==' ' && filterString.length>1) {
+                    $scope.tags.tagsToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    console.log($scope.tags.tagsToAddToQuestion);
+                    $scope.tags.filterValue = "";
+                }
+                
+            }
 
             $scope.selectQuestionToPost = function(question_type) {
                     console.log(question_type);
