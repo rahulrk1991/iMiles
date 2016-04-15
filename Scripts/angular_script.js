@@ -235,8 +235,30 @@ var app = angular
             $scope.number_of_choices = DEFAULT_NUMBER_OF_CHOICES;
             $scope.tags = {};
             $scope.tags.filterValue = "";
-            $scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+            $scope.tags.allTags = [];
+            //$scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
             $scope.tags.tagsToAddToQuestion = [];
+
+            var init = function() {
+                //console.log("Got categories");
+                $http.get("http://localhost:8000/question/category/")
+                    .then(function(response) {
+                        
+                        //$scope.tags.allTags = response.data;
+                        console.log(response.data);
+                        for(i=0;i<response.data.length;i++) {
+                            //console.log(response.data[i].category_text);
+                            var getTagsFromAllTags = [];
+                            getTagsFromAllTags.push(response.data[i].category_text);
+                            console.log(getTagsFromAllTags);
+                            $scope.tags.allTags[i] = (response.data[i].category_text);
+                        }
+                        //console.log($scope.tags.allTags);
+
+                    });
+            }
+
+            init();
 
             $scope.updateCategories = function() {
                 var filterString = $scope.tags.filterValue;
