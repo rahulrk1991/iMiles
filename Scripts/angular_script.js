@@ -206,6 +206,55 @@ var app = angular
                 }
                 $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
                 //console.log("Choice Dict"+$scope.choiceDict);
+
+                $scope.tags = {};
+
+                $scope.tags.allTagNames = [];
+                $scope.tags.allTagId = [];
+                //$scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+                $scope.tags.tagsNamesToAddToQuestion = [];
+                $scope.tags.tagsIDsAddToQuestion = [];
+
+                categoryDict = [];
+
+                var init = function() {
+                    //console.log("Got categories");
+                    $http.get("http://localhost:8000/question/category/")
+                        .then(function(response) {
+                                                
+                            for(i=0;i<response.data.length;i++) {
+                                //console.log(response.data[i].category_text);
+                                $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                                $scope.tags.allTagId[i] = (response.data[i].id);
+
+                                categoryDict[response.data[i].category_text] = response.data[i].id
+                            }
+                            console.log($scope.tags.allTagNames);
+                            console.log($scope.tags.allTagId);
+
+                            console.log(categoryDict);
+
+                        });
+                }
+
+                init();
+
+                $scope.updateCategories = function() {
+                    var filterString = $scope.tags.filterValue;
+                    var lastIndex = filterString.slice(-1);
+                    if(filterString==" ") {
+                        $scope.tags.filterValue = "";
+                        return;
+                    }
+                    if(lastIndex==' ' && filterString.length>1) {
+                        $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                        console.log($scope.tags.tagsNamesToAddToQuestion);
+                        $scope.tags.filterValue = "";
+                    }
+
+                    //Call Seach questions by tag API here
+                    
+                }
             });
             
             $scope.getQuestionTemplateByType = function(question) {
