@@ -238,7 +238,10 @@ var app = angular
             $scope.tags.allTagNames = [];
             $scope.tags.allTagId = [];
             //$scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
-            $scope.tags.tagsToAddToQuestion = [];
+            $scope.tags.tagsNamesToAddToQuestion = [];
+            $scope.tags.tagsIDsAddToQuestion = [];
+
+            categoryDict = [];
 
             var init = function() {
                 //console.log("Got categories");
@@ -249,9 +252,13 @@ var app = angular
                             //console.log(response.data[i].category_text);
                             $scope.tags.allTagNames[i] = (response.data[i].category_text);
                             $scope.tags.allTagId[i] = (response.data[i].id);
+
+                            categoryDict[response.data[i].category_text] = response.data[i].id
                         }
                         console.log($scope.tags.allTagNames);
                         console.log($scope.tags.allTagId);
+
+                        console.log(categoryDict);
 
                     });
             }
@@ -266,8 +273,8 @@ var app = angular
                     return;
                 }
                 if(lastIndex==' ' && filterString.length>1) {
-                    $scope.tags.tagsToAddToQuestion.push(filterString.substring(0,filterString.length-1))
-                    console.log($scope.tags.tagsToAddToQuestion);
+                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    console.log($scope.tags.tagsNamesToAddToQuestion);
                     $scope.tags.filterValue = "";
                 }
                 
@@ -309,9 +316,33 @@ var app = angular
                     "answer": "This is a dummy answer"
                 }];
                 $http.post( url, body)
-                     .success(function(response) {
-                        console.log("Descriptive question posted successfully");        //on successfull posting of question
-                        alert("Question posted successfully");
+                     .success(function(data,status,header,config) {
+                            console.log("Descriptive question posted successfully.ID:"+data[0]);        //on successfull posting of question
+                            
+                            //console.log("Response:"+response.data);
+
+                            //add categories to question here
+                            var categoryBody = [];
+
+                            for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                                var xyz = $scope.tags.tagsNamesToAddToQuestion[i];
+                                console.log("xyz:"+xyz);
+                                console.log(categoryDict[xyz]);
+                                var singleTag = {
+                                    "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
+                                }
+                                categoryBody.push(singleTag);
+                            }
+
+                            console.log(categoryBody);
+
+                            var addCategoryURL = "http://localhost:8000/question/question/"+data[0].id+"/category";
+
+                            $http.post(addCategoryURL,categoryBody)
+                            .success(function(data,status,header,config) {
+                                console.log("Categories posted successfully");
+                            })
+
                         })
                      .error(function(response) {
                         console.log("The question could not be posted");                //in case there is an error
@@ -357,9 +388,11 @@ var app = angular
                 }];
                 $http.post( url, body)
                      .success(function(data,status,header,config) {
-                        console.log("Question posted successfully");
+                        
 
                         $scope.postResponse = data[0];
+
+                        console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
 
                         ///add choices here
                         for(i=0;i<$scope.number_of_choices;i++) {
@@ -383,9 +416,32 @@ var app = angular
 
                         }
 
+
                         $http.post("http://localhost:8000/question/choice/",choiceBody)
                         .success(function(data,status,header,config) {
                             console.log("Option posted successfully");
+                        })
+
+                        //add categories to question here
+                        var categoryBody = [];
+
+                        for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                            var xyz = $scope.tags.tagsNamesToAddToQuestion[i];
+                            console.log("xyz:"+xyz);
+                            console.log(categoryDict[xyz]);
+                            var singleTag = {
+                                "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
+                            }
+                            categoryBody.push(singleTag);
+                        }
+
+                        console.log(categoryBody);
+
+                        var addCategoryURL = "http://localhost:8000/question/question/"+$scope.postResponse.id+"/category";
+
+                        $http.post(addCategoryURL,categoryBody)
+                        .success(function(data,status,header,config) {
+                            console.log("Categories posted successfully");
                         })
 
                     })
