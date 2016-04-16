@@ -294,6 +294,18 @@ var app = angular
             $scope.question = {};
             $scope.question.difficulty = DEFAULT_DIFFICULTY;
             $scope.number_of_choices = DEFAULT_NUMBER_OF_CHOICES;
+            var classToAddToTab = "active";
+            $scope.tabClass = [classToAddToTab,""];
+            //$scope.tabClassDescriptive = "";
+
+            $scope.changeTabClass = function(clickedTab) {
+                if(clickedTab=="mcq") {
+                    $scope.tabClass = [classToAddToTab,""];
+                }
+                else {
+                    $scope.tabClass = ["",classToAddToTab];
+                }
+            }
 
             //Scope variables needed for adding tags
             $scope.tags = {};
@@ -338,6 +350,7 @@ var app = angular
             }
 
             $scope.selectQuestionToPost = function(question_type) {
+                    $scope.changeTabClass(question_type);
                     console.log(question_type);
                     $scope.load_question = getQuestionInfo[question_type].postFragment;     //Selects the template of the question to post
             }
