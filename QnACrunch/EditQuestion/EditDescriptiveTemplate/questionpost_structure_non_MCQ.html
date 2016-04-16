@@ -38,15 +38,22 @@
         <br>
         <div id="question_explanation">
 
-            <textarea ng-model="question.description" id="descriptionText" style="height: 200px"
+            <textarea ng-model="question.description" id="descriptionText" style="height: 100px"
                 class="form-control" placeholder="Explanation"
                 aria-describedby="basic-addon1"></textarea>
 
         </div>
         <br>
-        
+        <div id="question_answer">
+
+            <textarea ng-model="question.answer" id="descriptionText" style="height: 100px"
+                class="form-control" placeholder="Answer"
+                aria-describedby="basic-addon1"></textarea>
+
+        </div>
+        <br>
         <div id="button">
-            <button ng-click="putDescriptiveQuestion()" type="submit" class="btn btn-primary">Submit</button>
+            <button ng-click="putDescriptiveQuestion()" type="submit" class="btn btn-primary">Edit</button>
             <button type="button" class="btn btn-primary">Clear</button>
             <button ng-click="deleteQuestion()" style="float:right" type="button" class="btn btn-danger">Delete</button>
         </div>

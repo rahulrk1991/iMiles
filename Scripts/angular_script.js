@@ -88,21 +88,12 @@ var app = angular
             $scope.load_question = getQuestionInfo[$routeParams.kind].editFragment;
 
             $http.get(url)
-            .then(function(response) {
-                
-                $scope.question = response.data;
-                console.log($scope.question);
-                console.log($scope.question.id);
-
-            });
-
-            if($routeParams.kind=="mcq") {
-                $http.get(questions_choices_mcq_API+$routeParams.questionID)
                 .then(function(response) {
-                    $scope.choices = response.data;
-                    console.log($scope.choices[0]);
+                
+                    $scope.question = response.data;
+                    console.log($scope.question);
+                    console.log($scope.question.id);
                 });
-            }
 
             $scope.getChoiceStructure = function() {
                 return absolute_path+"QnACrunch/EditQuestion/EditMCQTemplate/ChoiceTemplate/choice_structure.html"
@@ -125,10 +116,10 @@ var app = angular
                     "title": $scope.question.title,
                     "description": $scope.question.description,
                     "difficulty_level": $scope.question.difficulty_level,
-                    "answer": "This is a dummy answer"
+                    "answer": $scope.question.answer
                 }];
                 $http.put( url, body)
-                     .success(function(response) {
+                     .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
                         alert("Question edited successfully");
                         })
