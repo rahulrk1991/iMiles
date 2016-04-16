@@ -28,7 +28,7 @@
 			<div style="visibility:hidden"></div>
 			<div id="choicesDiv" ng-repeat="choice in choiceDict[question.id]" style="display:inline">
 				<div ng-click="validateChoice(question,choice)" style="width:49%;height:auto;overflow:auto;border:0px"  class="btn btn-default">
-					<h4 style="float:left;vertical-align:middle"><span class="label label-default">A</span> {{choice.choice_text}}</h4>
+					<h4 style="float:left;vertical-align:middle"><span class="label label-default">{{'ABCDEFGH'[$index]}}</span> {{choice.choice_text}}</h4>
 				</div>
 			</div>
 			
