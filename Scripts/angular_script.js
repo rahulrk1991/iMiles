@@ -370,11 +370,11 @@ var app = angular
                     "description": $scope.question.questionDescription,
                     "difficulty_level": $scope.question.difficulty,
                     "kind": descriptive_kind,
-                    "answer": "This is a dummy answer"
+                    "answer": $scope.question.questionAnswer
                 }];
                 $http.post( url, body)
                      .success(function(data,status,header,config) {
-                            console.log("Descriptive question posted successfully.ID:"+data[0]);        //on successfull posting of question
+                            console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
                             
                             //console.log("Response:"+response.data);
 

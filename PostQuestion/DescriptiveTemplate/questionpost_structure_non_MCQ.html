@@ -46,8 +46,16 @@
 		<br>
 		<div id="question_explanation">
 
-			<textarea ng-model="question.questionDescription" id="descriptionText" style="height: 200px"
+			<textarea ng-model="question.questionDescription" id="descriptionText" style="height: 100px"
 				class="form-control" placeholder="Explanation"
+				aria-describedby="basic-addon1"></textarea>
+
+		</div>
+		<br>
+		<div id="question_answer">
+
+			<textarea ng-model="question.questionAnswer" id="descriptionText" style="height: 100px"
+				class="form-control" placeholder="Answer"
 				aria-describedby="basic-addon1"></textarea>
 
 		</div>
