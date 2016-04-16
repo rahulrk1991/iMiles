@@ -185,6 +185,17 @@ var app = angular
             //dummy controller for profile page
         })
         .controller("questionsController",function($scope,$http) {
+
+            $scope.tags = {};
+
+            $scope.tags.allTagNames = [];
+            $scope.tags.allTagId = [];
+            $scope.tags.tagsNamesToAddToQuestion = [];
+            $scope.tags.tagsIDsAddToQuestion = [];
+
+            categoryDict = [];
+
+
             //get data using http
             $http.get(questions_API)
             .then(function(response) {
@@ -207,17 +218,9 @@ var app = angular
                 $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
                 //console.log("Choice Dict"+$scope.choiceDict);
 
-                $scope.tags = {};
+                
 
-                $scope.tags.allTagNames = [];
-                $scope.tags.allTagId = [];
-                //$scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
-                $scope.tags.tagsNamesToAddToQuestion = [];
-                $scope.tags.tagsIDsAddToQuestion = [];
-
-                categoryDict = [];
-
-                var init = function() {
+                var getAllCategories = function() {
                     //console.log("Got categories");
                     $http.get("http://localhost:8000/question/category/")
                         .then(function(response) {
@@ -237,7 +240,7 @@ var app = angular
                         });
                 }
 
-                init();
+                getAllCategories();     
 
                 $scope.updateCategories = function() {
                     var filterString = $scope.tags.filterValue;
@@ -282,37 +285,33 @@ var app = angular
             $scope.question = {};
             $scope.question.difficulty = DEFAULT_DIFFICULTY;
             $scope.number_of_choices = DEFAULT_NUMBER_OF_CHOICES;
+
+            //Scope variables needed for adding tags
             $scope.tags = {};
             $scope.tags.filterValue = "";
             $scope.tags.allTagNames = [];
-            $scope.tags.allTagId = [];
-            //$scope.tags.allTags = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
             $scope.tags.tagsNamesToAddToQuestion = [];
             $scope.tags.tagsIDsAddToQuestion = [];
 
-            categoryDict = [];
+            categoryDict = [];      //Used for mapping category name to category id
 
-            var init = function() {
-                //console.log("Got categories");
+            var getAllCategories = function() {
+                
                 $http.get("http://localhost:8000/question/category/")
                     .then(function(response) {
                                             
                         for(i=0;i<response.data.length;i++) {
-                            //console.log(response.data[i].category_text);
                             $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                            $scope.tags.allTagId[i] = (response.data[i].id);
-
-                            categoryDict[response.data[i].category_text] = response.data[i].id
+                            categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
                         }
-                        console.log($scope.tags.allTagNames);
-                        console.log($scope.tags.allTagId);
 
+                        console.log("All tag names:"+$scope.tags.allTagNames);
                         console.log(categoryDict);
 
                     });
             }
 
-            init();
+            getAllCategories();
 
             $scope.updateCategories = function() {
                 var filterString = $scope.tags.filterValue;
