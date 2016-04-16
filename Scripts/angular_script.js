@@ -193,8 +193,8 @@ var app = angular
             $scope.tags.tagsNamesToAddToQuestion = [];
             $scope.tags.tagsIDsAddToQuestion = [];
 
+            choiceDict = [];
             categoryDict = [];
-
 
             //get data using http
             $http.get(questions_API)
@@ -214,11 +214,24 @@ var app = angular
                                 dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
                             })
                     }
+
+                    //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
+                    //Solution : tell arpit to return the question id the category belongs to like the choices in above call
+                    /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
+                        $http.get(catURL)
+                            .then(function(response) {
+                                var cats = response.data;                    //get all the choices of a question in allChoices
+                                //console.log(response.data);
+                                console.log("For question:"+singleQuestion.id);
+                                console.log(response.data);
+                                if(response.data)
+                                    $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
+                            })*/
+
+
+
                 }
                 $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
-                //console.log("Choice Dict"+$scope.choiceDict);
-
-                
 
                 var getAllCategories = function() {
                     //console.log("Got categories");
@@ -226,15 +239,10 @@ var app = angular
                         .then(function(response) {
                                                 
                             for(i=0;i<response.data.length;i++) {
-                                //console.log(response.data[i].category_text);
                                 $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                                $scope.tags.allTagId[i] = (response.data[i].id);
-
                                 categoryDict[response.data[i].category_text] = response.data[i].id
                             }
                             console.log($scope.tags.allTagNames);
-                            console.log($scope.tags.allTagId);
-
                             console.log(categoryDict);
 
                         });
@@ -259,6 +267,7 @@ var app = angular
                     
                 }
             });
+
             
             $scope.getQuestionTemplateByType = function(question) {
                 
