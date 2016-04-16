@@ -280,7 +280,7 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("postQuestion",function($scope,$http) {
+        .controller("postQuestion",function($scope,$http,$alert) {
 
             //Scope Variables default values;
             $scope.question_types = question_types;
@@ -409,6 +409,8 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
                             
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
                             var categoryBody = [];      //Will store the body of the url to add categories
 
                             for(i=0;i < $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
@@ -430,7 +432,8 @@ var app = angular
                         })
                      .error(function(response) {
                         console.log("The question could not be posted");                //in case there is an error
-                        alert("Error in posting question");
+                        var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+
                      });
             }
 
@@ -451,6 +454,8 @@ var app = angular
                         
                         $scope.postResponse = data[0];
                         console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
+                        var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
 
                         //Add choices to the question here
                         for(i=0;i<$scope.number_of_choices;i++) {
@@ -504,7 +509,8 @@ var app = angular
                     .error(function(response) {
                         console.log("The question could not be posted");
                             //Delete the question since choices were not added!
-                            alert("Error in posting question");
+                            var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+
                      });
             }
 
