@@ -186,86 +186,82 @@ var app = angular
         })
         .controller("questionsController",function($scope,$http) {
 
-            $scope.tags = {};
 
+            //Variable to display tags/search them in autocomplete search bar
+            $scope.tags = {};
             $scope.tags.allTagNames = [];
             $scope.tags.allTagId = [];
             $scope.tags.tagsNamesToAddToQuestion = [];
-            $scope.tags.tagsIDsAddToQuestion = [];
 
             choiceDict = [];
             categoryDict = [];
 
-            //get data using http
+            //Get all the question data using http get
             $http.get(questions_API)
-            .then(function(response) {
-                var allQuestions = response.data;
-                $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
-                var dict = [];                              // dict['question id'] = choice
-                for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
-                    var singleQuestion = allQuestions[i];
-                    if(singleQuestion.kind==mcq_kind) {
-                        //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
-                        var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                        $http.get(the_url)
+                .then(function(response) {
+                    var allQuestions = response.data;
+                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    var dict = [];                              // dict['question id'] = choice
+                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
+                        var singleQuestion = allQuestions[i];
+                        if(singleQuestion.kind==mcq_kind) {
+                            //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
+                            var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                            $http.get(the_url)
+                                .then(function(response) {
+                                    var allChoices = response.data;                    //get all the choices of a question in allChoices
+                                    //console.log(response.data);
+                                    dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
+                                })
+                        }
+
+                        //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
+                        //Solution : tell arpit to return the question id the category belongs to like the choices in above call
+                        /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
+                            $http.get(catURL)
+                                .then(function(response) {
+                                    var cats = response.data;                    //get all the choices of a question in allChoices
+                                    //console.log(response.data);
+                                    console.log("For question:"+singleQuestion.id);
+                                    console.log(response.data);
+                                    if(response.data)
+                                        $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
+                                })*/
+
+                    }
+
+                    $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
+
+                    var getAllCategories = function() {
+                        //console.log("Got categories");
+                        $http.get(question_categories_API)
                             .then(function(response) {
-                                var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                //console.log(response.data);
-                                dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
-                            })
+                                                    
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                                    categoryDict[response.data[i].category_text] = response.data[i].id
+                                }
+                                console.log($scope.tags.allTagNames);
+                                console.log(categoryDict);
+
+                            });
                     }
 
-                    //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
-                    //Solution : tell arpit to return the question id the category belongs to like the choices in above call
-                    /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
-                        $http.get(catURL)
-                            .then(function(response) {
-                                var cats = response.data;                    //get all the choices of a question in allChoices
-                                //console.log(response.data);
-                                console.log("For question:"+singleQuestion.id);
-                                console.log(response.data);
-                                if(response.data)
-                                    $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
-                            })*/
+                    getAllCategories();     
 
-
-
-                }
-                $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
-
-                var getAllCategories = function() {
-                    //console.log("Got categories");
-                    $http.get("http://localhost:8000/question/category/")
-                        .then(function(response) {
-                                                
-                            for(i=0;i<response.data.length;i++) {
-                                $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                                categoryDict[response.data[i].category_text] = response.data[i].id
-                            }
-                            console.log($scope.tags.allTagNames);
-                            console.log(categoryDict);
-
-                        });
-                }
-
-                getAllCategories();     
-
-                $scope.updateCategories = function() {
-                    var filterString = $scope.tags.filterValue;
-                    var lastIndex = filterString.slice(-1);
-                    if(filterString==" ") {
-                        $scope.tags.filterValue = "";
-                        return;
+                    $scope.updateCategories = function() {
+                        var filterString = $scope.tags.filterValue;
+                        var lastIndex = filterString.slice(-1);
+                        if(filterString==" ") {
+                            $scope.tags.filterValue = "";
+                            return;
+                        }
+                        if(lastIndex==' ' && filterString.length>1) {
+                            $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                            console.log($scope.tags.tagsNamesToAddToQuestion);
+                            $scope.tags.filterValue = "";
+                        }
                     }
-                    if(lastIndex==' ' && filterString.length>1) {
-                        $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
-                        console.log($scope.tags.tagsNamesToAddToQuestion);
-                        $scope.tags.filterValue = "";
-                    }
-
-                    //Call Seach questions by tag API here
-                    
-                }
             });
 
             
@@ -279,9 +275,7 @@ var app = angular
                 alert(choice.is_correct);
             }
 
-
             //Edit Question
-
             $scope.editQuestion = function(questionID) {
                 alert("Editing Question:"+questionID);
             }
@@ -294,59 +288,18 @@ var app = angular
             $scope.question = {};
             $scope.question.difficulty = DEFAULT_DIFFICULTY;
             $scope.number_of_choices = DEFAULT_NUMBER_OF_CHOICES;
-            var classToAddToTab = "active";
-            $scope.tabClass = [classToAddToTab,""];
-            //$scope.tabClassDescriptive = "";
+
+            //Variables to deliver active tab functionality
+            var classToAddToTab = "active";             //The class you want to apply when question type is selected
+            $scope.tabClass = [classToAddToTab,""];     //By default the first one will have the class and second will not
 
             $scope.changeTabClass = function(clickedTab) {
                 if(clickedTab=="mcq") {
-                    $scope.tabClass = [classToAddToTab,""];
+                    $scope.tabClass = [classToAddToTab,""];     //Apply to first and remove from second
                 }
                 else {
-                    $scope.tabClass = ["",classToAddToTab];
+                    $scope.tabClass = ["",classToAddToTab];     //Apply to second and remove from firstS
                 }
-            }
-
-            //Scope variables needed for adding tags
-            $scope.tags = {};
-            $scope.tags.filterValue = "";
-            $scope.tags.allTagNames = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
-            $scope.tags.tagsIDsAddToQuestion = [];
-
-            categoryDict = [];      //Used for mapping category name to category id
-
-            var getAllCategories = function() {
-                
-                $http.get("http://localhost:8000/question/category/")
-                    .then(function(response) {
-                                            
-                        for(i=0;i<response.data.length;i++) {
-                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                            categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
-                        }
-
-                        console.log("All tag names:"+$scope.tags.allTagNames);
-                        console.log(categoryDict);
-
-                    });
-            }
-
-            getAllCategories();
-
-            $scope.updateCategories = function() {
-                var filterString = $scope.tags.filterValue;
-                var lastIndex = filterString.slice(-1);
-                if(filterString==" ") {
-                    $scope.tags.filterValue = "";
-                    return;
-                }
-                if(lastIndex==' ' && filterString.length>1) {
-                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
-                    console.log($scope.tags.tagsNamesToAddToQuestion);
-                    $scope.tags.filterValue = "";
-                }
-                
             }
 
             $scope.selectQuestionToPost = function(question_type) {
@@ -364,60 +317,6 @@ var app = angular
                     if( $scope.question.difficulty <10)                         //increases difficulty rating by 1
                     $scope.question.difficulty++;
                 }      
-            }
-
-            $scope.postDescriptiveQuestion = function() {
-                var x = $scope.questionText
-                console.log("Trying to post descriptive question...");
-                if(!$scope.question.questionText) {
-                    alert("Question has to have title");  //Will try to make border of question title red
-                    return;
-                }
-                if(!$scope.question.questionDescription){
-                    alert("Question has to have explanation");  //Will try to make border of question title red
-                    return;
-                }
-                url = post_descriptive_questions_API;
-                body =  [{
-                    "title": $scope.question.questionText,
-                    "description": $scope.question.questionDescription,
-                    "difficulty_level": $scope.question.difficulty,
-                    "kind": descriptive_kind,
-                    "answer": $scope.question.questionAnswer
-                }];
-                $http.post( url, body)
-                     .success(function(data,status,header,config) {
-                            console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
-                            
-                            //console.log("Response:"+response.data);
-
-                            //add categories to question here
-                            var categoryBody = [];
-
-                            for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
-                                var xyz = $scope.tags.tagsNamesToAddToQuestion[i];
-                                console.log("xyz:"+xyz);
-                                console.log(categoryDict[xyz]);
-                                var singleTag = {
-                                    "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
-                                }
-                                categoryBody.push(singleTag);
-                            }
-
-                            console.log(categoryBody);
-
-                            var addCategoryURL = "http://localhost:8000/question/question/"+data[0].id+"/category";
-
-                            $http.post(addCategoryURL,categoryBody)
-                            .success(function(data,status,header,config) {
-                                console.log("Categories posted successfully");
-                            })
-
-                        })
-                     .error(function(response) {
-                        console.log("The question could not be posted");                //in case there is an error
-                        alert("Error in posting question");
-                     });
             }
 
             $scope.getChoiceStructure = function() {
@@ -444,33 +343,122 @@ var app = angular
             };
 
 
+            //Scope variables needed for adding tags
+            $scope.tags = {};
+            $scope.tags.filterValue = "";                   //Value obtained from autocomplete search bar
+            $scope.tags.allTagNames = [];                   //Stores name of all tags, used as model for autocomplete search bar
+            $scope.tags.tagsNamesToAddToQuestion = [];      //Array which stores the names of the tags to associate with Q
+
+
+            categoryDict = [];      //Used for mapping category name to category id
+
+            $scope.updateCategories = function() {
+                var filterString = $scope.tags.filterValue;
+                var lastIndex = filterString.slice(-1);
+                if(filterString==" ") {
+                    $scope.tags.filterValue = "";
+                    return;
+                }
+                if(lastIndex==' ' && filterString.length>1) {
+                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    console.log($scope.tags.tagsNamesToAddToQuestion);
+                    $scope.tags.filterValue = "";
+                }
+                
+            }
+
+            //Get all the categories/tags in on go
+            var getAllCategories = function() {
+                
+                $http.get(question_categories_API)
+                    .then(function(response) {
+                                            
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                            categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
+                        }
+
+                        console.log("All tag names:"+$scope.tags.allTagNames);
+                        console.log(categoryDict);
+
+                    });
+            }
+
+            getAllCategories();
+
+            $scope.postDescriptiveQuestion = function() {
+                
+                console.log("Trying to post descriptive question...");
+                if(!$scope.question.questionText) {
+                    alert("Question has to have title");  //Will try to make border of question title red
+                    return;
+                }
+                if(!$scope.question.questionDescription){
+                    alert("Question has to have explanation");  //Will try to make border of question title red
+                    return;
+                }
+                url = post_descriptive_questions_API;
+                body =  [{
+                    "title": $scope.question.questionText,
+                    "description": $scope.question.questionDescription,
+                    "difficulty_level": $scope.question.difficulty,
+                    "kind": descriptive_kind,
+                    "answer": $scope.question.questionAnswer
+                }];
+                $http.post( url, body)
+                     .success(function(data,status,header,config) {
+                            console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
+                            
+                            var categoryBody = [];      //Will store the body of the url to add categories
+
+                            for(i=0;i < $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                                var singleTag = {
+                                    "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
+                                }
+                                categoryBody.push(singleTag);       //Add single category to the body to create an array of categories
+                            }
+
+                            console.log(categoryBody);
+
+                            var addCategoryURL = questions_API+"/"+data[0].id+"/category";
+
+                            $http.post(addCategoryURL,categoryBody)
+                            .success(function(data,status,header,config) {
+                                console.log("Categories posted successfully");
+                            })
+
+                        })
+                     .error(function(response) {
+                        console.log("The question could not be posted");                //in case there is an error
+                        alert("Error in posting question");
+                     });
+            }
+
             $scope.postMCQQuestion = function () {
                 console.log("Trying to post MCQ question...");
                 if(!$scope.question.questionText) {
                     alert("Question has to have a title!");
                     return;
                 }
-                url = "http://localhost:8000/question/question_mcq/";
-                body =  [{
+                //url = "http://localhost:8000/question/question_mcq/";
+                post_mcq_questions_Body =  [{
                     "title": $scope.question.questionText,
                     "difficulty_level": $scope.question.difficulty,
                     "kind": mcq_kind,
                 }];
-                $http.post( url, body)
-                     .success(function(data,status,header,config) {
+                $http.post( post_mcq_Questions_API, post_mcq_questions_Body)
+                    .success(function(data,status,header,config) {
                         
-
                         $scope.postResponse = data[0];
-
                         console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
 
-                        ///add choices here
+                        //Add choices to the question here
                         for(i=0;i<$scope.number_of_choices;i++) {
                             if(!$scope.question.choices.choicesCorrect[i])
                                 $scope.question.choices.choicesCorrect[i]=false;   
                         }
 
-                        var choiceBody = [];
+                        var choiceBody = [];    //Will hold body of the url which posts choices
 
                         for(i=0;i<$scope.number_of_choices;i++) {
                             var text = $scope.question.choices.choiceText[i];
@@ -487,38 +475,36 @@ var app = angular
                         }
 
 
-                        $http.post("http://localhost:8000/question/choice/",choiceBody)
+                        $http.post(question_add_choices_API,choiceBody)
                         .success(function(data,status,header,config) {
                             console.log("Option posted successfully");
                         })
 
-                        //add categories to question here
+                        //Add categories to question here
                         var categoryBody = [];
 
                         for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
-                            var xyz = $scope.tags.tagsNamesToAddToQuestion[i];
-                            console.log("xyz:"+xyz);
-                            console.log(categoryDict[xyz]);
-                            var singleTag = {
-                                "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
+                            
+                            var singleCategory = {
+                                "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]     //Add category id to the choice body using categoryDict dictionary
                             }
-                            categoryBody.push(singleTag);
+                            categoryBody.push(singleCategory);   //Add single category to the body
                         }
 
                         console.log(categoryBody);
 
-                        var addCategoryURL = "http://localhost:8000/question/question/"+$scope.postResponse.id+"/category";
+                        var addCategoryURL = questions_API + "/" + $scope.postResponse.id + "/category";
 
                         $http.post(addCategoryURL,categoryBody)
-                        .success(function(data,status,header,config) {
-                            console.log("Categories posted successfully");
+                            .success(function(data,status,header,config) {
+                                console.log("Categories posted successfully");
                         })
 
                     })
-                     .error(function(response) {
+                    .error(function(response) {
                         console.log("The question could not be posted");
-                        //Delete the question since choices were not added!
-                        alert("Error in posting question");
+                            //Delete the question since choices were not added!
+                            alert("Error in posting question");
                      });
             }
 

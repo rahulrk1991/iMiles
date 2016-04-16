@@ -24,6 +24,14 @@ var post_descriptive_questions_API = API_Start + post_descriptive_questions_End_
 var questions_choices_mcq_End_Point = "/"+"question/question_mcq/choice/";
 var questions_choices_mcq_API = API_Start + questions_choices_mcq_End_Point;
 
+//Categories API
+var question_categories_End_Point = "/"+"question/category/";
+var question_categories_API = API_Start + question_categories_End_Point;
+
+//Add choices API
+var question_add_choices_End_Point = "/"+"question/choice/";
+var question_add_choices_API = API_Start + question_add_choices_End_Point;
+
 //OTHER VARIABLES
 var absolute_path = "iMiles/";
 
