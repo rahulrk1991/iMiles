@@ -26,7 +26,7 @@
 	<div class="panel-body">
 		<div style="width:100%" class="btn-group"  aria-label="...">
 			<div style="visibility:hidden"></div>
-			<div id="choicesDiv" ng-repeat="choice in choices" style="display:inline">
+			<div id="choicesDiv" ng-repeat="choice in question.choices" style="display:inline">
 				<div style="width:49%;height:auto;overflow:auto;border:0px"  class="btn btn-default">
 					<h4 style="float:left;vertical-align:middle"><span class="label label-default">A</span> {{choice.choice_text}}</h4>
 				</div>

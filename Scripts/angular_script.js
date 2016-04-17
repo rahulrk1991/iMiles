@@ -59,14 +59,6 @@ var app = angular
 
             });
 
-            if($routeParams.kind=="mcq") {
-                $http.get(questions_choices_mcq_API+$routeParams.questionID)
-                .then(function(response) {
-                    $scope.choices = response.data;
-                    console.log($scope.choices[0]);
-                });
-            }
-
             $scope.getChoiceStructure = function() {
                 return absolute_path+"QnACrunch/ViewQuestion/MCQTemplate/ChoiceTemplate/choice_structure.html"
             }
