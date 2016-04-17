@@ -38,6 +38,9 @@ var app = angular
         .controller("viewQuestionsController",function($scope,$http,$routeParams) {
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
+            $scope.panel={};
+            $scope.panel.title="Click here to view Solution";
+            $scope.panel.body="Solution body";
 
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
