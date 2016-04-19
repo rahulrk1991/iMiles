@@ -33,7 +33,7 @@ var question_add_choices_End_Point = "/"+"question/choice/";
 var question_add_choices_API = API_Start + question_add_choices_End_Point;
 
 //OTHER VARIABLES
-var absolute_path = "iMiles/";
+var absolute_path = "/";
 
 var mcq_kind = "mcq";
 var descriptive_kind = "descriptive";
