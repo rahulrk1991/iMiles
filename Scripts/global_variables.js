@@ -4,9 +4,10 @@
 
 //URL BUILDER
 var protocol = "http://";
-var host_name = "localhost";
-var port_number = "8000";
-var API_Start = protocol+host_name+":"+port_number;
+var host_name = "ec2-54-215-241-74.us-west-1.compute.amazonaws.com";
+var port_number = undefined;
+var api_root = "/api";
+var API_Start = protocol+host_name+(port_number?":"+port_number:'')+api_root;
 
 //Questions API
 var questions_End_Point = "/"+"question/question";
