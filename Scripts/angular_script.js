@@ -3,6 +3,9 @@ var app = angular
         .module("iMiles_Module",["ngRoute","mgcrea.ngStrap"])
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
+            .when("/", {
+                templateUrl: absolute_path+"jumbotron.html"
+            })
             .when("/QnACrunch", {
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
