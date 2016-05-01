@@ -8,7 +8,7 @@ var app = angular
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
-                controller:"questionsController"
+                
             })
             .when("/QnACrunch", {
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
@@ -508,3 +508,393 @@ var app = angular
             }
 
         });
+
+//Ankurs angular code
+
+app.factory('sharedEducationInfoService', function($rootScope){
+    var educationInfoSharedService ={};
+    educationInfoSharedService.eduInstituteName = ''
+    educationInfoSharedService.degreeLevel = ''
+    educationInfoSharedService.percentageObtained = ''
+    educationInfoSharedService.location = ''
+    educationInfoSharedService.yearOfGraduation = ''
+    educationInfoSharedService.educationDescription = ''
+    
+    
+    educationInfoSharedService.prepForBroadcastGeneralInfo = function(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription){
+        this.eduInstituteName = eduInstituteName;
+        this.degreeLevel = degreeLevel;
+        this.percentageObtained = percentageObtained;
+        this.location = location;
+        this.yearOfGraduation = yearOfGraduation;
+        this.educationDescription = educationDescription;
+        this.broadcastItem();
+    };
+    
+    educationInfoSharedService.broadcastItem = function(){
+        $rootScope.$broadcast('handleBroadcast');
+    };
+    
+    return educationInfoSharedService;
+});
+
+//app.controller('controllerEducationInfo',function($scope){
+//    $scope.units = [
+//        {'id': 1, 'label': 'Graduated'},
+//        {'id': 2, 'label': 'Graduating'},
+//        {'id': 3, 'label': 'Enrolled'},
+//        {'id': 3, 'label': 'Deffered'},
+//        {'id': 3, 'label': 'Transferred'},
+//    ]
+//     $scope.data= $scope.units[0];
+//});
+
+app.controller('controllerEducationInfo',['$scope','sharedEducationInfoService',function($scope, educationInfoSharedService){
+    $scope.units = [
+        {'id': 1, 'label': 'Graduated'},
+        {'id': 2, 'label': 'Graduating'},
+        {'id': 3, 'label': 'Enrolled'},
+        {'id': 3, 'label': 'Deffered'},
+        {'id': 3, 'label': 'Transferred'},
+    ]
+     $scope.data= $scope.units[0];
+    $scope.handleClick = function(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription){
+        educationInfoSharedService.prepForBroadcastGeneralInfo(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription);
+    };
+    
+    $scope.$on('handleBroadcast',function(){
+        $scope.eduInstituteName = educationInfoSharedService.eduInstituteName;
+        $scope.degreeLevel = educationInfoSharedService.degreeLevel;
+        $scope.percentageObtained = educationInfoSharedService.percentageObtained;
+        $scope.location = educationInfoSharedService.location;
+        $scope.yearOfGraduation = educationInfoSharedService.yearOfGraduation;
+        $scope.educationDescription = educationInfoSharedService.educationDescription;
+    });
+}]);
+
+
+
+
+
+app.controller('controllerEducationInfoToDisplayData',['$scope','sharedEducationInfoService',function($scope, educationInfoSharedService){
+    $scope.$on('handleBroadcast',function(){
+        $scope.educationInfoDisplay = [];
+        $scope.eduInstituteName = educationInfoSharedService.eduInstituteName;
+        $scope.degreeLevel = educationInfoSharedService.degreeLevel;
+        $scope.percentageObtained = educationInfoSharedService.percentageObtained;
+        $scope.location = educationInfoSharedService.location;
+        $scope.yearOfGraduation = educationInfoSharedService.yearOfGraduation;
+        $scope.educationDescription = educationInfoSharedService.educationDescription;
+        $scope.educationInfoDisplay.push({eduInstituteName:$scope.eduInstituteName,degreeLevel:$scope.degreeLevel,percentageObtained:$scope.percentageObtained,location:$scope.location,yearOfGraduation:$scope.yearOfGraduation,educationDescription:$scope.educationDescription});
+        
+        $scope.eduInstituteName = '';
+        $scope.degreeLevel = '';
+        $scope.percentageObtained = '';
+        $scope.location = '';
+        $scope.yearOfGraduation = '';
+        $scope.educationDescription = '';
+    });
+    
+    
+}]);
+
+
+//
+
+app.factory('sharedResumeGeneralInfoService', function($rootScope){
+    var generalInfoSharedService ={};
+    generalInfoSharedService.nameOnResume = ''
+    generalInfoSharedService.email = ''
+    generalInfoSharedService.mobileNumber = ''
+    generalInfoSharedService.address = ''
+    
+    generalInfoSharedService.prepForBroadcastGeneralInfo = function(nameOnResume,email,mobileNumber,address){
+        this.nameOnResume = nameOnResume;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.address = address;
+        this.broadcastItem();
+    };
+    
+    generalInfoSharedService.broadcastItem = function(){
+        $rootScope.$broadcast('handleBroadcast');
+    };
+    
+    return generalInfoSharedService;
+});
+
+app.controller('controllerGeneralInfo',['$scope','sharedResumeGeneralInfoService',function($scope, generalInfoSharedService){
+    $scope.handleClick = function(nameOnResume,email,mobileNumber,address){
+        generalInfoSharedService.prepForBroadcastGeneralInfo(nameOnResume,email,mobileNumber,address);
+    };
+    
+    $scope.$on('handleBroadcast',function(){
+        $scope.nameOnResume = generalInfoSharedService.nameOnResume;
+        $scope.email = generalInfoSharedService.email;
+        $scope.mobileNumber = generalInfoSharedService.mobileNumber;
+        $scope.address = generalInfoSharedService.address;
+    });
+}]);
+
+
+app.controller('controllerGeneralInfoToDisplayData',['$scope','sharedResumeGeneralInfoService',function($scope, generalInfoSharedService){
+    $scope.$on('handleBroadcast',function(){
+        $scope.nameOnResume = generalInfoSharedService.nameOnResume;
+        $scope.email = generalInfoSharedService.email;
+        $scope.mobileNumber = generalInfoSharedService.mobileNumber;
+        $scope.address = generalInfoSharedService.address;
+    });
+}]);
+
+
+//controllerGeneralInfo.$injector = ['$scope','sharedResumeGeneralInfoService'];
+//controllerGeneralInfoToDisplayData.$injector = ['$scope','sharedResumeGeneralInfoService'];
+
+//app.controller('wysiwygeditor',function($scope) {
+//      $scope.orightml = '';
+//      $scope.htmlcontent = $scope.orightml;
+//        $scope.disabled = false;
+//  });
+
+app.factory('sharedObjectiveInfoService', function($rootScope){
+    var ObjectiveInfoSharedService ={};
+    ObjectiveInfoSharedService.objective = ''
+    
+    ObjectiveInfoSharedService.prepForBroadcastObjectiveInfo = function(objective){
+        this.objective = objective;
+        this.broadcastItem();
+    };
+    
+    ObjectiveInfoSharedService.broadcastItem = function(){
+        $rootScope.$broadcast('handleBroadcast');
+    };
+    
+    return ObjectiveInfoSharedService;
+});
+
+app.controller('controllerObjectiveInfo',['$scope','sharedObjectiveInfoService',function($scope, ObjectiveInfoSharedService){
+    $scope.handleClick = function(objective){
+        ObjectiveInfoSharedService.prepForBroadcastObjectiveInfo(objective);
+    };
+    
+    $scope.$on('handleBroadcast',function(){
+        $scope.objective = ObjectiveInfoSharedService.objective;
+    });
+}]);
+
+
+app.controller('controllerObjectiveInfoToDisplayData',['$scope','sharedObjectiveInfoService',function($scope, ObjectiveInfoSharedService){
+    $scope.$on('handleBroadcast',function(){
+        $scope.objective = ObjectiveInfoSharedService.objective;
+    });
+}]);
+
+
+//Hobbies
+
+app.factory('sharedHobbiesInfoService', function($rootScope){
+    var HobbiesInfoSharedService ={};
+    HobbiesInfoSharedService.hobbies = ''
+    
+    HobbiesInfoSharedService.prepForBroadcastHobbiesInfo = function(hobbies){
+        this.hobbies = hobbies;
+        this.broadcastItem();
+    };
+    
+    HobbiesInfoSharedService.broadcastItem = function(){
+        $rootScope.$broadcast('handleBroadcast');
+    };
+    
+    return HobbiesInfoSharedService;
+});
+
+app.controller('controllerHobbiesInfo',['$scope','sharedHobbiesInfoService',function($scope, HobbiesInfoSharedService){
+    $scope.handleClick = function(hobbies){
+        HobbiesInfoSharedService.prepForBroadcastHobbiesInfo(hobbies);
+    };
+    
+    $scope.$on('handleBroadcast',function(){
+        $scope.hobbies = HobbiesInfoSharedService.hobbies;
+    });
+}]);
+
+
+app.controller('controllerHobbiesInfoToDisplayData',['$scope','sharedHobbiesInfoService',function($scope, HobbiesInfoSharedService){
+    $scope.$on('handleBroadcast',function(){
+        $scope.hobbies = HobbiesInfoSharedService.hobbies;
+    });
+}]);
+
+//ProfessionalSkills
+
+//app.controller('controllerProfessionalSkills',function($scope){
+//    $scope.units = [
+//        {'id': 1, 'label': 'Beginner'},
+//        {'id': 2, 'label': 'Intermediate'},
+//        {'id': 3, 'label': 'Advanced'},
+//        {'id': 3, 'label': 'Expert'},
+//    ]
+//
+//           $scope.data= $scope.units[0]; // Set by default the value "test1
+//});
+
+app .controller("controllerProfessionalSkills", function($scope,$rootScope) {
+    $scope.skills = [];
+    $rootScope.allSkills = [];
+    $scope.level = [];
+     $scope.units = [
+        {'id': 1, 'label': 'Beginner'},
+        {'id': 2, 'label': 'Intermediate'},
+        {'id': 3, 'label': 'Advanced'},
+        {'id': 3, 'label': 'Expert'},
+    ]
+     $scope.data= $scope.units[0]; // Set by default the value "test1
+    $scope.addItem123 = function () {
+        $scope.skills.push($scope.addSkillType);
+        $scope.level.push($scope.data);
+        $rootScope.allSkills.push({levele:$scope.data,skill:$scope.addSkillType});
+        $scope.addSkillType = '';
+        $scope.data= $scope.units[0]; 
+    }
+    $scope.removeItem = function (x) {
+        $rootScope.allSkills.splice(x, 1);
+    }
+});
+
+//LanguagesKnown
+
+app .controller("controllerLanguagesSkills", function($scope,$rootScope) {
+    $scope.language = [];
+    $rootScope.allLanguages = [];
+    $scope.level = [];
+     $scope.units = [
+        {'id': 1, 'label': 'Beginner'},
+        {'id': 2, 'label': 'Conversational'},
+        {'id': 3, 'label': 'Fluent'},
+        {'id': 3, 'label': 'Native'},
+    ]
+     $scope.data= $scope.units[0]; // Set by default the value "test1
+    $scope.addItem = function () {
+        $scope.language.push($scope.languages);
+        $scope.level.push($scope.data);
+        $rootScope.allLanguages.push({level:$scope.data,lang:$scope.languages});
+        $scope.languages = '';
+        $scope.data= $scope.units[0]; 
+    }  
+    $scope.removeItem = function (x) {
+        $rootScope.allLanguages.splice(x, 1);
+    }
+});
+                               
+//Employment
+
+app .controller("controllerEmploymentSkills", function($scope,$rootScope) {
+    $scope.showAdditionOfEmployment = false;
+    $rootScope.jobTitles = [];
+    $scope.companies = [];
+    $scope.locations = [];
+    $scope.startDates = [];
+    $scope.endDates = [];
+    $scope.compensations = [];
+    $scope.employmentDescriptions = [];
+    $scope.currency = [];
+    $scope.intervals = [];
+    $rootScope.employmentRelatedInformations = [];
+    $scope.units1 = [
+        {'id': 1, 'label': 'USD'},
+        {'id': 2, 'label': 'EUR'},
+        {'id': 3, 'label': 'GBP'},
+        {'id': 3, 'label': 'CAD'},
+        {'id': 3, 'label': 'AUD'},
+        {'id': 3, 'label': 'CNY'},
+        {'id': 3, 'label': 'UAH'},
+        {'id': 3, 'label': 'RUB'},
+    ]
+     $scope.data1= $scope.units1[0];
+    
+    $scope.units2 = [
+        {'id': 1, 'label': 'Annually'},
+        {'id': 2, 'label': 'Monthly'},
+        {'id': 3, 'label': 'Daily'},
+        {'id': 3, 'label': 'Hourly'},
+    ]
+     $scope.data2= $scope.units2[0];
+    
+    $scope.addEmployment = function(){
+        $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
+    }
+    
+    $scope.addTheList = function(){
+        $rootScope.jobTitles.push($scope.jobTitle);
+        $scope.companies.push($scope.company);
+        $scope.locations.push($scope.location);
+        $scope.startDates.push($scope.startDate);
+        $scope.endDates.push($scope.endDate);
+        $scope.compensations.push($scope.compensation);
+        $scope.employmentDescriptions.push($scope.employmentDescription);
+        $scope.currency.push($scope.data1);
+        $scope.intervals.push($scope.data2);
+        $rootScope.employmentRelatedInformations.push({jobTitle:$scope.jobTitle,company:$scope.company,location:$scope.location,starDate:$scope.startDate,endDate:$scope.endDate,compensation:$scope.compensation,currency:$scope.data1,intervals:$scope.data2,Description:$scope.employmentDescription});
+        $scope.jobTitle = '';
+        $scope.company = '';
+        $scope.location = '';
+        $scope.startDate = '';
+        $scope.endDate = '';
+        $scope.compensation = '';
+        $scope.employmentDescription = '';
+        $scope.data1= $scope.units1[0];
+        $scope.data2= $scope.units2[0];
+        $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
+    }
+    
+    $scope.removeItem = function (x) {
+        $rootScope.employmentRelatedInformations.splice(x, 1);
+        console.log($scope.employmentRelatedInformations);
+    }
+});
+
+//Reference
+
+app .controller("controllerReferences", function($scope,$rootScope) {
+    $scope.showAdditionOfReferences = false;
+    $scope.name = [];
+    $scope.relationship = [];
+    $scope.phone = [];
+    $scope.company = [];
+    $scope.email = [];
+    $scope.address = [];
+    $scope.address1 = [];
+    $scope.descriptions = [];
+    $rootScope.referenceRelatedInformations = [];
+    
+    $scope.addReferences = function(){
+        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
+    }
+    
+    $scope.addTheList = function(){
+        $scope.name.push($scope.referenceName);
+        $scope.relationship.push($scope.referenceRelationship);
+        $scope.phone.push($scope.referencePhone);
+        $scope.company.push($scope.referenceCompany);
+        $scope.email.push($scope.referenceEmailID);
+        $scope.address.push($scope.referenceAddress);
+        $scope.address1.push($scope.referenceAddress1);
+        $scope.descriptions.push($scope.referenceDescription);
+        $rootScope.referenceRelatedInformations.push({referenceName:$scope.referenceName,referenceRelationship:$scope.referenceRelationship,referencePhone:$scope.referencePhone,referenceCompany:$scope.referenceCompany,referenceEmailID:$scope.referenceEmailID,referenceAddress:$scope.referenceAddress,referenceAddress1:$scope.referenceAddress1,referenceDescription:$scope.referenceDescription});
+        $scope.referenceName = '';
+        $scope.referenceRelationship = '';
+        $scope.referencePhone = '';
+        $scope.referenceCompany = '';
+        $scope.referenceEmailID = '';
+        $scope.referenceAddress = '';
+        $scope.referenceAddress1 = '';
+        $scope.referenceDescription = '';
+        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
+    }
+    
+    $scope.removeItem = function (x) {
+        $rootScope.referenceRelatedInformations.splice(x, 1);
+    }
+});
+
+
