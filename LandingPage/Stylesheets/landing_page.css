@@ -1,0 +1,97 @@
+.bg{
+/*    background-image: url("pic1-a36.jpg");*/
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+/*
+    opacity: 0.65;
+    filter: alpha(opacity=40);
+*/
+}
+    
+.divMain1{
+
+    min-height: 400px;
+    background-color:forestgreen;
+}
+
+.divmain2{
+    min-height: 670px;
+    background-color: white;
+/*
+background-image: url("images (2).jpeg");
+background-position: center;
+background-repeat: no-repeat;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+filter: alpha(opacity=30);
+-moz-opacity: 0.3;
+-khtml-opacity: 0.3;
+opacity: 0.3;
+*/
+}
+
+.divmain3{
+    min-height: 670px;
+    background-color:aqua;
+}
+
+.divmain4{
+    min-height: 800px;
+    background-color:darkorange;
+}
+
+.divmain5{
+    min-height: 800px;
+    background-color:orange;
+}
+
+.innerDiv1{
+    background-color: white;
+    margin-top: 25px;
+}
+
+.innerDiv2{
+    background-color: aqua;
+    margin-top: 25px;
+}
+
+.textMod1{
+    font-family: "Times New Roman";
+    font-size: 50px;
+    font-weight: bold;
+}
+
+div:hover .img{
+  zoom: 1;
+  filter: alpha(opacity=45);
+  opacity: 0.45;
+  -webkit-transition: opacity .5s ease-in-out;
+  -moz-transition: opacity .5s ease-in-out;
+  -ms-transition: opacity .5s ease-in-out;
+  -o-transition: opacity .5s ease-in-out;
+  transition: opacity .5s ease-in-out;
+}
+    
+    div.img:hover{
+        border: 1px solid #777;
+        box-shadow: 3px 3px 15px #666;
+  border-color:#C76C0C;
+  background: black;
+  color: #fff;
+  cursor: pointer;
+  
+  Opacity
+  zoom: 1;
+  filter: alpha(opacity=100);
+  opacity: 1;
+    }
+    
+
