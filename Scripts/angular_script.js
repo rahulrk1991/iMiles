@@ -4,7 +4,7 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                templateUrl: absolute_path+"jumbotron.html"
+                templateUrl: absolute_path+"LandingPage/landing_page.html"
             })
             .when("/QnACrunch", {
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
