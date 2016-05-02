@@ -4,7 +4,8 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                templateUrl: absolute_path+"LandingPage/landing_page.html"
+                templateUrl: absolute_path+"LandingPage/landing_page.html",
+                controller:"landingPageController"
             })
             .when("/QnACrunch", {
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
@@ -38,6 +39,12 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("landingPageController",function($scope,$aside) {
+
+            $scope.title="iMiles Menu";
+            $scope.placement = "left";
+
+        })
         .controller("viewQuestionsController",function($scope,$http,$routeParams) {
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};

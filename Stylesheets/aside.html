@@ -1,0 +1,23 @@
+<div class="aside" tabindex="-1" role="dialog">
+  <div class="aside-dialog">
+    <div class="aside-content">
+      <div class="aside-header" ng-show="title">
+        <button type="button" class="close" ng-click="$hide()">&times;</button>
+        <h4 class="aside-title" ng-bind="title"></h4>
+      </div>
+      <div class="aside-body">
+         <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a href="/" ng-click="$hide()">Home</a></li>
+          <li role="presentation"><a href="QnACrunch" ng-click="$hide()">QnA Crunch</a></li>
+          <li role="presentation"><a href="PostQuestion" ng-click="$hide()">Post A Question</a></li>
+          <li role="presentation"><a href="ContactUs" ng-click="$hide()">Contact Us</a></li>
+          <li role="presentation"><a href="About Us" ng-click="$hide()">About Us</a></li>
+          <li role="presentation"><a href="Profile" ng-click="$hide()">Profile</a></li>
+        </ul>
+      </div>
+      <div class="aside-footer">
+        <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

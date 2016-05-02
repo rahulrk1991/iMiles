@@ -6,6 +6,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl.js"></script>
+        <script src="//code.angularjs.org/1.3.0-beta.5/angular-animate.min.js"></script>
+        <link rel="stylesheet" href="//rawgithub.com/mgcrea/angular-motion/master/dist/angular-motion.min.css">
         <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'> 
         <base href="/" />
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" >
@@ -13,6 +15,7 @@
         <script src="Scripts/angular_script.js"></script>
         <script src="Scripts/global_variables.js"></script>
         <link href="Stylesheets/common.css" rel="stylesheet" type="text/css">
+        <link href="Stylesheets/bootstrap-additions.css" rel="stylesheet" type="text/css">
 
         <!--  Following dependencies needed for landing page , try to reduce-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -36,22 +39,12 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="QnACrunch">QnACrunch <span class="sr-only">(current)</span></a></li>
+                        
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="PostQuestion">Post Question</a></li>
-                        <li><a href="ContactUs">Contact Us</a></li>
-                        <li><a href="AboutUs">About Us</a></li>
-
-                        <li class="dropdown">
-                            <a href="Profile" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
+                        
+                        <li><a href="" data-placement="right" data-animation="am-slide-left" bs-aside="aside1" data-container="body" data-controller="landingPageController"  data-template-url="Stylesheets/aside.html" >
+                            <span style="padding-right:5px" class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>MENU</a>
                         </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
