@@ -1,18 +1,3 @@
-.bg{
-/*    background-image: url("pic1-a36.jpg");*/
-    
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment:fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-/*
-    opacity: 0.65;
-    filter: alpha(opacity=40);
-*/
-}
     
 .divMain1{
 
