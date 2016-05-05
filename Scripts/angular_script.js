@@ -39,9 +39,13 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
-        .controller("landingPageController",function($scope,$aside) {
+        .controller("landingPageController",function($scope,$aside,$modal) {
 
             $scope.title="iMiles Menu";
+
+            $scope.registerUser = function() {
+                var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
+            }
             
 
         })
