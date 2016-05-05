@@ -42,7 +42,7 @@ var app = angular
         .controller("landingPageController",function($scope,$aside) {
 
             $scope.title="iMiles Menu";
-            $scope.placement = "left";
+            
 
         })
         .controller("viewQuestionsController",function($scope,$http,$routeParams) {
