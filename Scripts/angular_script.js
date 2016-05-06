@@ -204,6 +204,9 @@ var app = angular
                     var dict = [];                              // dict['question id'] = choice
                     for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
                         var singleQuestion = allQuestions[i];
+
+                        singleQuestion.isSolved = false;
+
                         if(singleQuestion.kind==mcq_kind) {
                             //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
                             var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
@@ -272,6 +275,9 @@ var app = angular
             }
 
             $scope.validateChoice = function(question,choice) {     //returing if the selected choice is the correct choice
+                if(question.isSolved)
+                    return;
+                question.isSolved = true;
                 alert(choice.is_correct);
             }
 
