@@ -274,11 +274,29 @@ var app = angular
 
             }
 
-            $scope.validateChoice = function(question,choice) {     //returing if the selected choice is the correct choice
+            $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
                 if(question.isSolved)
                     return;
                 question.isSolved = true;
-                alert(choice.is_correct);
+                question.isSelected = index;
+            }
+
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                if(!question.isSolved)
+                    return;
+                if(question.isSelected==index)
+                    return "background-grey";
+            }
+
+            $scope.applyColors = function(question,choice) {
+                if(!question.isSolved)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red"
+                }
             }
 
             //Edit Question

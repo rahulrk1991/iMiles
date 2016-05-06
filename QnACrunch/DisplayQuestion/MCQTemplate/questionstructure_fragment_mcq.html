@@ -27,8 +27,8 @@
 		<div style="width:100%" class="btn-group"  aria-label="...">
 			<div style="visibility:hidden"></div>
 			<div id="choicesDiv" ng-repeat="choice in choiceDict[question.id]" style="display:inline">
-				<div ng-click="validateChoice(question,choice)" style="width:49%;height:auto;overflow:auto;border:0px"  class="btn btn-default">
-					<h4 style="float:left;vertical-align:middle"><span class="label label-default">{{'ABCDEFGH'[$index]}}</span> {{choice.choice_text}}</h4>
+				<div ng-class="applyClassToSelectedChoice(question,choice,$index)" ng-click="validateChoice(question,choice,$index)" style="width:49%;height:auto;overflow:auto;border:0px"  class="btn btn-default">
+					<h4 style="float:left;vertical-align:middle"><span ng-class="applyColors(question,choice)" class="label label-default">{{'ABCDEFGH'[$index]}}</span> {{choice.choice_text}}</h4>
 				</div>
 			</div>
 			
@@ -36,11 +36,6 @@
 
 		</div>
 	</div>
-
-	<div style="float: left; width: 100%">
-		<h5 class="panel-title">{{question.isSolved}}</h5>
-	</div>
-	
 
 	<div class="panel-footer" style="width: 100%; height: 35px">
 		<div style="float: left; width: 40%">
