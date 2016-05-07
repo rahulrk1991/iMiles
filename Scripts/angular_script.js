@@ -13,7 +13,7 @@ var app = angular
             })
             .when("/OnlineMockTests/TakeATest/:category/:duration/:difficulty", {
                 templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
-                controller:"onlineMockTestsController"
+                controller:"onlineMockTestsTakeATestController"
             })
             .when("/OnlineMockTests/ChooseATest", {
                 templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
@@ -54,19 +54,19 @@ var app = angular
             $scope.tags.allTagNames = [];
             $scope.tags.allTagId = [];
             $scope.tags.tagsNamesToAddToQuestion = [];
-            $scope.tags.filterValue = "";
+            $scope.tags.filterValue = "Aptitude";
 
             //Category TextBox
-            $scope.selectedCategory="";
+            $scope.selectedCategory="Aptitude";
 
             //Duration TextBox
             $scope.durations = [15,30,45,60,90];
-            $scope.duration;
+            $scope.duration=15;
             $scope.durationText = "Duration";
 
             //Difficulty TextBox
             $scope.difficulties = ["Easy","Medium","Hard"];
-            $scope.difficulty = "Difficulty";
+            $scope.difficulty = "Easy";
 
             categoryDict = [];
 
@@ -101,7 +101,7 @@ var app = angular
             }
 
         })
-        .controller("onlineMockTestsController",function($scope,$http) {
+        .controller("onlineMockTestsTakeATestController",function($scope,$http) {
 
 
             //Variable to display tags/search them in autocomplete search bar
@@ -123,17 +123,17 @@ var app = angular
                         var singleQuestion = allQuestions[i];
 
                         singleQuestion.isSolved = false;
+                        singleQuestion.usersChoice = -1;
 
-                        //if(singleQuestion.kind==mcq_kind) {
-                            //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
-                            var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                            $http.get(the_url)
-                                .then(function(response) {
-                                    var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                    //console.log(response.data);
-                                    dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
-                                })
-                        //}
+                        var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                        $http.get(the_url)
+                            .then(function(response) {
+                                var allChoices = response.data;                    //get all the choices of a question in allChoices
+                                //console.log(response.data);
+                                dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
+                                //console.log(singleQuestion);
+                            })
+                        
 
                         //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
                         //Solution : tell arpit to return the question id the category belongs to like the choices in above call
@@ -151,6 +151,7 @@ var app = angular
                     }
 
                     $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
+
 
                     var getAllCategories = function() {
                         //console.log("Got categories");
@@ -192,15 +193,14 @@ var app = angular
             }
 
             $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
-                if(question.isSolved)
-                    return;
+                
                 question.isSolved = true;
+                question.usersChoice = choice.id;
                 question.isSelected = index;
             }
 
             $scope.applyClassToSelectedChoice = function(question,choice,index) {
-                if(!question.isSolved)
-                    return;
+                
                 if(question.isSelected==index)
                     return "background-grey";
             }
