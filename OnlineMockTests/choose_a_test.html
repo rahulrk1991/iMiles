@@ -1,0 +1,59 @@
+
+<div id="main_container" style="width:900px;margin:0 auto;">
+   <div class="container-fluid">
+      <div class="row">
+
+             <h1>Choose A Test</h1>
+             <hr>
+
+            <div ng-controller="onlineMockTestsController" class="container" style="width:100%">
+                <div id="testInputBox" style="width:60%;display:inline;float:left" class="display-inline padding-10px">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon" id="sizing-addon1">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </span>
+                            <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Add tags here..." bs-typeahead>
+                    </div>
+                </div>
+                
+                <div id="durationInput" style="width:15%;display:inline;float:left" class="display-inline padding-10px"> 
+                    <div class="dropdown">
+                      <button class="btn btn-default btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Duration
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">15 mins</a></li>
+                        <li><a href="#">30 mins</a></li>
+                        <li><a href="#">45 mins</a></li>
+                        <li><a href="#">60 mins</a></li>
+                      </ul>
+                    </div>
+                </div>
+
+                <div id="testInputBox" style="width:15%;display:inline;float:left" class="display-inline padding-10px"> 
+                    <div class="dropdown">
+                      <button class="btn btn-default btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Difficulty
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">Easy</a></li>
+                        <li><a href="#">Meduim</a></li>
+                        <li><a href="#">Hard</a></li>
+                      </ul>
+                    </div>
+                </div>
+
+                <div id="startTestButton" class="display-inline padding-10px" style="width:8%">
+                    <button type="button" class="btn btn-default btn-lg btn-success">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <br>
+            </div> 
+      
+         </div>
+      </div>
+   </div>
+</div>

@@ -11,6 +11,14 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
+            .when("/OnlineMockTests", {
+                templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
+                controller:"onlineMockTestsController"
+            })
+            .when("/OnlineMockTests/ChooseATest", {
+                templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsController"
+            })
             .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
                 controller:"editQuestionsController"
@@ -39,6 +47,133 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("onlineMockTestsController",function($scope,$http) {
+
+
+            //Variable to display tags/search them in autocomplete search bar
+            $scope.tags = {};
+            $scope.tags.allTagNames = [];
+            $scope.tags.allTagId = [];
+            $scope.tags.tagsNamesToAddToQuestion = [];
+
+            $scope.icons = [
+                {"value":"15 mins","label":"<i class=\"fa fa-gear\"></i> Gear"},
+                {"value":"20 mins","label":"<i class=\"fa fa-globe\"></i> Globe"},
+                {"value":"Heart","label":"<i class=\"fa fa-heart\"></i> Heart"},
+                {"value":"Camera","label":"<i class=\"fa fa-camera\"></i> Camera"}
+            ];
+
+            choiceDict = [];
+            categoryDict = [];
+
+            //Get all the question data using http get
+            $http.get(post_mcq_Questions_API)
+                .then(function(response) {
+                    var allQuestions = response.data;
+                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    var dict = [];                              // dict['question id'] = choice
+                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
+                        var singleQuestion = allQuestions[i];
+
+                        singleQuestion.isSolved = false;
+
+                        //if(singleQuestion.kind==mcq_kind) {
+                            //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
+                            var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                            $http.get(the_url)
+                                .then(function(response) {
+                                    var allChoices = response.data;                    //get all the choices of a question in allChoices
+                                    //console.log(response.data);
+                                    dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
+                                })
+                        //}
+
+                        //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
+                        //Solution : tell arpit to return the question id the category belongs to like the choices in above call
+                        /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
+                            $http.get(catURL)
+                                .then(function(response) {
+                                    var cats = response.data;                    //get all the choices of a question in allChoices
+                                    //console.log(response.data);
+                                    console.log("For question:"+singleQuestion.id);
+                                    console.log(response.data);
+                                    if(response.data)
+                                        $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
+                                })*/
+
+                    }
+
+                    $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
+
+                    var getAllCategories = function() {
+                        //console.log("Got categories");
+                        $http.get(question_categories_API)
+                            .then(function(response) {
+                                                    
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                                    categoryDict[response.data[i].category_text] = response.data[i].id
+                                }
+                                console.log($scope.tags.allTagNames);
+                                console.log(categoryDict);
+
+                            });
+                    }
+
+                    getAllCategories();     
+
+                    $scope.updateCategories = function() {
+                        var filterString = $scope.tags.filterValue;
+                        var lastIndex = filterString.slice(-1);
+                        if(filterString==" ") {
+                            $scope.tags.filterValue = "";
+                            return;
+                        }
+                        if(lastIndex==' ' && filterString.length>1) {
+                            $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                            console.log($scope.tags.tagsNamesToAddToQuestion);
+                            $scope.tags.filterValue = "";
+                        }
+                    }
+            });
+
+            
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return getQuestionInfo[question.kind].templateFile;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+            $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
+                if(question.isSolved)
+                    return;
+                question.isSolved = true;
+                question.isSelected = index;
+            }
+
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                if(!question.isSolved)
+                    return;
+                if(question.isSelected==index)
+                    return "background-grey";
+            }
+
+            $scope.applyColors = function(question,choice) {
+                if(!question.isSolved)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red"
+                }
+            }
+
+            //Edit Question
+            $scope.editQuestion = function(questionID) {
+                alert("Editing Question:"+questionID);
+            }
+        })
         .controller("landingPageController",function($scope,$aside,$modal) {
 
             $scope.title="iMiles Menu";
