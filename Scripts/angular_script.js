@@ -11,7 +11,7 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/OnlineMockTests/TakeATest", {
+            .when("/OnlineMockTests/TakeATest/:category/:duration/:difficulty", {
                 templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
                 controller:"onlineMockTestsController"
             })
@@ -56,8 +56,11 @@ var app = angular
             $scope.tags.tagsNamesToAddToQuestion = [];
             $scope.tags.filterValue = "";
 
+            //Category TextBox
+            $scope.selectedCategory="";
+
             //Duration TextBox
-            $scope.durations = [15,30,45,60];
+            $scope.durations = [15,30,45,60,90];
             $scope.duration;
             $scope.durationText = "Duration";
 
@@ -82,7 +85,11 @@ var app = angular
                     });
             }
 
-            getAllCategories();     
+            getAllCategories();
+
+            $scope.setCategory = function() {
+                $scope.selectedCategory = $scope.tags.filterValue;
+            }
 
             $scope.setDuration = function(durationSetByUser) {
                 $scope.duration = durationSetByUser;
