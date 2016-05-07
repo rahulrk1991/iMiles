@@ -11,13 +11,13 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/OnlineMockTests", {
+            .when("/OnlineMockTests/TakeATest", {
                 templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
                 controller:"onlineMockTestsController"
             })
             .when("/OnlineMockTests/ChooseATest", {
                 templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
-                controller:"onlineMockTestsController"
+                controller:"onlineMockTestsChooseTestController"
             })
             .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
@@ -47,6 +47,53 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("onlineMockTestsChooseTestController",function($scope,$http) {
+
+            //Variable to display tags/search them in autocomplete search bar
+            $scope.tags = {};
+            $scope.tags.allTagNames = [];
+            $scope.tags.allTagId = [];
+            $scope.tags.tagsNamesToAddToQuestion = [];
+            $scope.tags.filterValue = "";
+
+            //Duration TextBox
+            $scope.durations = [15,30,45,60];
+            $scope.duration;
+            $scope.durationText = "Duration";
+
+            //Difficulty TextBox
+            $scope.difficulties = ["Easy","Medium","Hard"];
+            $scope.difficulty = "Difficulty";
+
+            categoryDict = [];
+
+            var getAllCategories = function() {
+                //console.log("Got categories");
+                $http.get(question_categories_API)
+                    .then(function(response) {
+                                            
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                            categoryDict[response.data[i].category_text] = response.data[i].id
+                        }
+                        console.log($scope.tags.allTagNames);
+                        console.log(categoryDict);
+
+                    });
+            }
+
+            getAllCategories();     
+
+            $scope.setDuration = function(durationSetByUser) {
+                $scope.duration = durationSetByUser;
+                $scope.durationText = durationSetByUser + " minutes";
+            }
+
+            $scope.setDifficulty = function(difficultySetByUser) {
+                $scope.difficulty = difficultySetByUser;
+            }
+
+        })
         .controller("onlineMockTestsController",function($scope,$http) {
 
 
@@ -55,13 +102,6 @@ var app = angular
             $scope.tags.allTagNames = [];
             $scope.tags.allTagId = [];
             $scope.tags.tagsNamesToAddToQuestion = [];
-
-            $scope.icons = [
-                {"value":"15 mins","label":"<i class=\"fa fa-gear\"></i> Gear"},
-                {"value":"20 mins","label":"<i class=\"fa fa-globe\"></i> Globe"},
-                {"value":"Heart","label":"<i class=\"fa fa-heart\"></i> Heart"},
-                {"value":"Camera","label":"<i class=\"fa fa-camera\"></i> Camera"}
-            ];
 
             choiceDict = [];
             categoryDict = [];
@@ -140,7 +180,7 @@ var app = angular
             
             $scope.getQuestionTemplateByType = function(question) {
                 
-                return getQuestionInfo[question.kind].templateFile;         //returning the template file from getQuestonInfo using question 
+                return getQuestionInfo[question.kind].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
 
             }
 
