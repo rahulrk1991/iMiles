@@ -1,0 +1,32 @@
+<script>
+    $(document).ready(function(){
+    $("#saveChangesObjective").click(function(e){
+        $("#objectiveEditor").hide();
+        $("#editObjective").css("visibility","visible");
+        if($("#check1").text() == ''){
+            alert("Please tell us your Objective to improve your Resume.");
+        }
+    })
+    $("#editObjectivebutton").click(function(e){
+        $("#objectiveEditor").show();
+        $("#editObjective").css("visibility","hidden");
+    })
+    });
+</script>
+<div ng-controller="controllerGeneralInfoToDisplayData">
+<div class="jumbotron" id = "objectiveEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;">
+<p><strong>Describe both skills you would like to build on and skills you would like to develop in this position. Discuss what will challenge you about the position and what career goals you hope to achieve should you get this position.</strong></p>
+<div text-angular="text-angular" name="objective" ng-model="objective"></div>
+<button id = "saveChangesObjective" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(objective);">Save Changes</button>
+
+</div>
+<div id="editObjective" style="visibility:hidden;">
+<div style="margin-top:170px;background-color:aqua;" class="jumbotron">
+<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Objective</h2>
+<div><p id = "check1" ta-bind="text" ng-model="objective">{{objective}}</p></div>
+</div>
+<div style="float:right;">
+<button id = "editObjectivebutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>
+</div>
+</div>
+</div>

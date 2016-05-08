@@ -6,147 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/ResumeBuilder/StylesheetsResume/Resume_Builder.css">
 
-    
+    <script src="/LandingPage/Scripts/project.js"></script>
 
 
     
     
 </head>
 <style>
-.bg{
-    background-image: url("li_hint_27_04.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment:fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    opacity: 0.65;
-    filter: alpha(opacity=40);
-    overflow: hidden;
-}
-
-    
-    .divMainResume1{
-        background-color: black;
-        min-height: 800px;  
-        margin-top:80px;
-        overflow: hidden;
-    }
-    
-    .divMainResume2{
-        background-color: black;
-        min-height: 900px;
-        margin-top: 80px;
-    }
-    
-    .divMainResume3{
-        background-color: black;
-    }
-    
-    .textModResume1{
-        
-        font-size: 50px;
-        font-weight: bold;
-    }
-    
-    .textModResume2{
-        
-        font-size: 35px;
-        font-weight: bold;
-    }
-    
-    .button {
-    background-color: gold;
-    border: none;
-    color: black;
-    padding: 15px 60px;
-    text-align: center;
-    font-size: 16px;
-    display: inline-block;
-        margin-top: 30px;
-        margin-left: 42%;
-}
-    
-    .displayUserQuestions{
-    }
-    
-    .glyphicon.glyphicon-chevron-up{
-    font-size: 50px;
-        color: antiquewhite;
-}
-    
-    .carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 30%;
-      margin: auto;
-  }
-    .item img {
-  width: auto;
-  height: 400px;
-  max-height: 400px;
-}
-    
-    #myCarousel{
-        background-color: gray;
-        position: relative;
-    }
-    
-    .center {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
-}
-    div.listItems{
-        border: 1px solid #777;
-        box-shadow: 3px 3px 15px #666;
-  border-color:#C76C0C;
-  background: black;
-  color: #fff;
-  cursor: pointer;
-  
-  Opacity
-  zoom: 1;
-  filter: alpha(opacity=100);
-  opacity: 1;
-    }
-    
-    .moveElementToCenter1{
-        text-align:center;
-        margin-top: 15%;
-    }
-    
-    .ta-editor {
-  min-height: 100px;
-  height: auto;
-  overflow: auto;
-  font-family: inherit;
-  font-size: 100%;
-}
-
     
 
 </style>
 
-<body class = "bg">
+<body class = "bg"   ng-controller="controllerGeneralInfoToDisplayData">
 
-    <div class="container-fluid divMainResume1">
-        <h1 class="textModResume1" style="text-align:center;color:#FFFFFF;margin-top:100px;">Build you Resume here</h1>
-        <h2 style="text-align:center;color:orange;margin-top:50px;">We provide you with range of Templates to choose from</h2>
-        <h2 style="text-align:center;color:orange;">Preview it. Download it. Share it.</h2>
-        <a href="#" id="startWithResumeBuilding" data-rel="divMainResume2"><button class="button btn-responsive">Get Started</button></a>
-    </div>
+    <div class="container-fluid divMainResume1" style="max-height:800px;">
+        <center>
+        <div style="background-color:#C0C0C0;width:75%;padding-top:20px;padding-bottom:20px;">
+        <h1 class="textModResume1" style="text-align:center;color:#FFFFFF;margin-top:100px;text-shadow: 2px 2px 4px blue;">Build you Resume here</h1>
+        <h2 style="text-align:center;color:Blue;margin-top:50px;">We provide you with range of Templates to choose from</h2>
+        <h2 style="text-align:center;color:Blue;">Preview it. Download it. Share it.</h2>
+            <div>
+        <a href="#" id="startWithResumeBuilding" data-rel="divMainResume2"><button class="button btn-responsive" style="box-shadow: 10px 10px;">Get Started</button></a></div>
+    </div></center>
+        </div>
     <div class="container-fluid divMainResume2" style="visibility:hidden;">
-        <a href="#" id="gotoResumeHomePage" data-toggle="tooltip" title="Go back to Resume builder home page" style="position: fixed;"><span class="glyphicon glyphicon-chevron-up" style="siz"></span></a>
+        <a href="#" id="gotoResumeHomePage" data-toggle="tooltip" title="Go back to Resume builder home page" style="position: fixed;"><span class="glyphicon glyphicon-chevron-up" style="color:black;"></span></a>
         
            <center>
-                <div class="alert alert-success alert-dismissable centered" id="alertMessage" style="background-color:aqua;width:500px;color:black;text-align:center;display: none;">
+                <div class="alert alert-success alert-dismissable centered" id="alertMessage" style="background-color:blue;width:500px;color:white;text-align:center;display: none;">
                     Scroll down to see the selected Template and proceed with it
                 </div>
             </center>
-        <h1 class="textModResume2" style="text-align:center;color:orange;margin-top:100px;">Make your Template Selection</h1>
+        <h1 class="textModResume2" style="text-align:center;color:black;margin-top:100px;">Make your Template Selection</h1>
         <div class="container">
             <br>
             <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
@@ -162,42 +55,42 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                         <a href="#"><img src="temp1.jpg" class="imageCarousel" alt="Template1" data-picture="temp1.jpg" width="300" height="300"></a>
+                         <a href="#"><img src="/ResumeBuilder/Images/temp1.jpg" class="imageCarousel" alt="Template1" data-picture="/ResumeBuilder/Images/temp1.jpg" width="300" height="300"></a>
                     </div>
 
                     <div class="item">
-                        <a href="#"><img src="temp2.png" class="imageCarousel" alt="Template2" data-picture="temp2.png" width="300" height="300"></a>
+                        <a href="#"><img src="/ResumeBuilder/Images/temp2.png" class="imageCarousel" alt="Template2" data-picture="/ResumeBuilder/Images/temp2.png" width="300" height="300"></a>
                     </div>
     
                     <div class="item">
-                        <a href="#"><img src="temp3.png" class="imageCarousel" alt="Template3" data-picture="temp3.png" width="300" height="300"></a>
+                        <a href="#"><img src="/ResumeBuilder/Images/temp3.png" class="imageCarousel" alt="Template3" data-picture="/ResumeBuilder/Images/temp3.png" width="300" height="300"></a>
                     </div>
 
                     <div class="item">
-                        <a href="#"><img src="temp4.jpg" class="imageCarousel" alt="Template4" data-picture="temp4.jpg" width="300" height="300"></a>
+                        <a href="#"><img src="/ResumeBuilder/Images/temp4.jpg" class="imageCarousel" alt="Template4" data-picture="/ResumeBuilder/Images/temp4.jpg" width="300" height="300"></a>
                     </div>
                     
                     <div class="item">
-                        <a href="#"><img src="temp5.png" class="imageCarousel" alt="Template5" data-picture="temp5.png" width="300" height="300"></a>
+                        <a href="#"><img src="/ResumeBuilder/Images/temp5.png" class="imageCarousel" alt="Template5" data-picture="/ResumeBuilder/Images/temp5.png" width="300" height="300"></a>
                     </div>
                     
                     <div class="item">
-                        <a href="#"><img src="temp6.png" class="imageCarousel" alt="Template6" data-picture="temp6.png" width="300" height="300"></a>
+                        <a href="#"><img src="/ResumeBuilder/Images/temp6.png" class="imageCarousel" alt="Template6" data-picture="/ResumeBuilder/Images/temp6.png" width="300" height="300"></a>
                     </div>
                 </div>
     <!-- Left and right controls -->
-                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev" target="_self">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" target="_self">
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
             </div>
 
             <br>
-            <h3 style="text-align:center;color:white;">Click on any Template before you proceed</h3>
+            <h3 style="text-align:center;color:black;">Click on any Template before you proceed</h3>
             <br>
             <center class = "toDisplayTemplate" style="visibility:hidden;">
                 <div class="row" style="background-color:gray;max-width:500px;min-width:200px;">
@@ -212,7 +105,7 @@
                     <div class="col-md-6" id="template-location">
                     </div>
                 </div>
-                <div class="container displayUserQuestions" ng-controller="controllerGeneralInfo">
+                <div class="container displayUserQuestions">
                     <div class="jumbotron" style="background-color:white;margin-top:50px;opacity:1.0;">
                         <h2>We would like to know something about you before we proceed</h2><br>
                         
@@ -250,316 +143,341 @@
     <div class="container-fluid divMainResume3" style="visibility:hidden;">
         <div class="row">
             <div class="col-md-10 com-sm-10">
-                <a href="#" id="gotoTemplateSelectionPage" data-toggle="tooltip" title="Go back to Template Selection page" style="position: fixed;"><span class="glyphicon glyphicon-chevron-up" style="color:orange;"></span></a>
+                <!--<a href="#" id="gotoTemplateSelectionPage" data-toggle="tooltip" title="Go back to Template Selection page" style="position: fixed;"><span class="glyphicon glyphicon-chevron-up" style="color:orange;"></span></a>-->
             </div>
             <div class="col-md-2 com-sm-2">
                 <button id="previewResume" data-rel="divMainResume4" class="btn btn-responsive btn-lg" style="float:right;background-color:gold;color:black;position: fixed;margin-top:5px;">View Preview</button>
             </div>
         </div>
         <div class="container-fluid contentHolderForTemplate" style="visibility:hidden;">
-            <div class="row">
+            <div class="row" style="">
                 <div class="col-md-3 col-sm-3 leftSelectionSideOfTemplate fixed" style="background-color:green; overflow:hidden;">
-                    <a href="#basicInfo" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Basic Information</div></a>
-                    <a href="#objective" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Objective</div></a>
-                    <a href="#education" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Education</div></a>
-                    <a href="#employmentHistory" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Employment History</div></a>
-                    <a href="#hobbiesInterest" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Hobbies and Interests</div></a>
-                    <a href="#professionalSkills" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Professional Skills</div></a>
-                    <a href="#languages" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Languages</div></a>
-                    <a href="#references" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>References</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("basic_info.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Basic Information</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("objective.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Objective</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("education.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Education</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("employmentHistory.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Employment History</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("hobbiesAndInterest.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Hobbies and Interests</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("professionalSkills.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Professional Skills</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("languages.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Languages</div></a>
+                    <a href="#" ng-click='changeSelectedResumeSection("references.html")' role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>References</div></a>
                 </div>
-                <div class="col-md-9 col-sm-9 tab-content" style="overflow:auto;">
-                    <div role="tabpanel" class="tab-pane active" id="basicInfo" ng-controller="controllerGeneralInfoToDisplayData">   <h1 class="moveElementToCenter1">
-                        <p><strong>{{nameOnResume}}</strong></p>
-                        <p>{{email}}</p>
-                        <p>{{mobileNumber}}</p>
-                        <p><i>{{address}}</i></p>
-  </h1></div>
-                    <div role="tabpanel" class="tab-pane" id="objective">
-                        <div class="jumbotron" id = "objectiveEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;" ng-controller="controllerObjectiveInfo">
-                            <p><strong>Describe both skills you would like to build on and skills you would like to develop in this position. Discuss what will challenge you about the position and what career goals you hope to achieve should you get this position.</strong></p>
-                            <div text-angular="text-angular" name="objective" ng-model="objective"></div>
-                            <button id = "saveChangesObjective" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(objective);">Save Changes</button>
-                            
-                        </div>
-                        <div id="editObjective" style="visibility:hidden;">
-                            <div style="margin-top:170px;background-color:aqua;" class="jumbotron">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Objective</h2>
-                            <div ng-controller="controllerObjectiveInfoToDisplayData"><p id = "check1" ta-bind="text" ng-model="objective">{{objective}}</p></div>
-                            </div>
-                            <div style="float:right;">
-                            <button id = "editObjectivebutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="education">
-                        <div class="jumbotron" id = "educationEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;" ng-controller="controllerEducationInfo">
-                            <p><strong>Education</strong></p>
-                            <div class="row">
-                                <div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <input ng-model="eduInstituteName" placeholder="Educational Institute Name" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-3 col-sm-3">
-                                        <input ng-model="percentageObtained" placeholder="%/CGPA" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-3 col-sm-3">
-                                        <select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
- </select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="col-md-4 col-sm-4" style="margin-top:30px;">
-                                        <input ng-model="degreeLevel" placeholder="High School, Degree or Major" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4" style="margin-top:30px;">
-                                        <input ng-model="location" placeholder="Location" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4" style="margin-top:30px;">
-<!--
-                                        <div class='input-group date' id='datetimepicker10'>
-                                            <input type='text' class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar">
-                                                </span>
-                                            </span>
-                                        </div>
--->
-                                        <input ng-model="yearOfGraduation" placeholder="MM/YYYY Completion Year" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <div>
-                                <textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="educationDescription"></textarea>
-                            </div>
-                            <button id = "saveChangesEducation" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription);">Save Changes</button>
-                            
-                        </div>
-                        <div id="editEducation" style="visibility:hidden;">
-                            <div style="margin-top:50px;background-color:aqua;" class="jumbotron" style="height:200px;overflow:auto;">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Education</h2>
-                            <div ng-controller="controllerEducationInfoToDisplayData">
-                                <p id = "check3" ng-repeat="x in educationInfoDisplay track by $id($index)">
-                                    {{"<span style="color:white;">College/Institute Name : </span>"+x.eduInstituteName}} <br/>
-                                {{"Level of degree : "+x.degreeLevel}}<br/>
-                                {{"Percentage/CGPA Scored : "+x.percentageObtained}}</br>
-                                {{"Location : "+x.location}}<br/>
-                                {{"Graduction Year : "+x.yearOfGraduation}}<br/>
-                                {{"Description : "+x.educationDescription}}<br/>
-                                </p>
-<!--                            <button class="w3-btn w3-ripple" ng-click="editUser(user.id)">&#9998; Edit</button>-->
-                            <hr />
-                        </div>
-                            </div>
-                            <div style="float:right;">
-                            <button id = "editEducationbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addnewInfo()">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="employmentHistory" ng-controller="controllerEmploymentSkills">
-                        <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Employment History</h2>
-                            <p class="text-align:center;" ng-repeat="x in employmentRelatedInformations track by $id($index)">
-                                {{"Job Title : "+x.jobTitle}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>
-                                {{"Company : "+x.company}}</br>
-                                {{"Location : "+x.location}}</br>
-                                {{"Start Date :"+x.starDate+" End Date :"+x.endDate}}</br>
-                                {{"Compensation :"+x.compensation+" "+x.currency.label+" "+x.intervals.label}}</br>
-                                <span style="font-weight: bold;font-style: italic;">{{x.Description}}</span></br>
-                            </p>
-                        </div>
-                        <center>
-                        <button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Add Employment</button>
-                        </center>
-                        <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfEmployment">
-                            <p><strong> Add Employment History</strong></p>
-                            <h7>In this section you should describe all of your relevant previous employment that directly relates to the position for which you are currently applying.</h7>
-                            <div class="row">
-                                <div>
-                                    <div class="col-md-4 col-sm-4">
-                                        <input ng-model="jobTitle" placeholder="Job Title" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4">
-                                        <input ng-model="company" placeholder="Company" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4">
-<!--
-                                        <select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
- </select>
--->
-                                        <input ng-model="location" placeholder="Location" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="col-md-4 col-sm-4" style="margin-top:30px;">
-                                        <input ng-model="startDate" placeholder="Start Date MM/YYYY" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4" style="margin-top:30px;">
-                                        <input ng-model="endDate" placeholder="End Date MM/YYYY" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="col-md-6 col-sm-6" style="margin-top:30px;">
-                                        <input ng-model="compensation" placeholder="Compensation" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-3 col-sm-3" style="margin-top:30px;">
-                                        <select class="selectpicker show-tick form-control" ng-model="data1" ng-options="opt as opt.label for opt in units1 " style="width:100%;float:left;">
- </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3" style="margin-top:30px;">
-                                        <select class="selectpicker show-tick form-control" ng-model="data2" ng-options="opt as opt.label for opt in units2 " style="width:100%;float:left;">
- </select>
-                                    </div>
-                                </div>
-                                <div>
-                                <textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="employmentDescription"></textarea>
-                            </div>
-                                <div style="margin-top:30px;float:right;">
-                                    <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;
-                                    <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Cancel</button>
-                            </div>
-                                
-                            </div>
-                        </div>
-            </div>
-                    <div role="tabpanel" class="tab-pane" id="hobbiesInterest">
-                        <div class="jumbotron" id = "hobbiesEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;" ng-controller="controllerHobbiesInfo">
-                            <p><strong> Enter a brief description of your hobbies and interests. Make them true, unique, demonstrable and relatable to fit the job you are seeking.</strong></p>
-                            <div text-angular="text-angular" name="hobbies" ng-model="hobbies"></div>
-                            <button id = "saveChangesHobbies" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(hobbies);">Save Changes</button>
-                            
-                        </div>
-                        <div id="editHobbies" style="visibility:hidden;">
-                            <div style="margin-top:170px;background-color:aqua;" class="jumbotron">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Hobbies and Interest</h2>
-                            <div ng-controller="controllerHobbiesInfoToDisplayData"><p id = "check2" ta-bind="text" ng-model="hobbies">{{hobbies}}</p></div>
-                            </div>
-                            <div style="float:right;">
-                            <button id = "editHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="professionalSkills" ng-controller="controllerProfessionalSkills">
-                        <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Professional Skills</h2>
-                            <p class="text-align:center;"><span ng-repeat="x in allSkills track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;">{{x.levele.label + " in"}}  {{x.skill}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItem($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right">×</span><br/></span></p>
-                        </div>
-                        <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;">
-                            <p><strong> Add Skills</strong></p>
-                            <form class="form-inline" role="form">
-                            <div class="form-group col-md-6 col-sm-6">
-                                <input ng-model="addSkillType" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">
-                            </div>
-                            <div class="form-group col-md-4 col-sm-4">
-<!--
-                            <select class="selectpicker show-tick form-control" style="width:100%;float:left;">
-                                <option>Begineer</option>
-                                <option>Intermediate</option>
-                                <option>Advanced</option>
-                                <option>Expert</option>
-                            </select>
--->
-                                <select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
- </select>
-                            </div>
-                                <div class="form-group col-md-2 col-sm-2">
-                                    <button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem123()">Add</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="languages" ng-controller="controllerLanguagesSkills">
-                        <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Languages</h2>
-                            <p class="text-align:center;"><span ng-repeat="x in allLanguages track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;">{{x.level.label + " in"}}  {{x.lang}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItem($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right">×</span><br/></span></p>
-                        </div>
-                        <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;">
-                            <p><strong> Add Skills</strong></p>
-                            <form class="form-inline" role="form">
-                            <div class="form-group col-md-6 col-sm-6">
-                                <input ng-model="languages" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">
-                            </div>
-                            <div class="form-group col-md-4 col-sm-4">
-
-                                <select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
- </select>
-                            </div>
-                                <div class="form-group col-md-2 col-sm-2">
-                                    <button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem()">Add</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="references" ng-controller="controllerReferences">
-                        
-                        <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
-                            <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">References</h2>
-                            <p class="text-align:center;" ng-repeat="x in referenceRelatedInformations track by $id($index)">
-                                {{"Name : "+x.referenceName}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>
-                                {{"Relationship : "+x.referenceRelationship}}</br>
-                                {{"Contact Number : "+x.referencePhone}}</br>
-                                {{"Company :"+x.referenceCompany}}</br>
-                                {{"Email ID :"+x.referenceEmailID}}</br>
-                                {{"Primary Address :"+x.referenceAddress}}</br>
-                                {{"Address1 :"+x.referenceAddress1}}</br>
-                                <span style="font-weight: bold;font-style: italic;">{{x.referenceDescription}}</span></br>
-                            </p>
-                        </div>
-                        <center>
-                        <button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Add References</button>
-                        </center>
-                        <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfReferences">
-                            <p><strong> Add References</strong></p>
-                            <div class="row">
-                                <div>
-                                    <div class="col-md-4 col-sm-4">
-                                        <input ng-model="referenceName" placeholder="Name" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4">
-                                        <input ng-model="referenceRelationship" placeholder="Relationship" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4">
-<!--
-                                        <select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
- </select>
--->
-                                        <input ng-model="referencePhone" placeholder="Phone" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="col-md-5 col-sm-5" style="margin-top:30px;">
-                                        <input ng-model="referenceCompany" placeholder="Company" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-5 col-sm-5" style="margin-top:30px;">
-                                        <input ng-model="referenceEmailID" placeholder="Email" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="col-md-6 col-sm-6" style="margin-top:30px;">
-                                        <input ng-model="referenceAddress" placeholder="Address" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6" style="margin-top:30px;">
-                                        <input ng-model="referenceAddress1" placeholder="Address1" type="text" class="input-large form-control" style="width:100%;">
-                                    </div>
-                                </div>
-                                <div>
-                                <textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="referenceDescription"></textarea>
-                            </div>
-                                <div style="margin-top:30px;float:right;">
-                                    <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;
-                                    <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Cancel</button>
-                            </div>
-                                
-                            </div>
-                        </div>
-                        
-</div>
+                <div ng-include="returnSelectedResumeSection()" class="col-md-9 col-sm-9 tab-content" style="max-height:600px;overflow:auto;">
                 </div>
             </div>
-        </div>
+        <!---->
+        <!--<div class="row">-->
+            <!--<div class="col-md-10 com-sm-10">-->
+                <!--<a href="#" id="gotoTemplateSelectionPage" data-toggle="tooltip" title="Go back to Template Selection page" style="position: fixed;"><span class="glyphicon glyphicon-chevron-up" style="color:orange;"></span></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-2 com-sm-2">-->
+                <!--<button id="previewResume" data-rel="divMainResume4" class="btn btn-responsive btn-lg" style="float:right;background-color:gold;color:black;position: fixed;margin-top:5px;">View Preview</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="container-fluid contentHolderForTemplate" style="visibility:hidden;">-->
+            <!--<div class="row" style="">-->
+                <!--<div class="col-md-3 col-sm-3 leftSelectionSideOfTemplate fixed" style="background-color:green; overflow:hidden;">-->
+                    <!--<a href="#basicInfo" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Basic Information</div></a>-->
+                    <!--<a href="#objective" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Objective</div></a>-->
+                    <!--<a href="#education" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Education</div></a>-->
+                    <!--<a href="#employmentHistory" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Employment History</div></a>-->
+                    <!--<a href="#hobbiesInterest" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Hobbies and Interests</div></a>-->
+                    <!--<a href="#professionalSkills" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Professional Skills</div></a>-->
+                    <!--<a href="#languages" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>Languages</div></a>-->
+                    <!--<a href="#references" role="tab" data-toggle="tab"><div class="listItems" style="height:75px;color:white;text-align: center;"><br>References</div></a>-->
+                <!--</div>-->
+                <!--<div class="col-md-9 col-sm-9 tab-content" style="overflow:auto;">-->
+                    <!--<div role="tabpanel" class="tab-pane active" id="basicInfo">   <h1 class="moveElementToCenter1">-->
+                        <!--<p><strong>{{nameOnResume}}</strong></p>-->
+                        <!--<p>{{email}}</p>-->
+                        <!--<p>{{mobileNumber}}</p>-->
+                        <!--<p><i>{{address}}</i></p>-->
+  <!--</h1></div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="objective">-->
+                        <!--<div class="jumbotron" id = "objectiveEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;">-->
+                            <!--<p><strong>Describe both skills you would like to build on and skills you would like to develop in this position. Discuss what will challenge you about the position and what career goals you hope to achieve should you get this position.</strong></p>-->
+                            <!--<div text-angular="text-angular" name="objective" ng-model="objective"></div>-->
+                            <!--<button id = "saveChangesObjective" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(objective);">Save Changes</button>-->
+                            <!---->
+                        <!--</div>-->
+                        <!--<div id="editObjective" style="visibility:hidden;">-->
+                            <!--<div style="margin-top:170px;background-color:aqua;" class="jumbotron">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Objective</h2>-->
+                            <!--<div><p id = "check1" ta-bind="text" ng-model="objective">{{objective}}</p></div>-->
+                            <!--</div>-->
+                            <!--<div style="float:right;">-->
+                            <!--<button id = "editObjectivebutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="education">-->
+                        <!--<div class="jumbotron" id = "educationEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;">-->
+                            <!--<p><strong>Education</strong></p>-->
+                            <!--<div class="row">-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-6 col-sm-6">-->
+                                        <!--<input ng-model="eduInstituteName" placeholder="Educational Institute Name" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3 col-sm-3">-->
+                                        <!--<input ng-model="percentageObtained" placeholder="%/CGPA" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3 col-sm-3">-->
+                                        <!--<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">-->
+ <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-4 col-sm-4" style="margin-top:30px;">-->
+                                        <!--<input ng-model="degreeLevel" placeholder="High School, Degree or Major" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4" style="margin-top:30px;">-->
+                                        <!--<input ng-model="location" placeholder="Location" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4" style="margin-top:30px;">-->
+<!--&lt;!&ndash;-->
+                                        <!--<div class='input-group date' id='datetimepicker10'>-->
+                                            <!--<input type='text' class="form-control" />-->
+                                            <!--<span class="input-group-addon">-->
+                                                <!--<span class="glyphicon glyphicon-calendar">-->
+                                                <!--</span>-->
+                                            <!--</span>-->
+                                        <!--</div>-->
+<!--&ndash;&gt;-->
+                                        <!--<input ng-model="yearOfGraduation" placeholder="MM/YYYY Completion Year" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!---->
+                            <!--</div>-->
+                            <!--<div>-->
+                                <!--<textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="educationDescription"></textarea>-->
+                            <!--</div>-->
+                            <!--<button id = "saveChangesEducation" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription);">Save Changes</button>-->
+                            <!---->
+                        <!--</div>-->
+                        <!--<div id="editEducation" style="visibility:hidden;">-->
+                            <!--<div style="margin-top:50px;background-color:aqua;" class="jumbotron" style="height:200px;overflow:auto;">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Education</h2>-->
+                            <!--<div>-->
+                                <!--<p id = "check3" ng-repeat="x in educationInfoDisplay track by $id($index)">-->
+                                    <!--{{"<span style="color:white;">College/Institute Name : </span>"+x.eduInstituteName}} <br/>-->
+                                <!--{{"Level of degree : "+x.degreeLevel}}<br/>-->
+                                <!--{{"Percentage/CGPA Scored : "+x.percentageObtained}}</br>-->
+                                <!--{{"Location : "+x.location}}<br/>-->
+                                <!--{{"Graduction Year : "+x.yearOfGraduation}}<br/>-->
+                                <!--{{"Description : "+x.educationDescription}}<br/>-->
+                                <!--</p>-->
+<!--&lt;!&ndash;                            <button class="w3-btn w3-ripple" ng-click="editUser(user.id)">&#9998; Edit</button>&ndash;&gt;-->
+                            <!--<hr />-->
+                        <!--</div>-->
+                            <!--</div>-->
+                            <!--<div style="float:right;">-->
+                            <!--<button id = "editEducationbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addnewInfo()">Add</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="employmentHistory">-->
+                        <!--<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Employment History</h2>-->
+                            <!--<p class="text-align:center;" ng-repeat="x in employmentRelatedInformations track by $id($index)">-->
+                                <!--{{"Job Title : "+x.jobTitle}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>-->
+                                <!--{{"Company : "+x.company}}</br>-->
+                                <!--{{"Location : "+x.location}}</br>-->
+                                <!--{{"Start Date :"+x.starDate+" End Date :"+x.endDate}}</br>-->
+                                <!--{{"Compensation :"+x.compensation+" "+x.currency.label+" "+x.intervals.label}}</br>-->
+                                <!--<span style="font-weight: bold;font-style: italic;">{{x.Description}}</span></br>-->
+                            <!--</p>-->
+                        <!--</div>-->
+                        <!--<center>-->
+                        <!--<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Add Employment</button>-->
+                        <!--</center>-->
+                        <!--<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfEmployment">-->
+                            <!--<p><strong> Add Employment History</strong></p>-->
+                            <!--<h7>In this section you should describe all of your relevant previous employment that directly relates to the position for which you are currently applying.</h7>-->
+                            <!--<div class="row">-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-4 col-sm-4">-->
+                                        <!--<input ng-model="jobTitle" placeholder="Job Title" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4">-->
+                                        <!--<input ng-model="company" placeholder="Company" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4">-->
+<!--&lt;!&ndash;-->
+                                        <!--<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">-->
+ <!--</select>-->
+<!--&ndash;&gt;-->
+                                        <!--<input ng-model="location" placeholder="Location" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-4 col-sm-4" style="margin-top:30px;">-->
+                                        <!--<input ng-model="startDate" placeholder="Start Date MM/YYYY" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4" style="margin-top:30px;">-->
+                                        <!--<input ng-model="endDate" placeholder="End Date MM/YYYY" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-6 col-sm-6" style="margin-top:30px;">-->
+                                        <!--<input ng-model="compensation" placeholder="Compensation" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3 col-sm-3" style="margin-top:30px;">-->
+                                        <!--<select class="selectpicker show-tick form-control" ng-model="data1" ng-options="opt as opt.label for opt in units1 " style="width:100%;float:left;">-->
+ <!--</select>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3 col-sm-3" style="margin-top:30px;">-->
+                                        <!--<select class="selectpicker show-tick form-control" ng-model="data2" ng-options="opt as opt.label for opt in units2 " style="width:100%;float:left;">-->
+ <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                <!--<textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="employmentDescription"></textarea>-->
+                            <!--</div>-->
+                                <!--<div style="margin-top:30px;float:right;">-->
+                                    <!--<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;-->
+                                    <!--<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Cancel</button>-->
+                            <!--</div>-->
+                                <!---->
+                            <!--</div>-->
+                        <!--</div>-->
+            <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="hobbiesInterest">-->
+                        <!--<div class="jumbotron" id = "hobbiesEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;">-->
+                            <!--<p><strong> Enter a brief description of your hobbies and interests. Make them true, unique, demonstrable and relatable to fit the job you are seeking.</strong></p>-->
+                            <!--<div text-angular="text-angular" name="hobbies" ng-model="hobbies"></div>-->
+                            <!--<button id = "saveChangesHobbies" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(hobbies);">Save Changes</button>-->
+                            <!---->
+                        <!--</div>-->
+                        <!--<div id="editHobbies" style="visibility:hidden;">-->
+                            <!--<div style="margin-top:170px;background-color:aqua;" class="jumbotron">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Hobbies and Interest</h2>-->
+                            <!--<div><p id = "check2" ta-bind="text" ng-model="hobbies">{{hobbies}}</p></div>-->
+                            <!--</div>-->
+                            <!--<div style="float:right;">-->
+                            <!--<button id = "editHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="professionalSkills">-->
+                        <!--<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Professional Skills</h2>-->
+                            <!--<p class="text-align:center;"><span ng-repeat="x in allSkills track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;">{{x.levele.label + " in"}}  {{x.skill}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItem($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right">×</span><br/></span></p>-->
+                        <!--</div>-->
+                        <!--<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;">-->
+                            <!--<p><strong> Add Skills</strong></p>-->
+                            <!--<form class="form-inline" role="form">-->
+                            <!--<div class="form-group col-md-6 col-sm-6">-->
+                                <!--<input ng-model="addSkillType" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">-->
+                            <!--</div>-->
+                            <!--<div class="form-group col-md-4 col-sm-4">-->
+<!--&lt;!&ndash;-->
+                            <!--<select class="selectpicker show-tick form-control" style="width:100%;float:left;">-->
+                                <!--<option>Begineer</option>-->
+                                <!--<option>Intermediate</option>-->
+                                <!--<option>Advanced</option>-->
+                                <!--<option>Expert</option>-->
+                            <!--</select>-->
+<!--&ndash;&gt;-->
+                                <!--<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">-->
+ <!--</select>-->
+                            <!--</div>-->
+                                <!--<div class="form-group col-md-2 col-sm-2">-->
+                                    <!--<button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem123()">Add</button>-->
+                                <!--</div>-->
+                            <!--</form>-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="languages">-->
+                        <!--<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Languages</h2>-->
+                            <!--<p class="text-align:center;"><span ng-repeat="x in allLanguages track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;">{{x.level.label + " in"}}  {{x.lang}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItem($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right">×</span><br/></span></p>-->
+                        <!--</div>-->
+                        <!--<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;">-->
+                            <!--<p><strong> Add Skills</strong></p>-->
+                            <!--<form class="form-inline" role="form">-->
+                            <!--<div class="form-group col-md-6 col-sm-6">-->
+                                <!--<input ng-model="languages" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">-->
+                            <!--</div>-->
+                            <!--<div class="form-group col-md-4 col-sm-4">-->
+
+                                <!--<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">-->
+ <!--</select>-->
+                            <!--</div>-->
+                                <!--<div class="form-group col-md-2 col-sm-2">-->
+                                    <!--<button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem()">Add</button>-->
+                                <!--</div>-->
+                            <!--</form>-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div role="tabpanel" class="tab-pane" id="references">-->
+                        <!---->
+                        <!--<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">-->
+                            <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">References</h2>-->
+                            <!--<p class="text-align:center;" ng-repeat="x in referenceRelatedInformations track by $id($index)">-->
+                                <!--{{"Name : "+x.referenceName}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>-->
+                                <!--{{"Relationship : "+x.referenceRelationship}}</br>-->
+                                <!--{{"Contact Number : "+x.referencePhone}}</br>-->
+                                <!--{{"Company :"+x.referenceCompany}}</br>-->
+                                <!--{{"Email ID :"+x.referenceEmailID}}</br>-->
+                                <!--{{"Primary Address :"+x.referenceAddress}}</br>-->
+                                <!--{{"Address1 :"+x.referenceAddress1}}</br>-->
+                                <!--<span style="font-weight: bold;font-style: italic;">{{x.referenceDescription}}</span></br>-->
+                            <!--</p>-->
+                        <!--</div>-->
+                        <!--<center>-->
+                        <!--<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Add References</button>-->
+                        <!--</center>-->
+                        <!--<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfReferences">-->
+                            <!--<p><strong> Add References</strong></p>-->
+                            <!--<div class="row">-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-4 col-sm-4">-->
+                                        <!--<input ng-model="referenceName" placeholder="Name" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4">-->
+                                        <!--<input ng-model="referenceRelationship" placeholder="Relationship" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 col-sm-4">-->
+<!--&lt;!&ndash;-->
+                                        <!--<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">-->
+ <!--</select>-->
+<!--&ndash;&gt;-->
+                                        <!--<input ng-model="referencePhone" placeholder="Phone" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-5 col-sm-5" style="margin-top:30px;">-->
+                                        <!--<input ng-model="referenceCompany" placeholder="Company" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-5 col-sm-5" style="margin-top:30px;">-->
+                                        <!--<input ng-model="referenceEmailID" placeholder="Email" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<div class="col-md-6 col-sm-6" style="margin-top:30px;">-->
+                                        <!--<input ng-model="referenceAddress" placeholder="Address" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-6 col-sm-6" style="margin-top:30px;">-->
+                                        <!--<input ng-model="referenceAddress1" placeholder="Address1" type="text" class="input-large form-control" style="width:100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                <!--<textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="referenceDescription"></textarea>-->
+                            <!--</div>-->
+                                <!--<div style="margin-top:30px;float:right;">-->
+                                    <!--<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;-->
+                                    <!--<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Cancel</button>-->
+                            <!--</div>-->
+                                <!---->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!---->
+<!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!---->
     </div>
     <div class="container-fluid divMainResume4" style="visibility:hidden;">
         <center>

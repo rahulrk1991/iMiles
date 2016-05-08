@@ -98,7 +98,7 @@ $(document).ready(function(){
         e.preventDefault();
         $('.' + $(this).data('rel')).slideDown(500);
         $(".divMainResume2").slideUp(500);
-        $('.' + $(this).data('rel')).css({"visibility":"visible","max-height":"900px","margin-top":"80px"});
+        $('.' + $(this).data('rel')).css({"visibility":"visible","max-height":"900px"});
         $(".contentHolderForTemplate").css({"visibility":"visible","max-height":"600px","margin-top":"140px","background-color":"white"});
         $(".leftSelectionSideOfTemplate").css("max-height",'600px');
         $(".tab-content").css({"max-height":"600px","overflow":"auto"});
@@ -112,23 +112,39 @@ $(document).ready(function(){
         $(".contentHolderForTemplate").css({"visibility":"hidden","min-height":"0px","margin-top":"0px"});
         $(".leftSelectionSideOfTemplate").css("height",'0px');
     })
+
+     $(".imageCarousel").click(function(e){
+        e.preventDefault();
+            $(".toDisplayTemplate").css("visibility",'visible');
+    //        $(".divMainResume3").css({"visibility":"hidden","min-height":"0px","margin-top":"0px"});
+    //        $(".displayUserQuestions").css("min-height","300px");
+            var imageSource = $(this).data('picture');
+            if(imageSource){
+    //            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="#" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
+                $("#template-location").html('<img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style="">');
+            }
+            else{
+                alert("No image Selected");
+            }
+        });
 });
 
-$(document).ready(function(){
-    $(".imageCarousel").click(function(e){
-        $(".toDisplayTemplate").css("visibility",'visible');
-//        $(".divMainResume3").css({"visibility":"hidden","min-height":"0px","margin-top":"0px"});
-//        $(".displayUserQuestions").css("min-height","300px");
-        var imageSource = $(this).data('picture');
-        if(imageSource){
-//            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="#" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
-            $("#template-location").html('<img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style="">');
-        }
-        else{
-            alert("No image Selected");
-        }
-    });
-});
+//$(document).ready(function(){
+//    $(".imageCarousel").click(function(e){
+//    e.preventDefault();
+//        $(".toDisplayTemplate").css("visibility",'visible');
+////        $(".divMainResume3").css({"visibility":"hidden","min-height":"0px","margin-top":"0px"});
+////        $(".displayUserQuestions").css("min-height","300px");
+//        var imageSource = $(this).data('picture');
+//        if(imageSource){
+////            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="#" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
+//            $("#template-location").html('<img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style="">');
+//        }
+//        else{
+//            alert("No image Selected");
+//        }
+//    });
+//});
 
 $(document).ready(function(){
     $("img.imageCarousel").click(function(e){
@@ -136,45 +152,8 @@ $(document).ready(function(){
         $('.alert').fadeOut(7000);
     })
 });
-     
-$(document).ready(function(){
-    $("#saveChangesObjective").click(function(e){
-        $("#objectiveEditor").hide();
-        $("#editObjective").css("visibility","visible");
-        if($("#check1").text() == ''){
-            alert("Please tell us your Objective to improve your Resume.");
-        }
-    })
-    
-    $("#saveChangesHobbies").click(function(e){
-        $("#hobbiesEditor").hide();
-        $("#editHobbies").css("visibility","visible");
-        if($("#check2").text() == ''){
-            alert("Please tell us your Hobbies and Interest to improve your Resume.");
-        }
-    })
-    
-    $("#saveChangesEducation").click(function(e){
-        $("#educationEditor").hide();
-        $("#editEducation").css("visibility","visible");
-    })
-});
 
 $(document).ready(function(){
-    $("#editObjectivebutton").click(function(e){
-        $("#objectiveEditor").show();
-        $("#editObjective").css("visibility","hidden");
-    })
-    
-    $("#editHobbiesbutton").click(function(e){
-        $("#hobbiesEditor").show();
-        $("#editHobbies").css("visibility","hidden");
-    })
-    
-    $("#editEducation").click(function(e){
-        $("#educationEditor").show();
-        $("#editEducation").css("visibility","hidden");
-    })
     
     $(".listItems").click(function(e){
         $(".listItems").removeClass("listItems");

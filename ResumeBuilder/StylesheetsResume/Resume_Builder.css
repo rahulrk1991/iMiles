@@ -1,0 +1,113 @@
+.bg{
+    background-image: url("/ResumeBuilder/Images/li_hint_27_04.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    opacity: 0.65;
+    filter: alpha(opacity=40);
+    overflow: hidden;
+}
+
+
+    .divMainResume1{
+        background-color: white;
+        margin-top:30px;
+        overflow: hidden;
+    }
+
+    .divMainResume2{
+        background-color: #AFEEEE;
+        max-height: 1800px;
+        overflow: hidden;
+    }
+
+    .divMainResume3{
+        background-color: #AFEEEE;
+    }
+    .divMainResume4{
+        background-color: #AFEEEE;
+    }
+
+    .textModResume1{
+
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .textModResume2{
+
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+    .button {
+    background-color: gold;
+    border: none;
+    color: black;
+    padding: 15px 60px;
+    text-align: center;
+    font-size: 16px;
+    display: inline-block;
+        margin-top: 30px;
+        margin-left: 42%;
+}
+
+    .displayUserQuestions{
+    }
+
+    .glyphicon.glyphicon-chevron-up{
+    font-size: 50px;
+        color: antiquewhite;
+}
+
+    .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 30%;
+      margin: auto;
+  }
+    .item img {
+  width: auto;
+  height: 400px;
+  max-height: 400px;
+}
+
+    #myCarousel{
+        background-color: gray;
+        position: relative;
+    }
+
+    .center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+}
+    div.listItems{
+        border: 1px solid #777;
+        box-shadow: 3px 3px 15px #666;
+  border-color:#C76C0C;
+  background: black;
+  color: #fff;
+  cursor: pointer;
+
+  Opacity
+  zoom: 1;
+  filter: alpha(opacity=100);
+  opacity: 1;
+    }
+
+    .moveElementToCenter1{
+        text-align:center;
+        margin-top: 15%;
+    }
+
+    .ta-editor {
+  min-height: 100px;
+  height: auto;
+  overflow: auto;
+  font-family: inherit;
+  font-size: 100%;
+}

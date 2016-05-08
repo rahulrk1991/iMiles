@@ -1,0 +1,84 @@
+<div ng-controller="controllerGeneralInfoToDisplayData">
+    <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
+        <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Education History</h2>
+        <p class="text-align:center;" ng-repeat="x in educationRelatedInformations track by $id($index)">
+            {{"Educational Institute : "+x.eduInstituteName}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>
+            {{"Degree : "+x.degreelevel}}</br>
+            {{"Degree Status : "+x.levels.label}}</br>
+            {{"Percentage Obtained : "+x.percentageObtained}}</br>
+            {{"Location :"+x.location}}</br>
+            {{"Year of Graduation :"+x.yearOfGraduation}}</br>
+            <span style="font-weight: bold;font-style: italic;">{{x.educationDescription}}</span></br>
+        </p>
+    </div>
+
+    <center>
+        <button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEducation()">Add Education</button>
+    </center>
+<div class="jumbotron" id = "educationEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;" ng-show="showAdditionOfEducation">
+<p><strong>Education</strong></p>
+<div class="row">
+<div>
+<div class="col-md-6 col-sm-6">
+<input ng-model="eduInstituteName" placeholder="Educational Institute Name" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-3 col-sm-3">
+<input ng-model="percentageObtained" placeholder="%/CGPA" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-3 col-sm-3">
+<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units3 " style="width:100%;float:left;">
+</select>
+</div>
+</div>
+<div>
+<div class="col-md-4 col-sm-4" style="margin-top:30px;">
+<input ng-model="degreeLevel" placeholder="High School, Degree or Major" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4" style="margin-top:30px;">
+<input ng-model="location" placeholder="Location" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4" style="margin-top:30px;">
+<!--
+<div class='input-group date' id='datetimepicker10'>
+<input type='text' class="form-control" />
+<span class="input-group-addon">
+<span class="glyphicon glyphicon-calendar">
+</span>
+</span>
+</div>
+-->
+<input ng-model="yearOfGraduation" placeholder="MM/YYYY Completion Year" type="text" class="input-large form-control" style="width:100%;">
+</div>
+</div>
+
+
+<div>
+<textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="educationDescription"></textarea>
+</div>
+    <div style="margin-top:30px;float:right;">
+        <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;
+        <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addEducation()">Cancel</button>
+    </div>
+</div>
+    </div>
+<!--<div id="editEducation" style="visibility:hidden;">-->
+<!--<div style="margin-top:50px;background-color:aqua;" class="jumbotron" style="height:200px;overflow:auto;">-->
+<!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Education</h2>-->
+<!--<div>-->
+<!--<p id = "check3" ng-repeat="x in educationInfoDisplay track by $id($index)">-->
+<!--{{"<span style="color:white;">College/Institute Name : </span>"+x.eduInstituteName}} <br/>-->
+<!--{{"Level of degree : "+x.degreeLevel}}<br/>-->
+<!--{{"Percentage/CGPA Scored : "+x.percentageObtained}}</br>-->
+<!--{{"Location : "+x.location}}<br/>-->
+<!--{{"Graduction Year : "+x.yearOfGraduation}}<br/>-->
+<!--{{"Description : "+x.educationDescription}}<br/>-->
+<!--</p>-->
+<!--&lt;!&ndash;                            <button class="w3-btn w3-ripple" ng-click="editUser(user.id)">&#9998; Edit</button>&ndash;&gt;-->
+<!--<hr />-->
+<!--</div>-->
+<!--</div>-->
+<!--<div style="float:right;">-->
+<!--<button id = "editEducationbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addnewInfo()">Add</button>-->
+<!--</div>-->
+<!--</div>-->
+</div>
