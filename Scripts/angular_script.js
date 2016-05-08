@@ -113,6 +113,8 @@ var app = angular
             choiceDict = [];
             categoryDict = [];
 
+            $scope.isTestSubmitted = false;
+
             //Get all the question data using http get
             $http.get(post_mcq_Questions_API)
                 .then(function(response) {
@@ -206,7 +208,7 @@ var app = angular
             }
 
             $scope.applyColors = function(question,choice) {
-                if(!question.isSolved)
+                if(!$scope.isTestSubmitted)
                     return;
                 if(choice.is_correct) {
                     return "choice-green";
@@ -214,6 +216,11 @@ var app = angular
                 else {
                     return "choice-red"
                 }
+            }
+
+            $scope.submitTest = function() {
+                $scope.isTestSubmitted = true;
+                console.log("Test submitted");
             }
 
             //Edit Question
