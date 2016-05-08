@@ -198,13 +198,27 @@ var app = angular
                 
                 question.isSolved = true;
                 question.usersChoice = choice.id;
+                if(question.isSelected==index) {
+                    console.log("Clicking same twice");
+                    question.isDoneTwice=true;
+                }
                 question.isSelected = index;
+                
             }
 
             $scope.applyClassToSelectedChoice = function(question,choice,index) {
                 
+                if(question.isDoneTwice){
+                    question.isSelected=-1;
+                    question.isSolved = false;
+                    question.usersChoice = -1;
+                    question.isDoneTwice = false;
+                }
+                    
                 if(question.isSelected==index)
                     return "background-grey";
+                else
+                    return "";
             }
 
             $scope.applyColors = function(question,choice) {
