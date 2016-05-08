@@ -20,7 +20,7 @@
     }
 
     .divMainResume2{
-        background-color: #AFEEEE;
+        background-color: #F0FFFF;
         max-height: 1800px;
         overflow: hidden;
     }
@@ -111,3 +111,9 @@
   font-family: inherit;
   font-size: 100%;
 }
+
+#border-mod{
+            border: 1px solid #333;
+        border-radius: 25px;
+    padding: 10px;
+    }

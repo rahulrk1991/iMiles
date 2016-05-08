@@ -905,6 +905,13 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
             $rootScope.allLanguages = [];
             $scope.level = [];
 
+            //generalInfo
+
+            $scope.nameOnResume = '';
+            $scope.email = '';
+            $scope.mobileNumber = '';
+            $scope.address = '';
+
             //references
                 $scope.showAdditionOfReferences = false;
                 $scope.name = [];
