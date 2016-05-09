@@ -60,9 +60,9 @@ var app = angular
             $scope.selectedCategory="Aptitude";
 
             //Duration TextBox
-            $scope.durations = [15,30,45,60,90];
+            $scope.durations = [15,30,45,60];
             $scope.duration=15;
-            $scope.durationText = "Duration";
+            $scope.durationText = "15";
 
             //Difficulty TextBox
             $scope.difficulties = ["Easy","Medium","Hard"];
@@ -101,7 +101,7 @@ var app = angular
             }
 
         })
-        .controller("onlineMockTestsTakeATestController",function($scope,$http) {
+        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal) {
 
 
             //Variable to display tags/search them in autocomplete search bar
@@ -112,6 +112,39 @@ var app = angular
 
             choiceDict = [];
             categoryDict = [];
+
+            //Review Test modal variable
+            $scope.title = "Your Time is up!";
+            $scope.content = "Click on the below button to get a comprehensive review of your test";
+
+            //Timer variables
+            var durationInMinutes = $routeParams.duration;
+            var durationInSeconds = $routeParams.duration*60;
+
+
+
+            //$scope.min=durationInMinutes;
+            //$scope.sec=0;
+
+            $scope.counter = 10;
+            $scope.onTimeout = function(){
+                $scope.counter--;
+                $scope.min = parseInt(($scope.counter)/60);
+                $scope.sec = ($scope.counter)%60;
+                if($scope.min==0 && $scope.sec==0) {
+                    var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
+                    $scope.submitTest();
+                }
+                    
+
+                mytimeout = $timeout($scope.onTimeout,1000);
+            }
+            var mytimeout = $timeout($scope.onTimeout,1000);
+
+            $scope.stop = function () {
+                console.log("stop called");
+                $timeout.cancel(mytimeout);
+            };
 
             $scope.isTestSubmitted = false;
 
@@ -235,6 +268,7 @@ var app = angular
             $scope.submitTest = function() {
                 $scope.isTestSubmitted = true;
                 console.log("Test submitted");
+                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
             }
 
             //Edit Question
