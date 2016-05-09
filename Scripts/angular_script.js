@@ -11,6 +11,14 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
+            .when("/OnlineMockTests/TakeATest/:category/:duration/:difficulty", {
+                templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
+                controller:"onlineMockTestsTakeATestController"
+            })
+            .when("/OnlineMockTests/ChooseATest", {
+                templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsChooseTestController"
+            })
             .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
                 controller:"editQuestionsController"
@@ -39,6 +47,235 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("onlineMockTestsChooseTestController",function($scope,$http) {
+
+            //Variable to display tags/search them in autocomplete search bar
+            $scope.tags = {};
+            $scope.tags.allTagNames = [];
+            $scope.tags.allTagId = [];
+            $scope.tags.tagsNamesToAddToQuestion = [];
+            $scope.tags.filterValue = "Aptitude";
+
+            //Category TextBox
+            $scope.selectedCategory="Aptitude";
+
+            //Duration TextBox
+            $scope.durations = [15,30,45,60];
+            $scope.duration=15;
+            $scope.durationText = "15";
+
+            //Difficulty TextBox
+            $scope.difficulties = ["Easy","Medium","Hard"];
+            $scope.difficulty = "Easy";
+
+            categoryDict = [];
+
+            var getAllCategories = function() {
+                //console.log("Got categories");
+                $http.get(question_categories_API)
+                    .then(function(response) {
+                                            
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                            categoryDict[response.data[i].category_text] = response.data[i].id
+                        }
+                        console.log($scope.tags.allTagNames);
+                        console.log(categoryDict);
+
+                    });
+            }
+
+            getAllCategories();
+
+            $scope.setCategory = function() {
+                $scope.selectedCategory = $scope.tags.filterValue;
+            }
+
+            $scope.setDuration = function(durationSetByUser) {
+                $scope.duration = durationSetByUser;
+                $scope.durationText = durationSetByUser + " minutes";
+            }
+
+            $scope.setDifficulty = function(difficultySetByUser) {
+                $scope.difficulty = difficultySetByUser;
+            }
+
+        })
+        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal) {
+
+
+            //Variable to display tags/search them in autocomplete search bar
+            $scope.tags = {};
+            $scope.tags.allTagNames = [];
+            $scope.tags.allTagId = [];
+            $scope.tags.tagsNamesToAddToQuestion = [];
+
+            choiceDict = [];
+            categoryDict = [];
+
+            //Review Test modal variable
+            $scope.title = "Your Time is up!";
+            $scope.content = "Click on the below button to get a comprehensive review of your test";
+
+            //Timer variables
+            var durationInMinutes = $routeParams.duration;
+            var durationInSeconds = $routeParams.duration*60;
+
+
+
+            //$scope.min=durationInMinutes;
+            //$scope.sec=0;
+
+            $scope.counter = 10;
+            $scope.onTimeout = function(){
+                $scope.counter--;
+                $scope.min = parseInt(($scope.counter)/60);
+                $scope.sec = ($scope.counter)%60;
+                if($scope.min==0 && $scope.sec==0) {
+                    var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
+                    $scope.submitTest();
+                }
+                    
+
+                mytimeout = $timeout($scope.onTimeout,1000);
+            }
+            var mytimeout = $timeout($scope.onTimeout,1000);
+
+            $scope.stop = function () {
+                console.log("stop called");
+                $timeout.cancel(mytimeout);
+            };
+
+            $scope.isTestSubmitted = false;
+
+            //Get all the question data using http get
+            $http.get(post_mcq_Questions_API)
+                .then(function(response) {
+                    var allQuestions = response.data;
+                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    var dict = [];                              // dict['question id'] = choice
+                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
+                        var singleQuestion = allQuestions[i];
+
+                        singleQuestion.isSolved = false;
+                        singleQuestion.usersChoice = -1;
+
+                        var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                        $http.get(the_url)
+                            .then(function(response) {
+                                var allChoices = response.data;                    //get all the choices of a question in allChoices
+                                //console.log(response.data);
+                                dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
+                                //console.log(singleQuestion);
+                            })
+                        
+
+                        //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
+                        //Solution : tell arpit to return the question id the category belongs to like the choices in above call
+                        /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
+                            $http.get(catURL)
+                                .then(function(response) {
+                                    var cats = response.data;                    //get all the choices of a question in allChoices
+                                    //console.log(response.data);
+                                    console.log("For question:"+singleQuestion.id);
+                                    console.log(response.data);
+                                    if(response.data)
+                                        $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
+                                })*/
+
+                    }
+
+                    $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
+
+
+                    var getAllCategories = function() {
+                        //console.log("Got categories");
+                        $http.get(question_categories_API)
+                            .then(function(response) {
+                                                    
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                                    categoryDict[response.data[i].category_text] = response.data[i].id
+                                }
+                                console.log($scope.tags.allTagNames);
+                                console.log(categoryDict);
+
+                            });
+                    }
+
+                    getAllCategories();     
+
+                    $scope.updateCategories = function() {
+                        var filterString = $scope.tags.filterValue;
+                        var lastIndex = filterString.slice(-1);
+                        if(filterString==" ") {
+                            $scope.tags.filterValue = "";
+                            return;
+                        }
+                        if(lastIndex==' ' && filterString.length>1) {
+                            $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                            console.log($scope.tags.tagsNamesToAddToQuestion);
+                            $scope.tags.filterValue = "";
+                        }
+                    }
+            });
+
+            
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return getQuestionInfo[question.kind].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+            $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
+                
+                question.isSolved = true;
+                question.usersChoice = choice.id;
+                if(question.isSelected==index) {
+                    console.log("Clicking same twice");
+                    question.isDoneTwice=true;
+                }
+                question.isSelected = index;
+                
+            }
+
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                
+                if(question.isDoneTwice){
+                    question.isSelected=-1;
+                    question.isSolved = false;
+                    question.usersChoice = -1;
+                    question.isDoneTwice = false;
+                }
+                    
+                if(question.isSelected==index)
+                    return "background-grey";
+                else
+                    return "";
+            }
+
+            $scope.applyColors = function(question,choice) {
+                if(!$scope.isTestSubmitted)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red"
+                }
+            }
+
+            $scope.submitTest = function() {
+                $scope.isTestSubmitted = true;
+                console.log("Test submitted");
+                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
+            }
+
+            //Edit Question
+            $scope.editQuestion = function(questionID) {
+                alert("Editing Question:"+questionID);
+            }
+        })
         .controller("landingPageController",function($scope,$aside,$modal) {
 
             $scope.title="iMiles Menu";

@@ -10,3 +10,9 @@ a {
     top: 70px;
     right:50px;
 }
+.display-inline {
+    display: inline;
+}
+.padding-10px {
+    padding-left: 10px;
+}

@@ -1,0 +1,21 @@
+<link href="QnACrunch/Stylesheets/qnacrunch.css" rel="stylesheet" type="text/css"/>
+<div class="container" style="width:700px">
+    
+    <br>
+    Countdown Timer: {{min}} : {{sec}}
+    <br>
+    <br>
+    <div style="width:100%">
+        <div ng-repeat="question in questions">
+     
+            <div ng-include="getQuestionTemplateByType(question)"></div>            
+     
+        </div>
+    </div>
+    
+
+
+    <button id="submitTestButton" ng-click="stop();submitTest();" type="button" class="btn btn-default btn-lg btn-success">
+                            Submit Test
+                        </button>
+</div>
