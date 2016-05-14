@@ -113,6 +113,9 @@ var app = angular
             choiceDict = [];
             categoryDict = [];
 
+            $scope.attemptedQuestions=0;
+            $scope.totalQuestions;
+
             //Review Test modal variable
             $scope.title = "Your Time is up!";
             $scope.content = "Click on the below button to get a comprehensive review of your test";
@@ -156,6 +159,7 @@ var app = angular
                     var allQuestions = response.data;
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
                     var dict = [];                              // dict['question id'] = choice
+                    $scope.totalQuestions = allQuestions.length;
                     for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
                         var singleQuestion = allQuestions[i];
 
@@ -231,6 +235,10 @@ var app = angular
 
             $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
                 
+                if(question.isSolved == false) {
+                    $scope.attemptedQuestions++;
+                }
+                
                 question.isSolved = true;
                 question.usersChoice = choice.id;
                 if(question.isSelected==index) {
@@ -238,6 +246,7 @@ var app = angular
                     question.isDoneTwice=true;
                 }
                 question.isSelected = index;
+
                 
             }
 
@@ -248,8 +257,9 @@ var app = angular
                     question.isSolved = false;
                     question.usersChoice = -1;
                     question.isDoneTwice = false;
+                    $scope.attemptedQuestions--;
                 }
-                    
+
                 if(question.isSelected==index)
                     return "background-grey";
                 else

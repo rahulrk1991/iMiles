@@ -1,38 +1,49 @@
 <link href="QnACrunch/Stylesheets/qnacrunch.css" rel="stylesheet" type="text/css"/>
+<div class="outermostDiv">
+    <div class="container" style="width:70%;margin-right:70px">
+        
+        <div id="onlineTestContainer">
+            <br>
+            <div id="testSummaryDiv" class="display-inline" style="width:33%;float:right">
 
-<div class="container" style="width:900px">
-    
-    <br>
-    <div id="onlineTestContainer">
-        <div id="testSummaryDiv" class="navbar-fixed-top" style="width:28%;float:right;border:1px solid black;">
+                <div id="testSummaryInnerDiv" style="padding:10px">
+                    <h4><strong>Test Summary</strong></h4>
+                    <hr>
+                    <div style="width:100%">
+                        <table id="statsTable" style="width:70%">
+                            <tr>
+                                <td><h4>Time Remaining</h4></td>
+                                <td> {{min}} : {{sec}} </h4></td>
+                            </tr>
+                            <tr>
+                                <td><h4>Attempted</h4></td>
+                                <td>{{attemptedQuestions}}/{{totalQuestions}}</td>
+                            </tr>
+                        </table>
 
-            <div id="testSummaryInnerDiv" style="padding:10px">
-                <h4>Test Summary</h4>
-                <hr>
-                <div class="well well-sm" style="width:100%">
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{min}} : {{sec}}
-                </div>
-                
-                <div style="width:100%">
-                    <div ng-repeat="question in questions" ng-class="markAttemptedQuestion(question)" class="display-inline" style="width:25%;height:same-as-width;float:left">
-                        {{question.id}}
+                    </div>
+                    <hr>
+                    <div style="width:100%;overflow:hidden">
+                        <div ng-repeat="question in questions" ng-class="markAttemptedQuestion(question)" style="width:20%;height:50px;float:left;text-align:center;padding-top:15px">
+                            {{question.id}}
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div style="width:100%">
+                        <button id="submitTestButton" style="width:50%" ng-click="stop();submitTest();" type="button" class="btn btn-default btn-lg btn-success">
+                            Submit Test
+                        </button>
                     </div>
                 </div>
-
-                <button id="submitTestButton" style="width:100%" ng-click="stop();submitTest();" type="button" class="btn btn-default btn-lg btn-success">
-                    Submit Test
-                </button>
             </div>
-        </div>
-        <div style="width:70%" class="display-inline;float:left">
-            <div ng-repeat="question in questions">
-         
-                <div ng-include="getQuestionTemplateByType(question)"></div>            
-         
+            <div style="width:65%" class="display-inline;float:left">
+                <div ng-repeat="question in questions">
+             
+                    <div ng-include="getQuestionTemplateByType(question)"></div>            
+             
+                </div>
             </div>
         </div>
     </div>
-
-
-    
 </div>
