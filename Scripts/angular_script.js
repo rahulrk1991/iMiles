@@ -295,7 +295,7 @@ var app = angular
             $scope.submitTest = function() {
                 $scope.isTestSubmitted = true;
                 console.log("Test submitted");
-                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
+                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: false});
             }
 
             //Edit Question
