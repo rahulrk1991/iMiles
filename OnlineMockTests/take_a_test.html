@@ -15,6 +15,10 @@
                                 <td><h4>Time Remaining</h4></td>
                                 <td> {{minStr}} : {{secStr}} </h4></td>
                             </tr>
+                            <tr ng-show="isTestSubmitted">
+                                <td><h4>Time Remaining</h4></td>
+                                <td> 00 : 00 </h4></td>
+                            </tr>
                             <tr>
                                 <td><h4>Attempted</h4></td>
                                 <td>{{attemptedQuestions}}/{{totalQuestions}}</td>
