@@ -173,6 +173,7 @@ var app = angular
 
                         singleQuestion.isSolved = false;
                         singleQuestion.usersChoice = -1;
+                        singleQuestion.testId = i+1;
 
                         var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
                         $http.get(the_url)
