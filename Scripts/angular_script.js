@@ -243,6 +243,9 @@ var app = angular
 
             $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
                 
+                if($scope.isTestSubmitted)
+                    return;
+
                 if(question.isSolved == false) {
                     $scope.attemptedQuestions++;
                 }
