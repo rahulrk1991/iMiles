@@ -11,9 +11,9 @@
                     <hr>
                     <div style="width:100%">
                         <table id="statsTable" style="width:70%">
-                            <tr>
+                            <tr ng-show="!isTestSubmitted">
                                 <td><h4>Time Remaining</h4></td>
-                                <td> {{min}} : {{sec}} </h4></td>
+                                <td> {{minStr}} : {{secStr}} </h4></td>
                             </tr>
                             <tr>
                                 <td><h4>Attempted</h4></td>

@@ -130,11 +130,19 @@ var app = angular
             //$scope.min=durationInMinutes;
             //$scope.sec=0;
 
-            $scope.counter = 1000;
+            $scope.counter = 10;
             $scope.onTimeout = function(){
                 $scope.counter--;
                 $scope.min = parseInt(($scope.counter)/60);
                 $scope.sec = ($scope.counter)%60;
+                if($scope.min<10)
+                    $scope.minStr = "0"+$scope.min.toString();
+                else
+                    $scope.minStr = $scope.min.toString();
+                if($scope.sec<10)
+                    $scope.secStr = "0"+$scope.sec.toString();
+                else
+                    $scope.secStr = $scope.sec.toString();
                 if($scope.min==0 && $scope.sec==0) {
                     var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
                     $scope.submitTest();
@@ -238,7 +246,7 @@ var app = angular
                 if(question.isSolved == false) {
                     $scope.attemptedQuestions++;
                 }
-                
+
                 question.isSolved = true;
                 question.usersChoice = choice.id;
                 if(question.isSelected==index) {
