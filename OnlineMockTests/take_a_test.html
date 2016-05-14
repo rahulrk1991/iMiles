@@ -1,21 +1,38 @@
 <link href="QnACrunch/Stylesheets/qnacrunch.css" rel="stylesheet" type="text/css"/>
-<div class="container" style="width:700px">
+
+<div class="container" style="width:900px">
     
     <br>
-    Countdown Timer: {{min}} : {{sec}}
-    <br>
-    <br>
-    <div style="width:100%">
-        <div ng-repeat="question in questions">
-     
-            <div ng-include="getQuestionTemplateByType(question)"></div>            
-     
+    <div id="onlineTestContainer">
+        <div id="testSummaryDiv" class="navbar-fixed-top" style="width:28%;float:right;border:1px solid black;">
+
+            <div id="testSummaryInnerDiv" style="padding:10px">
+                <h4>Test Summary</h4>
+                <hr>
+                <div class="well well-sm" style="width:100%">
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{min}} : {{sec}}
+                </div>
+                
+                <div style="width:100%">
+                    <div ng-repeat="question in questions" ng-class="markAttemptedQuestion(question)" class="display-inline" style="width:25%;height:same-as-width;float:left">
+                        {{question.id}}
+                    </div>
+                </div>
+
+                <button id="submitTestButton" style="width:100%" ng-click="stop();submitTest();" type="button" class="btn btn-default btn-lg btn-success">
+                    Submit Test
+                </button>
+            </div>
+        </div>
+        <div style="width:70%" class="display-inline;float:left">
+            <div ng-repeat="question in questions">
+         
+                <div ng-include="getQuestionTemplateByType(question)"></div>            
+         
+            </div>
         </div>
     </div>
+
+
     
-
-
-    <button id="submitTestButton" ng-click="stop();submitTest();" type="button" class="btn btn-default btn-lg btn-success">
-                            Submit Test
-                        </button>
 </div>

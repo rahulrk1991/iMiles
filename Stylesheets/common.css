@@ -16,3 +16,6 @@ a {
 .padding-10px {
     padding-left: 10px;
 }
+#testSummaryDiv {
+    position: relative;
+}

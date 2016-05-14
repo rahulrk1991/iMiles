@@ -121,12 +121,13 @@ var app = angular
             var durationInMinutes = $routeParams.duration;
             var durationInSeconds = $routeParams.duration*60;
 
-
-
+            $(window).scroll(function(){
+                $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
+                });
             //$scope.min=durationInMinutes;
             //$scope.sec=0;
 
-            $scope.counter = 10;
+            $scope.counter = 1000;
             $scope.onTimeout = function(){
                 $scope.counter--;
                 $scope.min = parseInt(($scope.counter)/60);
@@ -145,6 +146,7 @@ var app = angular
                 console.log("stop called");
                 $timeout.cancel(mytimeout);
             };
+
 
             $scope.isTestSubmitted = false;
 
@@ -263,6 +265,13 @@ var app = angular
                 else {
                     return "choice-red"
                 }
+            }
+
+            $scope.markAttemptedQuestion = function(question) {
+                if(question.isSolved)
+                    return "background-grey";
+                else
+                    return;
             }
 
             $scope.submitTest = function() {
