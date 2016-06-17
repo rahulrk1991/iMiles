@@ -9,27 +9,27 @@ var port_number = "8000";
 var API_Start = protocol+host_name+":"+port_number;
 
 //Questions API
-var questions_End_Point = "/"+"question/question";
+var questions_End_Point = "/api/"+"question/question";
 var questions_API = API_Start + questions_End_Point;
 
 //Post MCQ questions
-var post_mcq_questions_End_Point = "/"+"question/question_mcq/";
+var post_mcq_questions_End_Point = "/api/"+"question/question_mcq/";
 var post_mcq_Questions_API = API_Start + post_mcq_questions_End_Point;
 
 //Post Descriptive questions
-var post_descriptive_questions_End_Point = "/"+"question/question_des/";
+var post_descriptive_questions_End_Point = "/api/"+"question/question_des/";
 var post_descriptive_questions_API = API_Start + post_descriptive_questions_End_Point;
 
 //Choices of MCQ Questions API
-var questions_choices_mcq_End_Point = "/"+"question/question_mcq/choice/";
+var questions_choices_mcq_End_Point = "/api/"+"question/question_mcq/choice/";
 var questions_choices_mcq_API = API_Start + questions_choices_mcq_End_Point;
 
 //Categories API
-var question_categories_End_Point = "/"+"question/category/";
+var question_categories_End_Point = "/api/"+"question/category/all/";
 var question_categories_API = API_Start + question_categories_End_Point;
 
 //Add choices API
-var question_add_choices_End_Point = "/"+"question/choice/";
+var question_add_choices_End_Point = "/api/"+"question/choice/";
 var question_add_choices_API = API_Start + question_add_choices_End_Point;
 
 //OTHER VARIABLES
