@@ -51,7 +51,7 @@
 
 			<textarea ng-model="question.questionDescription" id="descriptionText" style="height: 100px"
 				class="form-control" placeholder="Explanation"
-				aria-describedby="basic-addon1"></textarea>
+				aria-describedby="basic-addon1" name="desc_exp"></textarea>
 
 		</div>
 		<br>
@@ -59,7 +59,7 @@
 
 			<textarea ng-model="question.questionAnswer" id="descriptionText" style="height: 100px"
 				class="form-control" placeholder="Answer"
-				aria-describedby="basic-addon1"></textarea>
+				aria-describedby="basic-addon1" name="desc_ans"></textarea>
 
 		</div>
 		<br>
@@ -70,3 +70,10 @@
 		</div>
 	</div>
 </div>
+<script>
+	var config = {};
+	config.placeholder = 'Explanation';
+	CKEDITOR.replace( 'desc_exp',config );
+	config.placeholder = 'Answer';
+	CKEDITOR.replace( 'desc_ans',config );
+</script>
