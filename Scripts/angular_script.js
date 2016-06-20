@@ -469,60 +469,77 @@ var app = angular
             choiceDict = [];
             categoryDict = [];
 
-            f=0;
-            var old;
+            $scope.feed = {};
+            var feedNum = 0;
+            var fetching = false;
 
-            while(f<3) {
 
+            var getQuestions = function(feedNum) {
 
-            //Get all the question data using http get
-            $http.get(questions_API)
-                .then(function(response) {
-                    console.log("Call number : "+f)
-                    var allQuestions = response.data;
+                console.log("Feed Number:"+feedNum);
+                //Get all the question data using http get
+                $http.get(questions_API)
+                    .then(function(response) {
+                        
+                        var allQuestions = response.data;
+                        $scope.feed[feedNum] = allQuestions;
+                        console.log($scope.feed);
 
-                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
-                    old = allQuestions;
-                    var dict = [];                              // dict['question id'] = choice
-                    for(var i=0+f*10;i<allQuestions.length+f*10;i++) {                //loop through the questions, and get the choices for each
-                        var singleQuestion = allQuestions[i-f*10];
+                        $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                        old = allQuestions;
+                        var dict = [];                              // dict['question id'] = choice
+                        for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
+                            var singleQuestion = allQuestions[i];
 
-                        singleQuestion.isSolved = false;
+                            singleQuestion.isSolved = false;
 
-                        if(singleQuestion.kind==mcq_kind) {
-                            //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
-                            var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                            $http.get(the_url)
-                                .then(function(response) {
-                                    var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                    //console.log(response.data);
-                                    dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
-                                })
-                            }
+                            if(singleQuestion.kind==mcq_kind) {
+                                //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
+                                var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                                $http.get(the_url)
+                                    .then(function(response) {
+                                        var allChoices = response.data;                    //get all the choices of a question in allChoices
+                                        //console.log(response.data);
+                                        dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
+                                    })
+                                }
 
-                        //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
-                        //Solution : tell arpit to return the question id the category belongs to like the choices in above call
-                        /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
-                            $http.get(catURL)
-                                .then(function(response) {
-                                    var cats = response.data;                    //get all the choices of a question in allChoices
-                                    //console.log(response.data);
-                                    console.log("For question:"+singleQuestion.id);
-                                    console.log(response.data);
-                                    if(response.data)
-                                        $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
-                                })*/
+                            //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
+                            //Solution : tell arpit to return the question id the category belongs to like the choices in above call
+                            /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
+                                $http.get(catURL)
+                                    .then(function(response) {
+                                        var cats = response.data;                    //get all the choices of a question in allChoices
+                                        //console.log(response.data);
+                                        console.log("For question:"+singleQuestion.id);
+                                        console.log(response.data);
+                                        if(response.data)
+                                            $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
+                                    })*/
 
-                    
+                        
 
-                    $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
+                        $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
 
-                
+                    fetching = false;
+                }
+                });
+            
             }
+
+            $(window).scroll(function () {
+               if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+                    if(!fetching) {
+                        feedNum++;
+                        console.log("Getting feed number:"+feedNum);
+                        fetching=true;
+                        getQuestions(feedNum);
+                    }     
+
+               }
             });
-            console.log("Value of f"+f);
-            f++;
-        }
+
+            getQuestions(feedNum);
 
             var getAllCategories = function() {
                 //console.log("Got categories");
@@ -840,6 +857,8 @@ var app = angular
             }
 
         });
+
+
 
 //Ankurs angular code
 //
