@@ -605,6 +605,8 @@ var app = angular
             var classToAddToTab = "active";             //The class you want to apply when question type is selected
             $scope.tabClass = [classToAddToTab,""];     //By default the first one will have the class and second will not
 
+
+
             $scope.changeTabClass = function(clickedTab) {
                 if(clickedTab=="mcq") {
                     $scope.tabClass = [classToAddToTab,""];     //Apply to first and remove from second
@@ -677,6 +679,17 @@ var app = angular
                     $scope.tags.filterValue = "";
                 }
                 
+            }
+
+            $scope.clearQuestion = function() {
+                console.log("Clearing the Question!")
+                $scope.question = {};
+                $scope.question.difficulty = DEFAULT_DIFFICULTY;
+                $scope.number_of_choices = DEFAULT_NUMBER_OF_CHOICES;
+                
+
+                $scope.tags.filterValue = "";                   //Value obtained from autocomplete search bar
+                $scope.tags.tagsNamesToAddToQuestion = [];
             }
 
             //Get all the categories/tags in on go
