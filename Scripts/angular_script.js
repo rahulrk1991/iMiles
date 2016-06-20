@@ -325,12 +325,12 @@ var app = angular
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
             $scope.panel={};
-            $scope.panel.title="Click here to view Solution";
-            $scope.panel.body="Solution body";
+            $scope.panel.title = "Click here to view Solution";
+            $scope.panel.body = "Answer not retrieved, check JSON object in console for clues"
+            
 
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
-
             $scope.question = {};
             if($routeParams.kind=="descriptive") {
                 url = post_descriptive_questions_API+ $routeParams.questionID;
@@ -345,6 +345,7 @@ var app = angular
                 $scope.question = response.data;
                 console.log($scope.question);
                 console.log($scope.question.id);
+                $scope.panel.body=$scope.question.answer;
 
             });
 
@@ -468,14 +469,23 @@ var app = angular
             choiceDict = [];
             categoryDict = [];
 
+            f=0;
+            var old;
+
+            while(f<3) {
+
+
             //Get all the question data using http get
             $http.get(questions_API)
                 .then(function(response) {
+                    console.log("Call number : "+f)
                     var allQuestions = response.data;
+
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    old = allQuestions;
                     var dict = [];                              // dict['question id'] = choice
-                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
-                        var singleQuestion = allQuestions[i];
+                    for(var i=0+f*10;i<allQuestions.length+f*10;i++) {                //loop through the questions, and get the choices for each
+                        var singleQuestion = allQuestions[i-f*10];
 
                         singleQuestion.isSolved = false;
 
@@ -488,7 +498,7 @@ var app = angular
                                     //console.log(response.data);
                                     dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
                                 })
-                        }
+                            }
 
                         //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
                         //Solution : tell arpit to return the question id the category belongs to like the choices in above call
@@ -503,41 +513,47 @@ var app = angular
                                         $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
                                 })*/
 
-                    }
+                    
 
                     $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
 
-                    var getAllCategories = function() {
-                        //console.log("Got categories");
-                        $http.get(question_categories_API)
-                            .then(function(response) {
-                                                    
-                                for(i=0;i<response.data.length;i++) {
-                                    $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                                    categoryDict[response.data[i].category_text] = response.data[i].id
-                                }
-                                console.log($scope.tags.allTagNames);
-                                console.log(categoryDict);
-
-                            });
-                    }
-
-                    getAllCategories();     
-
-                    $scope.updateCategories = function() {
-                        var filterString = $scope.tags.filterValue;
-                        var lastIndex = filterString.slice(-1);
-                        if(filterString==" ") {
-                            $scope.tags.filterValue = "";
-                            return;
-                        }
-                        if(lastIndex==' ' && filterString.length>1) {
-                            $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
-                            console.log($scope.tags.tagsNamesToAddToQuestion);
-                            $scope.tags.filterValue = "";
-                        }
-                    }
+                
+            }
             });
+            console.log("Value of f"+f);
+            f++;
+        }
+
+            var getAllCategories = function() {
+                //console.log("Got categories");
+                $http.get(question_categories_API)
+                    .then(function(response) {
+                                            
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                            categoryDict[response.data[i].category_text] = response.data[i].id
+                        }
+                        console.log($scope.tags.allTagNames);
+                        //console.log(categoryDict);
+
+                    });
+            }
+
+            getAllCategories(); 
+
+            $scope.updateCategories = function() {
+                var filterString = $scope.tags.filterValue;
+                var lastIndex = filterString.slice(-1);
+                if(filterString==" ") {
+                    $scope.tags.filterValue = "";
+                    return;
+                }
+                if(lastIndex==' ' && filterString.length>1) {
+                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    console.log($scope.tags.tagsNamesToAddToQuestion);
+                    $scope.tags.filterValue = "";
+                }
+            }
 
             
             $scope.getQuestionTemplateByType = function(question) {
