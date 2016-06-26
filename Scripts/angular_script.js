@@ -339,7 +339,7 @@ var app = angular
                 var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
             }
 
-            $http.get("http://localhost:8000/api/user/register/")
+            $http.get(user_registration_API)
             .then(function(response) {
                 
                 $scope.registration_form = $sce.trustAsHtml(response.data);
@@ -348,7 +348,7 @@ var app = angular
 
             });
 
-            $http.get("http://localhost:8000/api/user/login/")
+            $http.get(user_login_API)
             .then(function(response) {
                 
                 $scope.login_form = $sce.trustAsHtml(response.data);

@@ -32,6 +32,12 @@ var question_categories_API = API_Start + question_categories_End_Point;
 var question_add_choices_End_Point = "/api/"+"question/choice/";
 var question_add_choices_API = API_Start + question_add_choices_End_Point;
 
+var user_registration_End_Point = "/api/"+"user/register/";
+var user_registration_API = API_Start + user_registration_End_Point;
+
+var user_login_End_Point = "/api/"+"user/login/";
+var user_login_API = API_Start + user_login_End_Point;
+
 //OTHER VARIABLES
 var absolute_path = "/";
 
