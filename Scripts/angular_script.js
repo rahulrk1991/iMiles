@@ -1,6 +1,6 @@
 
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
@@ -331,13 +331,31 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$sce) {
 
             $scope.title="iMiles Menu";
 
             $scope.registerUser = function() {
                 var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
             }
+
+            $http.get("http://localhost:8000/api/user/register/")
+            .then(function(response) {
+                
+                $scope.registration_form = $sce.trustAsHtml(response.data);
+
+                console.log($scope.registration_form);
+
+            });
+
+            $http.get("http://localhost:8000/api/user/login/")
+            .then(function(response) {
+                
+                $scope.login_form = $sce.trustAsHtml(response.data);
+
+                console.log($scope.login_form);
+
+            });
             
 
         })
