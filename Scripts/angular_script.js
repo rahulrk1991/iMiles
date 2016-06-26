@@ -498,7 +498,7 @@ var app = angular
 
                 console.log("Feed Number:"+feedNum);
                 //Get all the question data using http get
-                $http.get(questions_API)
+                $http.get(questions_API+"?start="+feedNum*10)
                     .then(function(response) {
                         
                         var allQuestions = response.data;
