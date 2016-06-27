@@ -495,7 +495,7 @@ var app = angular
         .controller("profileController",function($scope) {
             //dummy controller for profile page
         })
-        .controller("questionsController",function($scope,$http) {
+        .controller("questionsController",function($scope,$http,$sce) {
 
 
             //Variable to display tags/search them in autocomplete search bar
@@ -530,6 +530,7 @@ var app = angular
                             var singleQuestion = allQuestions[i];
 
                             singleQuestion.isSolved = false;
+                            singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
 
                             if(singleQuestion.kind==mcq_kind) {
                                 //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
