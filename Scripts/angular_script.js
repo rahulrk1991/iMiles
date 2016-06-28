@@ -359,7 +359,7 @@ var app = angular
             
 
         })
-        .controller("viewQuestionsController",function($scope,$http,$routeParams) {
+        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
             $scope.panel={};
@@ -381,6 +381,8 @@ var app = angular
             .then(function(response) {
                 
                 $scope.question = response.data;
+                $scope.question.description = $sce.trustAsHtml($scope.question.description);
+                $scope.question.answer = $sce.trustAsHtml($scope.question.answer);
                 console.log($scope.question);
                 console.log($scope.question.id);
                 $scope.panel.body=$scope.question.answer;

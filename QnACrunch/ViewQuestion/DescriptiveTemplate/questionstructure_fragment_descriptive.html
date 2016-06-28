@@ -20,7 +20,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel-body">{{question.description}}</div>
+	<div class="panel-body" ng-bind-html="question.description">
+		
+	</div>
 	<div class="panel-footer" style="width: 100%; height: 35px">
 		<div style="float: left; width: 40%">
 			<h5 class="panel-title">Author: InterviewMile</h5>
@@ -47,8 +49,8 @@
 	    	</h4>
 	    </div>
 	    <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-	    	<div class="panel-body">
-	    		{{ panel.body }}
+	    	<div class="panel-body" ng-bind-html="panel.body">
+	    		
 	    	</div>
 	    </div>
 	</div>
