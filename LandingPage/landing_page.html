@@ -2,22 +2,32 @@
 <style>
   
 .divMain1{
-    min-height: 400px;
+    min-height: 450px;
     background-color:#C0C0C0;
-    background-image: url('LandingPage/Images/background.jpg');
+    background-image: url('LandingPage/Images/background_image.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+    width:100%;
+}
+.register_signinDiv {
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.7);
+    width: 60 %;
+    margin: 0 auto;
+    height:250px;
 }
 </style>
 
 
 <div class="container-fluid divMain1">
 
-    <div style="height:150px"></div>
-    <div>
-    <h1 class = "textMod1" style="text-align:center">We help you to shape your Career</h1>
-    <h3 style="text-align:center;color:#FFFFFF">Prepare. Crack Interview. Inspire.</h3>
+    <div style="height:130px"></div>
+    <div class="register_signinDiv">
+    <h1 class = "textMod1" style="text-align:center;padding-top:20px">We help you shape your Career</h1>
+    <h3 style="text-align:center">Prepare. Crack Interview. Inspire.</h3>
     <div class="row" style="margin-top:60px;">
         <div class="col-md-6 col-sm-6">
-            <button type="button" class="btn-lg btn-primary" style="float:right;" data-toggle="modal" data-target="#registerModal"><span class="glyphicon glyphicon-list-alt"></span> Register </button>
+            <button type="button" class="btn-lg" style="float:right;background-color:black;color:white;width:140px" data-toggle="modal" data-target="#registerModal"> REGISTER </button>
             <div id="registerModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -37,46 +47,10 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-6">
-            <div class="dropdown">
-            <button type="button" class="btn-lg dropdown-toggle btn-primary" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Sign In  <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><a href="#" data-toggle="modal" data-target="#signInModalUsername">Username</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#signInModalEmail">Email Address</a></li>
-            </ul>
-        </div>
-            <div id="signInModalUsername" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:#2F4F4F">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Log In using Username</h4>
-                        </div>
-                        <div class="modal-body" style="background-color:white;">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="UserName1" class="col-sm-3 control-label" style="color:black;">Userame*</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="inputName1" placeholder="Enter your Username">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="UsernamePass" class="col-sm-3 control-label" style="color:black;">Password*</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="userName1" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div style="float:right;">
-                                    <a href="#" style="color:blue;">Forgot Password?</a>
-                                </div>
-                                <div class="row" style="margin-top:30px;">
-                                    <div class="col-sm-2 col-sm-offset-5 text-center"><button type="submit" class="btn-lg" style="background-color:#000000;color:white">Login</button>
-                                    </div>
-                                </div>
-                            </form>
-                         </div>
-                    </div>
-                </div>
-            </div>
+            
+            <button type="button" class="btn-lg dropdown-toggle" style="background-color:black;color:white;width:140px" data-toggle="modal" data-target="#signInModalEmail"> SIGN IN  </button>
+
+        
             <div id="signInModalEmail" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
