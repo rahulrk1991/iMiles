@@ -394,7 +394,7 @@ var app = angular
             }
 
         })
-        .controller("editQuestionsController",function($scope,$http,$routeParams) {
+        .controller("editQuestionsController",function($scope,$http,$routeParams,$location) {
             var url;
             $scope.choices = {};
             console.log($routeParams.questionID);
@@ -452,10 +452,11 @@ var app = angular
             }
 
             $scope.deleteQuestion = function() {
-                $http.delete( url)
+                $http.delete( url+"/")
                      .success(function(response) {
                         console.log("Descriptive question deleted successfully");        //on successfull posting of question
-                        alert("Question deleted successfully");
+                        //alert("Question deleted successfully");
+                        $location.url("QnACrunch");
                         })
                      .error(function(response) {
                         console.log("The question could not be deleted");                //in case there is an error
