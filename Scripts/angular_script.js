@@ -394,7 +394,7 @@ var app = angular
             }
 
         })
-        .controller("editQuestionsController",function($scope,$http,$routeParams,$location) {
+        .controller("editQuestionsController",function($scope,$http,$routeParams,$location,$alert) {
             var url;
             $scope.choices = {};
             console.log($routeParams.questionID);
@@ -451,11 +451,13 @@ var app = angular
                 $http.put( url+"/", body)
                      .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
-                        alert("Question edited successfully");
+                        var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+
                         })
                      .error(function(response) {
                         console.log("The question could not be edited");                //in case there is an error
-                        alert("Error in editing question");
+                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' coould no be edited. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+
                      });
             }
 
