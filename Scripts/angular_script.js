@@ -456,7 +456,7 @@ var app = angular
                         })
                      .error(function(response) {
                         console.log("The question could not be edited");                //in case there is an error
-                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' coould no be edited. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' could no be edited. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -465,12 +465,14 @@ var app = angular
                 $http.delete( url+"/")
                      .success(function(response) {
                         console.log("Descriptive question deleted successfully");        //on successfull posting of question
-                        //alert("Question deleted successfully");
+                        var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+
                         $location.url("QnACrunch");
                         })
                      .error(function(response) {
                         console.log("The question could not be deleted");                //in case there is an error
-                        alert("Error in deleted question");
+                        var myAlert = $alert({title: 'Delete unsuccessful!', content: 'Question '+$scope.question.id+' could no be deleted. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+
                      });
             }
         })
