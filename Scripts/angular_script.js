@@ -356,9 +356,9 @@ var app = angular
                 console.log($scope.login_form);
 
             });
-            
 
         })
+
         .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
@@ -434,13 +434,13 @@ var app = angular
 
             $scope.putDescriptiveQuestion = function() {
                 //url = post_descriptive_questions_API+ $routeParams.question_number;
-                body =  [{
+                body =  {
                     "title": $scope.question.title,
                     "description": $scope.question.description,
                     "difficulty_level": $scope.question.difficulty_level,
                     "answer": $scope.question.answer
-                }];
-                $http.put( url, body)
+                };
+                $http.put( url+"/", body)
                      .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
                         alert("Question edited successfully");
