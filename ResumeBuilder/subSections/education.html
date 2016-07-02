@@ -2,7 +2,7 @@
     <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
         <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Education History</h2>
         <p class="text-align:center;" ng-repeat="x in educationRelatedInformations track by $id($index)">
-            {{"Educational Institute : "+x.eduInstituteName}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>
+            {{"Educational Institute : "+x.eduInstituteName}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right" ng-show="showRemove">Remove!</span></br>
             {{"Degree : "+x.degreelevel}}</br>
             {{"Degree Status : "+x.levels.label}}</br>
             {{"Percentage Obtained : "+x.percentageObtained}}</br>
@@ -11,9 +11,11 @@
             <span style="font-weight: bold;font-style: italic;">{{x.educationDescription}}</span></br>
         </p>
     </div>
-
+    <button class="btn btn-responsive btn-lg" style="background-color:#008B8B;color:black;margin-top:15px;float:right;margin-top:-10px;" ng-click="postEducationData()" ng-show="saveEducationChanges">Save your changes</button>
+    <br/>
+    <br/>
     <center>
-        <button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEducation()">Add Education</button>
+        <button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEducation()" ng-show="addingEducation">Add Education</button>
     </center>
 <div class="jumbotron" id = "educationEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;" ng-show="showAdditionOfEducation">
 <p><strong>Education</strong></p>

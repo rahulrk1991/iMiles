@@ -30,7 +30,9 @@
 <div><p id = "check2" ta-bind="text" ng-model="hobbies">{{hobbies}}</p></div>
 </div>
 <div style="float:right;">
-<button id = "editHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>
+    <button id = "saveHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="saveHobbiesInfo()" ng-show="saveButtonHobbies">Save</button>
+
+    <button id = "editHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-show="editButtonHobbies">Edit</button>
 </div>
 </div>
 </div>

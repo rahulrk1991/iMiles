@@ -2,7 +2,7 @@
 <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
 <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Employment History</h2>
 <p class="text-align:center;" ng-repeat="x in employmentRelatedInformations track by $id($index)">
-{{"Job Title : "+x.jobTitle}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>
+{{"Job Title : "+x.jobTitle}}<span ng-click="removeItemEmp($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right" ng-show="showRemove">Remove!</span></br>
 {{"Company : "+x.company}}</br>
 {{"Location : "+x.location}}</br>
 {{"Start Date :"+x.starDate+" End Date :"+x.endDate}}</br>
@@ -10,8 +10,11 @@
 <span style="font-weight: bold;font-style: italic;">{{x.Description}}</span></br>
 </p>
 </div>
+    <button class="btn btn-responsive btn-lg" style="background-color:#008B8B;color:black;margin-top:15px;float:right;margin-top:-10px;" ng-click="postEmploymentData()" ng-show="saveEmploymentChanges">Save your changes</button>
+    <br/>
+    <br/>
 <center>
-<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Add Employment</button>
+<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()" ng-show="addingEmployment">Add Employment</button>
 </center>
 <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfEmployment">
 <p><strong> Add Employment History</strong></p>
@@ -57,7 +60,7 @@
 <textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="employmentDescription"></textarea>
 </div>
 <div style="margin-top:30px;float:right;">
-<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;
+<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheListEmployment()">Add</button>&nbsp;
 <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Cancel</button>
 </div>
 

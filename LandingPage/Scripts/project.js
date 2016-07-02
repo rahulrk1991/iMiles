@@ -95,6 +95,7 @@ $(document).ready(function(){
     })
     
     $("#gotoResumeGeneralSection").click(function(e){
+        if(!($("#enterNameOnResume").val() == "" || $("#enterEmailOnResume").val() == "" || $("#enterMobileNumberOnResume").val() == "" || $("#enterAddressOnResume").val() == "")){
         e.preventDefault();
         $('.' + $(this).data('rel')).slideDown(500);
         $(".divMainResume2").slideUp(500);
@@ -103,6 +104,7 @@ $(document).ready(function(){
         $(".leftSelectionSideOfTemplate").css("max-height",'600px');
         $(".tab-content").css({"max-height":"600px","overflow":"auto"});
         $("body").css("overflow",'auto');
+        }
     })
     
     $("#gotoTemplateSelectionPage").click(function(e){

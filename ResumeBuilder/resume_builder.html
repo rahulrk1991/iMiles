@@ -111,25 +111,30 @@
                         
                             <div style="background-color:orange;min-height:200px;">
                                 <div class="center">
-                                    <form role="form" style="margin: 0px auto;">
+                                    <form ng-submit = "submitGeneralInfo()" role="form" style="margin: 0px auto;" name="basicInfoForm">
                                         <div class="form-group form-group-lg">
                                             <label for="enterNameOnResume" style="font-size:35px;font-family:Rockwell Extra Bold;">Enter your Full Name</label>
-                                            <input type="text" class="form-control" id="enterNameOnResume" placeholder="firstName lastName" style="background-color:aqua;color:black;" ng-model="nameOnResume">
+
+                                            <input type="text" class="form-control" id="enterNameOnResume" placeholder="firstName lastName" style="background-color:aqua;color:black;" ng-model="nameOnResume" name="nameResume"required>
+                                            <span ng-show="basicInfoForm.nameResume.$untouched && basicInfoForm.nameResume.$invalid"><em>The name is required.</em></span>
                                         </div>
                                         <div class="form-group form-group-lg">
                                             <label for="enterEmailOnResume" style="font-size:35px;font-family:Rockwell Extra Bold;">Email ID</label>
-                                            <input type="email" class="form-control" id="enterEmailOnResume" placeholder="abc@example.com" style="background-color:aqua;color:black;" ng-model="email">
+                                            <input type="email" class="form-control" id="enterEmailOnResume" placeholder="abc@example.com" style="background-color:aqua;color:black;" ng-model="email" type="email" name="emailResume" required>
+                                            <span ng-show="basicInfoForm.emailResume.$untouched && basicInfoForm.emailResume.$invalid"><em>Email ID is required.</em></span>
                                         </div>
                                         <div class="form-group form-group-lg">
                                             <label for="enterMobileNumberOnResume" style="font-size:35px;font-family:Rockwell Extra Bold;">Mobile Number</label>
-                                            <input type="number" class="form-control" id="enterMobileNumberOnResume" placeholder="Contact Number" style="background-color:aqua;color:black;" ng-model="mobileNumber">
+                                            <input type="number" class="form-control" id="enterMobileNumberOnResume" placeholder="Contact Number" style="background-color:aqua;color:black;" ng-model="mobileNumber" name="mobileResume"required>
+                                            <span ng-show="basicInfoForm.mobileResume.$untouched && basicInfoForm.mobileResume.$invalid"><em>Please Enter your Mobile Number.</em></span>
                                         </div>
                                         <div class="form-group form-group-lg">
                                             <label for="enterAddressOnResume" style="font-size:35px;font-family:Rockwell Extra Bold;">Enter you Address</label>
-                                            <input type="text" class="form-control" id="enterAddressOnResume" placeholder="Address" style="background-color:aqua;color:black;" ng-model="address">
+                                            <input type="text" class="form-control" id="enterAddressOnResume" placeholder="Address" style="background-color:aqua;color:black;" ng-model="address" name="addressResume"required>
+                                            <span ng-show="basicInfoForm.addressResume.$untouched && basicInfoForm.addressResume.$invalid"><em>Address is required.</em></span>
                                         </div>
                                         <a href="#" id="gotoResumeGeneralSection" data-rel="divMainResume3">
-                            <button class="btn btn-responsive btn-lg" style="background-color:green;color:white;" ng-click="handleClick(nameOnResume,email,mobileNumber,address);">Proceed</button>
+                            <button class="btn btn-resonsive btn-lg" style="background-color:green;color:white;" ng-click="sendBasicInfoData();">Proceed</button>
                         </a>
                                     </form>
                                 </div>
@@ -146,7 +151,105 @@
                 <!--<a href="#" id="gotoTemplateSelectionPage" data-toggle="tooltip" title="Go back to Template Selection page" style="position: fixed;"><span class="glyphicon glyphicon-chevron-up" style="color:orange;"></span></a>-->
             </div>
             <div class="col-md-2 com-sm-2">
-                <button id="previewResume" data-rel="divMainResume4" class="btn btn-responsive btn-lg" style="float:right;background-color:gold;color:black;position: fixed;margin-top:5px;">View Preview</button>
+                <button data-toggle="modal" data-target="#myModal" class="btn btn-responsive btn-lg" style="float:right;background-color:gold;color:black;position: fixed;margin-top:5px;">View Preview</button>
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title" style="text-align:center;">Resume is Ready!</h4>
+                                </div>
+                                <div class="modal-body" style="margin-left: 20px;height: 550px;overflow: auto;">
+                                    <div class="row">
+                                        <div>
+                                            <div class="col-md-4 col-sm-4" style="float:right;">
+                                                <p>name</p>
+                                                <p>mobile_number</p>
+                                                <p>address</p>
+                                                <p>email</p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div>
+                                            <div class="col-*-*" style="margin-top: 100px;">
+                                                <p><strong><em>To utilize my technical skills for achieving the target and developing the best performance in the organization. I would like to implement my innovative ideas, skills and creativity for accomplishing the projects.</em></strong></p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                        <div>
+                                            <div class="col-*-*">
+                                                <p style="text-align:center;font-size:25px;">Education</p>
+                                                <p><strong>B.E. CS&E</strong></p>
+                                                <p>Bangalore Institute of Technology, Bangalore</p>
+                                                <p>Graduated : <span><em>06/2016</em></span></p>
+                                                <p>Score : <span><em>80.45%</em></span></p>
+                                                <p>I studied here for 4 Years</p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                        <div>
+                                            <div class="col-*-*">
+                                                <p style="text-align:center;font-size:25px;">Employment History</p>
+                                                <p><strong>Software Engineer - Sprinklr, Bangalore</strong></p>
+                                                <p>20-07-2015 to **-**-****</p>
+                                                <p><strong>$**,**,**** / Annually</strong></p>
+                                                <p>Good Company</p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                        <div>
+                                            <div class="col-*-*">
+                                                <p style="text-align:center;font-size:25px;">Hobbies and Interest</p>
+                                                <p><strong>Cricket</strong></p>
+                                                <p><strong>Watching WWE</strong></p>
+                                                <p><strong>Playing Snooker</strong></p>
+                                                <p><strong>Coding</strong></p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                        <div>
+                                            <div class="col-*-*">
+                                                <p style="text-align:center;font-size:25px;">Professional Skills</p>
+                                                <p><strong>Begineer in Template Language</strong></p>
+                                                <p><strong>Intermediate in Python</strong></p>
+                                                <p><strong>Advanced in Web Designing</strong></p>
+                                                <p><strong>Expert in All</strong></p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                        <div>
+                                            <div class="col-*-*">
+                                                <p style="text-align:center;font-size:25px;">Languages Known</p>
+                                                <p><strong>Begineer in Tamil</strong></p>
+                                                <p><strong>Conversational in Kannada</strong></p>
+                                                <p><strong>Fluent in English</strong></p>
+                                                <p><strong>Naive in Hindi</strong></p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                        <div>
+                                            <div class="col-*-*">
+                                                <p style="text-align:center;font-size:25px;">References</p>
+                                                <p>XYZ ABC, 8197326719</p>
+                                                <p>Microsoft, xyzAbc@microsoft.com</p>
+                                                <p>Sudhamanagar, Bangalore</p>
+                                                <p>Relative from Long Time</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" style="background-color:orange;" data-dismiss="modal">
+                                    <h3 style="text-align:center;">Close</h3>
+                                </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container-fluid contentHolderForTemplate" style="visibility:hidden;">

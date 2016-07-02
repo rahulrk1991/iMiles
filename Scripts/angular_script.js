@@ -1214,7 +1214,7 @@ var app = angular
 //
 //    $scope.addEmployment = function(){
 //        $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-//    }
+//    }addItem
 //
 //    $scope.addTheList = function(){
 //        $rootScope.jobTitles.push($scope.jobTitle);
@@ -1291,11 +1291,30 @@ var app = angular
 
 ///new code
 
-app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
+app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope,$http,$location){
             $scope.selectedSection = "basic_info.html";
             $scope.language = [];
             $rootScope.allLanguages = [];
             $scope.level = [];
+            $scope.saveEducationChanges = false;
+            $scope.addingEducation = true;
+            $scope.showRemove = true;
+//            $scope.showRemoveEdu = true;
+            $scope.addingEmployment = true;
+            $scope.saveEmploymentChanges = false;
+            $scope.saveAddSkill = true;
+            $scope.showAddSkill = true;
+            $scope.showAdditonOfSkillsOperation = true;
+            $scope.addingReferences = true;
+            $scope.saveReferenceChanges = false;
+            $scope.showAddLanguages = true;
+            $scope.saveKnownLanguages = true;
+            $scope.showAdditonOfLanguagesOperation = true;
+
+            if($scope.nameOnResume == "" || $scope.email == "" || $scope.mobileNumber == "" || $scope.address == "" ){
+                alert("Please enter the complete information to proceed");
+            }
+
 
             //generalInfo
 
@@ -1324,13 +1343,13 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                 $scope.skills = [];
                 $rootScope.allSkills = [];
                 $scope.level = [];
-                 $scope.units = [
+                 $scope.units321 = [
                     {'id': 1, 'label': 'Beginner'},
                     {'id': 2, 'label': 'Intermediate'},
                     {'id': 3, 'label': 'Advanced'},
                     {'id': 3, 'label': 'Expert'},
                 ]
-                 $scope.data= $scope.units[0]; // Set by default the value "test1
+                 $scope.data321= $scope.units321[0]; // Set by default the value "test1
 
             //employmentHistory
 
@@ -1390,6 +1409,7 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
             $scope.returnSelectedResumeSection = function() {
                 return absolute_path+"ResumeBuilder/subSections/"+ $scope.selectedSection;
             }
+
             $scope.units = [
                     {'id': 1, 'label': 'Beginner'},
                     {'id': 2, 'label': 'Conversational'},
@@ -1404,7 +1424,7 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                     $scope.languages = '';
                     $scope.data= $scope.units[0];
                 }
-                $scope.removeItem = function (x) {
+                $scope.removeItemLanguages = function (x) {
                     $rootScope.allLanguages.splice(x, 1);
                 }
 
@@ -1412,7 +1432,12 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                         $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
                     }
 
-                    $scope.addTheList = function(){
+                    $scope.addTheListReferences = function(){
+                    if($scope.referenceName == null || $scope.referenceName == "" || $scope.referenceRelationship == "" || $scope.referencePhone == "" || $scope.referenceCompany == "" || $scope.referenceEmailID == "" || $scope.referenceAddress == ""){
+                                                        alert("Please Enter the required information");
+                                                    }else{
+                                                        $scope.saveReferenceChanges = true;
+
                         $scope.name.push($scope.referenceName);
                         $scope.relationship.push($scope.referenceRelationship);
                         $scope.phone.push($scope.referencePhone);
@@ -1432,8 +1457,9 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                         $scope.referenceDescription = '';
                         $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
                     }
+                    }
 
-                    $scope.removeItem = function (x) {
+                    $scope.removeItemReferences = function (x) {
                         $rootScope.referenceRelatedInformations.splice(x, 1);
                     }
 
@@ -1444,7 +1470,7 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                             $scope.addSkillType = '';
                             $scope.data= $scope.units[0];
                         }
-                        $scope.removeItem = function (x) {
+                        $scope.removeItemSkills = function (x) {
                             $rootScope.allSkills.splice(x, 1);
                         }
 
@@ -1453,7 +1479,12 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                                 $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
                             }
 
-                            $scope.addTheList = function(){
+                            $scope.addTheListEmployment = function(){
+                                if($scope.jobTitle == "" || $scope.company == "" || $scope.location == "" || $scope.startDate == "" || $scope.endDate == "" || $scope.compensation == ""){
+                                    alert("Please fill in the Required information");
+                                }else{
+                                    $scope.saveEmploymentChanges = true;
+
                                 $rootScope.jobTitles.push($scope.jobTitle);
                                 $scope.companies.push($scope.company);
                                 $scope.locations.push($scope.location);
@@ -1475,6 +1506,7 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                                 $scope.data2= $scope.units2[0];
                                 $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
                             }
+                            }
 
                             $scope.removeItem = function (x) {
                                 $rootScope.employmentRelatedInformations.splice(x, 1);
@@ -1486,6 +1518,11 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                             }
 
                             $scope.addTheList = function(){
+                                if($scope.eduInstituteName == "" || $scope.degreeLevel == "" || $scope.percentageObtained == "" || $scope.location == "" || $scope.yearOfGraduation == "" ){
+                                    alert("Please enter the required information to proceed");
+                                }else{
+                                    $scope.saveEducationChanges = true;
+
                                 $scope.eduInstitutes.push($scope.eduInstituteName);
                                 $scope.degrees.push($scope.degreeLevel);
                                 $scope.percentageObtain.push($scope.percentageObtained);
@@ -1494,6 +1531,7 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                                 $scope.educationDescriptions.push($scope.educationDescription);
                                 $scope.levels.push($scope.data);
                                 $rootScope.educationRelatedInformations.push({eduInstituteName:$scope.eduInstituteName,degreelevel:$scope.degreeLevel,percentageObtained:$scope.percentageObtained,location:$scope.location,yearOfGraduation:$scope.yearOfGraduation,levels:$scope.data,educationDescription:$scope.educationDescription});
+
                                 $scope.eduInstituteName = '';
                                 $scope.degreeLevel = '';
                                 $scope.percentageObtained = '';
@@ -1503,11 +1541,177 @@ app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope){
                                 $scope.data= $scope.units1[0];
                                 $scope.showAdditionOfEducation = $scope.showAdditionOfEducation ? false : true;
                             }
+                            }
 
                             $scope.removeItem = function (x) {
                                 $rootScope.educationRelatedInformations.splice(x, 1);
                                 console.log($scope.educationRelatedInformations);
                             }
+
+                            $scope.removeItemEmp = function (x) {
+                                                            $rootScope.employmentRelatedInformations.splice(x, 1);
+                                                            console.log($scope.employmentRelatedInformations);
+                                                        }
+
+                             $scope.sendBasicInfoData = function(){
+                             if($scope.nameOnResume == "" || $scope.email == "" || $scope.mobileNumber == "" || $scope.address == ""){
+                                alert("Please enter the complete information to proceed");
+                             }
+                             else{
+                                            var basicInformation = {
+                                                Full_Name : $scope.nameOnResume,
+                                                Email_Address : $scope.email,
+                                                Mobile_Number : $scope.mobileNumber,
+                                                Resident_Address : $scope.address
+                                            }
+                                            console.log("Information")
+                                            console.log(basicInformation);
+                                            $http.post("http://localhost:8080/v1/api/resume/",basicInformation,{headers: {'Content-Type': 'application/json'} })
+                                            .success(function(data,status,header,config) {
+                                                console.log("Information Posted Successfully");
+                                                $scope.resumeID = data;
+                                            })
+                                            .error(function(data,status,header,config) {
+                                                console.log("Error Encountered while posting : "+status);
+                                            });
+                                 }
+                             };
+
+                             $scope.handleClick = function(objective){
+                                $scope.saveButtonObjective = true;
+                                $scope.editButtonObjective = true;
+                                $scope.saveButtonHobbies = true;
+                                $scope.editButtonHobbies = true;
+                             };
+
+                             $scope.saveObjectiveInfo = function(){
+                                $scope.saveButtonObjective = false;
+                                $scope.editButtonObjective = false;
+                                var objective = {
+                                    Objective_Explanation : $scope.objective
+                                }
+                                console.log(objective);
+                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,objective,{headers: {'Content-Type': 'application/json'} })
+                                .success(function(data,status,header,config) {
+                                    console.log("Information Posted Successfully");
+                                })
+                                .error(function(data,status,header,config) {
+                                    console.log("Error Encountered while posting : "+status);
+                                });
+                             }
+
+                             $scope.postEducationData = function(){
+                                $scope.showRemove = false;
+                                $scope.addingEducation = false;
+                                var Education = $rootScope.educationRelatedInformations;
+                                console.log(Education);
+                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Education,{headers: {'Content-Type': 'application/json'} })
+                                .success(function(data,status,header,config) {
+                                    console.log("Information Posted Successfully");
+                                })
+                                .error(function(data,status,header,config) {
+                                    console.log("Error Encountered while posting : "+status);
+                                });
+                             }
+
+                             $scope.postReferencesData = function(){
+                                $scope.showRemove = false;
+                                $scope.addingReferences = false;
+                                var References = $rootScope.referenceRelatedInformations;
+                                console.log(References);
+                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,References,{headers: {'Content-Type': 'application/json'} })
+                                .success(function(data,status,header,config) {
+                                    console.log("Information Posted Successfully");
+                                })
+                                .error(function(data,status,header,config) {
+                                    console.log("Error Encountered while posting : "+status);
+                                });
+                             }
+
+                             $scope.postEmploymentData = function(){
+                                $scope.showRemove = false;
+                                $scope.addingEmployment = false;
+                                var Employment = $rootScope.employmentRelatedInformations;
+                                console.log(Employment);
+                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Employment,{headers: {'Content-Type': 'application/json'} })
+                                                                .success(function(data,status,header,config) {
+                                                                    console.log("Information Posted Successfully");
+                                                                })
+                                                                .error(function(data,status,header,config) {
+                                                                    console.log("Error Encountered while posting : "+status);
+                                                                });
+
+                             }
+
+                             $scope.saveHobbiesInfo = function(){
+                                                             $scope.saveButtonHobbies = false;
+                                                             $scope.editButtonHobbies = false;
+                                                             var Hobbies_And_Interest = {
+                                                                 HobbiesAndInterest : $scope.hobbies
+                                                             }
+                                                             console.log(Hobbies_And_Interest);
+                                                             $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Hobbies_And_Interest,{headers: {'Content-Type': 'application/json'} })
+                                                             .success(function(data,status,header,config) {
+                                                                 console.log("Information Posted Successfully");
+                                                             })
+                                                             .error(function(data,status,header,config) {
+                                                                 console.log("Error Encountered while posting : "+status);
+                                                             });
+                                                          }
+
+                             $scope.saveSkills = function(){
+                                if($rootScope.allSkills.length == 0){
+                                    alert("Please enter you skill to add more value to Resume");
+                                }
+                                else{
+                                    $scope.showAddSkill = false;
+                                    $scope.saveAddSkill = false;
+                                    $scope.showRemove = false;
+                                    $scope.showAdditonOfSkillsOperation = false;
+                                    var professionalSkills = [];
+                                    for(var i =0;i<$rootScope.allSkills.length;i++){
+                                        var data = $rootScope.allSkills[i];
+                                        professionalSkills.push({"skillType":data.skill,"level":data.levele.label});
+                                    }
+                                    console.log(professionalSkills);
+                                    $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,professionalSkills,{headers: {'Content-Type': 'application/json'} })
+                                                                                                 .success(function(data,status,header,config) {
+                                                                                                     console.log("Information Posted Successfully");
+                                                                                                 })
+                                                                                                 .error(function(data,status,header,config) {
+                                                                                                     console.log("Error Encountered while posting : "+status);
+                                                                                                 });
+                                }
+                             }
+
+                             $scope.saveLanguagesKnown = function(){
+                                if($rootScope.allLanguages.length == 0){
+                                    alert("Please enter the languages you know to add more value to Resume");
+                                }
+                                else{
+                                    $scope.showAddLanguages = false;
+                                    $scope.saveKnownLanguages = false;
+                                    $scope.showRemove = false;
+                                    $scope.showAdditonOfLanguagesOperation = false;
+                                    var languages = [];
+                                    for(var i =0;i<$rootScope.allLanguages.length;i++){
+                                       var data = $rootScope.allLanguages[i];
+                                       languages.push({"name":data.lang,"level":data.level.label});
+                                    }
+                                    console.log(languages);
+                                    $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,languages,{headers: {'Content-Type': 'application/json'} })
+                                         .success(function(data,status,header,config) {
+                                             console.log("Information Posted Successfully");
+                                         })
+                                         .error(function(data,status,header,config) {
+                                             console.log("Error Encountered while posting : "+status);
+                                         });
+                                }
+                             }
+
+
+
+
 
 
 });

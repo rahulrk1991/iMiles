@@ -3,7 +3,7 @@
 <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
 <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">References</h2>
 <p class="text-align:center;" ng-repeat="x in referenceRelatedInformations track by $id($index)">
-{{"Name : "+x.referenceName}}<span ng-click="removeItem($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right">Remove!</span></br>
+{{"Name : "+x.referenceName}}<span ng-click="removeItemReferences($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right" ng-show="showRemove">Remove!</span></br>
 {{"Relationship : "+x.referenceRelationship}}</br>
 {{"Contact Number : "+x.referencePhone}}</br>
 {{"Company :"+x.referenceCompany}}</br>
@@ -13,8 +13,11 @@
 <span style="font-weight: bold;font-style: italic;">{{x.referenceDescription}}</span></br>
 </p>
 </div>
+    <button class="btn btn-responsive btn-lg" style="background-color:#008B8B;color:black;margin-top:15px;float:right;margin-top:-10px;" ng-click="postReferencesData()" ng-show="saveReferenceChanges">Save your changes</button>
+    <br/>
+    <br/>
 <center>
-<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Add References</button>
+<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()" ng-show="addingReferences">Add References</button>
 </center>
 <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfReferences">
 <p><strong> Add References</strong></p>
@@ -54,7 +57,7 @@
 <textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="referenceDescription"></textarea>
 </div>
 <div style="margin-top:30px;float:right;">
-<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheList()">Add</button>&nbsp;
+<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheListReferences()">Add</button>&nbsp;
 <button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Cancel</button>
 </div>
 

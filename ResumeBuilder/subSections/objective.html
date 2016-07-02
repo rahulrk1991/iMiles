@@ -26,7 +26,8 @@
 <div><p id = "check1" ta-bind="text" ng-model="objective">{{objective}}</p></div>
 </div>
 <div style="float:right;">
-<button id = "editObjectivebutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;">Edit</button>
+    <button id = "saveObjectivebutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="saveObjectiveInfo()" ng-show="saveButtonObjective">Save</button>
+    <button id = "editObjectivebutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-show="editButtonObjective">Edit</button>
 </div>
 </div>
 </div>
