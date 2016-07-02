@@ -415,6 +415,14 @@ var app = angular
                     $scope.question = response.data;
                     console.log($scope.question);
                     console.log($scope.question.id);
+                    console.log($scope.question.explanation);
+                    console.log($scope.question.answer);
+                    if($scope.question.explanation==null) {
+                        $scope.question.explanation=" ";
+                    }
+                    if($scope.question.answer==null) {
+                        $scope.question.answer=" ";
+                    }
                 });
 
             $scope.getChoiceStructure = function() {
