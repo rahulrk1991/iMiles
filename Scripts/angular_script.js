@@ -356,9 +356,9 @@ var app = angular
                 console.log($scope.login_form);
 
             });
-            
 
         })
+
         .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
@@ -394,7 +394,7 @@ var app = angular
             }
 
         })
-        .controller("editQuestionsController",function($scope,$http,$routeParams) {
+        .controller("editQuestionsController",function($scope,$http,$routeParams,$location,$alert) {
             var url;
             $scope.choices = {};
             console.log($routeParams.questionID);
@@ -415,6 +415,14 @@ var app = angular
                     $scope.question = response.data;
                     console.log($scope.question);
                     console.log($scope.question.id);
+                    console.log($scope.question.explanation);
+                    console.log($scope.question.answer);
+                    if($scope.question.explanation==null) {
+                        $scope.question.explanation=" ";
+                    }
+                    if($scope.question.answer==null) {
+                        $scope.question.answer=" ";
+                    }
                 });
 
             $scope.getChoiceStructure = function() {
@@ -434,32 +442,37 @@ var app = angular
 
             $scope.putDescriptiveQuestion = function() {
                 //url = post_descriptive_questions_API+ $routeParams.question_number;
-                body =  [{
+                body =  {
                     "title": $scope.question.title,
                     "description": $scope.question.description,
                     "difficulty_level": $scope.question.difficulty_level,
                     "answer": $scope.question.answer
-                }];
-                $http.put( url, body)
+                };
+                $http.put( url+"/", body)
                      .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
-                        alert("Question edited successfully");
+                        var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+
                         })
                      .error(function(response) {
                         console.log("The question could not be edited");                //in case there is an error
-                        alert("Error in editing question");
+                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' could no be edited. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+
                      });
             }
 
             $scope.deleteQuestion = function() {
-                $http.delete( url)
+                $http.delete( url+"/")
                      .success(function(response) {
                         console.log("Descriptive question deleted successfully");        //on successfull posting of question
-                        alert("Question deleted successfully");
+                        var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+
+                        $location.url("QnACrunch");
                         })
                      .error(function(response) {
                         console.log("The question could not be deleted");                //in case there is an error
-                        alert("Error in deleted question");
+                        var myAlert = $alert({title: 'Delete unsuccessful!', content: 'Question '+$scope.question.id+' could no be deleted. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+
                      });
             }
         })
