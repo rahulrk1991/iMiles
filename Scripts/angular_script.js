@@ -786,6 +786,17 @@ var app = angular
                     });
             }
 
+            $scope.removeCategory = function(categoryToRemove) {
+
+                var index = $scope.tags.tagsNamesToAddToQuestion.indexOf(categoryToRemove);
+                console.log(index);
+
+                if (index > -1) {
+                    $scope.tags.tagsNamesToAddToQuestion.splice(index, 1);
+                }
+            }
+
+
             getAllCategories();
 
             $scope.postDescriptiveQuestion = function() {
