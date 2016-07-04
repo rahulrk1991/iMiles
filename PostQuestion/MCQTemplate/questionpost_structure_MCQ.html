@@ -34,10 +34,12 @@
 			<div id="tagsToAssociateDiv" style="padding:7px">
                 <b>Tags to associate:</b>
             </div>
+
 			<div ng-repeat="tagToAddToQuestion in tags.tagsNamesToAddToQuestion" style="display:inline;float:left;padding:3px;padding-right:8px">
-			<span style="display:inline" class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-				{{tagToAddToQuestion}}
-			</div>
+         
+                <div ng-include="getTagTemplate()"></div>            
+         
+            </div>
 
 		</div>
 

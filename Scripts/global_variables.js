@@ -65,5 +65,6 @@ var getQuestionInfo = {};
                             };
 
 var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTemplate/"+"choice_structure.html";
+var tag_structure_file = absolute_path+"CommonTemplates/tagTemplate.html";
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;

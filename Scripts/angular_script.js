@@ -693,6 +693,12 @@ var app = angular
                     $scope.load_question = getQuestionInfo[question_type].postFragment;     //Selects the template of the question to post
             }
 
+            $scope.getTagTemplate = function() {
+                
+                return tag_structure_file;         //returning the template file from getQuestonInfo using question 
+
+            }
+
             $scope.changeDifficulty = function(operation) {                     //decreases difficulty rating by 1
                 if(operation=='minus') {
                     if( $scope.question.difficulty >1)
