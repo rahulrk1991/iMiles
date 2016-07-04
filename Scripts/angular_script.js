@@ -383,6 +383,54 @@ var app = angular
                     });
             }
 
+            $scope.submitRegisterForm = function() {
+
+                console.log($scope.name)
+                console.log($scope.email);
+                console.log($scope.password);
+                console.log($scope.mobile);
+
+                $http.get("http://localhost:8000/api/user/token/")
+                    .then(function(response){
+                        console.log(response.data);
+
+                        var tokenHTML = response.data;
+                        var token = tokenHTML.split(" ")[3].split("\'")[1];
+                        console.log("CSRF Token:"+token);
+
+                        var form = new FormData();
+                        form.append("csrfmiddlewaretoken", token); //get this token from above api
+                        form.append("username", $scope.email); //get this field from user
+                        form.append("password", $scope.password); //get this field from user
+
+                        var cookie = "csrftoken=";
+                        cookie = cookie+token;
+
+                        console.log("Cookie plus token:"+cookie);
+
+                        var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://localhost:8000/api/user/register/",
+                        "method": "POST",
+                        "headers": {
+                        "cookie": cookie,
+                        "cache-control": "no-cache",
+                        "postman-token": "363f8225-6b4d-34c0-9d16-85dbd330f288"
+                        },
+                        "processData": false,
+                        "contentType": false,
+                        "mimeType": "multipart/form-data",
+                        "data": form
+                        }
+
+                        $.ajax(settings).done(function (response) {
+                            console.log(response);
+                        });
+                    });
+
+            }
+
         })
 
         .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
