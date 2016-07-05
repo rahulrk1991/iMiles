@@ -779,7 +779,7 @@ var app = angular
 
             $scope.getTagTemplate = function() {
                 
-                return tag_structure_file;         //returning the template file from getQuestonInfo using question 
+                return tag_structure_file_postQuestion;         //returning the template file from getQuestonInfo using question 
 
             }
 
