@@ -593,6 +593,8 @@ var app = angular
             $scope.tags.allTagId = [];
             $scope.tags.tagsNamesToAddToQuestion = [];
 
+            $scope.isCategoryFilterOn = false;
+
             choiceDict = [];
             categoryDict = [];
 
@@ -608,12 +610,26 @@ var app = angular
 
             }
 
+            $scope.showMore = function() {
+                    console.log('show more triggered');  
+            };
+
 
             var getQuestions = function(feedNum) {
 
                 console.log("Feed Number:"+feedNum);
                 //Get all the question data using http get
-                $http.get(questions_API+"?start="+feedNum*10)
+
+                if(!($scope.isCategoryFilterOn)) {
+                    fetchQuestions_API = questions_API;
+                }
+                else {
+                    fetchQuestions_API = category_enabled_questions_API + $scope.categoryFilterNumber;
+                }
+
+                console.log(fetchQuestions_API);
+
+                $http.get(fetchQuestions_API+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
                         
                         var allQuestions = data;
@@ -708,6 +724,16 @@ var app = angular
                     $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
                     console.log($scope.tags.tagsNamesToAddToQuestion);
                     $scope.tags.filterValue = "";
+
+                    //Here a category filter has been added, we need to update the questions
+                    $scope.categoryFilterNumber = categoryDict[$scope.tags.tagsNamesToAddToQuestion[0]];
+                    var dict = [];                              // dict['question id'] = choice
+                    var catDict = [];
+                    $scope.isCategoryFilterOn = true;
+                    feedNum=0;
+                    $scope.feed = {};
+                    getQuestions(feedNum);
+                    
                 }
             }
 
