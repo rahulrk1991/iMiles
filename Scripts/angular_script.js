@@ -331,7 +331,7 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$window) {
 
             $scope.title="iMiles Menu";
 
@@ -343,13 +343,13 @@ var app = angular
                 console.log($scope.email);
                 console.log($scope.password);
 
-                $http.get("http://localhost:8000/api/user/token/")
+                $http.get("http://example.com/api/user/token/")
                     .then(function(response){
-                        console.log(response.data);
+                        //console.log(response.data);
 
                         var tokenHTML = response.data;
                         var token = tokenHTML.split(" ")[3].split("\'")[1];
-                        console.log("CSRF Token:"+token);
+                        //console.log("CSRF Token:"+token);
 
                         var form = new FormData();
                         form.append("csrfmiddlewaretoken", token); //get this token from above api
@@ -358,18 +358,17 @@ var app = angular
 
                         var cookie = "csrftoken=";
                         cookie = cookie+token;
+                        document.cookie = "csrftoken="+token;
 
-                        console.log("Cookie plus token:"+cookie);
+                        //console.log("Cookie plus token:"+cookie);
 
                         var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://localhost:8000/api/user/login/",
+                        "url": "http://example.com/api/user/login/",
                         "method": "POST",
                         "headers": {
-                        "cookie": cookie,
-                        "cache-control": "no-cache",
-                        "postman-token": "363f8225-6b4d-34c0-9d16-85dbd330f288"
+                        "cache-control": "no-cache"
                         },
                         "processData": false,
                         "contentType": false,
@@ -378,7 +377,25 @@ var app = angular
                         }
 
                         $.ajax(settings).done(function (response) {
-                            console.log(response);
+                            var responseString = response.split("\"")[3];
+                            //console.log(responseString);
+                            if(responseString=="success") {
+                                console.log("Logged in successfully");
+                                $("#signInModalEmail").modal('hide');
+                                //$('#myModal').hide('hide');
+                                //$window.location.assign("QnACrunch");
+                                setTimeout(function() {
+                                    $location.url("QnACrunch");
+                                    $scope.$apply();
+                                }, 1000);
+                                
+                            }
+                            else if (responseString=="Invalid login details") {
+                                console.log("Log in error!");
+                            }
+                            else {
+                                console.log("Theres been an error! Please check console for clues");
+                            }
                         });
                     });
             }
