@@ -599,6 +599,8 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             var fetching = false;
+            var dict = [];                              // dict['question id'] = choice
+            var catDict = [];
 
             $scope.getTagTemplateQnA = function() {
                 
@@ -621,8 +623,7 @@ var app = angular
 
                         $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
                         old = allQuestions;
-                        var dict = [];                              // dict['question id'] = choice
-                        var catDict = [];
+                        
                         for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
                             var singleQuestion = allQuestions[i];
 
@@ -649,9 +650,9 @@ var app = angular
                                         //console.log(response.data);
                                         //console.log("For question:"+singleQuestion.id);
                                         var idOfQuestion = config.url.split("/")[6]
-                                        console.log(idOfQuestion);
+                                        //console.log(idOfQuestion);
                                         //if(response.data)
-                                            catDict[idOfQuestion] = data;          //allChoices[0]. question is the question id
+                                        catDict[idOfQuestion] = data;          //allChoices[0]. question is the question id
                                     })
 
                         
