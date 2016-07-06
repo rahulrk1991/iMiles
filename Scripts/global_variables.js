@@ -12,6 +12,11 @@ var API_Start = protocol+host_name+":"+port_number;
 var questions_End_Point = "/api/"+"question/question";
 var questions_API = API_Start + questions_End_Point;
 
+//Category enabled Questions API
+var category_enabled_questions_End_Point = "/api/"+"question/question/category/";
+var category_enabled_questions_API = API_Start + category_enabled_questions_End_Point;
+
+
 //Post MCQ questions
 var post_mcq_questions_End_Point = "/api/"+"question/question_mcq/";
 var post_mcq_Questions_API = API_Start + post_mcq_questions_End_Point;
