@@ -38,9 +38,58 @@
                                 <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Register as New Member</h4>
                             </div>
                             <div class="modal-body">
-                                <div ng-bind-html="registration_form">
+                                <div class="modal-body" style="background-color:white;">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputName1" class="col-sm-4 control-label" style="color:black;">Name*</label>
+                                        <div class="col-sm-8">
+                                            <input ng-model="name" type="text" class="form-control" id="inputName1" placeholder="Enter your Full Name">
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label for="inputEmail1" class="col-sm-4 control-label" style="color:black;">Email*</label>
+                                        <div class="col-sm-8">
+                                            <input ng-model="email" type="email" class="form-control" id="inputEmail1" placeholder="Email Address">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPass1" class="col-sm-4 control-label" style="color:black;">Password*</label>
+                                        <div class="col-sm-8">
+                                            <input ng-model="password" type="password" class="form-control" id="inputPass1" placeholder="Create Password for Account">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputMobile1" class="col-sm-4 control-label" style="color:black;">Mobile Number*</label>
+                                        <div class="col-sm-8">
+                                            <input ng-model="mobile" type="text" class="form-control" id="inputMobile1" placeholder="Mobile Number Please">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-9">
+                                            <button ng-click="submitRegisterForm()" type="submit" class="btn btn-lg" style="background-color:#D2B48C;font-weight: bold;float:right;">Join interviewmiles.com</button>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            <hr />
+                            <h5 style="text-align:center;color:blue;"> or SignUp using</h5><br />
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4">
+                                    <button class="btn btn-lg"  style="float:right;background-color:#3b5998;color:white;"><i class="fa fa-facebook-official" aria-hidden="true"></i>  Facebook</button>
                                 </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <center>
+                                    <button class="btn btn-lg" style="background-color:#007bb6;color:white;"><i class="fa fa-linkedin-square" aria-hidden="true"></i>  LinkedIn</button>
+                                    </center>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <button class="btn btn-lg" style="background-color:#444;color:white;"><i class="fa fa-google-plus-square" aria-hidden="true"></i>  Google</button>
+                                </div>
+                            </div>
+                            <br />
+                         </div>
                             </div>
                             <div class="modal-footer" style="background-color:white;">
                             </div>
@@ -61,9 +110,27 @@
                                 <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Log In using Email Address</h4>
                             </div>
                             <div class="modal-body" style="background-color:#ADD8E6;">
-                                <div ng-bind-html="login_form">
-
+                                <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="UserName1" class="col-sm-3 control-label" style="color:black;">Email*</label>
+                                    <div class="col-sm-8">
+                                        <input ng-model="email" type="text" class="form-control" id="inputName1" placeholder="Enter your Username">
+                                    </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="UsernamePass" class="col-sm-3 control-label" style="color:black;">Password*</label>
+                                    <div class="col-sm-8">
+                                        <input ng-model="password" type="text" class="form-control" id="userName1" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div style="float:right;">
+                                    <a href="#" style="color:blue;">Forgot Password?</a>
+                                </div>
+                                <div class="row" style="margin-top:30px;">
+                                    <div class="col-sm-2 col-sm-offset-5 text-center"><button ng-click="submitLoginForm()" type="submit" class="btn-lg" style="background-color:#000000;color:white">Login</button>
+                                    </div>
+                                </div>
+                            </form>
                             </div>
                         </div>
                     </div>

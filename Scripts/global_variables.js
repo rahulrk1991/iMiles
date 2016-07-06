@@ -4,13 +4,18 @@
 
 //URL BUILDER
 var protocol = "http://";
-var host_name ="interviewmiles.com";
-var port_number = "80";
+var host_name ="localhost";
+var port_number = "8000";
 var API_Start = protocol+host_name+":"+port_number;
 
 //Questions API
 var questions_End_Point = "/api/"+"question/question";
 var questions_API = API_Start + questions_End_Point;
+
+//Category enabled Questions API
+var category_enabled_questions_End_Point = "/api/"+"question/question/category/";
+var category_enabled_questions_API = API_Start + category_enabled_questions_End_Point;
+
 
 //Post MCQ questions
 var post_mcq_questions_End_Point = "/api/"+"question/question_mcq/";
@@ -65,5 +70,7 @@ var getQuestionInfo = {};
                             };
 
 var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTemplate/"+"choice_structure.html";
+var tag_structure_file_postQuestion = absolute_path+"PostQuestion/tagTemplate.html";
+var tag_structure_file_qna = absolute_path+"QnACrunch/DisplayQuestion/tagTemplate.html"
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;
