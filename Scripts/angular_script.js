@@ -586,40 +586,52 @@ var app = angular
         })
         .controller("questionsController",function($scope,$http,$sce) {
 
-
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
             $scope.tags.allTagNames = [];
-            $scope.tags.allTagId = [];
             $scope.tags.tagsNamesToAddToQuestion = [];
 
+            //Variable to check if category filter is set On/Off
             $scope.isCategoryFilterOn = false;
 
-            choiceDict = [];
-            categoryDict = [];
+            //Dictionaries to map questionID : choices/categories of that quesitonID
+            $scope.questionIdToChoicesDictionary = [];
+            $scope.questionIdToCategoriesDictionary = [];
 
+            //Dictionary for storing mapping of category_text : category_id
+            allCategoriesDictionary = [];
+
+            //Feed contains array of 10 sets of questions all the questions 
             $scope.feed = {};
             var feedNum = 0;
-            var fetching = false;
-            var dict = [];                              // dict['question id'] = choice
-            var catDict = [];
+            var isFetchingQuestions = false;
 
-            $scope.getTagTemplateQnA = function() {
-                
-                return tag_structure_file_qna;         //returning the template file from getQuestonInfo using question 
 
+            //Function to GET all Categories 
+            var getAllCategories = function() {
+
+                $http.get(question_categories_API)
+                    .success(function(data,status,headers,config) {
+                        
+                        //Populate the allCategoriesDictionary
+                        for(i=0;i<data.length;i++) {
+                            $scope.tags.allTagNames[i] = (data[i].category_text);
+                            allCategoriesDictionary[data[i].category_text] = data[i].id
+                        }
+                        console.log($scope.tags.allTagNames);
+
+                    });
             }
 
-            $scope.showMore = function() {
-                    console.log('show more triggered');  
-            };
+            getAllCategories();     //Runs function to GET Categories as soon as controller is called
 
 
+            //Function to GET questions
             var getQuestions = function(feedNum) {
 
                 console.log("Feed Number:"+feedNum);
-                //Get all the question data using http get
 
+                //Deciding the Endpoint to hit based on whether there is a category selected or not
                 if(!($scope.isCategoryFilterOn)) {
                     fetchQuestions_API = questions_API;
                 }
@@ -627,130 +639,126 @@ var app = angular
                     fetchQuestions_API = category_enabled_questions_API + $scope.categoryFilterNumber;
                 }
 
-                console.log(fetchQuestions_API);
-
+                //Fetching questions here
                 $http.get(fetchQuestions_API+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
                         
                         var allQuestions = data;
-                        console.log(config.url);
-                        $scope.feed[feedNum] = allQuestions;
-                        console.log($scope.feed);
+                        console.log("Hitting URL:"+config.url);
+                        $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
+                        //console.log($scope.feed);
 
-                        $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
-                        old = allQuestions;
+                        $scope.questions = allQuestions;        //Assigning the response data to questions in $scope object
                         
-                        for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
-                            var singleQuestion = allQuestions[i];
+                        //Loop through the questions, and fetch the choices for the MCQs
+                        for(var i=0;i<allQuestions.length;i++) {
 
+                            var singleQuestion = allQuestions[i];
                             singleQuestion.isSolved = false;
                             singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
 
+                            //If question is an MCQ, fetch the choices and all to dictionary
                             if(singleQuestion.kind==mcq_kind) {
-                                //var the_url = 'http://localhost:8000/question/question_mcq/choice/'+singleQuestion.id;      //call to get choices
-                                var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                                $http.get(the_url)
-                                    .then(function(response) {
-                                        var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                        //console.log(response.data);
-                                        dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
-                                    })
-                                }
-
-                            //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
-                            //Solution : tell arpit to return the question id the category belongs to like the choices in above call
-                            var catURL = "http://localhost:8000/api/question/question/"+singleQuestion.id+"/category"
-                                $http.get(catURL)
+                                
+                                var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                                $http.get(fetchChoicesOfAQuestion_API)
                                     .success(function(data,status,headers,config) {
-                                        //var cats = response.data;                    //get all the choices of a question in allChoices
-                                        //console.log(response.data);
-                                        //console.log("For question:"+singleQuestion.id);
-                                        var idOfQuestion = config.url.split("/")[6]
-                                        //console.log(idOfQuestion);
-                                        //if(response.data)
-                                        catDict[idOfQuestion] = data;          //allChoices[0]. question is the question id
-                                    })
+                                        //Populate Question ID to choices Dictionary
+                                        $scope.questionIdToChoicesDictionary[data[0].questionId] = data;
+                                })
+                            }
 
-                        
+                            var fetchCategoryOfAQuestion_API = questions_API+"/"+singleQuestion.id+"/category";
+                            $http.get(fetchCategoryOfAQuestion_API)
+                                .success(function(data,status,headers,config) {
 
-                        $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
-                        $scope.ctDict = catDict;
+                                    //Get ID of the question to which it belongs
+                                    var idOfQuestion = config.url.split("/")[6];
+                                    //Populate Question ID to Categories Dictionary
+                                    $scope.questionIdToCategoriesDictionary[idOfQuestion] = data;
 
-                    fetching = false;
-                }
+                            });
+
+                            isFetchingQuestions = false;
+                        }
                 });
             
             }
 
-            $(window).scroll(function () {
-               if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-                    if(!fetching) {
-                        feedNum++;
-                        console.log("Getting feed number:"+feedNum);
-                        fetching=true;
-                        getQuestions(feedNum);
-                    }     
-
-               }
-            });
-
+            //Makes first call for questions when controller is executed
             getQuestions(feedNum);
 
-            var getAllCategories = function() {
-                //console.log("Got categories");
-                $http.get(question_categories_API)
-                    .then(function(response) {
-                                            
-                        for(i=0;i<response.data.length;i++) {
-                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                            categoryDict[response.data[i].category_text] = response.data[i].id
-                        }
-                        console.log($scope.tags.allTagNames);
-                        //console.log(categoryDict);
 
-                    });
-            }
-
-            getAllCategories(); 
-
+            //Function determines the behavior of the Autocomplete Search Filter
             $scope.updateCategories = function() {
+
                 var filterString = $scope.tags.filterValue;
                 var lastIndex = filterString.slice(-1);
+
                 if(filterString==" ") {
                     $scope.tags.filterValue = "";
                     return;
                 }
+
                 if(lastIndex==' ' && filterString.length>1) {
                     $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
                     console.log($scope.tags.tagsNamesToAddToQuestion);
                     $scope.tags.filterValue = "";
 
-                    //Here a category filter has been added, we need to update the questions
-                    $scope.categoryFilterNumber = categoryDict[$scope.tags.tagsNamesToAddToQuestion[0]];
-                    var dict = [];                              // dict['question id'] = choice
-                    var catDict = [];
+                    //Here a new category filter has been added, we need to update the questions
+                    $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion[0]];
+                    $scope.questionIdToChoicesDictionary = [];
+                    $scope.questionIdToCategoriesDictionary = [];
                     $scope.isCategoryFilterOn = true;
                     feedNum=0;
                     $scope.feed = {};
+
+                    //Call getQuestions after resetting all variables
                     getQuestions(feedNum);
                     
                 }
             }
 
             
-            $scope.getQuestionTemplateByType = function(question) {
+            $scope.getTagTemplateQnA = function() {
                 
-                return getQuestionInfo[question.kind].templateFile;         //returning the template file from getQuestonInfo using question 
+                return tag_structure_file_qna;         //returning the template file from getQuestonInfo using question 
 
             }
 
-            $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
+
+            $(window).scroll(function () {
+               if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+                    if(!isFetchingQuestions) {
+                        feedNum++;
+                        console.log("Getting feed number:"+feedNum);
+                        isFetchingQuestions=true;
+                        getQuestions(feedNum);
+                    }     
+
+               }
+            });
+
+
+            //-------------Functions for styling the content-----------------------
+
+
+            //Returning the template file from getQuestonInfo using question 
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return getQuestionInfo[question.kind].templateFile;
+
+            }
+
+            //Returing if the selected choice is the correct choice
+            $scope.validateChoice = function(question,choice,index) {
                 if(question.isSolved)
                     return;
                 question.isSolved = true;
                 question.isSelected = index;
             }
 
+            //The choice selected get a grey background
             $scope.applyClassToSelectedChoice = function(question,choice,index) {
                 if(!question.isSolved)
                     return;
@@ -758,6 +766,7 @@ var app = angular
                     return "background-grey";
             }
 
+            //Change color of the choice option to indicate correctness
             $scope.applyColors = function(question,choice) {
                 if(!question.isSolved)
                     return;
@@ -769,10 +778,6 @@ var app = angular
                 }
             }
 
-            //Edit Question
-            $scope.editQuestion = function(questionID) {
-                alert("Editing Question:"+questionID);
-            }
         })
         .controller("postQuestion",function($scope,$http,$alert) {
 

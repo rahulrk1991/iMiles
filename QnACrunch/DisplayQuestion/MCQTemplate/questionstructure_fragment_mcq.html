@@ -2,7 +2,7 @@
 
 <div class="panel panel-default">
 	<div style="width:100%;height:auto;overflow:auto" class="panel-heading">
-		<div style="display:inline;width:90%:float:left" ng-repeat="category in ctDict[question.id]">
+		<div style="display:inline;width:90%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
 			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
 		</div>
 		<div style="display:inline;width:10%:float:right">
@@ -26,7 +26,7 @@
 	<div class="panel-body">
 		<div style="width:100%" class="btn-group"  aria-label="...">
 			<div style="visibility:hidden"></div>
-			<div id="choicesDiv" ng-repeat="choice in choiceDict[question.id]" style="display:inline">
+			<div id="choicesDiv" ng-repeat="choice in questionIdToChoicesDictionary[question.id]" style="display:inline">
 				<div ng-class="applyClassToSelectedChoice(question,choice,$index)" ng-click="validateChoice(question,choice,$index)" style="width:49%;height:auto;overflow:auto;border:0px"  class="btn btn-default">
 					<h4 style="float:left;vertical-align:middle"><span ng-class="applyColors(question,choice)" class="label label-default">{{'ABCDEFGH'[$index]}}</span> {{choice.choice_text}}</h4>
 				</div>
