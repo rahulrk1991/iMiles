@@ -21,6 +21,32 @@ var app = angular
             }
           };
         })
+        .factory('userService',function() {
+
+            userService = {};
+
+            userService.model = {
+                userName : undefined,
+                active : false
+            };
+            return {
+
+                logIn : function() {
+                    userService.model.userName = "rahulrk1991";
+                    userService.model.active = true;
+                    return userService.model;
+                },
+                logOut : function() {
+                    userService.model.userName = undefined;
+                    userService.model.active = false;
+                    return userService.model;
+                },
+                returnState : function() {
+                    return userService.model;
+                }
+            }
+
+        })
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
@@ -331,9 +357,10 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$window) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService) {
 
             $scope.title="iMiles Menu";
+            $scope.userModel = userService.returnState();
 
             $scope.registerUser = function() {
                 var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
@@ -384,9 +411,15 @@ var app = angular
                                 $("#signInModalEmail").modal('hide');
                                 //$('#myModal').hide('hide');
                                 //$window.location.assign("QnACrunch");
-                                setTimeout(function() {
+                                $timeout(function() {
+                                    //userService.logIn();
+                                    console.log($scope.userModel.active);
+                                    $scope.userModel = userService.logIn();
+                                    console.log($scope.userModel.active);
                                     $location.url("QnACrunch");
                                     $scope.$apply();
+                                    //userService.logOut();
+                                    //console.log($scope.userModel);
                                 }, 1000);
                                 
                             }
@@ -451,6 +484,7 @@ var app = angular
         })
 
         .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
+
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
             $scope.panel={};
@@ -601,7 +635,12 @@ var app = angular
         .controller("profileController",function($scope) {
             //dummy controller for profile page
         })
-        .controller("questionsController",function($scope,$http,$sce) {
+        .controller("questionsController",function($scope,$http,$sce,userService) {
+
+            //this.userModel = userService.model;
+
+            //console.log(this.userModel.active);
+            //console.log(userService.model.active);
 
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};

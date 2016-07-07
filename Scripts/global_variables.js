@@ -4,8 +4,8 @@
 
 //URL BUILDER
 var protocol = "http://";
-var host_name ="localhost";
-var port_number = "8000";
+var host_name ="example.com";
+var port_number = "80";
 var API_Start = protocol+host_name+":"+port_number;
 
 //Questions API

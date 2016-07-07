@@ -56,7 +56,7 @@
 
     </head>
     <body ng-app="iMiles_Module">
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav ng-controller="landingPageController" class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -72,8 +72,8 @@
                         
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href=""><span style="padding-right:4px" class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>Notifications</a></li>
-                        <li><a href="" bs-aside="aside" data-animation="am-slide-left" data-container="body" data-controller="landingPageController"  data-template-url="Stylesheets/aside.html" >
+                        <li ng-show="userModel.active"><a href=""><span style="padding-right:4px" class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>Notifications</a></li>
+                        <li ng-show="userModel.active"><a href="" bs-aside="aside" data-animation="am-slide-left" data-container="body" data-controller="landingPageController"  data-template-url="Stylesheets/aside.html" >
                             <span style="padding-right:4px" class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>MENU</a>
                         </li>
                     </ul>
