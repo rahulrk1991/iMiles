@@ -366,6 +366,15 @@ var app = angular
                 var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
             }
 
+            $scope.logout = function() {
+                $scope.userModel = userService.logOut();
+                $timeout(function() {
+                    $location.url("/");
+                    $scope.$apply();
+                }, 100);
+                
+            }
+
             $scope.submitLoginForm = function() {
                 console.log($scope.email);
                 console.log($scope.password);
@@ -418,8 +427,6 @@ var app = angular
                                     console.log($scope.userModel.active);
                                     $location.url("QnACrunch");
                                     $scope.$apply();
-                                    //userService.logOut();
-                                    //console.log($scope.userModel);
                                 }, 1000);
                                 
                             }
