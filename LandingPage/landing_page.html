@@ -1,4 +1,3 @@
-
 <link href="LandingPage/Stylesheets/landing_page.css" rel="stylesheet" type="text/css"/>
 <style>
 
@@ -18,6 +17,14 @@
     margin: 0 auto;
     height:250px;
     }
+    .form_inputs {
+        width:90%;
+        margin :5 auto;
+        margin-left: 20;
+    }
+    .glyphicon {
+        font-size: 40px;
+    }
 </style>
 
 
@@ -33,65 +40,59 @@
                 <div id="registerModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header" style="background-color:#2F4F4F">
+                            <div class="modal-header" style="background-color:#187FD6">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Register as New Member</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="modal-body" style="background-color:white;">
-                                <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label for="inputName1" class="col-sm-4 control-label" style="color:black;">Name*</label>
-                                        <div class="col-sm-8">
-                                            <input ng-model="name" type="text" class="form-control" id="inputName1" placeholder="Enter your Full Name">
-                                        </div>
-                                    </div>
+                                    <form class="form-horizontal">
 
-                                    <div class="form-group">
-                                        <label for="inputEmail1" class="col-sm-4 control-label" style="color:black;">Email*</label>
-                                        <div class="col-sm-8">
-                                            <input ng-model="email" type="email" class="form-control" id="inputEmail1" placeholder="Email Address">
+                                        <div class="form-group form_input">
+                                            <div class="input-group-lg" class="col-sm-8" >
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-user" ></span>
+                                                <input ng-model="name" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Full Name" >
+                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputPass1" class="col-sm-4 control-label" style="color:black;">Password*</label>
-                                        <div class="col-sm-8">
-                                            <input ng-model="password" type="password" class="form-control" id="inputPass1" placeholder="Create Password for Account">
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label for="inputMobile1" class="col-sm-4 control-label" style="color:black;">Mobile Number*</label>
-                                        <div class="col-sm-8">
-                                            <input ng-model="mobile" type="text" class="form-control" id="inputMobile1" placeholder="Mobile Number Please">
+                                        <div class="form-group form_input">
+                                            <div class="input-group-lg" class="col-sm-8">
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-envelope" ></span>
+                                                <input ng-model="email" type="email" class="form-control" style="display:inline;float:left;width:80%" placeholder="Email Address">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-9">
-                                            <button ng-click="submitRegisterForm()" type="submit" class="btn btn-lg" style="background-color:#D2B48C;font-weight: bold;float:right;">Join interviewmiles.com</button>
+                                        <div class="form-group form_input">
 
+                                            <div class="input-group-lg" class="col-sm-8">
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-lock" ></span>
+                                                <input ng-model="password" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Password">
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            <hr />
-                            <h5 style="text-align:center;color:blue;"> or SignUp using</h5><br />
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4">
-                                    <button class="btn btn-lg"  style="float:right;background-color:#3b5998;color:white;"><i class="fa fa-facebook-official" aria-hidden="true"></i>  Facebook</button>
+
+                                        <div class="form-group form_input">
+
+                                            <div class="input-group-lg" class="col-sm-8">
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-check" ></span>
+                                                <input ng-model="Confirmpassword" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Confirm Password">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form_input">
+
+                                            <div class="input-group-lg" class="col-sm-8">
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-earphone" ></span>
+                                                <input ng-model="mobile" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Mobile Number Please">
+                                            </div>
+                                        </div>
+
+                                        <div style="margin-top:30px" class="form-group">
+                                            <div class="col-sm-9">
+                                                <button ng-click="submitRegisterForm()" type="submit" class="btn btn-lg" style="margin-left:50px;float:left;background-color:#0E0E0E;color:white;overflow:auto">Join interviewmiles.com</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-md-4 col-sm-4">
-                                    <center>
-                                    <button class="btn btn-lg" style="background-color:#007bb6;color:white;"><i class="fa fa-linkedin-square" aria-hidden="true"></i>  LinkedIn</button>
-                                    </center>
-                                </div>
-                                <div class="col-md-4 col-sm-4">
-                                    <button class="btn btn-lg" style="background-color:#444;color:white;"><i class="fa fa-google-plus-square" aria-hidden="true"></i>  Google</button>
-                                </div>
-                            </div>
-                            <br />
-                         </div>
-                            </div>
-                            <div class="modal-footer" style="background-color:white;">
                             </div>
                         </div>
                     </div>
@@ -105,7 +106,7 @@
                 <div id="signInModalEmail" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header" style="background-color:#2F4F4F">
+                            <div class="modal-header" style="background-color:#187FD6">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Log In using Email Address</h4>
                             </div>
