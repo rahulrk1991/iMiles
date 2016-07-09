@@ -1,10 +1,10 @@
 <link href="QnACrunch/Stylesheets/qnacrunch.css" rel="stylesheet" type="text/css"/>
-<div class="container" style="width:700px">
+<div class="container" style="width:700px;margin-top:30px">
     <div class="input-group input-group-lg" style="width:100%">
         <span class="input-group-addon" id="sizing-addon1">
             <span class="glyphicon glyphicon-search"></span>
         </span>
-            <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Add tags here..." bs-typeahead>
+            <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Search for topics here..." bs-typeahead>
     </div>
     <br>
     <div class="panel panel-default container" style="width:100%;height:auto;overflow:auto">
