@@ -5,10 +5,11 @@ a {
     color:inherit;
 }
 .alert-box {
-    width:30%;
+    width:26%;
     position: absolute;
     top: 70px;
-    right:50px;
+    right:20px;
+    z-index: 100;
 }
 
 .display-inline {

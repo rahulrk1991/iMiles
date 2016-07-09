@@ -424,7 +424,7 @@ var app = angular
                                     console.log($scope.userModel.active);
                                     $location.url("QnACrunch");
                                     $scope.$apply();
-                                }, 1000);
+                                }, 200);
                                 
                             }
                             else if (responseString=="Invalid login details") {
