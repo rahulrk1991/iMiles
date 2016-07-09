@@ -375,7 +375,7 @@ var app = angular
                 console.log($scope.email);
                 console.log($scope.password);
 
-                $http.get("http://example.com/api/user/token/")
+                $http.get(user_token_API)
                     .then(function(response){
                         //console.log(response.data);
 
@@ -397,7 +397,7 @@ var app = angular
                         var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://example.com/api/user/login/",
+                        "url": user_login_API,
                         "method": "POST",
                         "headers": {
                         "cache-control": "no-cache"
@@ -445,8 +445,8 @@ var app = angular
 
                 $scope.register = {};
                 $scope.register.name="test test";
-                $scope.register.username = "test571";
-                $scope.register.email = "test571@gmail.com";
+                $scope.register.username = "test572";
+                $scope.register.email = "test572@gmail.com";
                 $scope.register.password = "hello123";
                 $scope.register.confirmpassword = "hello123";
                 $scope.register.mobile = "9945";
@@ -459,7 +459,7 @@ var app = angular
                 console.log($scope.register.confirmpassword);
                 console.log($scope.register.mobile);
 
-                $http.get("http://example.com/api/user/token/")
+                $http.get(user_token_API)
                     .then(function(response){
                         console.log(response.data);
 
@@ -481,7 +481,7 @@ var app = angular
                         var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://example.com/api/user/register/",
+                        "url": user_registration_API,
                         "method": "POST",
                         "headers": {
                         "cache-control": "no-cache"

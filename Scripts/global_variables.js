@@ -37,6 +37,9 @@ var question_categories_API = API_Start + question_categories_End_Point;
 var question_add_choices_End_Point = "/api/"+"question/choice/";
 var question_add_choices_API = API_Start + question_add_choices_End_Point;
 
+var user_token_End_Point = "/api/"+"user/token/";
+var user_token_API = API_Start + user_token_End_Point;
+
 var user_registration_End_Point = "/api/"+"user/register/";
 var user_registration_API = API_Start + user_registration_End_Point;
 
