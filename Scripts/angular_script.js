@@ -357,14 +357,10 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert) {
 
             $scope.title="iMiles Menu";
             $scope.userModel = userService.returnState();
-
-            $scope.registerUser = function() {
-                var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
-            }
 
             $scope.logout = function() {
                 $scope.userModel = userService.logOut();
@@ -442,12 +438,23 @@ var app = angular
 
             $scope.submitRegisterForm = function() {
 
-                console.log($scope.name)
-                console.log($scope.email);
-                console.log($scope.password);
-                console.log($scope.mobile);
+                $scope.register = {};
+                $scope.register.name="test test";
+                $scope.register.username = "test571";
+                $scope.register.email = "test571@gmail.com";
+                $scope.register.password = "hello123";
+                $scope.register.confirmpassword = "hello123";
+                $scope.register.mobile = "9945";
 
-                $http.get("http://localhost:8000/api/user/token/")
+
+                console.log($scope.register.name);
+                console.log($scope.register.username);
+                console.log($scope.register.email);
+                console.log($scope.register.password);
+                console.log($scope.register.confirmpassword);
+                console.log($scope.register.mobile);
+
+                $http.get("http://example.com/api/user/token/")
                     .then(function(response){
                         console.log(response.data);
 
@@ -457,23 +464,22 @@ var app = angular
 
                         var form = new FormData();
                         form.append("csrfmiddlewaretoken", token); //get this token from above api
-                        form.append("username", $scope.email); //get this field from user
-                        form.append("password", $scope.password); //get this field from user
+                        form.append("full_name", $scope.register.name); //get this field from user
+                        form.append("username", $scope.register.username); //get this field from user
+                        form.append("email", $scope.register.email);
+                        form.append("password", $scope.register.password);
+                        form.append("password2", $scope.register.confirmpassword);
+                        form.append("contact_no", $scope.register.mobile);
 
-                        var cookie = "csrftoken=";
-                        cookie = cookie+token;
-
-                        console.log("Cookie plus token:"+cookie);
+                        document.cookie = "csrftoken="+token;
 
                         var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://localhost:8000/api/user/register/",
+                        "url": "http://example.com/api/user/register/",
                         "method": "POST",
                         "headers": {
-                        "cookie": cookie,
-                        "cache-control": "no-cache",
-                        "postman-token": "363f8225-6b4d-34c0-9d16-85dbd330f288"
+                        "cache-control": "no-cache"
                         },
                         "processData": false,
                         "contentType": false,
@@ -483,6 +489,28 @@ var app = angular
 
                         $.ajax(settings).done(function (response) {
                             console.log(response);
+                            var responseString = response.split("\"")[3];
+                            //console.log(responseString);
+                            if(responseString=="success") {
+                                
+                                $("#registerModal").modal('hide');
+                                $alert({title: 'Registration successful! Signing you in...', content: '', placement:'alert-box', type: 'success', show: true,duration:10});
+
+                                
+                                $timeout(function() {
+                                    //userService.logIn();
+                                    console.log($scope.userModel.active);
+                                    $scope.userModel = userService.logIn();
+                                    console.log($scope.userModel.active);
+                                    $location.url("QnACrunch");
+                                    $scope.$apply();
+                                }, 1000);
+                            }
+                            else {
+                                $("#registerModal").modal('hide');
+                                $alert({title: 'Registration unsuccessful! Try again!', content: '', placement:'alert-box', type: 'danger', show: true,duration:10});
+
+                            }
                         });
                     });
 

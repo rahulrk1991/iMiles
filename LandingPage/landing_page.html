@@ -50,21 +50,28 @@
                                         <div class="form-group form_input">
                                             <div class="input-group-lg" class="col-sm-8" >
                                                 <span style="float:left;width:10%" class="glyphicon glyphicon-user" ></span>
-                                                <input ng-model="name" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Full Name" >
+                                                <input ng-model="register.name" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Full Name" >
+                                             </div>
+                                        </div>
+
+                                        <div class="form-group form_input">
+                                            <div class="input-group-lg" class="col-sm-8" >
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-user" ></span>
+                                                <input ng-model="register.username" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Username" >
                                              </div>
                                         </div>
 
                                         <div class="form-group form_input">
                                             <div class="input-group-lg" class="col-sm-8">
                                                 <span style="float:left;width:10%" class="glyphicon glyphicon-envelope" ></span>
-                                                <input ng-model="email" type="email" class="form-control" style="display:inline;float:left;width:80%" placeholder="Email Address">
+                                                <input ng-model="register.email" type="email" class="form-control" style="display:inline;float:left;width:80%" placeholder="Email Address">
                                             </div>
                                         </div>
                                         <div class="form-group form_input">
 
                                             <div class="input-group-lg" class="col-sm-8">
                                                 <span style="float:left;width:10%" class="glyphicon glyphicon-lock" ></span>
-                                                <input ng-model="password" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Password">
+                                                <input ng-model="register.password" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Password">
                                             </div>
                                         </div>
 
@@ -72,7 +79,7 @@
 
                                             <div class="input-group-lg" class="col-sm-8">
                                                 <span style="float:left;width:10%" class="glyphicon glyphicon-check" ></span>
-                                                <input ng-model="Confirmpassword" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Confirm Password">
+                                                <input ng-model="register.confirmpassword" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Confirm Password">
                                             </div>
                                         </div>
 
@@ -80,7 +87,7 @@
 
                                             <div class="input-group-lg" class="col-sm-8">
                                                 <span style="float:left;width:10%" class="glyphicon glyphicon-earphone" ></span>
-                                                <input ng-model="mobile" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Mobile Number Please">
+                                                <input ng-model="register.mobile" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Mobile Number">
                                             </div>
                                         </div>
 
