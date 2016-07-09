@@ -372,8 +372,9 @@ var app = angular
             }
 
             $scope.submitLoginForm = function() {
-                console.log($scope.email);
-                console.log($scope.password);
+
+                console.log($scope.login.email);
+                console.log($scope.login.password);
 
                 $http.get(user_token_API)
                     .then(function(response){
@@ -385,8 +386,8 @@ var app = angular
 
                         var form = new FormData();
                         form.append("csrfmiddlewaretoken", token); //get this token from above api
-                        form.append("username", $scope.email); //get this field from user
-                        form.append("password", $scope.password); //get this field from user
+                        form.append("username", $scope.login.email); //get this field from user
+                        form.append("password", $scope.login.password); //get this field from user
 
                         var cookie = "csrftoken=";
                         cookie = cookie+token;
@@ -443,15 +444,6 @@ var app = angular
 
             $scope.submitRegisterForm = function() {
 
-                $scope.register = {};
-                $scope.register.name="test test";
-                $scope.register.username = "test572";
-                $scope.register.email = "test572@gmail.com";
-                $scope.register.password = "hello123";
-                $scope.register.confirmpassword = "hello123";
-                $scope.register.mobile = "9945";
-
-
                 console.log($scope.register.name);
                 console.log($scope.register.username);
                 console.log($scope.register.email);
@@ -499,7 +491,7 @@ var app = angular
                             if(responseString=="success") {
                                 
                                 $("#registerModal").modal('hide');
-                                $alert({title: 'Registration successful! Signing you in...', content: '', placement:'alert-box', type: 'success', show: true,duration:10});
+                                $alert({title: 'Registration successful!', content: 'Signing you in...', placement:'alert-box', type: 'success', show: true,duration:10});
 
                                 
                                 $timeout(function() {
@@ -513,7 +505,7 @@ var app = angular
                             }
                             else {
                                 $("#registerModal").modal('hide');
-                                $alert({title: 'Registration unsuccessful! Try again!', content: '', placement:'alert-box', type: 'danger', show: true,duration:10});
+                                $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'alert-box', type: 'danger', show: true,duration:10});
 
                             }
                         });
