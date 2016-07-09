@@ -414,8 +414,9 @@ var app = angular
                             if(responseString=="success") {
                                 console.log("Logged in successfully");
                                 $("#signInModalEmail").modal('hide');
-                                //$('#myModal').hide('hide');
-                                //$window.location.assign("QnACrunch");
+                                
+                                $alert({title: 'Logged in successfully!', content: '', placement:'alert-box', type: 'success', show: true,duration:10});
+
                                 $timeout(function() {
                                     //userService.logIn();
                                     console.log($scope.userModel.active);
@@ -427,10 +428,14 @@ var app = angular
                                 
                             }
                             else if (responseString=="Invalid login details") {
-                                console.log("Log in error!");
+                                $("#signInModalEmail").modal('hide');
+                                $alert({title: 'Invalid credentials!', content: '', placement:'alert-box', type: 'danger', show: true,duration:10});
+
                             }
                             else {
-                                console.log("Theres been an error! Please check console for clues");
+                                $("#signInModalEmail").modal('hide');
+                                $alert({title: 'There was an error logging you in! Please try again.', content: '', placement:'alert-box', type: 'success', show: true,duration:10});
+
                             }
                         });
                     });
