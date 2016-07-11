@@ -93,6 +93,7 @@ var app = angular
                 templateUrl: absolute_path+"Profile/profile.html",
                 controller:"profileController"
             })
+
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
 
@@ -423,7 +424,7 @@ var app = angular
                                     console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
                                     console.log($scope.userModel.active);
-                                    $location.url("QnACrunch");
+                                    $location.url("Profile");
                                     $scope.$apply();
                                 }, 200);
                                 
@@ -665,7 +666,52 @@ var app = angular
 
         })
         .controller("profileController",function($scope) {
-            //dummy controller for profile page
+            
+
+            $scope.flag=false;
+            if(!($scope.flag)) {
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+                console.log("Executed!");
+                $scope.flag=true;
+            }
+              
+
+              // Set a callback to run when the Google Visualization API is loaded.
+              
+
+              // Callback that creates and populates a data table,
+              // instantiates the pie chart, passes in the data and
+              // draws it.
+              function drawChart() {
+
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Topping');
+                data.addColumn('number', 'Score');
+                data.addRows([
+                  ['Aptitude', 900],
+                  ['Puzzles', 150],
+                  ['Data Structures', 670],
+                  ['Strings', 170],
+                  ['Algorithms', 20],
+                  ['Programming Languages', 708],
+                  ['Bit Manipulations', 125]
+                ]);
+
+                // Set chart options
+                var options = {
+                    'title':'',
+                    'width':700,
+                    'height':420,
+                    'chartArea':{width:"85%",height:"80%"},
+                    'legend': { position: 'none' }
+                };
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+              }
         })
         .controller("questionsController",function($scope,$http,$sce,userService) {
 
