@@ -93,11 +93,17 @@ var app = angular
                 templateUrl: absolute_path+"Profile/profile.html",
                 controller:"profileController"
             })
-
+            .when("/Settings", {
+                templateUrl: absolute_path+"Settings/settings.html",
+                controller:"settingsController"
+            })
             $locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("settingsController",function($scope) {
+            
+        })
         .controller("onlineMockTestsChooseTestController",function($scope,$http) {
 
             //Variable to display tags/search them in autocomplete search bar
