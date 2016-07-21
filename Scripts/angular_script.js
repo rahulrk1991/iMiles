@@ -423,7 +423,7 @@ var app = angular
                                 console.log("Logged in successfully");
                                 $("#signInModalEmail").modal('hide');
                                 
-                                $alert({title: 'Logged in successfully!', content: '', placement:'alert-box', type: 'success', show: true,duration:10});
+                                $alert({title: 'Logged in successfully!', content: '', placement:'alert-box', type: 'success', show: true,duration:4});
 
                                 $timeout(function() {
                                     //userService.logIn();
@@ -437,7 +437,7 @@ var app = angular
                             }
                             else if (responseString=="Invalid login details") {
                                 $("#signInModalEmail").modal('hide');
-                                $alert({title: 'Invalid credentials!', content: '', placement:'alert-box', type: 'danger', show: true,duration:10});
+                                $alert({title: 'Invalid credentials!', content: '', placement:'alert-box', type: 'danger', show: true,duration:4});
 
                             }
                             else {
