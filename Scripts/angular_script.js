@@ -1,6 +1,6 @@
 
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
@@ -364,7 +364,7 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies) {
 
             $scope.title="iMiles Menu";
             $scope.userModel = userService.returnState();
@@ -396,11 +396,13 @@ var app = angular
                         form.append("username", $scope.login.email); //get this field from user
                         form.append("password", $scope.login.password); //get this field from user
 
-                        var cookie = "csrftoken=";
+                        /*var cookie = "csrftoken=";
                         cookie = cookie+token;
-                        document.cookie = "csrftoken="+token;
+                        document.cookie = "csrftoken="+token;*/
 
-                        //console.log("Cookie plus token:"+cookie);
+                        $cookies.put("csrftoken",token);
+
+                        //console.log("Cookie plus token:"+$cookies.get("csrftoken"));
 
                         var settings = {
                         "async": true,
@@ -442,7 +444,7 @@ var app = angular
                             }
                             else {
                                 $("#signInModalEmail").modal('hide');
-                                $alert({title: 'There was an error logging you in! Please try again.', content: '', placement:'alert-box', type: 'success', show: true,duration:10});
+                                $alert({title: 'There was an error logging you in! Please try again.', content: '', placement:'alert-box', type: 'success', show: true,duration:4});
 
                             }
                         });
@@ -498,7 +500,7 @@ var app = angular
                             if(responseString=="success") {
                                 
                                 $("#registerModal").modal('hide');
-                                $alert({title: 'Registration successful!', content: 'Signing you in...', placement:'alert-box', type: 'success', show: true,duration:10});
+                                $alert({title: 'Registration successful!', content: 'Signing you in...', placement:'alert-box', type: 'success', show: true,duration:4});
 
                                 
                                 $timeout(function() {
@@ -512,7 +514,7 @@ var app = angular
                             }
                             else {
                                 $("#registerModal").modal('hide');
-                                $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'alert-box', type: 'danger', show: true,duration:10});
+                                $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'alert-box', type: 'danger', show: true,duration:4});
 
                             }
                         });
