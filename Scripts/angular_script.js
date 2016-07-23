@@ -50,8 +50,10 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                templateUrl: absolute_path+"LandingPage/landing_page.html",
-                controller:"landingPageController"
+                /*templateUrl: absolute_path+"LandingPage/landing_page.html",
+                controller:"landingPageController"*/
+                templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
+                controller:"questionsController"
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -747,6 +749,23 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             var isFetchingQuestions = false;
+
+            //Function to remove filter category
+            $scope.removeCategory = function(categoryToRemove) {
+
+                console.log("Trying to remove"+categoryToRemove);
+                $scope.tags.tagsNamesToAddToQuestion = [];
+                $scope.isCategoryFilterOn = false;
+                getQuestions(feedNum);
+
+            }
+
+
+            $scope.getTagTemplate = function() {
+                
+                return tag_structure_file_postQuestion;         //returning the template file from getQuestonInfo using question 
+
+            }
 
 
             //Function to GET all Categories 
