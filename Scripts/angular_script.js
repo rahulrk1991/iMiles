@@ -753,7 +753,7 @@ var app = angular
             //Function to remove filter category
             $scope.removeCategory = function(categoryToRemove) {
 
-                console.log("Trying to remove"+categoryToRemove);
+                console.log("Removing category:"+categoryToRemove);
                 $scope.tags.tagsNamesToAddToQuestion = [];
                 $scope.isCategoryFilterOn = false;
                 getQuestions(feedNum);
@@ -763,7 +763,7 @@ var app = angular
 
             $scope.getTagTemplate = function() {
                 
-                return tag_structure_file_postQuestion;         //returning the template file from getQuestonInfo using question 
+                return tag_structure_file_search_bar;         //returning the template file from getQuestonInfo using question 
 
             }
 

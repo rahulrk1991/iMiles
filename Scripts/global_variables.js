@@ -74,6 +74,7 @@ var getQuestionInfo = {};
 
 var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTemplate/"+"choice_structure.html";
 var tag_structure_file_postQuestion = absolute_path+"PostQuestion/tagTemplate.html";
-var tag_structure_file_qna = absolute_path+"QnACrunch/DisplayQuestion/tagTemplate.html"
+var tag_structure_file_qna = absolute_path+"QnACrunch/DisplayQuestion/tagTemplate.html";
+tag_structure_file_search_bar = absolute_path+"QnACrunch/DisplayQuestion/tagTemplateForSearchBar.html";
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;
