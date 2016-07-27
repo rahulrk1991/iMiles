@@ -50,8 +50,10 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                templateUrl: absolute_path+"LandingPage/landing_page.html",
-                controller:"landingPageController"
+                /*templateUrl: absolute_path+"LandingPage/landing_page.html",
+                controller:"landingPageController"*/
+                templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsChooseTestController"
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -61,7 +63,7 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/OnlineMockTests/TakeATest/:category/:duration/:difficulty", {
+            .when("/OnlineMockTests/TakeATest/:id", {
                 templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
                 controller:"onlineMockTestsTakeATestController"
             })
@@ -104,7 +106,7 @@ var app = angular
         .controller("settingsController",function($scope) {
             
         })
-        .controller("onlineMockTestsChooseTestController",function($scope,$http) {
+        .controller("onlineMockTestsChooseTestController",function($scope,$http,$location) {
 
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
@@ -126,6 +128,24 @@ var app = angular
             $scope.difficulty = "Easy";
 
             categoryDict = [];
+
+            var getAllMockTests = function() {
+                $http.get("http://example.com/api/mock/mocks/")
+                    .then(function(response) {
+                        $scope.allMocks = response.data;
+                        console.log($scope.allMocks);
+                    })
+            }
+
+            getAllMockTests();
+
+            $scope.getMockSummaryPanel = function() {
+                return mock_summary_panel;
+            }
+
+            $scope.startMockTestWithID = function(mockID) {
+                $location.url("/OnlineMockTests/TakeATest/"+mockID);
+            }
 
             var getAllCategories = function() {
                 //console.log("Got categories");
@@ -161,15 +181,6 @@ var app = angular
         .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal) {
 
 
-            //Variable to display tags/search them in autocomplete search bar
-            $scope.tags = {};
-            $scope.tags.allTagNames = [];
-            $scope.tags.allTagId = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
-
-            choiceDict = [];
-            categoryDict = [];
-
             $scope.attemptedQuestions=0;
             $scope.totalQuestions;
 
@@ -177,17 +188,21 @@ var app = angular
             $scope.title = "Your Time is up!";
             $scope.content = "Click on the below button to get a comprehensive review of your test";
 
-            //Timer variables
-            var durationInMinutes = $routeParams.duration;
-            var durationInSeconds = $routeParams.duration*60;
 
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
                 });
-            //$scope.min=durationInMinutes;
-            //$scope.sec=0;
 
-            $scope.counter = 10;
+
+            $http.get("http://example.com/api/mock/mocks/"+$routeParams.id)
+                .then(function(response) {
+                    var testInfo = response.data;
+                    var durationInMinutes = testInfo.duration;
+                    $scope.counter = testInfo.duration*60;
+                })
+
+
+            //$scope.counter = 10;
             $scope.onTimeout = function(){
                 $scope.counter--;
                 $scope.min = parseInt(($scope.counter)/60);
@@ -219,10 +234,11 @@ var app = angular
             $scope.isTestSubmitted = false;
 
             //Get all the question data using http get
-            $http.get(post_mcq_Questions_API)
+            $http.get("http://example.com/api/mock/mocks/"+$routeParams.id+"/questions")
                 .then(function(response) {
                     var allQuestions = response.data;
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    console.log($scope.questions);
                     var dict = [];                              // dict['question id'] = choice
                     $scope.totalQuestions = allQuestions.length;
                     for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
@@ -232,32 +248,7 @@ var app = angular
                         singleQuestion.usersChoice = -1;
                         singleQuestion.testId = i+1;
 
-                        var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                        $http.get(the_url)
-                            .then(function(response) {
-                                var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                //console.log(response.data);
-                                dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
-                                //console.log(singleQuestion);
-                            })
-                        
-
-                        //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
-                        //Solution : tell arpit to return the question id the category belongs to like the choices in above call
-                        /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
-                            $http.get(catURL)
-                                .then(function(response) {
-                                    var cats = response.data;                    //get all the choices of a question in allChoices
-                                    //console.log(response.data);
-                                    console.log("For question:"+singleQuestion.id);
-                                    console.log(response.data);
-                                    if(response.data)
-                                        $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
-                                })*/
-
                     }
-
-                    $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
 
 
                     var getAllCategories = function() {
@@ -295,7 +286,7 @@ var app = angular
             
             $scope.getQuestionTemplateByType = function(question) {
                 
-                return getQuestionInfo[question.kind].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
+                return getQuestionInfo["mcq"].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
 
             }
 
