@@ -50,10 +50,10 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                /*templateUrl: absolute_path+"LandingPage/landing_page.html",
-                controller:"landingPageController"*/
-                templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
-                controller:"onlineMockTestsChooseTestController"
+                templateUrl: absolute_path+"LandingPage/landing_page.html",
+                controller:"landingPageController"
+                /*templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsChooseTestController"*/
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -247,6 +247,7 @@ var app = angular
                         singleQuestion.isSolved = false;
                         singleQuestion.usersChoice = -1;
                         singleQuestion.testId = i+1;
+
 
                     }
 
