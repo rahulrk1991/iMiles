@@ -50,10 +50,10 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                /*templateUrl: absolute_path+"LandingPage/landing_page.html",
-                controller:"landingPageController"*/
-                templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
-                controller:"questionsController"
+                templateUrl: absolute_path+"LandingPage/landing_page.html",
+                controller:"landingPageController"
+                /*templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsChooseTestController"*/
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
