@@ -52,8 +52,8 @@ var app = angular
             .when("/", {
                 templateUrl: absolute_path+"LandingPage/landing_page.html",
                 controller:"landingPageController"
-                /*templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
-                controller:"onlineMockTestsChooseTestController"*/
+                /*templateUrl: absolute_path+"PuzzlingPuzzles/DisplayQuestion/qnacrunch.html",
+                controller:"PuzzlingPuzzlesController"*/
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -79,6 +79,10 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/ViewQuestion/view_question.html",
                 controller:"viewQuestionsController"
             })
+            .when("/PuzzlingPuzzles", {
+                templateUrl: absolute_path+"PuzzlingPuzzles/DisplayQuestion/qnacrunch.html",
+                controller:"PuzzlingPuzzlesController"
+            })
             .when("/PostQuestion", {
                 templateUrl: absolute_path+"PostQuestion/post_question.html",
                 controller:"postQuestion"
@@ -103,6 +107,111 @@ var app = angular
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("PuzzlingPuzzlesController",function($scope,$http,$sce,userService) {
+
+            //Feed contains array of 10 sets of questions all the questions 
+            $scope.feed = {};
+            var feedNum = 0;
+            var isFetchingQuestions = false;
+            var puzzleCategoryID = 7;
+
+            $scope.questionIdToAnswerDictionary=[];
+
+            //Function to GET questions
+            var getQuestions = function(feedNum) {
+
+                console.log("Feed Number:"+feedNum);
+
+
+                //Fetching puzzles here
+                $http.get(category_enabled_questions_API+puzzleCategoryID+"?start="+feedNum*10)
+                    .success(function(data,status,headers,config) {
+                        
+                        var allQuestions = data;
+                        console.log("Hitting URL:"+config.url);
+                        $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
+                        //console.log($scope.feed);
+
+                        $scope.questions = allQuestions;        //Assigning the response data to questions in $scope object
+                        
+                        //Loop through the questions, and fetch the choices for the MCQs
+                        for(var i=0;i<allQuestions.length;i++) {
+
+                            var singleQuestion = allQuestions[i];
+                            singleQuestion.isSolved = false;
+                            singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
+
+                            $http.get(post_descriptive_questions_API+singleQuestion.id)
+                                .success(function(data,status,headers,config) {
+                                    var idOfQuestion = data.id;
+                                    //Populate Question ID to Categories Dictionary
+                                    $scope.questionIdToAnswerDictionary[idOfQuestion] = data.answer;
+                                })
+
+                            isFetchingQuestions = false;
+                        }
+                });
+            
+            }
+
+            console.log($scope.questionIdToAnswerDictionary);
+
+            //Makes first call for questions when controller is executed
+            getQuestions(feedNum);
+
+
+            $(window).scroll(function () {
+               if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+                    if(!isFetchingQuestions) {
+                        feedNum++;
+                        console.log("Getting feed number:"+feedNum);
+                        isFetchingQuestions=true;
+                        getQuestions(feedNum);
+                    }     
+
+               }
+            });
+
+
+            //-------------Functions for styling the content-----------------------
+
+
+            //Returning the template file from getQuestonInfo using question 
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return absolute_path+"PuzzlingPuzzles/DisplayQuestion/DescriptiveTemplate/questionstructure_fragment_descriptive.html";
+
+            }
+
+            //Returing if the selected choice is the correct choice
+            $scope.validateChoice = function(question,choice,index) {
+                if(question.isSolved)
+                    return;
+                question.isSolved = true;
+                question.isSelected = index;
+            }
+
+            //The choice selected get a grey background
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                if(!question.isSolved)
+                    return;
+                if(question.isSelected==index)
+                    return "background-grey";
+            }
+
+            //Change color of the choice option to indicate correctness
+            $scope.applyColors = function(question,choice) {
+                if(!question.isSolved)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red"
+                }
+            }
+
+        })
         .controller("settingsController",function($scope) {
             
         })

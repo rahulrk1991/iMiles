@@ -1,0 +1,13 @@
+
+<div class="container" style="width:700px;margin-top:30px">    
+    <br>
+    <div  style="width:100%">
+        <div ng-repeat="questions in feed">
+            <div ng-repeat="question in questions">
+         
+                <div ng-include="getQuestionTemplateByType(question)"></div>            
+         
+            </div>
+        </div>
+    </div>
+</div>
