@@ -80,7 +80,7 @@ var app = angular
                 controller:"viewQuestionsController"
             })
             .when("/PuzzlingPuzzles", {
-                templateUrl: absolute_path+"PuzzlingPuzzles/DisplayQuestion/qnacrunch.html",
+                templateUrl: absolute_path+"PuzzlingPuzzles/puzzlingPuzzles.html",
                 controller:"PuzzlingPuzzlesController"
             })
             .when("/PostQuestion", {
@@ -113,7 +113,7 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             var isFetchingQuestions = false;
-            var puzzleCategoryID = 7;
+            var puzzleCategoryID = 26;
 
             $scope.questionIdToAnswerDictionary=[];
 
@@ -179,7 +179,7 @@ var app = angular
             //Returning the template file from getQuestonInfo using question 
             $scope.getQuestionTemplateByType = function(question) {
                 
-                return absolute_path+"PuzzlingPuzzles/DisplayQuestion/DescriptiveTemplate/questionstructure_fragment_descriptive.html";
+                return absolute_path+"PuzzlingPuzzles/DescriptiveTemplate/questionstructure_fragment_descriptive.html";
 
             }
 
