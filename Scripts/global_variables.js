@@ -46,6 +46,9 @@ var user_registration_API = API_Start + user_registration_End_Point;
 var user_login_End_Point = "/api/"+"user/login/";
 var user_login_API = API_Start + user_login_End_Point;
 
+var mock_mocks_End_point = "/api/"+"mock/mocks/";
+var mock_mock_API = API_Start + mock_mocks_End_point;
+
 //OTHER VARIABLES
 var absolute_path = "/";
 

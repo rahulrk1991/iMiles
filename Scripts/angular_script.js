@@ -50,10 +50,10 @@ var app = angular
         .config(function ($routeProvider,$locationProvider) {
             $routeProvider
             .when("/", {
-                templateUrl: absolute_path+"LandingPage/landing_page.html",
-                controller:"landingPageController"
-                /*templateUrl: absolute_path+"PuzzlingPuzzles/DisplayQuestion/qnacrunch.html",
-                controller:"PuzzlingPuzzlesController"*/
+                /*templateUrl: absolute_path+"LandingPage/landing_page.html",
+                controller:"landingPageController"*/
+                templateUrl: absolute_path+"PostQuestion/post_question.html",
+                controller:"postQuestion"
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -1226,81 +1226,125 @@ var app = angular
                      });
             }
 
+            //$scope.mockID="";
+
             $scope.postMCQQuestion = function () {
-                console.log("Trying to post MCQ question...");
-                if(!$scope.question.questionText) {
-                    alert("Question has to have a title!");
-                    return;
-                }
-                //url = "http://localhost:8000/question/question_mcq/";
-                post_mcq_questions_Body =  [{
-                    "title": $scope.question.questionText,
-                    "difficulty_level": $scope.question.difficulty,
-                    "kind": mcq_kind,
-                }];
-                $http.post( post_mcq_Questions_API, post_mcq_questions_Body)
-                    .success(function(data,status,header,config) {
-                        
-                        $scope.postResponse = data[0];
-                        console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
-                        var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
+                if($scope.question.mockID) {
+
+                    console.log("trying to post in mock");
 
 
-                        //Add choices to the question here
-                        for(i=0;i<$scope.number_of_choices;i++) {
-                            if(!$scope.question.choices.choicesCorrect[i])
-                                $scope.question.choices.choicesCorrect[i]=false;   
+                    var choiceBodyMock = [];    //Will hold body of the url which posts choices
+
+                    for(i=0;i<$scope.number_of_choices;i++) {
+                        var text = $scope.question.choices.choiceText[i];
+                        if(text==null || text=="")
+                            continue;
+                        var isTrue = $scope.question.choices.choicesCorrect[i];
+                        var singleChoice = {
+                            "choice_text" : text,
+                            "is_correct" : isTrue
                         }
+                        choiceBodyMock.push(singleChoice);
 
-                        var choiceBody = [];    //Will hold body of the url which posts choices
+                    }
 
-                        for(i=0;i<$scope.number_of_choices;i++) {
-                            var text = $scope.question.choices.choiceText[i];
-                            if(text==null || text=="")
-                                continue;
-                            var isTrue = $scope.question.choices.choicesCorrect[i];
-                            var singleChoice = {
-                                "choice_text" : text,
-                                "is_correct" : isTrue,
-                                "questionId" : $scope.postResponse.id
-                            }
-                            choiceBody.push(singleChoice);
+                    post_mock_mcq_questions_Body =  [{
+                        "title": $scope.question.questionText,
+                        "difficulty_level": $scope.question.difficulty,
+                        "description" : "description",
+                        "choices": choiceBodyMock
+                    }];
 
-                        }
+                    console.log(post_mock_mcq_questions_Body);
 
-
-                        $http.post(question_add_choices_API,choiceBody)
+                    $http.post(mock_mock_API+$scope.question.mockID+"/questions",post_mock_mcq_questions_Body)
                         .success(function(data,status,header,config) {
-                            console.log("Option posted successfully");
+                            $scope.postResponse = data[0];
+                            console.log("Question posted successfully");
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'Posted the question into mock ID :'+$scope.question.mockID, placement:'alert-box', type: 'success', show: true,duration:15});
+
                         })
-
-                        //Add categories to question here
-                        var categoryBody = [];
-
-                        for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                }
+                else {
+                    console.log("Trying to post MCQ question...");
+                    if(!$scope.question.questionText) {
+                        alert("Question has to have a title!");
+                        return;
+                    }
+                    //url = "http://localhost:8000/question/question_mcq/";
+                    post_mcq_questions_Body =  [{
+                        "title": $scope.question.questionText,
+                        "difficulty_level": $scope.question.difficulty,
+                        "kind": mcq_kind,
+                    }];
+                    $http.post( post_mcq_Questions_API, post_mcq_questions_Body)
+                        .success(function(data,status,header,config) {
                             
-                            var singleCategory = {
-                                "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]     //Add category id to the choice body using categoryDict dictionary
+                            $scope.postResponse = data[0];
+                            console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
+
+                            //Add choices to the question here
+                            for(i=0;i<$scope.number_of_choices;i++) {
+                                if(!$scope.question.choices.choicesCorrect[i])
+                                    $scope.question.choices.choicesCorrect[i]=false;   
                             }
-                            categoryBody.push(singleCategory);   //Add single category to the body
-                        }
 
-                        console.log(categoryBody);
+                            var choiceBody = [];    //Will hold body of the url which posts choices
 
-                        var addCategoryURL = questions_API + "/" + $scope.postResponse.id + "/category";
+                            for(i=0;i<$scope.number_of_choices;i++) {
+                                var text = $scope.question.choices.choiceText[i];
+                                if(text==null || text=="")
+                                    continue;
+                                var isTrue = $scope.question.choices.choicesCorrect[i];
+                                var singleChoice = {
+                                    "choice_text" : text,
+                                    "is_correct" : isTrue,
+                                    "questionId" : $scope.postResponse.id
+                                }
+                                choiceBody.push(singleChoice);
 
-                        $http.post(addCategoryURL,categoryBody)
+                            }
+
+
+                            $http.post(question_add_choices_API,choiceBody)
                             .success(function(data,status,header,config) {
-                                console.log("Categories posted successfully");
+                                console.log("Option posted successfully");
+                            })
+
+                            //Add categories to question here
+                            var categoryBody = [];
+
+                            for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                                
+                                var singleCategory = {
+                                    "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]     //Add category id to the choice body using categoryDict dictionary
+                                }
+                                categoryBody.push(singleCategory);   //Add single category to the body
+                            }
+
+                            console.log(categoryBody);
+
+                            var addCategoryURL = questions_API + "/" + $scope.postResponse.id + "/category";
+
+                            $http.post(addCategoryURL,categoryBody)
+                                .success(function(data,status,header,config) {
+                                    console.log("Categories posted successfully");
+                            })
+
                         })
+                        .error(function(response) {
+                            console.log("The question could not be posted");
+                                //Delete the question since choices were not added!
+                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
 
-                    })
-                    .error(function(response) {
-                        console.log("The question could not be posted");
-                            //Delete the question since choices were not added!
-                            var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                         });
+                }
 
-                     });
+                
             }
 
         });
