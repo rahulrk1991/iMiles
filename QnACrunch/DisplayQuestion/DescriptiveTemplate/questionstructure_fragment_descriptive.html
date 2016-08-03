@@ -12,6 +12,10 @@
 		</div>
 	</div>
 	<div class="panel-body" ng-bind-html="question.description"></div>
+	<div style="width:90%;padding:20px" ng-show="question.showSolution">
+		Solution:
+		<div class="well well-sm" style="padding-left:20px" ng-bind-html="question.answer"></div>
+	</div>
 	<div class="panel-footer" style="width: 100%; overflow:auto">
 		<div style="display:inline;width:90%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
 			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
@@ -19,5 +23,15 @@
 		<div style="display:inline;width:10%:float:right">
 			<span class="badge" style="float: right">{{question.difficulty_level}}</span>
 		</div>
+
+		<div style="float: right; width: 4%;padding-right:15px">
+ 			<a href="ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
+ 		</div>
+ 		<div style="float: right; width: 4%">
+ 			<a href="EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+ 		</div>
+ 		<div ng-click="displaySolution(question)" style="float:right; width: 4%">
+ 			<a href="#" ><span style="float: left" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+ 		</div>
 	</div>
 </div>

@@ -920,6 +920,7 @@ var app = angular
 
                             var singleQuestion = allQuestions[i];
                             singleQuestion.isSolved = false;
+                            singleQuestion.showSolution = false;
                             singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
 
                             //If question is an MCQ, fetch the choices and all to dictionary
@@ -989,6 +990,32 @@ var app = angular
                 
                 return tag_structure_file_qna;         //returning the template file from getQuestonInfo using question 
 
+            }
+
+            $scope.displaySolution = function(question) {
+
+                console.log(question.id);
+                if(question.kind=="descriptive") {
+                    console.log("des");
+                    url = post_descriptive_questions_API+ question.id;
+                }
+                else if(question.kind=="mcq") {
+                    console.log("mcq");
+                    url = post_mcq_Questions_API+ question.id;
+                }
+
+                $http.get(url)
+                .then(function(response) {
+                    
+                    var questionDetails = response.data;
+                    //$scope.question.description = $sce.trustAsHtml($scope.question.description);
+                    //$scope.question.answer = $sce.trustAsHtml($scope.question.answer);
+                    //console.log($scope.question);
+                    question.answer = questionDetails.answer;
+                    console.log(question.answer);
+                    question.showSolution = true;
+
+                });
             }
 
 
