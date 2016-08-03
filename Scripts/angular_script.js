@@ -855,6 +855,11 @@ var app = angular
                 console.log("Removing category:"+categoryToRemove);
                 $scope.tags.tagsNamesToAddToQuestion = [];
                 $scope.isCategoryFilterOn = false;
+                $scope.questionIdToChoicesDictionary = [];
+                $scope.questionIdToCategoriesDictionary = [];
+                feedNum=0;
+                $scope.feed = {};
+                
                 getQuestions(feedNum);
 
             }
