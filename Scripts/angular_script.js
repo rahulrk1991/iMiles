@@ -113,7 +113,7 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             var isFetchingQuestions = false;
-            var puzzleCategoryID = 26;
+            var puzzleCategoryID = 7;
 
             $scope.questionIdToAnswerDictionary=[];
 
@@ -859,7 +859,7 @@ var app = angular
                 $scope.questionIdToCategoriesDictionary = [];
                 feedNum=0;
                 $scope.feed = {};
-                
+
                 getQuestions(feedNum);
 
             }
@@ -1258,7 +1258,7 @@ var app = angular
                     post_mock_mcq_questions_Body =  [{
                         "title": $scope.question.questionText,
                         "difficulty_level": $scope.question.difficulty,
-                        "description" : "description",
+                        "description" : $scope.question.solution,
                         "choices": choiceBodyMock
                     }];
 
