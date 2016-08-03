@@ -52,8 +52,8 @@ var app = angular
             .when("/", {
                 templateUrl: absolute_path+"LandingPage/landing_page.html",
                 controller:"landingPageController"
-                /*templateUrl: absolute_path+"PostQuestion/post_question.html",
-                controller:"postQuestion"*/
+                /*templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
+                controller:"questionsController"*/
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -239,7 +239,7 @@ var app = angular
             categoryDict = [];
 
             var getAllMockTests = function() {
-                $http.get("http://example.com/api/mock/mocks/")
+                $http.get(mock_mock_API)
                     .then(function(response) {
                         $scope.allMocks = response.data;
                         console.log($scope.allMocks);
