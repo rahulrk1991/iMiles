@@ -303,7 +303,7 @@ var app = angular
                 });
 
 
-            $http.get("http://example.com/api/mock/mocks/"+$routeParams.id)
+            $http.get(mock_mock_API+$routeParams.id)
                 .then(function(response) {
                     var testInfo = response.data;
                     var durationInMinutes = testInfo.duration;
@@ -343,7 +343,7 @@ var app = angular
             $scope.isTestSubmitted = false;
 
             //Get all the question data using http get
-            $http.get("http://example.com/api/mock/mocks/"+$routeParams.id+"/questions")
+            $http.get(mock_mock_API+$routeParams.id+"/questions")
                 .then(function(response) {
                     var allQuestions = response.data;
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
