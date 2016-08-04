@@ -1,9 +1,12 @@
-<div ng-repeat="mock in allMocks" class="panel panel-default">
-    <div class="panel-body" ng-click="startMockTestWithID(mock.id)">
-        Title : <b>{{mock.title}}</b>
-        <br>
+<div style="width:30%;display:inline;float:left;margin:10px" ng-repeat="mock in allMocks" class="panel panel-primary">
+    <div class="panel-heading " ng-click="startMockTestWithID(mock.id)">
+        <b>{{mock.title}}</b>
+    </div>
+    <div class="panel-body" >
         Difficulty Level : <b>{{mock.difficulty_level}}</b>
         <br>
-        Duration : <b>{{mock.duration}}
+        Duration : <b>{{mock.duration}} min
+        <br>
+        <button style="margin-top:10px" class="btn btn-success" type="button" ng-click="startMockTestWithID(mock.id)">Start test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
     </div>
 </div>
