@@ -243,6 +243,12 @@ var app = angular
                     .then(function(response) {
                         $scope.allMocks = response.data;
                         console.log($scope.allMocks);
+                        for(i=0;i<$scope.allMocks.length;i++) {
+                            if($scope.allMocks[i].duration=="30")
+                                $scope.allMocks[i].numberOfQuestions=10;
+                            else
+                                $scope.allMocks[i].numberOfQuestions=15;
+                        }
                     })
             }
 
