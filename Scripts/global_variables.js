@@ -79,6 +79,7 @@ var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTempla
 var tag_structure_file_postQuestion = absolute_path+"PostQuestion/tagTemplate.html";
 var tag_structure_file_qna = absolute_path+"QnACrunch/DisplayQuestion/tagTemplate.html";
 var tag_structure_file_search_bar = absolute_path+"QnACrunch/DisplayQuestion/tagTemplateForSearchBar.html";
+var tag_structure_file_example_box = absolute_path+"QnACrunch/DisplayQuestion/tagTemplateForExampleBox.html";
 var mock_summary_panel = absolute_path+"OnlineMockTests/mockSummaryPanel.html"
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;

@@ -52,8 +52,8 @@ var app = angular
             .when("/", {
                 templateUrl: absolute_path+"LandingPage/landing_page.html",
                 controller:"landingPageController"
-                /*templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
-                controller:"onlineMockTestsChooseTestController"*/
+                /*templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
+                controller:"questionsController"*/
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -870,6 +870,12 @@ var app = angular
 
             }
 
+            $scope.changeCategory = function(categoryToRemove) {
+                categoryToRemove=categoryToRemove+" ";
+                $scope.tags.filterValue=categoryToRemove;
+                $scope.updateCategories();
+            }
+
 
             $scope.getTagTemplate = function() {
                 
@@ -877,6 +883,11 @@ var app = angular
 
             }
 
+            $scope.getTagTemplateForExampleBox = function() {
+                
+                return tag_structure_file_example_box;         //returning the template file from getQuestonInfo using question 
+
+            }
 
             //Function to GET all Categories 
             var getAllCategories = function() {
