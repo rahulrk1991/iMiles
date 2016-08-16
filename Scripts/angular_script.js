@@ -476,10 +476,31 @@ var app = angular
             $scope.title="iMiles Menu";
             $scope.userModel = userService.returnState();
 
+
+            var isLoggedIn = function() {
+                $http.get(user_isLoggedIn_API)
+                    .then(function(response) {
+                        if(response.data.result=="yes") {
+                            $scope.userModel = userService.logIn();
+                            console.log($scope.userModel.active);
+                            $location.url("Profile");
+                            $scope.$apply();
+                        }
+                        else {
+                            console.log("Not logged in!");
+                        }
+                    })
+            }
+
+            isLoggedIn();
+
+
             $scope.logout = function() {
                 $scope.userModel = userService.logOut();
                 $timeout(function() {
-                    $location.url("/");
+                    //$location.url("/");
+                    window.location.href = user_logout_API;
+
                     $scope.$apply();
                 }, 100);
                 
