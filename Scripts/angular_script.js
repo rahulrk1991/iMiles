@@ -484,7 +484,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             console.log($scope.userModel.active);
                             $location.url("Profile");
-                            $scope.$apply();
+                            //$scope.$apply();
                         }
                         else {
                             console.log("Not logged in!");
@@ -1109,7 +1109,7 @@ var app = angular
             }
 
         })
-        .controller("postQuestion",function($scope,$http,$alert) {
+        .controller("postQuestion",function($scope,$http,$alert,$cookies) {
 
             //Scope Variables default values;
             $scope.question_types = question_types;
@@ -1256,6 +1256,9 @@ var app = angular
                     alert("Question has to have explanation");  //Will try to make border of question title red
                     return;
                 }
+                console.log("This is the:"+$cookies.get("csrftoken"));
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
                 url = post_descriptive_questions_API;
                 body =  [{
                     "title": $scope.question.questionText,
@@ -1264,7 +1267,7 @@ var app = angular
                     "kind": descriptive_kind,
                     "answer": $scope.question.questionAnswer
                 }];
-                $http.post( url, body)
+                $http.post( url, body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                             console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
                             
@@ -1329,7 +1332,10 @@ var app = angular
 
                     console.log(post_mock_mcq_questions_Body);
 
-                    $http.post(mock_mock_API+$scope.question.mockID+"/questions",post_mock_mcq_questions_Body)
+                    var cooks = $cookies.get("csrftoken");
+                    var cooksHeader = { 'X-CSRFToken': cooks };
+
+                    $http.post(mock_mock_API+$scope.question.mockID+"/questions",post_mock_mcq_questions_Body,{ headers: cooksHeader })
                         .success(function(data,status,header,config) {
                             $scope.postResponse = data[0];
                             console.log("Question posted successfully");
@@ -1343,13 +1349,16 @@ var app = angular
                         alert("Question has to have a title!");
                         return;
                     }
+
+                    var cooks = $cookies.get("csrftoken");
+                    var cooksHeader = { 'X-CSRFToken': cooks };
                     //url = "http://localhost:8000/question/question_mcq/";
                     post_mcq_questions_Body =  [{
                         "title": $scope.question.questionText,
                         "difficulty_level": $scope.question.difficulty,
                         "kind": mcq_kind,
                     }];
-                    $http.post( post_mcq_Questions_API, post_mcq_questions_Body)
+                    $http.post( post_mcq_Questions_API, post_mcq_questions_Body,{ headers: cooksHeader })
                         .success(function(data,status,header,config) {
                             
                             $scope.postResponse = data[0];
@@ -1380,7 +1389,7 @@ var app = angular
                             }
 
 
-                            $http.post(question_add_choices_API,choiceBody)
+                            $http.post(question_add_choices_API,choiceBody,{ headers: cooksHeader })
                             .success(function(data,status,header,config) {
                                 console.log("Option posted successfully");
                             })
@@ -1400,7 +1409,7 @@ var app = angular
 
                             var addCategoryURL = questions_API + "/" + $scope.postResponse.id + "/category";
 
-                            $http.post(addCategoryURL,categoryBody)
+                            $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
                                 .success(function(data,status,header,config) {
                                     console.log("Categories posted successfully");
                             })
