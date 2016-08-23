@@ -1286,7 +1286,7 @@ var app = angular
 
                             var addCategoryURL = questions_API+"/"+data[0].id+"/category";
 
-                            $http.post(addCategoryURL,categoryBody)
+                            $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
                             .success(function(data,status,header,config) {
                                 console.log("Categories posted successfully");
                             })
