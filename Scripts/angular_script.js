@@ -483,7 +483,7 @@ var app = angular
                         if(response.data.result=="yes") {
                             $scope.userModel = userService.logIn();
                             console.log($scope.userModel.active);
-                            $location.url("Profile");
+                            $location.url("PostQuestion");
                             //$scope.$apply();
                         }
                         else {
@@ -849,7 +849,7 @@ var app = angular
                 chart.draw(data, options);
               }
         })
-        .controller("questionsController",function($scope,$http,$sce,userService) {
+        .controller("questionsController",function($scope,$http,$sce,userService,$tooltip) {
 
             //this.userModel = userService.model;
 
@@ -910,24 +910,32 @@ var app = angular
 
             }
 
+
             //Function to GET all Categories 
             var getAllCategories = function() {
 
                 $http.get(question_categories_API)
                     .success(function(data,status,headers,config) {
-                        
+                    
                         //Populate the allCategoriesDictionary
                         for(i=0;i<data.length;i++) {
                             $scope.tags.allTagNames[i] = (data[i].category_text);
-                            allCategoriesDictionary[data[i].category_text] = data[i].id
+                            allCategoriesDictionary[data[i].category_text] = data[i].id;
                         }
                         console.log($scope.tags.allTagNames);
 
                     });
             }
 
+
             getAllCategories();     //Runs function to GET Categories as soon as controller is called
 
+            //Tooltips
+            $scope.tooltip = {
+              "title": "To filter questions of a particular topic, start typing the topic here!",
+              "checked": true
+            };
+            
 
             //Function to GET questions
             var getQuestions = function(feedNum) {
@@ -1122,7 +1130,34 @@ var app = angular
             var classToAddToTab = "active";             //The class you want to apply when question type is selected
             $scope.tabClass = [classToAddToTab,""];     //By default the first one will have the class and second will not
 
+            //--------------Mock Tests--------------------
+            $scope.mock={};
+            $scope.mock.mockTitle="";
+            $scope.mock.mockDuration="";
+            $scope.mock.mockDifficulty="";
 
+            $scope.addMockTest = function() {
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = mock_mock_API;
+                body =  [{
+                    "title": $scope.mock.mockTitle,
+                    "duration": $scope.mock.mockDuration,
+                    "difficulty_level": $scope.mock.mockDifficulty
+                }];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: 'Mock added successfully!', content: 'The Mock ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
+                        })
+                     .error(function(response) {
+                        console.log("The question could not be posted");                //in case there is an error
+                        var myAlert = $alert({title: 'Error in posting mock test!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+
+                     });
+            }
 
             $scope.changeTabClass = function(clickedTab) {
                 if(clickedTab=="mcq") {
@@ -1384,6 +1419,7 @@ var app = angular
                                     "is_correct" : isTrue,
                                     "questionId" : $scope.postResponse.id
                                 }
+                                console.log(singleChoice);
                                 choiceBody.push(singleChoice);
 
                             }

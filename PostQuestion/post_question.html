@@ -1,5 +1,17 @@
 <div ng-controller="postQuestion" id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
     <div>
+        <h2>Create A Mock Test</h2>
+        <div>
+            <input type="text" class="form-control" ng-model="mock.mockTitle"  placeholder="Mock Title here"><br>
+            <input type="text" class="form-control" ng-model="mock.mockDuration"  placeholder="Mock Duration here"><br>
+            <input type="text" class="form-control" ng-model="mock.mockDifficulty"  placeholder="Mock difficulty here"><br>
+        </div>
+        <div id="button">
+            <button ng-click="addMockTest()" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <hr>
+    </div>
+    <div>
         <h2>Add your Question here</h2>
     </div>
     <br>
