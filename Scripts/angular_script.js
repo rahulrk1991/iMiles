@@ -860,7 +860,7 @@ var app = angular
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
             $scope.tags.allTagNames = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
+            $scope.tags.tagsNamesToAddToQuestion = "";
 
             //Variable to check if category filter is set On/Off
             $scope.isCategoryFilterOn = false;
@@ -885,7 +885,7 @@ var app = angular
             $scope.removeCategory = function(categoryToRemove) {
 
                 console.log("Removing category:"+categoryToRemove);
-                $scope.tags.tagsNamesToAddToQuestion = [];
+                $scope.tags.tagsNamesToAddToQuestion = "";
                 $scope.isCategoryFilterOn = false;
                 $scope.questionIdToChoicesDictionary = [];
                 $scope.questionIdToCategoriesDictionary = [];
@@ -1018,12 +1018,12 @@ var app = angular
                 }
 
                 if(lastIndex==' ' && filterString.length>1) {
-                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    $scope.tags.tagsNamesToAddToQuestion = filterString.substring(0,filterString.length-1);
                     console.log($scope.tags.tagsNamesToAddToQuestion);
                     $scope.tags.filterValue = "";
 
                     //Here a new category filter has been added, we need to update the questions
-                    $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion[0]];
+                    $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion];
                     $scope.questionIdToChoicesDictionary = [];
                     $scope.questionIdToCategoriesDictionary = [];
                     $scope.isCategoryFilterOn = true;

@@ -25,9 +25,9 @@
 
                     <div style="width:100%;height:auto;overflow:auto">
 
-                        <div ng-repeat="tagToAddToQuestion in tags.tagsNamesToAddToQuestion" style="display:inline;float:left;padding:3px;padding-right:8px">
+                        <div style="display:inline;float:left;padding:3px;padding-right:8px">
                          
-                            <div ng-include="getTagTemplate()"></div>            
+                            <div ng-show="isCategoryFilterOn" ng-include="getTagTemplate()"></div>            
                          
                         </div>
 
