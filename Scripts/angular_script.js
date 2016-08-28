@@ -239,6 +239,7 @@ var app = angular
             categoryDict = [];
 
             var getAllMockTests = function() {
+
                 $http.get(mock_mock_API)
                     .then(function(response) {
                         $scope.allMocks = response.data;
@@ -483,7 +484,7 @@ var app = angular
                         if(response.data.result=="yes") {
                             $scope.userModel = userService.logIn();
                             console.log($scope.userModel.active);
-                            $location.url("PostQuestion");
+                            $location.url("QnACrunch");
                             //$scope.$apply();
                         }
                         else {
@@ -875,6 +876,10 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             var isFetchingQuestions = false;
+
+            $(window).scroll(function(){
+                $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
+            });
 
             //Function to remove filter category
             $scope.removeCategory = function(categoryToRemove) {

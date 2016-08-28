@@ -1,40 +1,82 @@
 <link href="QnACrunch/Stylesheets/qnacrunch.css" rel="stylesheet" type="text/css"/>
-<div class="container" style="width:700px;margin-top:30px">
-    <div class="input-group input-group-lg" style="width:100%">
-        <span class="input-group-addon" id="sizing-addon1">
-            <span class="glyphicon glyphicon-search"></span>
-        </span>
-            <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Search for topics here..." bs-typeahead data-trigger="focus" bs-tooltip="tooltip" >
+<div class="outermostDiv">
+
+    <div class="container" style="width:70%;margin-right:70px">
+
+        <div id="pageTitle" class="container" style="width:70%;float:left;margin:0 auto;">
+            <h1>QnA Crunch</h1>
+            <p> Practice questions from various topics here. If you want to filter questions of a particular topic,
+            search for the topic in the search bar below and choose it.</p>
+            <hr>
+        </div>
+
         
-    </div>
-    <br>
-    <div class="panel panel-default container" style="width:100%;height:auto;overflow:auto">
+        <div id="summaryContainer">
+            <div id="testSummaryDiv" class="display-inline" style="width:33%;float:right;">
 
-        <div ng-repeat="tagToAddToQuestion in tags.tagsNamesToAddToQuestion" style="display:inline;float:left;padding:3px;padding-right:8px">
-         
-            <div ng-include="getTagTemplate()"></div>            
-         
-        </div>
+                <div id="testSummaryInnerDiv" style="padding:10px">
 
-    </div>
+                    <h4><strong>Current Filter</strong></h4>
+                    <p>Indicates the current category by which the questions are filtered</p>
 
-    <div class="panel panel-default container" style="width:100%;height:auto;overflow:auto">
+                    <div ng-show="!isCategoryFilterOn">
+                        None
+                    </div>
 
-        <div ng-repeat="tagToAddToQuestion in tags.allTagNames" style="display:inline;float:left;padding:3px;padding-right:8px">
-         
-            <div ng-include="getTagTemplateForExampleBox()"></div>            
-         
-        </div>
+                    <div style="width:100%;height:auto;overflow:auto">
 
-    </div>
+                        <div ng-repeat="tagToAddToQuestion in tags.tagsNamesToAddToQuestion" style="display:inline;float:left;padding:3px;padding-right:8px">
+                         
+                            <div ng-include="getTagTemplate()"></div>            
+                         
+                        </div>
 
-    <br>
-    <div  style="width:100%">
-        <div ng-repeat="questions in feed">
-            <div ng-repeat="question in questions">
-         
-                <div ng-include="getQuestionTemplateByType(question)"></div>            
-         
+                    </div>
+
+                    <hr>
+
+                    <h4><strong>All Categories</strong></h4>
+                    <p>Indicates all the available categories. Click on a category to filter questions by it.</p>
+
+                    <div style="width:100%;height:auto;overflow:auto">
+
+                        <div ng-repeat="tagToAddToQuestion in tags.allTagNames" style="display:inline;float:left;padding:3px;padding-right:8px">
+                         
+                            <div ng-include="getTagTemplateForExampleBox()"></div>            
+                         
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                </div>
+            </div>
+
+            <div style="width:65%;float:left">
+
+                <div class="input-group input-group-lg" style="width:100%;margin-top:20px">    
+
+                    <span class="input-group-addon" id="sizing-addon1">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                        <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Search for topics here..." bs-typeahead data-trigger="focus" bs-tooltip="tooltip" >
+                    
+                </div>
+                <br>
+
+
+
+                <br>
+                <div  style="width:100%">
+                    <div ng-repeat="questions in feed">
+                        <div style="margin-bottom:50px" ng-repeat="question in questions">
+                     
+                            <div ng-include="getQuestionTemplateByType(question)"></div>            
+                     
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

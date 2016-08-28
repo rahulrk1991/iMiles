@@ -1,6 +1,9 @@
 <link href="Stylesheets/tags_css.css" rel="stylesheet" type="text/css">
 
-<a ng-click="removeCategory(tagToAddToQuestion)" class="post-tag display-inline">
-    <span style="display:inline" class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-    <b class="display-inline">{{tagToAddToQuestion}}</b>
+<a  ng-click="removeCategory(tagToAddToQuestion)" class="post-tag display-inline">
+    <div style="margin:5px" class="display-inline">
+        <span style="display:inline" class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+        <b style="font-size:20px;" style="color:#187FD6" class="display-inline">{{tagToAddToQuestion}}</b>
+        <span style="display:inline" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </div>
 </a>
