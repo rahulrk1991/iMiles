@@ -40,7 +40,7 @@
 
                     <div style="width:100%;height:auto;overflow:auto">
 
-                        <div ng-repeat="tagToAddToQuestion in tags.allTagNames" style="display:inline;float:left;padding:3px;padding-right:8px">
+                        <div ng-repeat="tagToAddToQuestion in tags.allTagNames track by $index" style="display:inline;float:left;padding:3px;padding-right:8px">
                          
                             <div ng-include="getTagTemplateForExampleBox()"></div>            
                          
