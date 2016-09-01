@@ -240,7 +240,7 @@ var app = angular
 
             var getAllMockTests = function() {
 
-                $http.get(mock_mock_API)
+                $http.get(mock_allMocks_API)
                     .then(function(response) {
                         $scope.allMocks = response.data;
                         console.log($scope.allMocks);
