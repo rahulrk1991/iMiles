@@ -484,7 +484,7 @@ var app = angular
                         if(response.data.result=="yes") {
                             $scope.userModel = userService.logIn();
                             console.log($scope.userModel.active);
-                            $location.url("QnACrunch");
+                            $location.url("Profile");
                             //$scope.$apply();
                         }
                         else {
@@ -802,7 +802,31 @@ var app = angular
             }
 
         })
-        .controller("profileController",function($scope) {
+        .controller("profileController",function($scope,$http) {
+
+            $scope.Profile = {};
+            $scope.Profile.id = "";
+            $scope.Profile.username = "";
+            $scope.Profile.first_name = "";
+            $scope.Profile.last_name = "";
+            $scope.Profile.email = "";
+            $scope.Profile.contact_no = "";
+
+
+            var loadUserInfo = function() {
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile = data;
+                        console.log($scope.Profile.first_name);
+
+
+                    });
+
+            }
+
+            loadUserInfo();
             
 
             $scope.flag=false;

@@ -49,6 +49,9 @@ var user_login_API = API_Start + user_login_End_Point;
 var user_isAdmin_End_Point = "/api/"+"user/isadmin/";
 var user_isAdmin_API = API_Start + user_isAdmin_API;
 
+var user_info_End_Point = "/api/" + "user/profile/";
+var user_info_API = API_Start + user_info_End_Point;
+
 var user_logout_End_Point = "/api/"+"user/logout";
 var user_logout_API = API_Start + user_logout_End_Point;
 
