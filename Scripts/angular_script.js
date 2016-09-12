@@ -947,11 +947,12 @@ var app = angular
                     .success(function(data,status,headers,config) {
                     
                         //Populate the allCategoriesDictionary
+                        var j=0;
                         for(i=0;i<data.length;i++) {
                             var singleCategory = data[i];
-                            if(!(singleCategory.parent_category==COMPANY_CATEGORY_ID) || singleCategory.id==COMPANY_CATEGORY_ID) {
+                            if(!(singleCategory.parent_category==COMPANY_CATEGORY_ID) || !(singleCategory.id==COMPANY_CATEGORY_ID) {
                                 //console.log("Parent category:"+data[i].parent_category);
-                                $scope.tags.allTagNames[i] = (singleCategory.category_text);
+                                $scope.tags.allTagNames[j++] = (singleCategory.category_text);
                             }
                                 
                             allCategoriesDictionary[singleCategory.category_text] = singleCategory.id;
