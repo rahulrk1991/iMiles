@@ -98,3 +98,4 @@ var tag_structure_file_example_box = absolute_path+"QnACrunch/DisplayQuestion/ta
 var mock_summary_panel = absolute_path+"OnlineMockTests/mockSummaryPanel.html"
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;
+var COMPANY_CATEGORY_ID = 46;

@@ -948,8 +948,13 @@ var app = angular
                     
                         //Populate the allCategoriesDictionary
                         for(i=0;i<data.length;i++) {
-                            $scope.tags.allTagNames[i] = (data[i].category_text);
-                            allCategoriesDictionary[data[i].category_text] = data[i].id;
+                            var singleCategory = data[i];
+                            if(!(singleCategory.parent_category==COMPANY_CATEGORY_ID) || singleCategory.id==COMPANY_CATEGORY_ID) {
+                                //console.log("Parent category:"+data[i].parent_category);
+                                $scope.tags.allTagNames[i] = (singleCategory.category_text);
+                            }
+                                
+                            allCategoriesDictionary[singleCategory.category_text] = singleCategory.id;
                         }
                         console.log($scope.tags.allTagNames);
 
