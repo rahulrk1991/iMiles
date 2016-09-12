@@ -9,8 +9,8 @@
 			<div style="display:inline;width:80%">
 				<h3 style="float:top;display:inline" ng-bind-html="question.title" class="panel-title"></h3>
 			</div>
-			<div style="display:inline;width:10%:float:right">
-			<span class="badge" style="float:right" ng-bind-html="question.difficulty_level"></span>
+			<div style="display:inline;width:10%;float:right;float:top;height:100%">
+			<span ng-class="getColor(question.difficulty_level)" class="badge" style="float:right" >{{question.difficulty_level}}</span>
 		</div>
 		</div>
 	</div>

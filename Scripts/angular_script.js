@@ -117,6 +117,17 @@ var app = angular
 
             $scope.questionIdToAnswerDictionary=[];
 
+            $scope.getColor = function(difficulty_level) {
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
+            }
+
             //Function to GET questions
             var getQuestions = function(feedNum) {
 
@@ -140,6 +151,7 @@ var app = angular
                             var singleQuestion = allQuestions[i];
                             singleQuestion.isSolved = false;
                             singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
+                            console.log(singleQuestion.difficulty_level);
 
                             $http.get(post_descriptive_questions_API+singleQuestion.id)
                                 .success(function(data,status,headers,config) {

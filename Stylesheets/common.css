@@ -29,3 +29,18 @@ a {
     padding: 10px;
 }
 
+.difficulty_8-10 {
+    background-color:red;
+}
+
+.difficulty_6-7 {
+    background-color:orange;
+}
+
+.difficulty_4-5 {
+    background-color:yellow;
+}
+
+.difficulty_1-3 {
+    background-color: green;
+}
