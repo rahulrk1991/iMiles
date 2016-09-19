@@ -22,7 +22,7 @@
                 <span class="glyphicon glyphicon-list-alt span_style" aria-hidden="true"></span>Online Mock Tests</a>
             </li>
 
-            <li role="presentation"><a href="PostQuestion" ng-click="$hide()">
+            <li ng-show="userModel.isAdmin" role="presentation"><a href="PostQuestion" ng-click="$hide()">
                 <span class="glyphicon glyphicon-blackboard span_style" aria-hidden="true"></span>Post Questions</a>
             </li>
 

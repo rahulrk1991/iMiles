@@ -24,10 +24,10 @@
 			<span class="badge" style="float: right">{{question.difficulty_level}}</span>
 		</div>
 
-		<div style="float: right; width: 4%;padding-right:15px">
+		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
  			<a href="ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
  		</div>
- 		<div style="float: right; width: 4%">
+ 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
  			<a href="EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
  		</div>
  		<div ng-click="displaySolution(question)" style="float:right; width: 6%">

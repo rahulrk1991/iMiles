@@ -6,8 +6,15 @@ var app = angular
             require: '?ngModel',
             link: function(scope, elm, attr, ngModel) {
               var ck = CKEDITOR.replace(elm[0]);
+              
 
               if (!ngModel) return;
+
+              CKEDITOR.editorConfig = function( config ) {
+                    config.pasteFromWordRemoveFontStyles=false;
+                    config.pasteFromWordRemoveStyles=false;
+                    config.allowedContent=true; 
+                };
 
               ck.on('pasteState', function() {
                 scope.$apply(function() {
@@ -21,17 +28,30 @@ var app = angular
             }
           };
         })
-        .factory('userService',function() {
+        .factory('userService',function($http) {
 
             userService = {};
 
             userService.model = {
                 userName : undefined,
-                active : false
+                active : false,
+                isAdmin : false
             };
             return {
 
                 logIn : function() {
+
+                    $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        //$scope.Profile = data;
+                        userService.model.isAdmin = data.is_superuser;
+                        console.log("isAdminfrom factory"+userService.model.isAdmin);
+                        //console.log($scope.Profile.first_name);
+
+
+                    });
+
                     userService.model.userName = "rahulrk1991";
                     userService.model.active = true;
                     return userService.model;
@@ -495,7 +515,8 @@ var app = angular
                     .then(function(response) {
                         if(response.data.result=="yes") {
                             $scope.userModel = userService.logIn();
-                            console.log($scope.userModel.active);
+                            //$scope.$apply();
+                            console.log("isAdmin"+$scope.userModel.isAdmin);
                             $location.url("Profile");
                             //$scope.$apply();
                         }
@@ -892,6 +913,7 @@ var app = angular
 
             //console.log(this.userModel.active);
             //console.log(userService.model.active);
+            $scope.userModel = userService.returnState();
 
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
