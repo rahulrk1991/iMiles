@@ -4,34 +4,34 @@
 	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
 		<div style="float: left; width: 100%">
 			<div style="display:inline;width:10%">
-				<h3 style="display:inline;color:#187FD6"> Q] </h3>
+				<h3 style="display:inline;color:#187FD6"> [Q] </h3>
 			</div>
 			<div style="display:inline;width:80%">
 				<h3 style="float:top;display:inline" ng-bind-html="question.title" class="panel-title"></h3>
 			</div>
 			<div style="display:inline;width:10%;float:right;float:top;height:100%">
-			<span ng-class="getColor(question.difficulty_level)" class="badge" style="float:right" >{{question.difficulty_level}}</span>
+			<span  class="badge" style="float:right" ></span>
 		</div>
 		</div>
 	</div>
 	<div class="panel-body" ng-bind-html="question.description"></div>
 
+	<div style="width:100%;padding:20px" ng-show="question.isSolved">
+		Solution:
+		<div class="well well-sm" style="padding-left:20px" ng-bind-html="questionIdToAnswerDictionary[question.id]"></div>
+	</div>
 
-	<div style="padding-botom:0px;margin-bottom:0px" class="panel-group" ng-model="panel.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
-		<div class="panel panel-default " >
-	  		<div class="panel-heading" role="tab">
-	  			<h4 class="panel-title">
-	      			<a bs-collapse-toggle>
-	        			View Solution
-	      			</a>
-	    		</h4>
-	    	</div>
-	    	<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-	    		<div class="panel-body" ng-bind-html="questionIdToAnswerDictionary[question.id]">
-				
-	    		</div>
-	    	</div>
+	<div class="panel-footer" style="width: 100%; overflow:auto">
+		<div style="display:inline;width:90%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
+			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
 		</div>
+		<div style="display:inline;width:10%:float:right">
+			<span class="badge" style="float: right">{{question.difficulty_level}}</span>
+		</div>
+
+ 		<div ng-click="displaySolution(question)" style="float:right; width: 6%">
+ 			<a href="#" ><span style="float: left" aria-hidden="true">Soln</span></a>
+ 		</div>
 	</div>
 
 </div>

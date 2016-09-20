@@ -133,7 +133,6 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             var isFetchingQuestions = false;
-            var puzzleCategoryID = 7;
 
             $scope.questionIdToAnswerDictionary=[];
 
@@ -155,7 +154,7 @@ var app = angular
 
 
                 //Fetching puzzles here
-                $http.get(category_enabled_questions_API+puzzleCategoryID+"?start="+feedNum*10)
+                $http.get(category_enabled_questions_API+PUZZLE_CATEGORY_ID+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
                         
                         var allQuestions = data;
@@ -191,6 +190,12 @@ var app = angular
             //Makes first call for questions when controller is executed
             getQuestions(feedNum);
 
+            $scope.displaySolution = function(question) {
+                console.log("solution displayed");
+                question.isSolved = true;
+
+            }
+
 
             $(window).scroll(function () {
                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
@@ -211,7 +216,7 @@ var app = angular
             //Returning the template file from getQuestonInfo using question 
             $scope.getQuestionTemplateByType = function(question) {
                 
-                return absolute_path+"PuzzlingPuzzles/DescriptiveTemplate/questionstructure_fragment_descriptive.html";
+                return puzzlingPuzzles_file;
 
             }
 
@@ -550,7 +555,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("Profile");
+                            $location.url("PuzzlingPuzzles");
                             //$scope.$apply();
                         }
                         else {
