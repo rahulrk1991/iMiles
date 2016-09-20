@@ -192,7 +192,7 @@ var app = angular
 
             $scope.displaySolution = function(question) {
                 console.log("solution displayed");
-                question.isSolved = true;
+                question.isSolved = !question.isSolved;
 
             }
 
