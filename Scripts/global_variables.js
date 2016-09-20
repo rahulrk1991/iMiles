@@ -100,4 +100,4 @@ var puzzlingPuzzles_file = absolute_path+"PuzzlingPuzzles/DescriptiveTemplate/qu
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;
 var COMPANY_CATEGORY_ID = 46;
-var PUZZLE_CATEGORY_ID = 26;
+var PUZZLE_CATEGORY_ID = 7;
