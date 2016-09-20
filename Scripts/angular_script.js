@@ -555,7 +555,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("PuzzlingPuzzles");
+                            $location.url("Profile");
                             //$scope.$apply();
                         }
                         else {
