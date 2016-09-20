@@ -44,3 +44,12 @@ a {
 .difficulty_1-3 {
     background-color: green;
 }
+
+.settings-page-label {
+    width:40%;
+    font-size:20px;
+}
+
+.settings-page-inputs {
+    width:60%;
+}

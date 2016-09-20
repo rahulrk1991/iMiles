@@ -244,7 +244,40 @@ var app = angular
             }
 
         })
-        .controller("settingsController",function($scope) {
+        .controller("settingsController",function($scope,$http) {
+
+            $scope.Profile = {};
+            $scope.Profile.id = "";
+            $scope.Profile.username = "";
+            $scope.Profile.first_name = "";
+            $scope.Profile.last_name = "";
+            $scope.Profile.email = "";
+            $scope.Profile.contact_no = "";
+
+
+            var loadUserInfo = function() {
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile = data;
+                        $scope.Profile.new_password = "";
+                        $scope.Profile.confirm_new_password = "";
+                        console.log($scope.Profile);
+
+                    });
+
+            }
+
+            loadUserInfo();
+
+            $scope.resetForm = function() {
+                $scope.Profile.first_name = "";
+                $scope.Profile.last_name = "";
+                $scope.Profile.contact_no = "";
+                $scope.Profile.new_password = "";
+                $scope.Profile.confirm_new_password = "";
+            }
             
         })
         .controller("onlineMockTestsChooseTestController",function($scope,$http,$location) {

@@ -4,64 +4,129 @@
 }
 </style>
 
-<div id="main_container" style="width:900px;margin:0 auto;margin-top:50px" class="container">
+<div id="main_container" style="width:900px;margin:0 auto;margin-top:40px" class="container">
     <div class="container-fluid">
        <div class="row">
 
           <h3 style="display:inline"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></h3>
-          <h1 style="display:inline;padding:10px">Settings</h1>
+          <h1 style="display:inline;padding:10px">Account Settings</h1>
           <hr>
 
-          <div id="left_container" style="width:50%" class="col-md-6">
-             <h3>We'd love to hear from you!</h3>
-             <br>
 
-             <h4 style="text-align:justify;line-height:150%;padding-right:10px">At <b>InterviewMiles</b>, we're always looking to improve ourselves. You can help us in that process by sharing with us your valuable feedback, suggestions and comments about how you want the site to be. You can even get in touch with us on the social network.</h4>
-             <hr>
-             <table width="100%;">
-                <tr>
-                   <td ng-repeat="thumbnail in thumbnails" class="social_td">
-                        <img ng-src="{{thumbnail}}">
-                    </td>              
-                </tr>
-             </table>
-          </div>
-          <div id="form_container" style="width:50%" class="col-md-6">
+          <div id="form_container" style="width:80%" class="col-md-6">
        
-             <form>
+            <form>
                 <table style="width:100%">
-                   <tr>
-                      <td class="form_td">
-                         <div class="input-group-lg">
-                            <input ng-model="contact.fullName" type="text" class="form-control" placeholder="Name" >
+                    <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Username : 
                          </div>
-                      </td>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.username" type="text" class="form-control">
+                         </div>
+                        </td>
+                        
                    </tr>
                    <tr>
-                      <td class="form_td">
-                         <div class="input-group-lg">
-                            <input ng-model="contact.email" type="text" class="form-control" placeholder="Email" >
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            First Name : 
                          </div>
-                      </td>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-model="Profile.first_name" type="text" class="form-control" placeholder="First Name" >
+                         </div>
+                        </td>
+                        
                    </tr>
                    <tr>
-                      <td class="form_td">
-                         <div class="input-group-lg">
-                            <input ng-model="contact.subject" type="text" class="form-control" placeholder="Title" >
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Last Name : 
                          </div>
-                      </td>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-model="Profile.last_name" type="text" class="form-control" placeholder="Last Name" >
+                         </div>
+                        </td>
+                        
+                   </tr>
                    <tr>
-                      <td class="form_td">
-                         <div class="input-group-lg">
-                            <textarea ng-model="contact.message" style="height:150px" type="text" class="form-control" placeholder="Message"></textarea>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            New Password : 
                          </div>
-                      </td>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-model="Profile.new_password" type="text" class="form-control" placeholder="Type New password here" >
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Confirm New Password : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-model="Profile.confirm_new_password" type="text" class="form-control" placeholder="Confirm new password here" >
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Email ID : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.email" type="text" class="form-control">
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Joining Date : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <div ng-disabled="true" ng-bind="Profile.date_joined | date:'dd/MMM/yyyy'" type="text" class="form-control">
+                            </div>
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Contact No : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input  ng-model="Profile.contact_no" type="text" class="form-control" placeholder="Contact Number" >
+                         </div>
+                        </td>
+                        
                    </tr>
              
                 </table>
                 <br>
-                <button ng-click="submitMessage()" style="float:right" type="button" class="btn btn-lg">Submit</button>
-                <button ng-click="resetForm()" style="float:right;margin-right:10px" type="button" class="btn btn-lg">Reset</button>
+                <button ng-click="updateProfile()" style="float:left" type="button" class="btn btn-lg">Update</button>
+                <button ng-click="resetForm()" style="float:left;margin-left:10px" type="button" class="btn btn-lg">Reset</button>
              </form>
           </div>
        </div>
