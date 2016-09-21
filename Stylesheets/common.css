@@ -30,19 +30,19 @@ a {
 }
 
 .difficulty_8-10 {
-    background-color:red;
+    background-color:#ff3232;
 }
 
 .difficulty_6-7 {
-    background-color:orange;
+    background-color:#FFA500;
 }
 
 .difficulty_4-5 {
-    background-color:yellow;
+    background-color:#FFD700;
 }
 
 .difficulty_1-3 {
-    background-color: green;
+    background-color: #32CD32;
 }
 
 .settings-page-label {

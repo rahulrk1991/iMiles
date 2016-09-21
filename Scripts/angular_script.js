@@ -136,7 +136,8 @@ var app = angular
 
             $scope.questionIdToAnswerDictionary=[];
 
-            $scope.getColor = function(difficulty_level) {
+            $scope.getColorForDifficulty = function(difficulty_level) {
+                //console.log(difficulty_level);
                 if(difficulty_level>=1 && difficulty_level<=3)
                     return "difficulty_1-3";
                 else if (difficulty_level>=4 && difficulty_level<=5)
@@ -555,7 +556,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("Profile");
+                            $location.url("PuzzlingPuzzles");
                             //$scope.$apply();
                         }
                         else {
@@ -589,6 +590,7 @@ var app = angular
 
                         var tokenHTML = response.data;
                         var token = tokenHTML.split(" ")[3].split("\'")[1];
+                        console.log("Token:"+token);
                         //console.log("CSRF Token:"+token);
 
                         var form = new FormData();
@@ -601,6 +603,7 @@ var app = angular
                         document.cookie = "csrftoken="+token;*/
 
                         $cookies.put("csrftoken",token);
+
 
                         //console.log("Cookie plus token:"+$cookies.get("csrftoken"));
 
@@ -1009,6 +1012,18 @@ var app = angular
                 
                 return tag_structure_file_example_box;         //returning the template file from getQuestonInfo using question 
 
+            }
+
+            $scope.getColorForDifficulty = function(difficulty_level) {
+                //console.log(difficulty_level);
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
             }
 
 
