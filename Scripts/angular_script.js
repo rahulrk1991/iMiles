@@ -286,8 +286,9 @@ var app = angular
             }
             
         })
-        .controller("onlineMockTestsChooseTestController",function($scope,$http,$location) {
+        .controller("onlineMockTestsChooseTestController",function($scope,$http,$location,$timeout) {
 
+            $scope.mockToBeStarted=-1;
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
             $scope.tags.allTagNames = [];
@@ -308,6 +309,7 @@ var app = angular
             $scope.difficulty = "Easy";
 
             categoryDict = [];
+
 
             var getAllMockTests = function() {
 
@@ -330,8 +332,19 @@ var app = angular
                 return mock_summary_panel;
             }
 
+            $scope.setMockToBeStarted = function(id) {
+                $scope.mockToBeStarted = id;
+            }
+
             $scope.startMockTestWithID = function(mockID) {
-                $location.url("/OnlineMockTests/TakeATest/"+mockID);
+                $("#signInModalEmail").modal('hide');
+                //$location.url("/OnlineMockTests/TakeATest/"+mockID);
+
+                $timeout(function() {
+
+                    $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
+                    $scope.$apply();
+                }, 200);
             }
 
             var getAllCategories = function() {
@@ -556,7 +569,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("PuzzlingPuzzles");
+                            $location.url("OnlineMockTests/ChooseATest");
                             //$scope.$apply();
                         }
                         else {
