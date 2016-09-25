@@ -337,7 +337,7 @@ var app = angular
             }
 
             $scope.startMockTestWithID = function(mockID) {
-                $("#signInModalEmail").modal('hide');
+                $("#startTheTestModal").modal('hide');
                 //$location.url("/OnlineMockTests/TakeATest/"+mockID);
 
                 $timeout(function() {
