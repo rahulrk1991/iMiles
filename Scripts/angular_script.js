@@ -289,27 +289,6 @@ var app = angular
         .controller("onlineMockTestsChooseTestController",function($scope,$http,$location,$timeout) {
 
             $scope.mockToBeStarted=-1;
-            //Variable to display tags/search them in autocomplete search bar
-            $scope.tags = {};
-            $scope.tags.allTagNames = [];
-            $scope.tags.allTagId = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
-            $scope.tags.filterValue = "Aptitude";
-
-            //Category TextBox
-            $scope.selectedCategory="Aptitude";
-
-            //Duration TextBox
-            $scope.durations = [15,30,45,60];
-            $scope.duration=15;
-            $scope.durationText = "15";
-
-            //Difficulty TextBox
-            $scope.difficulties = ["Easy","Medium","Hard"];
-            $scope.difficulty = "Easy";
-
-            categoryDict = [];
-
 
             var getAllMockTests = function() {
 
@@ -338,43 +317,12 @@ var app = angular
 
             $scope.startMockTestWithID = function(mockID) {
                 $("#startTheTestModal").modal('hide');
-                //$location.url("/OnlineMockTests/TakeATest/"+mockID);
 
                 $timeout(function() {
 
                     $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
                     $scope.$apply();
                 }, 200);
-            }
-
-            var getAllCategories = function() {
-                //console.log("Got categories");
-                $http.get(question_categories_API)
-                    .then(function(response) {
-                                            
-                        for(i=0;i<response.data.length;i++) {
-                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                            categoryDict[response.data[i].category_text] = response.data[i].id
-                        }
-                        console.log($scope.tags.allTagNames);
-                        console.log(categoryDict);
-
-                    });
-            }
-
-            getAllCategories();
-
-            $scope.setCategory = function() {
-                $scope.selectedCategory = $scope.tags.filterValue;
-            }
-
-            $scope.setDuration = function(durationSetByUser) {
-                $scope.duration = durationSetByUser;
-                $scope.durationText = durationSetByUser + " minutes";
-            }
-
-            $scope.setDifficulty = function(difficultySetByUser) {
-                $scope.difficulty = difficultySetByUser;
             }
 
         })
