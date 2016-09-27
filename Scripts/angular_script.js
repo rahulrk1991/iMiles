@@ -326,7 +326,16 @@ var app = angular
             }
 
         })
-        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal) {
+        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal,$route) {
+
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                //$("#navigateAwayModal").modal('show');
+                if (!confirm("Are you sure you want to navigate away from the test? The test will be automatically submitted and you will not be able to give it again")) { 
+                    event.preventDefault(); 
+                } 
+            });
 
 
             $scope.attemptedQuestions=0;
