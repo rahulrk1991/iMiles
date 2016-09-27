@@ -1105,8 +1105,9 @@ var app = angular
                     return;
                 }
 
-                if(lastIndex==' ' && filterString.length>1) {
-                    $scope.tags.tagsNamesToAddToQuestion = filterString.substring(0,filterString.length-1);
+                if(filterString.length>1 && allCategoriesDictionary[filterString]) {
+                    console.log("Dictionary for filter:"+filterString+":"+allCategoriesDictionary[filterString]);
+                    $scope.tags.tagsNamesToAddToQuestion = filterString.substring(0,filterString.length);
                     console.log($scope.tags.tagsNamesToAddToQuestion);
                     $scope.tags.filterValue = "";
 
