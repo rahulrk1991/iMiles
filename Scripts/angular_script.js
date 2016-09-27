@@ -967,7 +967,7 @@ var app = angular
             }
 
             $scope.changeCategory = function(categoryToRemove) {
-                categoryToRemove=categoryToRemove+" ";
+                //categoryToRemove=categoryToRemove+" ";
                 $scope.tags.filterValue=categoryToRemove;
                 $scope.updateCategories();
             }
