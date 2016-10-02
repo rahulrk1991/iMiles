@@ -1,6 +1,6 @@
 <link href="Stylesheets/aside.css" rel="stylesheet" type="text/css"/>
 
-<div ng-controller="landingPageController" class="aside" tabindex="-1" role="dialog">
+<div class="aside" tabindex="-1" role="dialog">
     <div class="aside-dialog">
         <div class="aside-content">
         <div class="aside-header" ng-show="title" style="background-color:#187FD6">
@@ -10,27 +10,27 @@
         <div class="aside-body">
             <ul style="margin-top:15px" class="nav nav-pills nav-stacked">
 
-            <li role="presentation"><a href="Profile" ng-click="$hide()">
+            <li role="presentation"><a href="#Profile" ng-click="$hide()">
                 <span class="glyphicon glyphicon-user span_style" aria-hidden="true"></span>Profile</a>
             </li>
 
-            <li role="presentation"><a href="QnACrunch" ng-click="$hide()">
+            <li role="presentation"><a href="#QnACrunch" ng-click="$hide()">
                 <span class="glyphicon glyphicon-th-list span_style" aria-hidden="true"></span>QnA Crunch</a>
             </li>
 
-            <li role="presentation"><a href="OnlineMockTests/ChooseATest" ng-click="$hide()">
+            <li role="presentation"><a href="#OnlineMockTests/ChooseATest" ng-click="$hide()">
                 <span class="glyphicon glyphicon-list-alt span_style" aria-hidden="true"></span>Online Mock Tests</a>
             </li>
 
-            <li ng-show="userModel.isAdmin" role="presentation"><a href="PostQuestion" ng-click="$hide()">
+            <li ng-show="sidebarUserModel.isAdmin" role="presentation"><a href="#PostQuestion" ng-click="$hide()">
                 <span class="glyphicon glyphicon-blackboard span_style" aria-hidden="true"></span>Post Questions</a>
             </li>
 
-            <li role="presentation"><a href="PuzzlingPuzzles" ng-click="$hide()">
+            <li role="presentation"><a href="#PuzzlingPuzzles" ng-click="$hide()">
                 <span class="glyphicon glyphicon-qrcode span_style" aria-hidden="true"></span>Puzzling Puzzles</a>
             </li>
 
-            <li role="presentation"><a href="Settings" ng-click="$hide()">
+            <li role="presentation"><a href="#Settings" ng-click="$hide()">
                 <span class="glyphicon glyphicon-cog span_style" aria-hidden="true"></span>Account Settings</a>
             </li>
 
@@ -40,11 +40,11 @@
 
             <hr>
 
-            <li role="presentation"><a href="ContactUs" ng-click="$hide()">
+            <li role="presentation"><a href="#ContactUs" ng-click="$hide()">
                 <span class="glyphicon glyphicon-envelope span_style" aria-hidden="true"></span>Contact Us</a>
             </li>
 
-            <li role="presentation"><a href="AboutUs" ng-click="$hide()">
+            <li role="presentation"><a href="#AboutUs" ng-click="$hide()">
                 <span class="glyphicon glyphicon-info-sign span_style" aria-hidden="true"></span>About Us</a>
             </li>
 

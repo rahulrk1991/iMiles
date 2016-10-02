@@ -123,10 +123,48 @@ var app = angular
                 templateUrl: absolute_path+"Settings/settings.html",
                 controller:"settingsController"
             })
-            $locationProvider.html5Mode(true);
+            //$locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("sideBarController",function(userService,$scope,$rootScope,$timeout,$http) {
+            //$scope.userModel = userService.returnState();
+            $rootScope.title="iMiles Menu";
+            $scope.userModel = userService.returnState();
+            $rootScope.sidebarUserModel = $scope.userModel;
+
+            console.log("Executing Side bar controller");
+
+            $scope.logout = function() {
+                $scope.userModel = userService.logOut();
+                $timeout(function() {
+                    //$location.url("/");
+                    console.log("Logging out of interviewMiles.com!");
+                    window.location.href = user_logout_API;
+
+                    $scope.$apply();
+                }, 100);
+                
+            }
+
+            var isLoggedIn = function() {
+                $http.get(user_isLoggedIn_API)
+                    .then(function(response) {
+                        if(response.data.result=="yes") {
+                            $scope.userModel = userService.logIn();
+                            //$scope.$apply();
+                            console.log("isAdmin"+$scope.userModel.isAdmin);
+                            //$location.url("OnlineMockTests/ChooseATest");
+                            //$scope.$apply();
+                        }
+                        else {
+                            console.log("Not logged in!");
+                        }
+                    })
+            }
+
+            isLoggedIn();
+        })
         .controller("PuzzlingPuzzlesController",function($scope,$http,$sce,userService) {
 
             //Feed contains array of 10 sets of questions all the questions 
@@ -326,7 +364,7 @@ var app = angular
             }
 
         })
-        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal,$route) {
+        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope) {
 
 
             $scope.$on("$locationChangeStart", function (event, next, current) {
@@ -514,12 +552,9 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies, $rootScope) {
 
-            $scope.title="iMiles Menu";
-            $scope.userModel = userService.returnState();
-
-
+            console.log('entered landingPageController')
             var isLoggedIn = function() {
                 $http.get(user_isLoggedIn_API)
                     .then(function(response) {
@@ -540,9 +575,11 @@ var app = angular
 
 
             $scope.logout = function() {
+                console.log("Starting to execute logout");
                 $scope.userModel = userService.logOut();
                 $timeout(function() {
                     //$location.url("/");
+                    console.log("In logout function");
                     window.location.href = user_logout_API;
 
                     $scope.$apply();
@@ -922,7 +959,7 @@ var app = angular
         .controller("questionsController",function($scope,$http,$sce,userService,$tooltip) {
 
             //this.userModel = userService.model;
-
+            console.log('entered questions controller')
             //console.log(this.userModel.active);
             //console.log(userService.model.active);
             $scope.userModel = userService.returnState();
