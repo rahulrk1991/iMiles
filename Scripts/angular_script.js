@@ -136,14 +136,14 @@ var app = angular
             $scope.password.newPassword = "";
             $scope.password.confirmNewPassword = "";
 
-            $scope.message = "Passwords is too short";
+            $scope.message = "Password is too short";
             $scope.isReadyToReset = false;
 
             $scope.checkIfIdenticalAndReturnClass = function() {
                 var newPasswordLocal = $scope.password.newPassword;
                 var confirmNewPasswordLocal = $scope.password.confirmNewPassword;
                 if(newPasswordLocal.length<8) {
-                    $scope.message = "Passwords is too short";
+                    $scope.message = "Password is too short";
                     $scope.isReadyToReset = false;
                     return;
                 }
