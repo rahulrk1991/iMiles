@@ -123,10 +123,40 @@ var app = angular
                 templateUrl: absolute_path+"Settings/settings.html",
                 controller:"settingsController"
             })
+            .when("/ResetPassword", {
+                templateUrl: absolute_path+"OtherArtifacts/resetPassword.html",
+                controller:"OtherArtifactsController"
+            })
             //$locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
 
          })
+        .controller("OtherArtifactsController",function($scope){
+            $scope.password = {};
+            $scope.password.newPassword = "";
+            $scope.password.confirmNewPassword = "";
+
+            $scope.message = "Passwords is too short";
+            $scope.isReadyToReset = false;
+
+            $scope.checkIfIdenticalAndReturnClass = function() {
+                var newPasswordLocal = $scope.password.newPassword;
+                var confirmNewPasswordLocal = $scope.password.confirmNewPassword;
+                if(newPasswordLocal.length<8) {
+                    $scope.message = "Passwords is too short";
+                    $scope.isReadyToReset = false;
+                    return;
+                }
+                if(newPasswordLocal==confirmNewPasswordLocal) {
+                    $scope.message = "Passwords are identical";
+                    $scope.isReadyToReset = true;
+                }
+                else {
+                    $scope.message = "Passwords are not identical";
+                    $scope.isReadyToReset = false;
+                }
+            }
+        })
         .controller("sideBarController",function(userService,$scope,$rootScope,$timeout,$http) {
             //$scope.userModel = userService.returnState();
             $rootScope.title="iMiles Menu";
