@@ -1225,8 +1225,13 @@ var app = angular
                 });
             }
 
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                scrolling_function.abort();
+            });
 
-            $(window).scroll(function () {
+
+            var scrolling_function = $(window).scroll(function () {
                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
                     if(!isFetchingQuestions) {
                         feedNum++;
