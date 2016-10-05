@@ -402,7 +402,10 @@ var app = angular
                 //$("#navigateAwayModal").modal('show');
                 if (!confirm("Are you sure you want to navigate away from the test? The test will be automatically submitted and you will not be able to give it again")) { 
                     event.preventDefault(); 
-                } 
+                }
+                else {
+                    $scope.stop();
+                }
             });
 
 
