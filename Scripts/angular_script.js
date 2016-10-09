@@ -1330,6 +1330,28 @@ var app = angular
                      });
             }
 
+            $scope.addNewTag = function() {
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = category_enabled_API;
+                body =  [{
+                    "category_text": $scope.addTags.categoryText,
+                    "parent_category": parseInt($scope.addTags.parentCategory)
+                }];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("New tag added successfully.ID:"+data[0].id);        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: 'New tag added successfully!', content: 'The tag ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
+                        })
+                     .error(function(response) {
+                        console.log("The tag could not be added");                //in case there is an error
+                        var myAlert = $alert({title: 'Error in adding tag!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+
+                     });
+            }
+
             $scope.changeTabClass = function(clickedTab) {
                 if(clickedTab=="mcq") {
                     $scope.tabClass = [classToAddToTab,""];     //Apply to first and remove from second
