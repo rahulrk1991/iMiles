@@ -809,6 +809,10 @@ var app = angular
             $scope.choices = {};
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+
             //$scope.questionID = $routeParams.question_number;
             $scope.question = {};
             if($routeParams.kind=="descriptive") {
@@ -858,7 +862,7 @@ var app = angular
                     "difficulty_level": $scope.question.difficulty_level,
                     "answer": $scope.question.answer
                 };
-                $http.put( url+"/", body)
+                $http.put( url+"/", body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
                         var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'alert-box', type: 'success', show: true,duration:15});
@@ -872,9 +876,6 @@ var app = angular
             }
 
             $scope.deleteQuestion = function() {
-
-                var cooks = $cookies.get("csrftoken");
-                var cooksHeader = { 'X-CSRFToken': cooks };
 
 
                 $http.delete( url+"/",{ headers: cooksHeader })
