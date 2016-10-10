@@ -804,7 +804,7 @@ var app = angular
             }
 
         })
-        .controller("editQuestionsController",function($scope,$http,$routeParams,$location,$alert) {
+        .controller("editQuestionsController",function($scope,$http,$routeParams,$location,$alert,$cookies) {
             var url;
             $scope.choices = {};
             console.log($routeParams.questionID);
@@ -872,7 +872,12 @@ var app = angular
             }
 
             $scope.deleteQuestion = function() {
-                $http.delete( url+"/")
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+
+
+                $http.delete( url+"/",{ headers: cooksHeader })
                      .success(function(response) {
                         console.log("Descriptive question deleted successfully");        //on successfull posting of question
                         var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'alert-box', type: 'success', show: true,duration:15});
