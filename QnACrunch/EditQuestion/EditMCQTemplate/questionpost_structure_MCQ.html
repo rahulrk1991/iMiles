@@ -44,7 +44,7 @@
         <button ng-click="changeTagsAssociatedWithQuestion()" type="submit" class="btn btn-primary">Replace Tags</button>
 		<br>
 		<div class="input-group">
-			<input ng-model="question.title" id="questionText" type="text" class="form-control"
+			<input ck-editor ng-model="question.title" id="questionText" type="text" class="form-control"
 				placeholder="Question" aria-describedby="basic-addon1"> <span
 				class="input-group-addon" id="basic-addon1"><span
 				class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></span>
@@ -78,7 +78,7 @@
 	</div>
 	<br> <br>
 	<div id="button">
-		<button ng-click="doSomethingElse()" type="submit" class="btn btn-primary">Submit</button>
+		<button ng-click="putMCQQuestion()" type="submit" class="btn btn-primary">Submit</button>
 		<button type="button" class="btn btn-primary">Clear</button>
 		<button ng-click="deleteQuestion()" style="float:right" type="button" class="btn btn-danger">Delete</button>
 	</div>

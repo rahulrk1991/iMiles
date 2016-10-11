@@ -1015,6 +1015,70 @@ var app = angular
                      });
             }
 
+            $scope.putMCQQuestion = function() {
+                console.log("Trying to post MCQ question...");
+                    if(!$scope.question.title) {
+                        alert("Question has to have a title!");
+                        return;
+                    }
+
+                    var cooks = $cookies.get("csrftoken");
+                    var cooksHeader = { 'X-CSRFToken': cooks };
+                    //url = "http://localhost:8000/question/question_mcq/";
+                    post_mcq_questions_Body =  {
+                        "title": $scope.question.title,
+                        "difficulty_level": $scope.question.difficulty_level,
+                        "kind": mcq_kind,
+                    };
+                    $http.put( url+"/", post_mcq_questions_Body,{ headers: cooksHeader })
+                        .success(function(data,status,header,config) {
+                            
+                            //$scope.postResponse = data[0];
+                            //console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
+                            var myAlert = $alert({title: 'Title edited successfully!', content: 'Title edited', placement:'alert-box', type: 'success', show: true,duration:5});
+
+                            /*$scope.number_of_choices=2;
+                            //Add choices to the question here
+                            for(i=0;i<$scope.number_of_choices;i++) {
+                                if(!$scope.question.choices.choicesCorrect[i])
+                                    $scope.question.choices.choicesCorrect[i]=false;   
+                            }
+
+                            var choiceBody = [];    //Will hold body of the url which posts choices
+
+                            for(i=0;i<$scope.number_of_choices;i++) {
+                                var text = $scope.question.choices.choiceText[i];
+                                if(text==null || text=="")
+                                    continue;
+                                var isTrue = $scope.question.choices.choicesCorrect[i];
+                                var singleChoice = {
+                                    "choice_text" : text,
+                                    "is_correct" : isTrue,
+                                    "questionId" : $scope.postResponse.id
+                                }
+                                //console.log(singleChoice);
+                                choiceBody.push(singleChoice);
+
+                            }
+                            console.log(choiceBody);
+
+
+                            $http.post(question_add_choices_API,choiceBody,{ headers: cooksHeader })
+                            .success(function(data,status,header,config) {
+                                console.log("Option posted successfully");
+                            })*/
+
+
+
+                        })
+                        .error(function(response) {
+                            console.log("The question could not be posted");
+                                //Delete the question since choices were not added!
+                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+
+                         });
+            }
+
             $scope.deleteQuestion = function() {
 
 
