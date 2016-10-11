@@ -1562,6 +1562,20 @@ var app = angular
                      });
             }
 
+            $scope.deleteATag = function() {
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                $http.delete(category_enabled_API+$scope.addTags.categoryIDToDelete, {headers : cooksHeader})
+                    .success(function(response) {
+                            console.log("Tags deleted successfully");        //on successfull posting of question
+                            
+                        
+                        })
+                        .error(function(response) {
+                            console.log("Tags could not be deleted");                //in case there is an error
+                        });
+            }
+
             $scope.changeTabClass = function(clickedTab) {
                 if(clickedTab=="mcq") {
                     $scope.tabClass = [classToAddToTab,""];     //Apply to first and remove from second
