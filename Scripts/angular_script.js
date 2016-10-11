@@ -774,7 +774,7 @@ var app = angular
             $scope.question = {};
             $scope.panel={};
             $scope.panel.title = "Click here to view Solution";
-            $scope.panel.body = "Answer not retrieved, check JSON object in console for clues"
+            $scope.panel.body = "Answer not retrieved, check JSON object in console for clues";
             
 
             console.log($routeParams.questionID);
@@ -812,6 +812,146 @@ var app = angular
 
             var cooks = $cookies.get("csrftoken");
             var cooksHeader = { 'X-CSRFToken': cooks };
+
+            //Scope variables needed for adding tags
+            $scope.tags = {};
+            $scope.tags.filterValue = "";                   //Value obtained from autocomplete search bar
+            $scope.tags.allTagNames = [];                   //Stores name of all tags, used as model for autocomplete search bar
+            $scope.tags.tagsNamesToAddToQuestion = [];      //Array which stores the names of the tags to associate with Q
+            $scope.tags.tagsToDissociate = [];
+
+            categoryDict = [];      //Used for mapping category name to category id
+
+            var getAllCategories = function() {
+                
+                $http.get(question_categories_API)
+                    .then(function(response) {
+                                            
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                            categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
+                        }
+
+                        console.log("All tag names:"+$scope.tags.allTagNames);
+                        console.log(categoryDict);
+
+                    });
+            }
+
+            var getCategoriesAssociatedWithQuestion = function() {
+                $http.get(questions_API+"/"+$routeParams.questionID+"/category")
+                    .then(function(response){
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.tagsNamesToAddToQuestion[i] = (response.data[i].category_text);
+                            $scope.tags.tagsToDissociate[i] = (response.data[i].id);
+                            //categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
+                        }
+                    });
+            }
+
+            $scope.changeTagsAssociatedWithQuestion = function() {
+                var j=0;
+                if($scope.tags.tagsToDissociate.length==0) {
+                    associateNewTags();
+                    return;
+                }
+                for(i=0;i<$scope.tags.tagsToDissociate.length;i++) {
+                    $http.delete(questions_API+"/"+$routeParams.questionID+"/category/"+$scope.tags.tagsToDissociate[i], { headers: cooksHeader })
+                        .success(function(response) {
+                            console.log("Tags dissociated successfully");        //on successfull posting of question
+                            
+                            j=j+1;
+                            console.log("length of array:"+$scope.tags.tagsToDissociate.length+":"+i);
+                            if(j==($scope.tags.tagsToDissociate.length)) {
+
+                                console.log("All tags have been deleted!");
+                                associateNewTags();
+                            }
+                        
+                        })
+                        .error(function(response) {
+                            console.log("Tags could not be dissociated");                //in case there is an error
+                        });
+                }
+
+            }
+
+            var associateNewTags = function() {
+                var categoryBody = [];      //Will store the body of the url to add categories
+
+                for(i=0;i < $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                    var singleTag = {
+                        "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
+                    }
+                    categoryBody.push(singleTag);       //Add single category to the body to create an array of categories
+                }
+
+                console.log(categoryBody);
+
+                var addCategoryURL = questions_API+"/"+$routeParams.questionID+"/category";
+
+                $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
+                    .success(function(data,status,header,config) {
+                        console.log("Categories posted successfully");
+                        var myAlert = $alert({title: 'Tags replaced successfully!', content: 'tags edited successfully', placement:'alert-box', type: 'success', show: true,duration:5});
+
+                    getCategoriesAssociatedWithQuestion();
+                })
+                .error(function(response) {
+                        console.log("The question could not be deleted");                //in case there is an error
+                        var myAlert = $alert({title: 'Tag replace unsuccessful!', content: 'tags could not be edited successfully', placement:'alert-box', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+            getAllCategories();
+            getCategoriesAssociatedWithQuestion();
+
+            $scope.getTagTemplate = function() {
+                
+                return tag_structure_file_postQuestion;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+
+            $scope.removeCategory = function(categoryToRemove) {
+
+                var index = $scope.tags.tagsNamesToAddToQuestion.indexOf(categoryToRemove);
+                console.log(index);
+
+                if (index > -1) {
+                    $scope.tags.tagsNamesToAddToQuestion.splice(index, 1);
+                }
+            }
+
+            $scope.increaseChoices = function() {                       //increases the number of choices to be added to the question
+                if($scope.number_of_choices==6)
+                    return;
+                $scope.number_of_choices++;
+                console.log("Added choice entry");
+            }
+
+            $scope.decreaseChoices = function() {                       //subtracts the number of choices to be added to the question
+                if($scope.number_of_choices==2)
+                    return;
+                $scope.number_of_choices--;
+                console.log("Removed choice entry");
+            }
+
+            $scope.updateCategories = function() {
+                var filterString = $scope.tags.filterValue;
+                var lastIndex = filterString.slice(-1);
+                if(filterString==" ") {
+                    $scope.tags.filterValue = "";
+                    return;
+                }
+                if(lastIndex==' ' && filterString.length>1) {
+                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    console.log($scope.tags.tagsNamesToAddToQuestion);
+                    $scope.tags.filterValue = "";
+                }
+                
+            }
 
             //$scope.questionID = $routeParams.question_number;
             $scope.question = {};

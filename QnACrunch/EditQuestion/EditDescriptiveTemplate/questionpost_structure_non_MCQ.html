@@ -6,7 +6,7 @@
             <div id="questionTags" class="input-group" style="width:500px;float:left">
                 <span class="input-group-addon" id="basic-addon1"><span
                     class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
-                    <input id="questionTagText" type="text" class="form-control" placeholder="Add tags here.." aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Add tags here..." bs-typeahead>
             </div>
             
             <div id="difficulty_rating" style="float:right" >
@@ -28,6 +28,19 @@
         </div>
         <br>
         <br>
+        <div class="panel panel-default" style="width:100%;height:auto;overflow:auto">
+            <div id="tagsToAssociateDiv" style="padding:7px">
+                <b>Tags to associate:</b>
+            </div>
+            
+            <div ng-repeat="tagToAddToQuestion in tags.tagsNamesToAddToQuestion" style="display:inline;float:left;padding:3px;padding-right:8px">
+         
+                <div ng-include="getTagTemplate()"></div>            
+         
+            </div>
+
+        </div>
+        <button ng-click="changeTagsAssociatedWithQuestion()" type="submit" class="btn btn-primary">Replace Tags</button>
         <br>
         <div id="questionTitle" class="input-group">
             <input ng-model="question.title" id="questionText" type="text" class="form-control"
