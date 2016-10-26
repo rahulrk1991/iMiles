@@ -37,7 +37,9 @@
 		<div style="display:inline;width:10%:float:right">
 			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:black">{{question.difficulty_level}}</span>
 		</div>
-
+		<div ng-click="markForLater(question)" style="float: right; width: 4%;padding-right:15px">
+ 			<a href="javascript:void(0)" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
+ 		</div>
 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
  			<a href="#ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
  		</div>
