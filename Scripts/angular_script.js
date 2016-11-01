@@ -1640,19 +1640,11 @@ var app = angular
 
                 console.log("Feed Number:"+feedNum);
 
-                //Deciding the Endpoint to hit based on whether there is a category selected or not
-                if(!($scope.isCategoryFilterOn)) {
-                    fetchQuestions_API = questions_API;
-                }
-                else {
-                    fetchQuestions_API = category_enabled_questions_API + $scope.categoryFilterNumber;
-                }
-
                 var arrayOfQuestionIDs = [];
                 $scope.questions = [];
                 var allQuestions;
 
-                $http.get(question_mark_Later_API)
+                $http.get(question_mark_Later_API+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
                         allQuestions = [];
                         for(i=0;i<data.length;i++) {
@@ -1660,34 +1652,43 @@ var app = angular
                             $http.get(questions_API+"/"+data[i].questionId)
                                 .success(function(data,status,headers,config) {
                                     allQuestions.push(data);
+                                    var singleQuestion = data;
+                                    singleQuestion.isSolved = false;
+                                    singleQuestion.showSolution = false;
+                                    singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
+
+                                    if(singleQuestion.kind==mcq_kind) {
+                                
+                                    var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                                    $http.get(fetchChoicesOfAQuestion_API)
+                                        .success(function(data,status,headers,config) {
+                                            //Populate Question ID to choices Dictionary
+                                            $scope.questionIdToChoicesDictionary[data[0].questionId] = data;
+                                            console.log(config.url);
+                                        })
+
+                                    
+                                    }
+
+                                    var fetchCategoryOfAQuestion_API = questions_API+"/"+singleQuestion.id+"/category";
+                                    $http.get(fetchCategoryOfAQuestion_API)
+                                        .success(function(data,status,headers,config) {
+
+                                            //Get ID of the question to which it belongs
+                                            var idOfQuestion = config.url.split("/")[6];
+                                            //Populate Question ID to Categories Dictionary
+                                            $scope.questionIdToCategoriesDictionary[idOfQuestion] = data;
+
+                                    });
+                                        
+
+                                    isFetchingQuestions = false;
                                 })
-                        }
+                            }
                         console.log(allQuestions);
 
                         $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
-                        //console.log($scope.feed);
 
-                        //$scope.questions = allQuestions;        //Assigning the response data to questions in $scope object
-                        
-                        //Loop through the questions, and fetch the choices for the MCQs
-                        for(var i=0;i<allQuestions.length;i++) {
-
-                            var singleQuestion = allQuestions[i];
-                            singleQuestion.isSolved = false;
-                            singleQuestion.showSolution = false;
-                            singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
-
-                            //If question is an MCQ, fetch the choices and all to dictionary
-                            if(singleQuestion.kind==mcq_kind) {
-                                
-                                var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                                $http.get(fetchChoicesOfAQuestion_API)
-                                    .success(function(data,status,headers,config) {
-                                        //Populate Question ID to choices Dictionary
-                                        $scope.questionIdToChoicesDictionary[data[0].questionId] = data;
-                                })
-                            }
-                        }
 
                     })
 
