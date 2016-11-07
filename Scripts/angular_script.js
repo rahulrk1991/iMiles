@@ -398,8 +398,10 @@ var app = angular
             }
 
         })
-        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope) {
+        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
 
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
 
             $scope.$on("$locationChangeStart", function (event, next, current) {
                 
@@ -466,7 +468,7 @@ var app = angular
             $scope.isTestSubmitted = false;
 
             //Get all the question data using http get
-            $http.get(mock_mock_API+$routeParams.id+"/questions")
+            $http.get(mock_mock_API+$routeParams.id+"/adminquestions")
                 .then(function(response) {
                     var allQuestions = response.data;
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
@@ -523,13 +525,27 @@ var app = angular
 
             }
 
+            
             $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
+                console.log("In validate choice function");
+                //console.log(question);
+                //console.log("question:"+question);
                 
+
+                //finalChoices.push(choicebody);
+                /*for(i=0;i<finalChoices.length;i++) {
+                    if()
+                }*/
+                
+
+                //console.log(finalChoices);
+
                 if($scope.isTestSubmitted)
                     return;
 
                 if(question.isSolved == false) {
                     $scope.attemptedQuestions++;
+                    //finalChoices.push(choicebody);
                 }
 
                 question.isSolved = true;
@@ -537,10 +553,42 @@ var app = angular
                 if(question.isSelected==index) {
                     console.log("Clicking same twice");
                     question.isDoneTwice=true;
+                    question.isSolved = false;
                 }
                 question.isSelected = index;
-
+                //console.log(finalChoices);
+                //console.log("Is the question solved:"+question.isSolved);
                 
+            }
+
+            var finalChoices = [];
+            $scope.submitTest = function() {
+                for(i=0;i<$scope.questions.length;i++) {
+                    if($scope.questions[i].isSolved) {
+                        var choicebody = {"questionID":$scope.questions[i].pk,
+                                    "choiceID":$scope.questions[i].usersChoice};
+                        finalChoices.push(choicebody);
+                    }
+                }
+                console.log(finalChoices);
+
+
+                $http.put(mock_mock_API+$routeParams.id+"/end", finalChoices,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Test submitted successfully");        //on successfull posting of question
+                        var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'alert-box', type: 'success', show: true,duration:5});
+                        $scope.isTestSubmitted = true;
+                        })
+                     .error(function(response) {
+                        console.log("Test could not be submitted");                //in case there is an error
+                        var myAlert = $alert({title: 'Test could not be submitted', content: '', placement:'alert-box', type: 'danger', show: true,duration:15});
+
+                     });
+
+                $scope.isTestSubmitted = true;
+                $("#submitTestModal").modal('hide');
+                console.log("Test submitted");
+                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: false});
             }
 
             $scope.applyClassToSelectedChoice = function(question,choice,index) {
@@ -575,13 +623,6 @@ var app = angular
                     return "background-grey";
                 else
                     return;
-            }
-
-            $scope.submitTest = function() {
-                $scope.isTestSubmitted = true;
-                $("#submitTestModal").modal('hide');
-                console.log("Test submitted");
-                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: false});
             }
 
             //Edit Question
@@ -2138,7 +2179,7 @@ var app = angular
                     var cooks = $cookies.get("csrftoken");
                     var cooksHeader = { 'X-CSRFToken': cooks };
 
-                    $http.post(mock_mock_API+$scope.question.mockID+"/questions",post_mock_mcq_questions_Body,{ headers: cooksHeader })
+                    $http.post(mock_mock_API+$scope.question.mockID+"/adminquestions",post_mock_mcq_questions_Body,{ headers: cooksHeader })
                         .success(function(data,status,header,config) {
                             $scope.postResponse = data[0];
                             console.log("Question posted successfully");
