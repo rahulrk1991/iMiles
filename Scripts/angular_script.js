@@ -468,7 +468,7 @@ var app = angular
             $scope.isTestSubmitted = false;
 
             //Get all the question data using http get
-            $http.get(mock_mock_API+$routeParams.id+"/adminquestions")
+            $http.get(mock_mock_API+$routeParams.id+"/start")
                 .then(function(response) {
                     var allQuestions = response.data;
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
@@ -565,8 +565,8 @@ var app = angular
             $scope.submitTest = function() {
                 for(i=0;i<$scope.questions.length;i++) {
                     if($scope.questions[i].isSolved) {
-                        var choicebody = {"questionID":$scope.questions[i].pk,
-                                    "choiceID":$scope.questions[i].usersChoice};
+                        var choicebody = {"questionId":$scope.questions[i].pk,
+                                    "choiceId":$scope.questions[i].usersChoice};
                         finalChoices.push(choicebody);
                     }
                 }
