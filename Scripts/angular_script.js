@@ -640,7 +640,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("OnlineMockTests/ChooseATest");
+                            $location.url("Profile");
                             //$scope.$apply();
                         }
                         else {
@@ -718,9 +718,9 @@ var app = angular
 
                                 $timeout(function() {
                                     //userService.logIn();
-                                    console.log($scope.userModel.active);
+                                    //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
-                                    console.log($scope.userModel.active);
+                                    //console.log($scope.userModel.active);
                                     $location.url("Profile");
                                     $scope.$apply();
                                 }, 200);
