@@ -131,6 +131,10 @@ var app = angular
                 templateUrl: absolute_path+"OtherArtifacts/resetPassword.html",
                 controller:"OtherArtifactsController"
             })
+            .when("/TermsAndConditions", {
+                templateUrl: absolute_path+"OtherArtifacts/termsAndConditions.html",
+                controller:"OtherArtifactsController"
+            })
             //$locationProvider.html5Mode(true);
             //$locationProvider.baseHref("Angular");
 
