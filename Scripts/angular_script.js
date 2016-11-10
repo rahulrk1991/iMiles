@@ -721,7 +721,7 @@ var app = angular
                                     //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
                                     //console.log($scope.userModel.active);
-                                    $location.url("Profile");
+                                    $location.url("QnACrunch");
                                     $scope.$apply();
                                 }, 200);
                                 
@@ -794,9 +794,9 @@ var app = angular
                                 
                                 $timeout(function() {
                                     //userService.logIn();
-                                    console.log($scope.userModel.active);
+                                    //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
-                                    console.log($scope.userModel.active);
+                                    //console.log($scope.userModel.active);
                                     $location.url("QnACrunch");
                                     $scope.$apply();
                                 }, 1000);
