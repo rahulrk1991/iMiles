@@ -1244,7 +1244,7 @@ var app = angular
                 chart.draw(data, options);
               }
         })
-        .controller("questionsController",function($scope,$http,$sce,userService,$tooltip,$cookies,$alert) {
+        .controller("questionsController",function($scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
 
             //this.userModel = userService.model;
             console.log('entered questions controller')
@@ -1421,7 +1421,7 @@ var app = angular
 
             //Function determines the behavior of the Autocomplete Search Filter
             $scope.updateCategories = function() {
-
+                $anchorScroll();
                 var filterString = $scope.tags.filterValue;
                 var lastIndex = filterString.slice(-1);
 
