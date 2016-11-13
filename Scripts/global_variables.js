@@ -41,6 +41,10 @@ var question_categories_API = API_Start + question_categories_End_Point;
 var question_mark_Later_End_Point = "/api/"+"question/marklater/";
 var question_mark_Later_API = API_Start + question_mark_Later_End_Point;
 
+//Unmark API
+var question_unmark_Later_End_Point = "/api/"+"question/unmarklater/";
+var question_unmark_Later_API = API_Start + question_unmark_Later_End_Point;
+
 //Add choices API
 var question_add_choices_End_Point = "/api/"+"question/choice/";
 var question_add_choices_API = API_Start + question_add_choices_End_Point;
@@ -87,7 +91,8 @@ var getQuestionInfo = {};
                                 postFragment : absolute_path+"PostQuestion/MCQTemplate/"+"questionpost_structure_MCQ.html",
                                 editFragment : absolute_path+"QnACrunch/EditQuestion/EditMCQTemplate/questionpost_structure_MCQ.html",
                                 viewFragment : absolute_path+"QnACrunch/ViewQuestion/MCQTemplate/questionstructure_fragment_mcq.html",
-                                onlineMockTestFragment : absolute_path+"OnlineMockTests/MCQTemplate/questionstructure_fragment_mcq.html"
+                                onlineMockTestFragment : absolute_path+"OnlineMockTests/MCQTemplate/questionstructure_fragment_mcq.html",
+                                markLaterTemplateFile : absolute_path+"MarkLater/questionstructure_fragment_mcq.html"
                             };
     getQuestionInfo['descriptive'] = {
                                 title : descriptive_kind,
@@ -95,7 +100,8 @@ var getQuestionInfo = {};
                                 postFragment : absolute_path+"PostQuestion/DescriptiveTemplate/"+"questionpost_structure_non_MCQ.html",
                                 editFragment : absolute_path+"QnACrunch/EditQuestion/EditDescriptiveTemplate/questionpost_structure_non_MCQ.html",
                                 viewFragment : absolute_path+"QnACrunch/ViewQuestion/DescriptiveTemplate/questionstructure_fragment_descriptive.html",
-                                onlineMockTestFragment : absolute_path+"OnlineMockTests/DescriptiveTemplate/questionstructure_fragment_descriptive.html"
+                                onlineMockTestFragment : absolute_path+"OnlineMockTests/DescriptiveTemplate/questionstructure_fragment_descriptive.html",
+                                markLaterTemplateFile : absolute_path+"MarkLater/questionstructure_fragment_descriptive.html"
                             };
 
 var choice_structure_file = absolute_path+"PostQuestion/MCQTemplate/ChoiceTemplate/"+"choice_structure.html";

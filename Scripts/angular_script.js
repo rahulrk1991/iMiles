@@ -1483,6 +1483,7 @@ var app = angular
 
             }
 
+
             $scope.displaySolution = function(question) {
 
                 console.log(question.id);
@@ -1681,6 +1682,7 @@ var app = angular
             
 
             //Function to GET questions
+            var questionIDToMarkQuestionID = [];
             var getQuestions = function(feedNum) {
 
                 console.log("Feed Number:"+feedNum);
@@ -1688,12 +1690,14 @@ var app = angular
                 var arrayOfQuestionIDs = [];
                 $scope.questions = [];
                 var allQuestions;
-
+                //questionIDToMarkQuestionID = [];
                 $http.get(question_mark_Later_API+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
                         allQuestions = [];
                         for(i=0;i<data.length;i++) {
                             arrayOfQuestionIDs.push(data[i].questionId);
+                            questionIDToMarkQuestionID[data[i].questionId] = data[i].id;
+                            console.log(questionIDToMarkQuestionID);
                             $http.get(questions_API+"/"+data[i].questionId)
                                 .success(function(data,status,headers,config) {
                                     allQuestions.push(data);
@@ -1808,6 +1812,30 @@ var app = angular
 
             }
 
+            $scope.unmarkQuestion = function(question) {
+                console.log(question);
+                console.log(questionIDToMarkQuestionID);
+                console.log(questionIDToMarkQuestionID[question.id]);
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_unmark_Later_API+questionIDToMarkQuestionID[question.id];
+                body =  [question.id];
+                $http.delete( url, { headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Question marked for later");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Question!"+question.id+" marked for later!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+
+                     });
+
+            }
+
             $scope.displaySolution = function(question) {
 
                 console.log(question.id);
@@ -1861,7 +1889,7 @@ var app = angular
             //Returning the template file from getQuestonInfo using question 
             $scope.getQuestionTemplateByType = function(question) {
                 
-                return getQuestionInfo[question.kind].templateFile;
+                return getQuestionInfo[question.kind].markLaterTemplateFile;
 
             }
 
