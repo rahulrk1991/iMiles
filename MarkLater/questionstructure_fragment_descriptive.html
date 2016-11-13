@@ -25,8 +25,8 @@
 			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:black">{{question.difficulty_level}}</span>
 			</a>
 		</div>
-		<div ng-click="markForLater(question)" style="float: right; width: 4%;padding-right:15px">
- 			<a title="Save Question" href="javascript:void(0)" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-save" aria-hidden="true"></span></a>
+		<div ng-click="unmarkQuestion(question)" style="float: right; width: 4%;padding-right:15px">
+ 			<a title="Unsave Question" href="javascript:void(0)" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-open" aria-hidden="true"></span></a>
  		</div>
 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
  			<a href="#ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
@@ -34,8 +34,8 @@
  		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
  			<a href="#EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
  		</div>
- 		<div title="Solution" ng-click="displaySolution(question)" style="float:right; width: 6%">
- 			<a href="javascrip:void(0)" ><span style="float: left" aria-hidden="true">Soln</span></a>
+ 		<div ng-click="displaySolution(question)" style="float:right; width: 6%">
+ 			<a title="View Solution" href="javascrip:void(0)" ><span style="float: left" aria-hidden="true">Soln</span></a>
  		</div>
 	</div>
 </div>
