@@ -402,7 +402,7 @@ var app = angular
             }
 
         })
-        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
+        .controller("onlineMockTestsTakeATestController",function($scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
 
             var cooks = $cookies.get("csrftoken");
             var cooksHeader = { 'X-CSRFToken': cooks };
@@ -581,6 +581,17 @@ var app = angular
                      .success(function(data,status,header,config) {
                         console.log("Test submitted successfully");        //on successfull posting of question
                         var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'alert-box', type: 'success', show: true,duration:5});
+                        $http.get(mock_mock_API+$routeParams.id+"/solution")
+                            .then(function(response) {
+                                //var allQuestions = response.data;
+                                //$scope.questions.choices = allQuestions.choices;
+                                //$scope.isTestSubmitted = true;               
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.questions[i].choices = response.data[i].choices;
+                                }
+                                $scope.isTestSubmitted = true;
+
+                            });
                         $scope.isTestSubmitted = true;
                         })
                      .error(function(response) {
