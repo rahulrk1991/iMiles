@@ -744,6 +744,68 @@ var app = angular
                     });
             }
 
+            $scope.validation = {};
+            $scope.validation.message = "No error as of now";
+            $scope.validation.isValid = false;
+
+            var validateRegistrationForm = function() {
+
+                    $scope.validation.message = "No error as of now";
+                    $scope.validation.isValid = false;
+
+                    ck_name = /^[A-Za-z0-9 ]{3,20}$/;
+                    if(!ck_name.test($scope.register.name)) {
+                        $scope.validation.message = "Full Name is invalid";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_username = /^[A-Za-z0-9_]{3,20}$/;
+                    if(!ck_username.test($scope.register.username)) {
+                        $scope.validation.message = "Username is invalid.\nMake sure it is 3-20 characters.\nNo characters other than A-Z,a-z,0-9";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                    if(!ck_email.test($scope.register.email)) {
+                        $scope.validation.message = "Invalid Email ID.\nEnter valid one.";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_password =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+                    if(!ck_password.test($scope.register.password)) {
+                        $scope.validation.message = "Invalid password.\nMake sure it is 6-20 characters.\nDon't user escape characters like /or \\";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_confirmpassword =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+                    if(!ck_password.test($scope.register.confirmpassword)) {
+                        $scope.validation.message = "Invalid password.\nMake sure it is 6-20 characters.\nDon't user escape characters like /or \\";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    //ck_confirmpassword =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+                    if($scope.register.confirmpassword!=$scope.register.password) {
+                        $scope.validation.message = "Passwords you entered donot match";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_phonenumber =  /^[0-9]{10,10}$/
+                    if(!ck_phonenumber.test($scope.register.mobile)) {
+                        $scope.validation.message = "Mobile number is not valid.\nMake sure it contains exactly 10 digits.\n";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    return true;
+                }
+
+            $scope.register={};
             $scope.submitRegisterForm = function() {
 
                 console.log($scope.register.name);
@@ -752,6 +814,11 @@ var app = angular
                 console.log($scope.register.password);
                 console.log($scope.register.confirmpassword);
                 console.log($scope.register.mobile);
+
+                if(!validateRegistrationForm()) {
+                    console.log("Form is invalid");
+                    return;
+                }
 
                 $http.get(user_token_API)
                     .then(function(response){
@@ -801,7 +868,7 @@ var app = angular
                                     //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
                                     //console.log($scope.userModel.active);
-                                    $location.url("QnACrunch");
+                                    $location.url("Profile");
                                     $scope.$apply();
                                 }, 1000);
                             }
@@ -1394,11 +1461,11 @@ var app = angular
                             //If question is an MCQ, fetch the choices and all to dictionary
                             if(singleQuestion.kind==mcq_kind) {
                                 
-                                var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                                var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id;
                                 $http.get(fetchChoicesOfAQuestion_API)
                                     .success(function(data,status,headers,config) {
                                         //Populate Question ID to choices Dictionary
-                                        $scope.questionIdToChoicesDictionary[data[0].questionId] = data;
+                                        $scope.questionIdToChoicesDictionary[data.choices[0].questionId] = data.choices;
                                 })
                             }
 
@@ -1543,10 +1610,44 @@ var app = angular
 
             //Returing if the selected choice is the correct choice
             $scope.validateChoice = function(question,choice,index) {
+                console.log(question);
+                console.log(choice);
+                console.log(index);
+                
                 if(question.isSolved)
                     return;
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+
+                postBody = {"choiceId":choice.id};
+                $http.post(post_mcq_Questions_API+question.id+"/solve",postBody,{ headers: cooksHeader })
+                    .success(function(data,status,header,config) {
+                            console.log("Solved Question!");        //on successfull posting of question
+                            console.log(data.value);
+                            console.log($scope.questionIdToChoicesDictionary[question.id]);
+                            for(i=0;i<$scope.questionIdToChoicesDictionary[question.id].length;i++) {
+                                if($scope.questionIdToChoicesDictionary[question.id][i].id==data.value){
+                                    $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = true;
+                                }
+                                else {
+                                    $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = false;
+                                }
+                                console.log($scope.questionIdToChoicesDictionary[question.id][i]);
+                            }
+                            var myAlert = $alert({title: "Question!"+question.id+" solved!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+                            question.isSolved = true;
+                            question.isSelected = index;
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+
+                     });
+                /*if(question.isSolved)
+                    return;
                 question.isSolved = true;
-                question.isSelected = index;
+                question.isSelected = index;*/
             }
 
             //The choice selected get a grey background

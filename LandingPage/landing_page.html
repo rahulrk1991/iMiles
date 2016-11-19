@@ -44,8 +44,16 @@
                                 <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Register as New Member</h4>
                             </div>
                             <div class="modal-body">
+                                
                                 <div class="modal-body" style="background-color:white;">
-                                    <form class="form-horizontal">
+                                    <div class="form-group form_input">
+                                        <div class="input-group-lg" class="col-sm-8" >
+                                            <div ng-show="validation.isValid" class="input-group-lg" class="col-sm-8" >
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form name="registraionForm" class="form-horizontal">
 
                                         <div class="form-group form_input">
                                             <div class="input-group-lg" class="col-sm-8" >
@@ -56,7 +64,7 @@
 
                                         <div class="form-group form_input">
                                             <div class="input-group-lg" class="col-sm-8" >
-                                                <span style="float:left;width:10%" class="glyphicon glyphicon-user" ></span>
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-tag" ></span>
                                                 <input ng-model="register.username" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Username" >
                                              </div>
                                         </div>
@@ -64,7 +72,7 @@
                                         <div class="form-group form_input">
                                             <div class="input-group-lg" class="col-sm-8">
                                                 <span style="float:left;width:10%" class="glyphicon glyphicon-envelope" ></span>
-                                                <input ng-model="register.email" type="email" class="form-control" style="display:inline;float:left;width:80%" placeholder="Email Address">
+                                                <input name="email" ng-model="register.email" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Email Address">
                                             </div>
                                         </div>
                                         <div class="form-group form_input">
@@ -78,7 +86,7 @@
                                         <div class="form-group form_input">
 
                                             <div class="input-group-lg" class="col-sm-8">
-                                                <span style="float:left;width:10%" class="glyphicon glyphicon-check" ></span>
+                                                <span style="float:left;width:10%" class="glyphicon glyphicon-lock" ></span>
                                                 <input ng-model="register.confirmpassword" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Confirm Password">
                                             </div>
                                         </div>
