@@ -1803,7 +1803,7 @@ var app = angular
                 $scope.questions = [];
                 var allQuestions;
                 //questionIDToMarkQuestionID = [];
-                $http.get(question_mark_Later_API+"?start="+feedNum*10)
+                $http.get(question_mark_Later_API)
                     .success(function(data,status,headers,config) {
                         allQuestions = [];
                         for(i=0;i<data.length;i++) {
@@ -1981,18 +1981,6 @@ var app = angular
                 $(window).off();
             });
 
-
-            $(window).scroll(function () {
-               if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-                    if(!isFetchingQuestions) {
-                        feedNum++;
-                        console.log("Getting feed number:"+feedNum);
-                        isFetchingQuestions=true;
-                        getQuestions(feedNum);
-                    }     
-
-               }
-            });
 
 
             //-------------Functions for styling the content-----------------------
