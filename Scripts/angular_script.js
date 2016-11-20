@@ -394,11 +394,17 @@ var app = angular
             $scope.startMockTestWithID = function(mockID) {
                 $("#startTheTestModal").modal('hide');
 
-                $timeout(function() {
+                /*$timeout(function() {
 
                     $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
                     $scope.$apply();
-                }, 200);
+                }, 200);*/
+
+
+                $('#startTheTestModal').on('hidden.bs.modal', function () {
+                    $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
+                    $scope.$apply();
+                })
             }
 
         })
