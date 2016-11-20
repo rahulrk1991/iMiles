@@ -73,6 +73,9 @@ var user_isLoggedIn_API = API_Start + user_isLoggedIn_End_Point;
 var mock_mocks_End_point = "/api/"+"mock/mocks/";
 var mock_mock_API = API_Start + mock_mocks_End_point;
 
+var mock_myresults_End_Point = "/api/"+"mock/myresults";
+var mock_myresults_API = API_Start + mock_myresults_End_Point;
+
 var mock_allMocks_End_Point = "/api/"+"mock/mocks/all";
 var mock_allMocks_API = API_Start + mock_allMocks_End_Point;
 
@@ -109,7 +112,8 @@ var tag_structure_file_postQuestion = absolute_path+"PostQuestion/tagTemplate.ht
 var tag_structure_file_qna = absolute_path+"QnACrunch/DisplayQuestion/tagTemplate.html";
 var tag_structure_file_search_bar = absolute_path+"QnACrunch/DisplayQuestion/tagTemplateForSearchBar.html";
 var tag_structure_file_example_box = absolute_path+"QnACrunch/DisplayQuestion/tagTemplateForExampleBox.html";
-var mock_summary_panel = absolute_path+"OnlineMockTests/mockSummaryPanel.html";
+var mock_summary_panel_unsolved = absolute_path+"OnlineMockTests/mockSummaryPanelUnsolved.html";
+var mock_summary_panel_solved = absolute_path+"OnlineMockTests/mockSummaryPanelSolved.html";
 var puzzlingPuzzles_file = absolute_path+"PuzzlingPuzzles/DescriptiveTemplate/questionstructure_fragment_descriptive.html";
 var DEFAULT_DIFFICULTY = 5;
 var DEFAULT_NUMBER_OF_CHOICES = 4;

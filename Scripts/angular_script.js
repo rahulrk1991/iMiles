@@ -365,26 +365,59 @@ var app = angular
         .controller("onlineMockTestsChooseTestController",function($scope,$http,$location,$timeout) {
 
             $scope.mockToBeStarted=-1;
+            listOfSolvedMockIds = [];
+            mockIDToSolvedMockBody = [];
 
             var getAllMockTests = function() {
 
-                $http.get(mock_allMocks_API)
+                $http.get(mock_myresults_API)
                     .then(function(response) {
-                        $scope.allMocks = response.data;
-                        console.log($scope.allMocks);
-                        for(i=0;i<$scope.allMocks.length;i++) {
-                            if($scope.allMocks[i].duration=="30")
-                                $scope.allMocks[i].numberOfQuestions=10;
-                            else
-                                $scope.allMocks[i].numberOfQuestions=15;
+                        $scope.allSolvedMocks = response.data;
+                        console.log($scope.allSolvedMocks);
+                        for(i=0;i<$scope.allSolvedMocks.length;i++) {
+                            listOfSolvedMockIds.push($scope.allSolvedMocks[i].mockId);
+                            mockIDToSolvedMockBody[$scope.allSolvedMocks[i].mockId] = $scope.allSolvedMocks[i];
                         }
+                        console.log(mockIDToSolvedMockBody);
+
+                        $http.get(mock_allMocks_API)
+                            .then(function(response) {
+                                $scope.allMocks = response.data;
+                                console.log($scope.allMocks);
+                                for(i=0;i<$scope.allMocks.length;i++) {
+                                    if($scope.allMocks[i].duration=="30")
+                                        $scope.allMocks[i].numberOfQuestions=10;
+                                    else
+                                        $scope.allMocks[i].numberOfQuestions=15;
+                                    if(listOfSolvedMockIds.indexOf($scope.allMocks[i].id)>-1) {
+                                        //Unsolved mock
+                                        $scope.allMocks[i].score = mockIDToSolvedMockBody[$scope.allMocks[i].id].score;
+                                        $scope.allMocks[i].max_score = mockIDToSolvedMockBody[$scope.allMocks[i].id].max_score;
+                                    }
+                                    else {
+                                        //Solved mock
+
+                                    }
+                                }
+                            })
                     })
+
+                
             }
 
             getAllMockTests();
 
-            $scope.getMockSummaryPanel = function() {
-                return mock_summary_panel;
+            $scope.getMockSummaryPanel = function(mock) {
+                //console.log(mock);
+                if(listOfSolvedMockIds.indexOf(mock.id)>-1) {
+                    //console.log("Solved:"+mock.id);
+                    return mock_summary_panel_solved;   
+                }
+                else {
+                    //console.log("Unsolved:"+mock.id)
+                    return mock_summary_panel_unsolved;
+                }
+                
             }
 
             $scope.setMockToBeStarted = function(id) {
