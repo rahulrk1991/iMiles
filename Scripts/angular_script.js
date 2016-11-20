@@ -1848,7 +1848,7 @@ var app = angular
                             }
                         console.log(allQuestions);
 
-                        $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
+                        $scope.questions = allQuestions;    //Set of fetch questions get assigned to an index in feed
 
 
                     })
@@ -1924,10 +1924,11 @@ var app = angular
 
             }
 
-            $scope.unmarkQuestion = function(question) {
-                console.log(question);
-                console.log(questionIDToMarkQuestionID);
-                console.log(questionIDToMarkQuestionID[question.id]);
+            $scope.unmarkQuestion = function(question,index) {
+                console.log($scope.questions.indexOf(question));
+                console.log(index);
+                //console.log(questionIDToMarkQuestionID);
+                //console.log(questionIDToMarkQuestionID[question.id]);
 
                 var cooks = $cookies.get("csrftoken");
                 var cooksHeader = { 'X-CSRFToken': cooks };
@@ -1935,9 +1936,11 @@ var app = angular
                 body =  [question.id];
                 $http.delete( url, { headers: cooksHeader })
                      .success(function(data,status,header,config) {
-                            console.log("Question marked for later");        //on successfull posting of question
-                            
-                            var myAlert = $alert({title: "Question!"+question.id+" marked for later!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+
+                            $scope.questions.splice(index,1);
+                            console.log($scope.questions);
+                            console.log("Question has been removed from saved list");        //on successfull posting of question                     
+                            var myAlert = $alert({title: "Question "+question.id+" has been removed from saved list!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {

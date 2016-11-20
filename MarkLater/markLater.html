@@ -40,11 +40,6 @@
 
                     <div style="width:100%;height:auto;overflow:auto">
 
-                        <div ng-repeat="tagToAddToQuestion in tags.allTagNames track by $index" style="display:inline;float:left;padding:3px;padding-right:8px">
-                         
-                            <div ng-include="getTagTemplateForExampleBox()"></div>            
-                         
-                        </div>
 
                     </div>
 
@@ -69,12 +64,10 @@
 
                 <br>
                 <div  style="width:100%">
-                    <div ng-repeat="questions in feed">
-                        <div style="margin-bottom:50px" ng-repeat="question in questions">
-                     
-                            <div ng-include="getQuestionTemplateByType(question)"></div>            
-                     
-                        </div>
+                    <div style="margin-bottom:50px" ng-repeat="question in questions track by $index">
+                 
+                        <div ng-include="getQuestionTemplateByType(question)"></div>            
+                 
                     </div>
                 </div>
             </div>
