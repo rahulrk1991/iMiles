@@ -724,6 +724,7 @@ var app = angular
 
                         $.ajax(settings).done(function (response) {
                             var responseString = response.split("\"")[3];
+                            console.log("Response string:"+responseString);
                             //console.log(responseString);
                             if(responseString=="success") {
                                 console.log("Logged in successfully");
@@ -742,7 +743,7 @@ var app = angular
                                 
                             }
                             else if (responseString=="Invalid login details") {
-                                $("#signInModalEmail").modal('hide');
+                                //$("#signInModalEmail").modal('hide');
                                 $alert({title: 'Invalid credentials!', content: '', placement:'alert-box', type: 'danger', show: true,duration:4});
 
                             }
@@ -819,6 +820,9 @@ var app = angular
             $scope.register={};
             $scope.submitRegisterForm = function() {
 
+                $scope.validation.isValid = false;
+
+
                 console.log($scope.register.name);
                 console.log($scope.register.username);
                 console.log($scope.register.email);
@@ -830,6 +834,10 @@ var app = angular
                     console.log("Form is invalid");
                     return;
                 }
+
+                $alert({title: 'Wait!', content: 'Registration in progress...', placement:'alert-box', type: 'info', show: true,duration:4});
+                $scope.validation.message = "Wait! Registration in progress...";
+                $scope.validation.isValid = true;
 
                 $http.get(user_token_API)
                     .then(function(response){
@@ -864,27 +872,27 @@ var app = angular
                         "data": form
                         }
 
+                        //$scope.validation.isValid = false;
                         $.ajax(settings).done(function (response) {
                             console.log(response);
                             var responseString = response.split("\"")[3];
-                            //console.log(responseString);
+                            console.log("Response String:"+responseString);
                             if(responseString=="success") {
-                                
                                 $("#registerModal").modal('hide');
-                                $alert({title: 'Registration successful!', content: 'Signing you in...', placement:'alert-box', type: 'success', show: true,duration:4});
+                                $alert({title: 'Registration successful!', content: 'Login using the Sign In button using the username/email and password you provided', placement:'alert-box', type: 'success', show: true,duration:10});
 
                                 
-                                $timeout(function() {
-                                    //userService.logIn();
-                                    //console.log($scope.userModel.active);
-                                    $scope.userModel = userService.logIn();
-                                    //console.log($scope.userModel.active);
-                                    $location.url("Profile");
-                                    $scope.$apply();
-                                }, 1000);
+                            }
+                            else if(responseString=="Duplicate username or email") {
+                                //$("#registerModal").modal('hide');
+                                //$("#registerModal").modal('show');
+                                $scope.validation.message = "The username/email address you provided is already registered. Try another one!";
+                                $scope.validation.isValid = true;
+                                $alert({title: 'Duplicate username or email, choose another!', content: '', placement:'alert-box', type: 'danger', show: true,duration:4});
+
                             }
                             else {
-                                $("#registerModal").modal('hide');
+                                //$("#registerModal").modal('hide');
                                 $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'alert-box', type: 'danger', show: true,duration:4});
 
                             }
