@@ -1310,6 +1310,8 @@ var app = angular
             $scope.Profile.last_name = "";
             $scope.Profile.email = "";
             $scope.Profile.contact_no = "";
+            $scope.Profile.score = "";
+            $scope.Profile.experience = "";
 
 
             var loadUserInfo = function() {
@@ -1323,18 +1325,70 @@ var app = angular
 
                     });
 
+                $http.get(user_score_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile.score = data.value;
+                        console.log($scope.Profile.score);
+
+
+                    });
+
+                $http.get(user_experience_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile.experience = data.value;
+                        console.log($scope.Profile.experience);
+
+
+                    });
+
             }
+
+            $http.get(user_stats_API)
+                .success(function(data,status,headers,config) {
+                    console.log(data);
+
+                    function drawChart() {
+
+                        // Create the data table.
+                        var dataChart = new google.visualization.DataTable();
+                        dataChart.addColumn('string', 'Topping');
+                        dataChart.addColumn('number', 'Score');
+                        for(var cat in data) {
+                            console.log(cat,data[cat]);
+                            dataChart.addRows([
+                                [cat,data[cat]]
+                            ]);
+                        }
+
+                        // Set chart options
+                        var options = {
+                            'title':'',
+                            'width':700,
+                            'height':420,
+                            'chartArea':{width:"85%",height:"80%"},
+                            'legend': { position: 'none' }
+                        };
+
+                        // Instantiate and draw our chart, passing in some options.
+                        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                        chart.draw(dataChart, options);
+                      }
+                      $scope.flag=false;
+                        if(!($scope.flag)) {
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChart);
+                            console.log("Executed!");
+                            $scope.flag=true;
+                        }
+
+                });
 
             loadUserInfo();
             
 
-            $scope.flag=false;
-            if(!($scope.flag)) {
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-                console.log("Executed!");
-                $scope.flag=true;
-            }
+            
               
 
               // Set a callback to run when the Google Visualization API is loaded.
@@ -1343,35 +1397,7 @@ var app = angular
               // Callback that creates and populates a data table,
               // instantiates the pie chart, passes in the data and
               // draws it.
-              function drawChart() {
-
-                // Create the data table.
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Topping');
-                data.addColumn('number', 'Score');
-                data.addRows([
-                  ['Aptitude', 900],
-                  ['Puzzles', 150],
-                  ['Data Structures', 670],
-                  ['Strings', 170],
-                  ['Algorithms', 20],
-                  ['Programming Languages', 708],
-                  ['Bit Manipulations', 125]
-                ]);
-
-                // Set chart options
-                var options = {
-                    'title':'',
-                    'width':700,
-                    'height':420,
-                    'chartArea':{width:"85%",height:"80%"},
-                    'legend': { position: 'none' }
-                };
-
-                // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-                chart.draw(data, options);
-              }
+              
         })
         .controller("questionsController",function($scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
 

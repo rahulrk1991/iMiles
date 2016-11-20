@@ -64,6 +64,15 @@ var user_isAdmin_API = API_Start + user_isAdmin_API;
 var user_info_End_Point = "/api/" + "user/profile/";
 var user_info_API = API_Start + user_info_End_Point;
 
+var user_stats_End_Point = "/api/" + "question/stats/";
+var user_stats_API = API_Start + user_stats_End_Point;
+
+var user_score_End_Point = "/api/" + "question/score/";
+var user_score_API = API_Start + user_score_End_Point;
+
+var user_experience_End_Point = "/api/" + "question/experience/";
+var user_experience_API = API_Start + user_experience_End_Point;
+
 var user_logout_End_Point = "/api/"+"user/logout";
 var user_logout_API = API_Start + user_logout_End_Point;
 
