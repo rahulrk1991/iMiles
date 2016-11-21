@@ -1519,6 +1519,7 @@ var app = angular
             var getQuestions = function(feedNum) {
 
                 console.log("Feed Number:"+feedNum);
+                $scope.isFetchingQuestions = true;
 
                 //Deciding the Endpoint to hit based on whether there is a category selected or not
                 if(!($scope.isCategoryFilterOn)) {
