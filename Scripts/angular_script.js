@@ -1430,7 +1430,7 @@ var app = angular
             //Feed contains array of 10 sets of questions all the questions 
             $scope.feed = {};
             var feedNum = 0;
-            var isFetchingQuestions = false;
+            $scope.isFetchingQuestions = false;
 
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
@@ -1569,7 +1569,7 @@ var app = angular
 
                             });
 
-                            isFetchingQuestions = false;
+                            $scope.isFetchingQuestions = false;
                         }
                 });
             
@@ -1676,10 +1676,10 @@ var app = angular
 
             $(window).scroll(function () {
                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-                    if(!isFetchingQuestions) {
+                    if(!$scope.isFetchingQuestions) {
                         feedNum++;
                         console.log("Getting feed number:"+feedNum);
-                        isFetchingQuestions=true;
+                        $scope.isFetchingQuestions=true;
                         getQuestions(feedNum);
                     }     
 
