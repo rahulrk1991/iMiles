@@ -4,7 +4,7 @@
 	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
 		<div style="float: left; width: 100%">
 			<div style="display:inline;width:10%">
-				<h3 style="display:inline;color:#187FD6"> Q] </h3>
+				<h3 style="display:inline;color:#187FD6"> [Q] </h3>
 			</div>
 			<div style="display:inline;width:90%">
 				<h3 style="float:top;display:inline" class="panel-title" ng-bind-html="question.title"></h3>
@@ -48,8 +48,5 @@
  		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
  			<a  href="#EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
  		</div>
-		<div  ng-click="displaySolution(question)" style="float:right; width: 4%">
-	<a href="javascript:void(0)" ><span style="float: left" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-</div>
 	</div>
 </div>

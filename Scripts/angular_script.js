@@ -463,6 +463,7 @@ var app = angular
             $scope.totalQuestions;
             $scope.score = 0;
             $scope.maxScore = 0;
+            $scope.testName = "";
 
             //Review Test modal variable
             $scope.title = "Your Time is up!";
@@ -478,6 +479,7 @@ var app = angular
                 .then(function(response) {
                     var testInfo = response.data;
                     var durationInMinutes = testInfo.duration;
+                    $scope.testName = testInfo.title;
                     $scope.counter = testInfo.duration*60;
                 })
 
