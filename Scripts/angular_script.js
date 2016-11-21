@@ -453,6 +453,7 @@ var app = angular
                     event.preventDefault(); 
                 }
                 else {
+                    $scope.submitTest();
                     $scope.stop();
                 }
             });
