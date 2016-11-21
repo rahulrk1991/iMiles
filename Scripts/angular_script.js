@@ -461,6 +461,8 @@ var app = angular
 
             $scope.attemptedQuestions=0;
             $scope.totalQuestions;
+            $scope.score = 0;
+            $scope.maxScore = 0;
 
             //Review Test modal variable
             $scope.title = "Your Time is up!";
@@ -621,6 +623,8 @@ var app = angular
                      .success(function(data,status,header,config) {
                         console.log("Test submitted successfully");        //on successfull posting of question
                         var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'alert-box', type: 'success', show: true,duration:5});
+                        $scope.score = data.score;
+                        $scope.maxScore = data.max_score;
                         $http.get(mock_mock_API+$routeParams.id+"/solution")
                             .then(function(response) {
                                 //var allQuestions = response.data;
