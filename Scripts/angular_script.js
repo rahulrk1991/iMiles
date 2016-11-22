@@ -1378,7 +1378,7 @@ var app = angular
                 $http.get(user_score_API)
                     .success(function(data,status,headers,config) {
                     
-                        $scope.Profile.score = data.value;
+                        $scope.Profile.score = data.value*10;
                         console.log($scope.Profile.score);
 
 
@@ -1408,7 +1408,7 @@ var app = angular
                         for(var cat in data) {
                             console.log(cat,data[cat]);
                             dataChart.addRows([
-                                [cat,data[cat]]
+                                [cat,data[cat]*10]
                             ]);
                         }
 
