@@ -170,6 +170,10 @@ var app = angular
             $rootScope.title="iMiles Menu";
             $scope.userModel = userService.returnState();
             $rootScope.sidebarUserModel = $scope.userModel;
+            //$scope.score = "";
+            //$scope.full_name = "";
+            $rootScope.rootScope_full_name = "";
+            $rootScope.rootScope_score = -1;
 
             console.log("Executing Side bar controller");
 
@@ -184,6 +188,45 @@ var app = angular
                 }, 100);
                 
             }
+
+            var loadUserInfo = function() {
+
+                $scope.Profile = {};
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        //$scope.Profile = data;
+                        $rootScope.rootScope_full_name = data.first_name;
+                        //$rootScope.full_name = Profile.first_name;
+                        //console.log($scope.Profile.first_name);
+
+
+                    });
+
+                $http.get(user_score_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        //$scope.Profile.score = data.value*10;
+                        $rootScope.rootScope_score = data.value*10;
+                        //console.log($scope.Profile.score);
+
+
+                    });
+
+                $http.get(user_experience_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        //$scope.Profile.experience = data.value;
+                        //console.log($scope.Profile.experience);
+
+
+                    });
+
+            }
+
+
+            loadUserInfo();
 
             var isLoggedIn = function() {
                 $http.get(user_isLoggedIn_API)
