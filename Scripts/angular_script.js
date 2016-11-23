@@ -1355,8 +1355,9 @@ var app = angular
             $scope.Profile.last_name = "";
             $scope.Profile.email = "";
             $scope.Profile.contact_no = "";
-            $scope.Profile.score = "";
-            $scope.Profile.experience = "";
+            $scope.Profile.score = "-1";
+            $scope.Profile.experience = "-1";
+            $scope.Profile.questions_answered = "-1";
 
 
             var loadUserInfo = function() {
@@ -1365,8 +1366,7 @@ var app = angular
                     .success(function(data,status,headers,config) {
                     
                         $scope.Profile = data;
-                        console.log($scope.Profile.first_name);
-
+                        console.log("first name:"+$scope.Profile.first_name);
 
                     });
 
@@ -1374,7 +1374,8 @@ var app = angular
                     .success(function(data,status,headers,config) {
                     
                         $scope.Profile.score = data.value*10;
-                        console.log($scope.Profile.score);
+                        $scope.Profile.questions_answered = data.value;
+                        console.log("score"+$scope.Profile.score);
 
 
                     });
@@ -1383,7 +1384,7 @@ var app = angular
                     .success(function(data,status,headers,config) {
                     
                         $scope.Profile.experience = data.value;
-                        console.log($scope.Profile.experience);
+                        console.log("experience"+$scope.Profile.experience);
 
 
                     });
