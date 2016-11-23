@@ -174,6 +174,7 @@ var app = angular
             //$scope.full_name = "";
             $rootScope.rootScope_full_name = "";
             $rootScope.rootScope_score = -1;
+            $rootScope.rootScope_experience = -1;
 
             console.log("Executing Side bar controller");
 
@@ -217,7 +218,7 @@ var app = angular
                 $http.get(user_experience_API)
                     .success(function(data,status,headers,config) {
                     
-                        //$scope.Profile.experience = data.value;
+                        $rootScope.rootScope_experience  = data.value;
                         //console.log($scope.Profile.experience);
 
 
