@@ -166,17 +166,17 @@ var app = angular
             }
         })
         .controller("sideBarController",function(userService,$scope,$rootScope,$timeout,$http) {
-            //$scope.userModel = userService.returnState();
+
+            console.log("Entered side bar controller!");
+
             $rootScope.title="iMiles Menu";
             $scope.userModel = userService.returnState();
             $rootScope.sidebarUserModel = $scope.userModel;
-            //$scope.score = "";
-            //$scope.full_name = "";
+
+            //Stats that appear in navigation bar
             $rootScope.rootScope_full_name = "";
             $rootScope.rootScope_score = -1;
             $rootScope.rootScope_experience = -1;
-
-            console.log("Executing Side bar controller");
 
             $scope.logout = function() {
                 $scope.userModel = userService.logOut();
@@ -194,33 +194,27 @@ var app = angular
 
                 $scope.Profile = {};
 
+                //Get first name of user
                 $http.get(user_info_API)
                     .success(function(data,status,headers,config) {
-                    
-                        //$scope.Profile = data;
-                        $rootScope.rootScope_full_name = data.first_name;
-                        //$rootScope.full_name = Profile.first_name;
-                        //console.log($scope.Profile.first_name);
 
+                        $rootScope.rootScope_full_name = data.first_name;
 
                     });
 
+                //Get score of user
                 $http.get(user_score_API)
                     .success(function(data,status,headers,config) {
                     
-                        //$scope.Profile.score = data.value*10;
                         $rootScope.rootScope_score = data.value*10;
-                        //console.log($scope.Profile.score);
-
 
                     });
 
+                //Get experience points of user
                 $http.get(user_experience_API)
                     .success(function(data,status,headers,config) {
                     
                         $rootScope.rootScope_experience  = data.value;
-                        //console.log($scope.Profile.experience);
-
 
                     });
 
