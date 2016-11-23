@@ -1355,9 +1355,9 @@ var app = angular
             $scope.Profile.last_name = "";
             $scope.Profile.email = "";
             $scope.Profile.contact_no = "";
-            $scope.Profile.score = "-1";
-            $scope.Profile.experience = "-1";
-            $scope.Profile.questions_answered = "-1";
+            $scope.Profile.profile_score = "-1";
+            $scope.Profile.profile_experience = "-1";
+            $scope.Profile.profile_questions_answered = "-1";
 
 
             var loadUserInfo = function() {
@@ -1373,9 +1373,9 @@ var app = angular
                 $http.get(user_score_API)
                     .success(function(data,status,headers,config) {
                     
-                        $scope.Profile.score = data.value*10;
-                        $scope.Profile.questions_answered = data.value;
-                        console.log("score"+$scope.Profile.score);
+                        $scope.Profile.profile_score = data.value*10;
+                        $scope.Profile.profile_questions_answered = data.value;
+                        console.log("score"+$scope.Profile.profile_score);
 
 
                     });
@@ -1383,8 +1383,8 @@ var app = angular
                 $http.get(user_experience_API)
                     .success(function(data,status,headers,config) {
                     
-                        $scope.Profile.experience = data.value;
-                        console.log("experience"+$scope.Profile.experience);
+                        $scope.Profile.profile_experience = data.value;
+                        console.log("experience"+$scope.Profile.profile_experience);
 
 
                     });
