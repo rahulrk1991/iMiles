@@ -1370,7 +1370,7 @@ var app = angular
 
                     });
 
-                $http.get(user_score_API)
+                /*$http.get(user_score_API)
                     .success(function(data,status,headers,config) {
                     
                         $scope.Profile.profile_score = data.value*10;
@@ -1387,7 +1387,7 @@ var app = angular
                         console.log("experience"+$scope.Profile.profile_experience);
 
 
-                    });
+                    });*/
 
             }
 
@@ -1445,7 +1445,7 @@ var app = angular
               // draws it.
               
         })
-        .controller("questionsController",function($scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
+        .controller("questionsController",function($rootScope,$scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
 
             //this.userModel = userService.model;
             console.log('entered questions controller')
@@ -1793,6 +1793,9 @@ var app = angular
                             for(i=0;i<$scope.questionIdToChoicesDictionary[question.id].length;i++) {
                                 if($scope.questionIdToChoicesDictionary[question.id][i].id==data.value){
                                     $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = true;
+                                    if(choice.id==data.value) {
+                                        $rootScope.rootScope_score = $rootScope.rootScope_score+10;
+                                    }
                                 }
                                 else {
                                     $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = false;
