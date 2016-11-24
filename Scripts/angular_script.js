@@ -1523,6 +1523,39 @@ var app = angular
                     return "difficulty_8-10";
             }
 
+            $scope.makeImportantTagsBold = function(tagToAddToQuestion) {
+                var className = "make-font-bold";
+                switch(tagToAddToQuestion) {
+                    case "Aptitude" :
+                        return className;
+                    case "Puzzles" :
+                        return className;
+                    case "Data Structures" :
+                        return className;
+                    case "String" :
+                        return className;
+                    case "Algorithm" :
+                        return className;
+                    case "Bit Problem" :
+                        return className;
+                    case "Hashing" :
+                        return className;
+                    case "C Programming" :
+                        return className;
+                    case "C++" :
+                        return className;
+                    case "Sorting and Searching" :
+                        return className;
+                    case "Operating Systems" :
+                        return className;
+                    case "DBMS" :
+                        return className
+                    default:
+                        return "";
+                }
+
+            }
+
 
             //Function to GET all Categories 
             var getAllCategories = function() {

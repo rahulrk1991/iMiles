@@ -53,3 +53,8 @@ a {
 .settings-page-inputs {
     width:60%;
 }
+
+.make-font-bold {
+    font-weight:bold;
+    font-size: 15px
+}
