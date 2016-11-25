@@ -190,7 +190,7 @@ var app = angular
                 
             }
 
-            var loadUserInfo = function() {
+            $rootScope.loadUserInfo = function() {
 
                 $scope.Profile = {};
 
@@ -221,7 +221,7 @@ var app = angular
             }
 
 
-            loadUserInfo();
+            $rootScope.loadUserInfo();
 
             var isLoggedIn = function() {
                 $http.get(user_isLoggedIn_API)
@@ -816,6 +816,8 @@ var app = angular
                                 
                                 $alert({title: 'Logged in successfully!', content: '', placement:'alert-box', type: 'success', show: true,duration:4});
 
+                                $rootScope.loadUserInfo();
+                                
                                 $timeout(function() {
                                     //userService.logIn();
                                     //console.log($scope.userModel.active);
