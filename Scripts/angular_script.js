@@ -1574,6 +1574,7 @@ var app = angular
                                 
                             allCategoriesDictionary[singleCategory.category_text] = singleCategory.id;
                         }
+                        $scope.tags.allTagNames.sort();
                         console.log($scope.tags.allTagNames);
 
                     });
