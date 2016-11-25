@@ -392,11 +392,11 @@ var app = angular
             loadUserInfo();
 
             $scope.resetForm = function() {
-                $scope.Profile.first_name = "";
+                /*$scope.Profile.first_name = "";
                 $scope.Profile.last_name = "";
                 $scope.Profile.contact_no = "";
                 $scope.Profile.new_password = "";
-                $scope.Profile.confirm_new_password = "";
+                $scope.Profile.confirm_new_password = "";*/
             }
             
         })
