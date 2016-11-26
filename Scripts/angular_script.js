@@ -1,4 +1,3 @@
-
 var app = angular
         .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies"])
         .directive('ckEditor', function() {
@@ -44,11 +43,8 @@ var app = angular
                     $http.get(user_info_API)
                     .success(function(data,status,headers,config) {
                     
-                        //$scope.Profile = data;
                         userService.model.isAdmin = data.is_superuser;
                         console.log("isAdminfrom factory"+userService.model.isAdmin);
-                        //console.log($scope.Profile.first_name);
-
 
                     });
 
@@ -72,8 +68,6 @@ var app = angular
             .when("/", {
                 templateUrl: absolute_path+"LandingPage/landing_page.html",
                 controller:"landingPageController"
-                /*templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
-                controller:"questionsController"*/
             })
             .when("/ResumeBuilder", {
                 templateUrl: absolute_path+"ResumeBuilder/resume_builder.html",
@@ -135,11 +129,9 @@ var app = angular
                 templateUrl: absolute_path+"OtherArtifacts/termsAndConditions.html",
                 controller:"OtherArtifactsController"
             })
-            //$locationProvider.html5Mode(true);
-            //$locationProvider.baseHref("Angular");
-
          })
         .controller("OtherArtifactsController",function($scope){
+
             $scope.password = {};
             $scope.password.newPassword = "";
             $scope.password.confirmNewPassword = "";
@@ -181,11 +173,11 @@ var app = angular
             $scope.logout = function() {
                 $scope.userModel = userService.logOut();
                 $timeout(function() {
-                    //$location.url("/");
+
                     console.log("Logging out of interviewMiles.com!");
                     window.location.href = user_logout_API;
-
                     $scope.$apply();
+
                 }, 100);
                 
             }
@@ -228,10 +220,9 @@ var app = angular
                     .then(function(response) {
                         if(response.data.result=="yes") {
                             $scope.userModel = userService.logIn();
-                            //$scope.$apply();
+
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            //$location.url("OnlineMockTests/ChooseATest");
-                            //$scope.$apply();
+
                         }
                         else {
                             console.log("Not logged in!");
@@ -251,7 +242,7 @@ var app = angular
             $scope.questionIdToAnswerDictionary=[];
 
             $scope.getColorForDifficulty = function(difficulty_level) {
-                //console.log(difficulty_level);
+
                 if(difficulty_level>=1 && difficulty_level<=3)
                     return "difficulty_1-3";
                 else if (difficulty_level>=4 && difficulty_level<=5)
@@ -266,7 +257,6 @@ var app = angular
             var getQuestions = function(feedNum) {
 
                 console.log("Feed Number:"+feedNum);
-
 
                 //Fetching puzzles here
                 $http.get(category_enabled_questions_API+PUZZLE_CATEGORY_ID+"?start="+feedNum*10)
@@ -300,13 +290,11 @@ var app = angular
             
             }
 
-            console.log($scope.questionIdToAnswerDictionary);
-
             //Makes first call for questions when controller is executed
             getQuestions(feedNum);
 
             $scope.displaySolution = function(question) {
-                console.log("solution displayed");
+                console.log("Solution displayed");
                 question.isSolved = !question.isSolved;
 
             }
@@ -324,43 +312,11 @@ var app = angular
                }
             });
 
-
-            //-------------Functions for styling the content-----------------------
-
-
             //Returning the template file from getQuestonInfo using question 
             $scope.getQuestionTemplateByType = function(question) {
                 
                 return puzzlingPuzzles_file;
 
-            }
-
-            //Returing if the selected choice is the correct choice
-            $scope.validateChoice = function(question,choice,index) {
-                if(question.isSolved)
-                    return;
-                question.isSolved = true;
-                question.isSelected = index;
-            }
-
-            //The choice selected get a grey background
-            $scope.applyClassToSelectedChoice = function(question,choice,index) {
-                if(!question.isSolved)
-                    return;
-                if(question.isSelected==index)
-                    return "background-grey";
-            }
-
-            //Change color of the choice option to indicate correctness
-            $scope.applyColors = function(question,choice) {
-                if(!question.isSolved)
-                    return;
-                if(choice.is_correct) {
-                    return "choice-green";
-                }
-                else {
-                    return "choice-red"
-                }
             }
 
         })
@@ -448,11 +404,9 @@ var app = angular
             $scope.getMockSummaryPanel = function(mock) {
                 //console.log(mock);
                 if(listOfSolvedMockIds.indexOf(mock.id)>-1) {
-                    //console.log("Solved:"+mock.id);
                     return mock_summary_panel_solved;   
                 }
                 else {
-                    //console.log("Unsolved:"+mock.id)
                     return mock_summary_panel_unsolved;
                 }
                 
@@ -464,13 +418,6 @@ var app = angular
 
             $scope.startMockTestWithID = function(mockID) {
                 $("#startTheTestModal").modal('hide');
-
-                /*$timeout(function() {
-
-                    $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
-                    $scope.$apply();
-                }, 200);*/
-
 
                 $('#startTheTestModal').on('hidden.bs.modal', function () {
                     $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
@@ -486,7 +433,6 @@ var app = angular
 
             $scope.$on("$locationChangeStart", function (event, next, current) {
                 
-                //$("#navigateAwayModal").modal('show');
                 if (!confirm("Are you sure you want to navigate away from the test? The test will be automatically submitted and you will not be able to give it again")) { 
                     event.preventDefault(); 
                 }
@@ -510,7 +456,7 @@ var app = angular
 
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
-                });
+            });
 
 
             $http.get(mock_mock_API+$routeParams.id)
@@ -817,7 +763,7 @@ var app = angular
                                 $alert({title: 'Logged in successfully!', content: '', placement:'alert-box', type: 'success', show: true,duration:4});
 
                                 $rootScope.loadUserInfo();
-                                
+
                                 $timeout(function() {
                                     //userService.logIn();
                                     //console.log($scope.userModel.active);
@@ -988,7 +934,6 @@ var app = angular
             }
 
         })
-
         .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
 
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
@@ -1258,37 +1203,6 @@ var app = angular
                             //console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
                             var myAlert = $alert({title: 'Title edited successfully!', content: 'Title edited', placement:'alert-box', type: 'success', show: true,duration:5});
 
-                            /*$scope.number_of_choices=2;
-                            //Add choices to the question here
-                            for(i=0;i<$scope.number_of_choices;i++) {
-                                if(!$scope.question.choices.choicesCorrect[i])
-                                    $scope.question.choices.choicesCorrect[i]=false;   
-                            }
-
-                            var choiceBody = [];    //Will hold body of the url which posts choices
-
-                            for(i=0;i<$scope.number_of_choices;i++) {
-                                var text = $scope.question.choices.choiceText[i];
-                                if(text==null || text=="")
-                                    continue;
-                                var isTrue = $scope.question.choices.choicesCorrect[i];
-                                var singleChoice = {
-                                    "choice_text" : text,
-                                    "is_correct" : isTrue,
-                                    "questionId" : $scope.postResponse.id
-                                }
-                                //console.log(singleChoice);
-                                choiceBody.push(singleChoice);
-
-                            }
-                            console.log(choiceBody);
-
-
-                            $http.post(question_add_choices_API,choiceBody,{ headers: cooksHeader })
-                            .success(function(data,status,header,config) {
-                                console.log("Option posted successfully");
-                            })*/
-
 
 
                         })
@@ -1372,25 +1286,6 @@ var app = angular
 
                     });
 
-                /*$http.get(user_score_API)
-                    .success(function(data,status,headers,config) {
-                    
-                        $scope.Profile.profile_score = data.value*10;
-                        $scope.Profile.profile_questions_answered = data.value;
-                        console.log("score"+$scope.Profile.profile_score);
-
-
-                    });
-
-                $http.get(user_experience_API)
-                    .success(function(data,status,headers,config) {
-                    
-                        $scope.Profile.profile_experience = data.value;
-                        console.log("experience"+$scope.Profile.profile_experience);
-
-
-                    });*/
-
             }
 
             $http.get(user_stats_API)
@@ -1434,23 +1329,12 @@ var app = angular
                 });
 
             loadUserInfo();
-            
-
-            
-              
-
-              // Set a callback to run when the Google Visualization API is loaded.
-              
-
-              // Callback that creates and populates a data table,
-              // instantiates the pie chart, passes in the data and
-              // draws it.
               
         })
         .controller("questionsController",function($rootScope,$scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
 
             //this.userModel = userService.model;
-            console.log('entered questions controller')
+            console.log('Entered questions controller')
             //console.log(this.userModel.active);
             //console.log(userService.model.active);
             $scope.userModel = userService.returnState();
@@ -2566,431 +2450,3 @@ var app = angular
             }
 
         });
-
-
-
-app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope,$http,$location){
-            $scope.selectedSection = "basic_info.html";
-            $scope.language = [];
-            $rootScope.allLanguages = [];
-            $scope.level = [];
-            $scope.saveEducationChanges = false;
-            $scope.addingEducation = true;
-            $scope.showRemove = true;
-//            $scope.showRemoveEdu = true;
-            $scope.addingEmployment = true;
-            $scope.saveEmploymentChanges = false;
-            $scope.saveAddSkill = true;
-            $scope.showAddSkill = true;
-            $scope.showAdditonOfSkillsOperation = true;
-            $scope.addingReferences = true;
-            $scope.saveReferenceChanges = false;
-            $scope.showAddLanguages = true;
-            $scope.saveKnownLanguages = true;
-            $scope.showAdditonOfLanguagesOperation = true;
-
-            if($scope.nameOnResume == "" || $scope.email == "" || $scope.mobileNumber == "" || $scope.address == "" ){
-                alert("Please enter the complete information to proceed");
-            }
-
-
-            //generalInfo
-
-            $scope.nameOnResume = '';
-            $scope.email = '';
-            $scope.mobileNumber = '';
-            $scope.address = '';
-
-            //references
-                $scope.showAdditionOfReferences = false;
-                $scope.name = [];
-                $scope.relationship = [];
-                $scope.phone = [];
-                $scope.company = [];
-                $scope.email = [];
-                $scope.address = [];
-                $scope.address1 = [];
-                $scope.descriptions = [];
-                $rootScope.referenceRelatedInformations = [];
-            $scope.changeSelectedResumeSection = function(section) {
-                $scope.selectedSection = section;
-            }
-
-            //professionalSkills
-
-                $scope.skills = [];
-                $rootScope.allSkills = [];
-                $scope.level = [];
-                 $scope.units321 = [
-                    {'id': 1, 'label': 'Beginner'},
-                    {'id': 2, 'label': 'Intermediate'},
-                    {'id': 3, 'label': 'Advanced'},
-                    {'id': 3, 'label': 'Expert'},
-                ]
-                 $scope.data321= $scope.units321[0]; // Set by default the value "test1
-
-            //employmentHistory
-
-                     $scope.showAdditionOfEmployment = false;
-                     $rootScope.jobTitles = [];
-                     $scope.companies = [];
-                     $scope.locations = [];
-                     $scope.startDates = [];
-                     $scope.endDates = [];
-                     $scope.compensations = [];
-                     $scope.employmentDescriptions = [];
-                     $scope.currency = [];
-                     $scope.intervals = [];
-                     $rootScope.employmentRelatedInformations = [];
-                     $scope.units1 = [
-                         {'id': 1, 'label': 'USD'},
-                         {'id': 2, 'label': 'EUR'},
-                         {'id': 3, 'label': 'GBP'},
-                         {'id': 3, 'label': 'CAD'},
-                         {'id': 3, 'label': 'AUD'},
-                         {'id': 3, 'label': 'CNY'},
-                         {'id': 3, 'label': 'UAH'},
-                         {'id': 3, 'label': 'RUB'},
-                     ]
-                      $scope.data1= $scope.units1[0];
-
-                     $scope.units2 = [
-                         {'id': 1, 'label': 'Annually'},
-                         {'id': 2, 'label': 'Monthly'},
-                         {'id': 3, 'label': 'Daily'},
-                         {'id': 3, 'label': 'Hourly'},
-                     ]
-                      $scope.data2= $scope.units2[0];
-
-            //education
-                $scope.showAdditionOfEducation = false;
-                $scope.eduInstitutes = [];
-                $scope.degrees = [];
-                $scope.percentageObtain = [];
-                $scope.locations = [];
-                $scope.yearOfGraduations = [];
-                $scope.educationDescriptions = [];
-                $scope.levels=[];
-                $rootScope.educationRelatedInformations = [];
-
-                    $scope.units3 = [
-                        {'id': 1, 'label': 'Graduated'},
-                        {'id': 2, 'label': 'Graduating'},
-                        {'id': 3, 'label': 'Enrolled'},
-                        {'id': 3, 'label': 'Deffered'},
-                        {'id': 3, 'label': 'Transferred'},
-                    ]
-                     $scope.data= $scope.units3[0];
-
-
-
-            $scope.returnSelectedResumeSection = function() {
-                return absolute_path+"ResumeBuilder/subSections/"+ $scope.selectedSection;
-            }
-
-            $scope.units = [
-                    {'id': 1, 'label': 'Beginner'},
-                    {'id': 2, 'label': 'Conversational'},
-                    {'id': 3, 'label': 'Fluent'},
-                    {'id': 3, 'label': 'Native'},
-                ]
-                 $scope.data= $scope.units[0]; // Set by default the value "test1
-                $scope.addItem = function () {
-                    $scope.language.push($scope.languages);
-                    $scope.level.push($scope.data);
-                    $rootScope.allLanguages.push({level:$scope.data,lang:$scope.languages});
-                    $scope.languages = '';
-                    $scope.data= $scope.units[0];
-                }
-                $scope.removeItemLanguages = function (x) {
-                    $rootScope.allLanguages.splice(x, 1);
-                }
-
-                    $scope.addReferences = function(){
-                        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
-                    }
-
-                    $scope.addTheListReferences = function(){
-                    if($scope.referenceName == null || $scope.referenceName == "" || $scope.referenceRelationship == "" || $scope.referencePhone == "" || $scope.referenceCompany == "" || $scope.referenceEmailID == "" || $scope.referenceAddress == ""){
-                                                        alert("Please Enter the required information");
-                                                    }else{
-                                                        $scope.saveReferenceChanges = true;
-
-                        $scope.name.push($scope.referenceName);
-                        $scope.relationship.push($scope.referenceRelationship);
-                        $scope.phone.push($scope.referencePhone);
-                        $scope.company.push($scope.referenceCompany);
-                        $scope.email.push($scope.referenceEmailID);
-                        $scope.address.push($scope.referenceAddress);
-                        $scope.address1.push($scope.referenceAddress1);
-                        $scope.descriptions.push($scope.referenceDescription);
-                        $rootScope.referenceRelatedInformations.push({referenceName:$scope.referenceName,referenceRelationship:$scope.referenceRelationship,referencePhone:$scope.referencePhone,referenceCompany:$scope.referenceCompany,referenceEmailID:$scope.referenceEmailID,referenceAddress:$scope.referenceAddress,referenceAddress1:$scope.referenceAddress1,referenceDescription:$scope.referenceDescription});
-                        $scope.referenceName = '';
-                        $scope.referenceRelationship = '';
-                        $scope.referencePhone = '';
-                        $scope.referenceCompany = '';
-                        $scope.referenceEmailID = '';
-                        $scope.referenceAddress = '';
-                        $scope.referenceAddress1 = '';
-                        $scope.referenceDescription = '';
-                        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
-                    }
-                    }
-
-                    $scope.removeItemReferences = function (x) {
-                        $rootScope.referenceRelatedInformations.splice(x, 1);
-                    }
-
-                        $scope.addItem123 = function () {
-                            $scope.skills.push($scope.addSkillType);
-                            $scope.level.push($scope.data);
-                            $rootScope.allSkills.push({levele:$scope.data,skill:$scope.addSkillType});
-                            $scope.addSkillType = '';
-                            $scope.data= $scope.units[0];
-                        }
-                        $scope.removeItemSkills = function (x) {
-                            $rootScope.allSkills.splice(x, 1);
-                        }
-
-
-                            $scope.addEmployment = function(){
-                                $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-                            }
-
-                            $scope.addTheListEmployment = function(){
-                                if($scope.jobTitle == "" || $scope.company == "" || $scope.location == "" || $scope.startDate == "" || $scope.endDate == "" || $scope.compensation == ""){
-                                    alert("Please fill in the Required information");
-                                }else{
-                                    $scope.saveEmploymentChanges = true;
-
-                                $rootScope.jobTitles.push($scope.jobTitle);
-                                $scope.companies.push($scope.company);
-                                $scope.locations.push($scope.location);
-                                $scope.startDates.push($scope.startDate);
-                                $scope.endDates.push($scope.endDate);
-                                $scope.compensations.push($scope.compensation);
-                                $scope.employmentDescriptions.push($scope.employmentDescription);
-                                $scope.currency.push($scope.data1);
-                                $scope.intervals.push($scope.data2);
-                                $rootScope.employmentRelatedInformations.push({jobTitle:$scope.jobTitle,company:$scope.company,location:$scope.location,starDate:$scope.startDate,endDate:$scope.endDate,compensation:$scope.compensation,currency:$scope.data1,intervals:$scope.data2,Description:$scope.employmentDescription});
-                                $scope.jobTitle = '';
-                                $scope.company = '';
-                                $scope.location = '';
-                                $scope.startDate = '';
-                                $scope.endDate = '';
-                                $scope.compensation = '';
-                                $scope.employmentDescription = '';
-                                $scope.data1= $scope.units1[0];
-                                $scope.data2= $scope.units2[0];
-                                $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-                            }
-                            }
-
-                            $scope.removeItem = function (x) {
-                                $rootScope.employmentRelatedInformations.splice(x, 1);
-                                console.log($scope.employmentRelatedInformations);
-                            }
-
-                            $scope.addEducation = function(){
-                                $scope.showAdditionOfEducation = $scope.showAdditionOfEducation ? false : true;
-                            }
-
-                            $scope.addTheList = function(){
-                                if($scope.eduInstituteName == "" || $scope.degreeLevel == "" || $scope.percentageObtained == "" || $scope.location == "" || $scope.yearOfGraduation == "" ){
-                                    alert("Please enter the required information to proceed");
-                                }else{
-                                    $scope.saveEducationChanges = true;
-
-                                $scope.eduInstitutes.push($scope.eduInstituteName);
-                                $scope.degrees.push($scope.degreeLevel);
-                                $scope.percentageObtain.push($scope.percentageObtained);
-                                $scope.locations.push($scope.location);
-                                $scope.yearOfGraduations.push($scope.yearOfGraduation);
-                                $scope.educationDescriptions.push($scope.educationDescription);
-                                $scope.levels.push($scope.data);
-                                $rootScope.educationRelatedInformations.push({eduInstituteName:$scope.eduInstituteName,degreelevel:$scope.degreeLevel,percentageObtained:$scope.percentageObtained,location:$scope.location,yearOfGraduation:$scope.yearOfGraduation,levels:$scope.data,educationDescription:$scope.educationDescription});
-
-                                $scope.eduInstituteName = '';
-                                $scope.degreeLevel = '';
-                                $scope.percentageObtained = '';
-                                $scope.location = '';
-                                $scope.yearOfGraduation = '';
-                                $scope.educationDescription = '';
-                                $scope.data= $scope.units1[0];
-                                $scope.showAdditionOfEducation = $scope.showAdditionOfEducation ? false : true;
-                            }
-                            }
-
-                            $scope.removeItem = function (x) {
-                                $rootScope.educationRelatedInformations.splice(x, 1);
-                                console.log($scope.educationRelatedInformations);
-                            }
-
-                            $scope.removeItemEmp = function (x) {
-                                                            $rootScope.employmentRelatedInformations.splice(x, 1);
-                                                            console.log($scope.employmentRelatedInformations);
-                                                        }
-
-                             $scope.sendBasicInfoData = function(){
-                             if($scope.nameOnResume == "" || $scope.email == "" || $scope.mobileNumber == "" || $scope.address == ""){
-                                alert("Please enter the complete information to proceed");
-                             }
-                             else{
-                                            var basicInformation = {
-                                                Full_Name : $scope.nameOnResume,
-                                                Email_Address : $scope.email,
-                                                Mobile_Number : $scope.mobileNumber,
-                                                Resident_Address : $scope.address
-                                            }
-                                            console.log("Information")
-                                            console.log(basicInformation);
-                                            $http.post("http://localhost:8080/v1/api/resume/",basicInformation,{headers: {'Content-Type': 'application/json'} })
-                                            .success(function(data,status,header,config) {
-                                                console.log("Information Posted Successfully");
-                                                $scope.resumeID = data;
-                                            })
-                                            .error(function(data,status,header,config) {
-                                                console.log("Error Encountered while posting : "+status);
-                                            });
-                                 }
-                             };
-
-                             $scope.handleClick = function(objective){
-                                $scope.saveButtonObjective = true;
-                                $scope.editButtonObjective = true;
-                                $scope.saveButtonHobbies = true;
-                                $scope.editButtonHobbies = true;
-                             };
-
-                             $scope.saveObjectiveInfo = function(){
-                                $scope.saveButtonObjective = false;
-                                $scope.editButtonObjective = false;
-                                var objective = {
-                                    Objective_Explanation : $scope.objective
-                                }
-                                console.log(objective);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,objective,{headers: {'Content-Type': 'application/json'} })
-                                .success(function(data,status,header,config) {
-                                    console.log("Information Posted Successfully");
-                                })
-                                .error(function(data,status,header,config) {
-                                    console.log("Error Encountered while posting : "+status);
-                                });
-                             }
-
-                             $scope.postEducationData = function(){
-                                $scope.showRemove = false;
-                                $scope.addingEducation = false;
-                                var Education = $rootScope.educationRelatedInformations;
-                                console.log(Education);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Education,{headers: {'Content-Type': 'application/json'} })
-                                .success(function(data,status,header,config) {
-                                    console.log("Information Posted Successfully");
-                                })
-                                .error(function(data,status,header,config) {
-                                    console.log("Error Encountered while posting : "+status);
-                                });
-                             }
-
-                             $scope.postReferencesData = function(){
-                                $scope.showRemove = false;
-                                $scope.addingReferences = false;
-                                var References = $rootScope.referenceRelatedInformations;
-                                console.log(References);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,References,{headers: {'Content-Type': 'application/json'} })
-                                .success(function(data,status,header,config) {
-                                    console.log("Information Posted Successfully");
-                                })
-                                .error(function(data,status,header,config) {
-                                    console.log("Error Encountered while posting : "+status);
-                                });
-                             }
-
-                             $scope.postEmploymentData = function(){
-                                $scope.showRemove = false;
-                                $scope.addingEmployment = false;
-                                var Employment = $rootScope.employmentRelatedInformations;
-                                console.log(Employment);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Employment,{headers: {'Content-Type': 'application/json'} })
-                                                                .success(function(data,status,header,config) {
-                                                                    console.log("Information Posted Successfully");
-                                                                })
-                                                                .error(function(data,status,header,config) {
-                                                                    console.log("Error Encountered while posting : "+status);
-                                                                });
-
-                             }
-
-                             $scope.saveHobbiesInfo = function(){
-                                                             $scope.saveButtonHobbies = false;
-                                                             $scope.editButtonHobbies = false;
-                                                             var Hobbies_And_Interest = {
-                                                                 HobbiesAndInterest : $scope.hobbies
-                                                             }
-                                                             console.log(Hobbies_And_Interest);
-                                                             $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Hobbies_And_Interest,{headers: {'Content-Type': 'application/json'} })
-                                                             .success(function(data,status,header,config) {
-                                                                 console.log("Information Posted Successfully");
-                                                             })
-                                                             .error(function(data,status,header,config) {
-                                                                 console.log("Error Encountered while posting : "+status);
-                                                             });
-                                                          }
-
-                             $scope.saveSkills = function(){
-                                if($rootScope.allSkills.length == 0){
-                                    alert("Please enter you skill to add more value to Resume");
-                                }
-                                else{
-                                    $scope.showAddSkill = false;
-                                    $scope.saveAddSkill = false;
-                                    $scope.showRemove = false;
-                                    $scope.showAdditonOfSkillsOperation = false;
-                                    var professionalSkills = [];
-                                    for(var i =0;i<$rootScope.allSkills.length;i++){
-                                        var data = $rootScope.allSkills[i];
-                                        professionalSkills.push({"skillType":data.skill,"level":data.levele.label});
-                                    }
-                                    console.log(professionalSkills);
-                                    $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,professionalSkills,{headers: {'Content-Type': 'application/json'} })
-                                                                                                 .success(function(data,status,header,config) {
-                                                                                                     console.log("Information Posted Successfully");
-                                                                                                 })
-                                                                                                 .error(function(data,status,header,config) {
-                                                                                                     console.log("Error Encountered while posting : "+status);
-                                                                                                 });
-                                }
-                             }
-
-                             $scope.saveLanguagesKnown = function(){
-                                if($rootScope.allLanguages.length == 0){
-                                    alert("Please enter the languages you know to add more value to Resume");
-                                }
-                                else{
-                                    $scope.showAddLanguages = false;
-                                    $scope.saveKnownLanguages = false;
-                                    $scope.showRemove = false;
-                                    $scope.showAdditonOfLanguagesOperation = false;
-                                    var languages = [];
-                                    for(var i =0;i<$rootScope.allLanguages.length;i++){
-                                       var data = $rootScope.allLanguages[i];
-                                       languages.push({"name":data.lang,"level":data.level.label});
-                                    }
-                                    console.log(languages);
-                                    $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,languages,{headers: {'Content-Type': 'application/json'} })
-                                         .success(function(data,status,header,config) {
-                                             console.log("Information Posted Successfully");
-                                         })
-                                         .error(function(data,status,header,config) {
-                                             console.log("Error Encountered while posting : "+status);
-                                         });
-                                }
-                             }
-
-
-
-
-
-
-});
-
