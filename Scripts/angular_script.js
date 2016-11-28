@@ -791,14 +791,22 @@ var app = angular
             $scope.validation = {};
             $scope.validation.message = "No error as of now";
             $scope.validation.isValid = false;
+            $scope.register={};
+            $scope.register.name="";
+            $scope.register.username="";
+            $scope.register.email="";
+            $scope.register.password="";
+            $scope.register.confirmpassword="";
+            $scope.register.mobile="";
+
 
             var validateRegistrationForm = function() {
 
                     $scope.validation.message = "No error as of now";
                     $scope.validation.isValid = false;
 
-                    ck_name = /^[A-Za-z0-9 ]{3,20}$/;
-                    if(!ck_name.test($scope.register.name)) {
+                    ck_name = /^[A-Za-z ]{3,20}$/;
+                    if($scope.register.name==undefined || !ck_name.test($scope.register.name)) {
                         $scope.validation.message = "Full Name is invalid";
                         $scope.validation.isValid = true;
                         return false;
@@ -806,6 +814,7 @@ var app = angular
 
                     ck_username = /^[A-Za-z0-9_]{3,20}$/;
                     if(!ck_username.test($scope.register.username)) {
+                        console.log("Inside username validation");
                         $scope.validation.message = "Username is invalid.\nMake sure it is 3-20 characters.\nNo characters other than A-Z,a-z,0-9";
                         $scope.validation.isValid = true;
                         return false;
@@ -839,6 +848,11 @@ var app = angular
                         return false;
                     }
 
+                    if($scope.register.mobile=="") {
+                        $scope.register.mobile="9999999999";
+                        return true;
+                    }
+
                     ck_phonenumber =  /^[0-9]{10,10}$/
                     if(!ck_phonenumber.test($scope.register.mobile)) {
                         $scope.validation.message = "Mobile number is not valid.\nMake sure it contains exactly 10 digits.\n";
@@ -849,7 +863,7 @@ var app = angular
                     return true;
                 }
 
-            $scope.register={};
+            
             $scope.submitRegisterForm = function() {
 
                 $scope.validation.isValid = false;
@@ -921,7 +935,9 @@ var app = angular
                                 $scope.validation.message = "The username/email address you provided is already registered. Try another one!";
                                 $scope.validation.isValid = true;
                                 $alert({title: 'Duplicate username or email, choose another!', content: '', placement:'alert-box', type: 'danger', show: true,duration:4});
-
+                                if($scope.register.phone=="999999999") {
+                                    $scope.register.phone="";
+                                }
                             }
                             else {
                                 //$("#registerModal").modal('hide');
@@ -1733,13 +1749,6 @@ var app = angular
             //console.log(userService.model.active);
             $scope.userModel = userService.returnState();
 
-            //Variable to display tags/search them in autocomplete search bar
-            $scope.tags = {};
-            $scope.tags.allTagNames = [];
-            $scope.tags.tagsNamesToAddToQuestion = "";
-
-            //Variable to check if category filter is set On/Off
-            $scope.isCategoryFilterOn = false;
 
             //Dictionaries to map questionID : choices/categories of that quesitonID
             $scope.questionIdToChoicesDictionary = [];
@@ -1757,27 +1766,6 @@ var app = angular
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
             });
 
-            //Function to remove filter category
-            $scope.removeCategory = function(categoryToRemove) {
-
-                console.log("Removing category:"+categoryToRemove);
-                $scope.tags.tagsNamesToAddToQuestion = "";
-                $scope.isCategoryFilterOn = false;
-                $scope.questionIdToChoicesDictionary = [];
-                $scope.questionIdToCategoriesDictionary = [];
-                feedNum=0;
-                $scope.feed = {};
-
-                getQuestions(feedNum);
-
-            }
-
-            $scope.changeCategory = function(categoryToRemove) {
-                //categoryToRemove=categoryToRemove+" ";
-                $scope.tags.filterValue=categoryToRemove;
-                $scope.updateCategories();
-            }
-
 
             $scope.getTagTemplate = function() {
                 
@@ -1785,11 +1773,6 @@ var app = angular
 
             }
 
-            $scope.getTagTemplateForExampleBox = function() {
-                
-                return tag_structure_file_example_box;         //returning the template file from getQuestonInfo using question 
-
-            }
 
             $scope.getColorForDifficulty = function(difficulty_level) {
                 //console.log(difficulty_level);
@@ -1803,31 +1786,6 @@ var app = angular
                     return "difficulty_8-10";
             }
 
-
-            //Function to GET all Categories 
-            var getAllCategories = function() {
-
-                $http.get(question_categories_API)
-                    .success(function(data,status,headers,config) {
-                    
-                        //Populate the allCategoriesDictionary
-                        var j=0;
-                        for(i=0;i<data.length;i++) {
-                            var singleCategory = data[i];
-                            if(!(singleCategory.parent_category==COMPANY_CATEGORY_ID) || singleCategory.id==COMPANY_CATEGORY_ID) {
-                                //console.log("Parent category:"+data[i].parent_category);
-                                $scope.tags.allTagNames[j++] = (singleCategory.category_text);
-                            }
-                                
-                            allCategoriesDictionary[singleCategory.category_text] = singleCategory.id;
-                        }
-                        console.log($scope.tags.allTagNames);
-
-                    });
-            }
-
-
-            getAllCategories();     //Runs function to GET Categories as soon as controller is called
 
             //Tooltips
             $scope.tooltip = {
@@ -1907,36 +1865,6 @@ var app = angular
             getQuestions(feedNum);
 
 
-            //Function determines the behavior of the Autocomplete Search Filter
-            $scope.updateCategories = function() {
-
-                var filterString = $scope.tags.filterValue;
-                var lastIndex = filterString.slice(-1);
-
-                if(filterString==" ") {
-                    $scope.tags.filterValue = "";
-                    return;
-                }
-
-                if(filterString.length>1 && allCategoriesDictionary[filterString]) {
-                    console.log("Dictionary for filter:"+filterString+":"+allCategoriesDictionary[filterString]);
-                    $scope.tags.tagsNamesToAddToQuestion = filterString.substring(0,filterString.length);
-                    console.log($scope.tags.tagsNamesToAddToQuestion);
-                    $scope.tags.filterValue = "";
-
-                    //Here a new category filter has been added, we need to update the questions
-                    $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion];
-                    $scope.questionIdToChoicesDictionary = [];
-                    $scope.questionIdToCategoriesDictionary = [];
-                    $scope.isCategoryFilterOn = true;
-                    feedNum=0;
-                    $scope.feed = {};
-
-                    //Call getQuestions after resetting all variables
-                    getQuestions(feedNum);
-                    
-                }
-            }
 
             
             $scope.getTagTemplateQnA = function() {
@@ -1945,27 +1873,6 @@ var app = angular
 
             }
 
-            $scope.markForLater = function(question) {
-                console.log("Mark "+question.id+" for later");
-
-                var cooks = $cookies.get("csrftoken");
-                var cooksHeader = { 'X-CSRFToken': cooks };
-                url = question_mark_Later_API;
-                body =  [question.id];
-                $http.post( url, body,{ headers: cooksHeader })
-                     .success(function(data,status,header,config) {
-                            console.log("Question marked for later");        //on successfull posting of question
-                            
-                            var myAlert = $alert({title: "Question!"+question.id+" marked for later!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
-
-                        })
-                     .error(function(response) {
-                        console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
-
-                     });
-
-            }
 
             $scope.unmarkQuestion = function(question,index) {
                 console.log($scope.questions.indexOf(question));
