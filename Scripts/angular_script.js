@@ -608,7 +608,7 @@ var app = angular
                 $http.put(mock_mock_API+$routeParams.id+"/end", finalChoices,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                         console.log("Test submitted successfully");        //on successfull posting of question
-                        var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'alert-box', type: 'success', show: true,duration:5});
+                        var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
                         $scope.score = data.score;
                         $scope.maxScore = data.max_score;
                         $http.get(mock_mock_API+$routeParams.id+"/solution")
@@ -626,7 +626,7 @@ var app = angular
                         })
                      .error(function(response) {
                         console.log("Test could not be submitted");                //in case there is an error
-                        var myAlert = $alert({title: 'Test could not be submitted', content: '', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Test could not be submitted', content: '', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
 
@@ -760,7 +760,7 @@ var app = angular
                                 console.log("Logged in successfully");
                                 $("#signInModalEmail").modal('hide');
                                 
-                                $alert({title: 'Logged in successfully!', content: '', placement:'alert-box', type: 'success', show: true,duration:4});
+                                $alert({title: 'Logged in successfully!', content: '', placement:'floater top', type: 'success', show: true,duration:4});
 
                                 $rootScope.loadUserInfo();
 
@@ -776,12 +776,12 @@ var app = angular
                             }
                             else if (responseString=="Invalid login details") {
                                 //$("#signInModalEmail").modal('hide');
-                                $alert({title: 'Invalid credentials!', content: '', placement:'alert-box', type: 'danger', show: true,duration:4});
+                                $alert({title: 'Invalid credentials!', content: '', placement:'floater top', type: 'danger', show: true,duration:4});
 
                             }
                             else {
                                 $("#signInModalEmail").modal('hide');
-                                $alert({title: 'There was an error logging you in! Please try again.', content: '', placement:'alert-box', type: 'success', show: true,duration:4});
+                                $alert({title: 'There was an error logging you in! Please try again.', content: '', placement:'floater top', type: 'success', show: true,duration:4});
 
                             }
                         });
@@ -881,7 +881,7 @@ var app = angular
                     return;
                 }
 
-                $alert({title: 'Wait!', content: 'Registration in progress...', placement:'alert-box', type: 'info', show: true,duration:4});
+                $alert({title: 'Wait!', content: 'Registration in progress...', placement:'floater top', type: 'info', show: true,duration:4});
                 $scope.validation.message = "Wait! Registration in progress...";
                 $scope.validation.isValid = true;
 
@@ -925,7 +925,7 @@ var app = angular
                             console.log("Response String:"+responseString);
                             if(responseString=="success") {
                                 $("#registerModal").modal('hide');
-                                $alert({title: 'Registration successful!', content: 'Login using the Sign In button using the username/email and password you provided', placement:'alert-box', type: 'success', show: true,duration:10});
+                                $alert({title: 'Registration successful!', content: 'Login using the Sign In button using the username/email and password you provided', placement:'floater top', type: 'success', show: true,duration:10});
 
                                 
                             }
@@ -934,14 +934,14 @@ var app = angular
                                 //$("#registerModal").modal('show');
                                 $scope.validation.message = "The username/email address you provided is already registered. Try another one!";
                                 $scope.validation.isValid = true;
-                                $alert({title: 'Duplicate username or email, choose another!', content: '', placement:'alert-box', type: 'danger', show: true,duration:4});
+                                $alert({title: 'Duplicate username or email, choose another!', content: '', placement:'floater top', type: 'danger', show: true,duration:4});
                                 if($scope.register.phone=="999999999") {
                                     $scope.register.phone="";
                                 }
                             }
                             else {
                                 //$("#registerModal").modal('hide');
-                                $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'alert-box', type: 'danger', show: true,duration:4});
+                                $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'floater top', type: 'danger', show: true,duration:4});
 
                             }
                         });
@@ -1075,13 +1075,13 @@ var app = angular
                 $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
                     .success(function(data,status,header,config) {
                         console.log("Categories posted successfully");
-                        var myAlert = $alert({title: 'Tags replaced successfully!', content: 'tags edited successfully', placement:'alert-box', type: 'success', show: true,duration:5});
+                        var myAlert = $alert({title: 'Tags replaced successfully!', content: 'tags edited successfully', placement:'floater top', type: 'success', show: true,duration:5});
 
                     getCategoriesAssociatedWithQuestion();
                 })
                 .error(function(response) {
                         console.log("The question could not be deleted");                //in case there is an error
-                        var myAlert = $alert({title: 'Tag replace unsuccessful!', content: 'tags could not be edited successfully', placement:'alert-box', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Tag replace unsuccessful!', content: 'tags could not be edited successfully', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
             }
@@ -1187,12 +1187,12 @@ var app = angular
                 $http.put( url+"/", body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
-                        var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+                        var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'floater top', type: 'success', show: true,duration:15});
 
                         })
                      .error(function(response) {
                         console.log("The question could not be edited");                //in case there is an error
-                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' could no be edited. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' could no be edited. Check logs for more information', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -1217,7 +1217,7 @@ var app = angular
                             
                             //$scope.postResponse = data[0];
                             //console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
-                            var myAlert = $alert({title: 'Title edited successfully!', content: 'Title edited', placement:'alert-box', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: 'Title edited successfully!', content: 'Title edited', placement:'floater top', type: 'success', show: true,duration:5});
 
 
 
@@ -1225,7 +1225,7 @@ var app = angular
                         .error(function(response) {
                             console.log("The question could not be posted");
                                 //Delete the question since choices were not added!
-                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
                          });
             }
@@ -1236,13 +1236,13 @@ var app = angular
                 $http.delete( url+"/",{ headers: cooksHeader })
                      .success(function(response) {
                         console.log("Descriptive question deleted successfully");        //on successfull posting of question
-                        var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+                        var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'floater top', type: 'success', show: true,duration:15});
 
                         $location.url("QnACrunch");
                         })
                      .error(function(response) {
                         console.log("The question could not be deleted");                //in case there is an error
-                        var myAlert = $alert({title: 'Delete unsuccessful!', content: 'Question '+$scope.question.id+' could no be deleted. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Delete unsuccessful!', content: 'Question '+$scope.question.id+' could no be deleted. Check logs for more information', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -1453,7 +1453,7 @@ var app = angular
                     case "DBMS" :
                         return className
                     default:
-                        return "";
+                        return "not-important-tag";
                 }
 
             }
@@ -1606,12 +1606,12 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("Question marked for later");        //on successfull posting of question
                             
-                            var myAlert = $alert({title: "Question!"+question.id+" marked for later!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+question.id+" marked for later!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', questionIdToCategoriesDictionary, type: 'danger', show: true,duration:5});
 
                      });
 
@@ -1705,13 +1705,13 @@ var app = angular
                                 }
                                 console.log($scope.questionIdToChoicesDictionary[question.id][i]);
                             }
-                            var myAlert = $alert({title: "Question!"+question.id+" solved!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question!"+question.id+" solved!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
                             question.isSolved = true;
                             question.isSelected = index;
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
                 /*if(question.isSolved)
@@ -1890,12 +1890,12 @@ var app = angular
                             $scope.questions.splice(index,1);
                             console.log($scope.questions);
                             console.log("Question has been removed from saved list");        //on successfull posting of question                     
-                            var myAlert = $alert({title: "Question "+question.id+" has been removed from saved list!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+question.id+" has been removed from saved list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
@@ -2007,12 +2007,12 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
                             
-                            var myAlert = $alert({title: 'Mock added successfully!', content: 'The Mock ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+                            var myAlert = $alert({title: 'Mock added successfully!', content: 'The Mock ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
 
                         })
                      .error(function(response) {
                         console.log("The question could not be posted");                //in case there is an error
-                        var myAlert = $alert({title: 'Error in posting mock test!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Error in posting mock test!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -2029,12 +2029,12 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("New tag added successfully.ID:"+data[0].id);        //on successfull posting of question
                             
-                            var myAlert = $alert({title: 'New tag added successfully!', content: 'The tag ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+                            var myAlert = $alert({title: 'New tag added successfully!', content: 'The tag ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
 
                         })
                      .error(function(response) {
                         console.log("The tag could not be added");                //in case there is an error
-                        var myAlert = $alert({title: 'Error in adding tag!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Error in adding tag!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -2200,7 +2200,7 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
                             
-                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
 
                             var categoryBody = [];      //Will store the body of the url to add categories
 
@@ -2223,7 +2223,7 @@ var app = angular
                         })
                      .error(function(response) {
                         console.log("The question could not be posted");                //in case there is an error
-                        var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -2268,7 +2268,7 @@ var app = angular
                         .success(function(data,status,header,config) {
                             $scope.postResponse = data[0];
                             console.log("Question posted successfully");
-                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'Posted the question into mock ID :'+$scope.question.mockID, placement:'alert-box', type: 'success', show: true,duration:15});
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'Posted the question into mock ID :'+$scope.question.mockID, placement:'floater top', type: 'success', show: true,duration:15});
 
                         })
                 }
@@ -2292,7 +2292,7 @@ var app = angular
                             
                             $scope.postResponse = data[0];
                             console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
-                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
 
 
                             //Add choices to the question here
@@ -2348,7 +2348,7 @@ var app = angular
                         .error(function(response) {
                             console.log("The question could not be posted");
                                 //Delete the question since choices were not added!
-                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
                          });
                 }

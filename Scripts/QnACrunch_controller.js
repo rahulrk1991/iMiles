@@ -257,12 +257,12 @@ app.controller("questionsController",function($rootScope,$scope,$http,$sce,userS
                      .success(function(data,status,header,config) {
                             console.log("Question marked for later");        //on successfull posting of question
                             
-                            var myAlert = $alert({title: "Question!"+question.id+" marked for later!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question!"+question.id+" marked for later!", content: "floater center top", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
@@ -356,13 +356,13 @@ app.controller("questionsController",function($rootScope,$scope,$http,$sce,userS
                                 }
                                 console.log($scope.questionIdToChoicesDictionary[question.id][i]);
                             }
-                            var myAlert = $alert({title: "Question!"+question.id+" solved!", content: "", placement:'alert-box', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question!"+question.id+" solved!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
                             question.isSolved = true;
                             question.isSelected = index;
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
                 /*if(question.isSolved)

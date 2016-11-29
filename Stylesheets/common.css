@@ -59,3 +59,16 @@ a {
     font-size:14px;
     color:#191970;
 }
+
+.not-important-tag {
+    color :green;
+}
+
+.floater{
+    width:20%;
+    position: absolute;
+}
+
+.top {
+    top: 10px;
+}
