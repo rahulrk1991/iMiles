@@ -182,6 +182,7 @@ var app = angular
                 
             }
 
+
             $rootScope.loadUserInfo = function() {
 
                 $scope.Profile = {};
@@ -482,7 +483,7 @@ var app = angular
                 else
                     $scope.secStr = $scope.sec.toString();
                 if($scope.min==0 && $scope.sec==0) {
-                    var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
+                    //var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
                     $scope.submitTest();
                 }
                     
@@ -1379,6 +1380,12 @@ var app = angular
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
             });
 
+            function clickOnUpload() {
+              $timeout(function() {
+                angular.element('#myselector').triggerHandler('click');
+              });
+            };
+
             //Function to remove filter category
             $scope.removeCategory = function(categoryToRemove) {
 
@@ -1451,7 +1458,9 @@ var app = angular
                     case "Operating Systems" :
                         return className;
                     case "DBMS" :
-                        return className
+                        return className;
+                    case "Computer Networking" :
+                        return className;
                     default:
                         return "not-important-tag";
                 }
@@ -1606,11 +1615,11 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("Question marked for later");        //on successfull posting of question
                             
-                            var myAlert = $alert({title: "Question "+question.id+" marked for later!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+question.id+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:4});
 
                         })
                      .error(function(response) {
-                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        console.log("Error:Question could not saved to favorites list!");                //in case there is an error
                         var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', questionIdToCategoriesDictionary, type: 'danger', show: true,duration:5});
 
                      });
@@ -1698,6 +1707,12 @@ var app = angular
                                     $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = true;
                                     if(choice.id==data.value) {
                                         $rootScope.rootScope_score = $rootScope.rootScope_score+10;
+                                        var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top', type: 'success', show: true,duration:4});
+                            
+                                    }
+                                    else {
+                                        var myAlert = $alert({title: "The option you chose to question"+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
+                            
                                     }
                                 }
                                 else {
@@ -1705,7 +1720,6 @@ var app = angular
                                 }
                                 console.log($scope.questionIdToChoicesDictionary[question.id][i]);
                             }
-                            var myAlert = $alert({title: "Question!"+question.id+" solved!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
                             question.isSolved = true;
                             question.isSelected = index;
                         })

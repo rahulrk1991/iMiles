@@ -4,7 +4,7 @@
 
 //URL BUILDER
 var protocol = "http://";
-var host_name ="interviewmiles.com";
+var host_name ="example.com";
 var port_number = "80";
 var API_Start = protocol+host_name+":"+port_number;
 
