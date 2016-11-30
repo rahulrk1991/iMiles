@@ -770,7 +770,7 @@ var app = angular
                                     //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
                                     //console.log($scope.userModel.active);
-                                    $location.url("QnACrunch");
+                                    $location.url("OnlineMockTests/ChooseATest");
                                     $scope.$apply();
                                 }, 200);
                                 
