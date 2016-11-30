@@ -26,11 +26,11 @@
 			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
 		</div>
 		<div style="display:inline;width:10%:float:right">
-			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float:right;color:black;font-size:15px">{{question.difficulty_level}}</span>
+			<span title="Difficulty level" ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float:right;color:black;font-size:15px">{{question.difficulty_level}}</span>
 		</div>
 
- 		<div ng-click="displaySolution(question)" style="float:right; width: 6%">
- 			<a href="javascript:void(0)" ><span style="float: left" aria-hidden="true">Soln</span></a>
+ 		<div ng-click="displaySolution(question)" style="float:left; width: 6%">
+ 			<a href="javascript:void(0)" ><span style="float: left" aria-hidden="true">View Solution</span></a>
  		</div>
 	</div>
 

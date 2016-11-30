@@ -1380,12 +1380,6 @@ var app = angular
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
             });
 
-            function clickOnUpload() {
-              $timeout(function() {
-                angular.element('#myselector').triggerHandler('click');
-              });
-            };
-
             //Function to remove filter category
             $scope.removeCategory = function(categoryToRemove) {
 
@@ -1629,6 +1623,11 @@ var app = angular
 
             $scope.displaySolution = function(question) {
 
+                if(question.showSolution) {
+                    question.showSolution = false;
+                    return;
+                }
+
                 console.log(question.id);
                 if(question.kind=="descriptive") {
                     console.log("des");
@@ -1711,7 +1710,7 @@ var app = angular
                             
                                     }
                                     else {
-                                        var myAlert = $alert({title: "The option you chose to question"+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
+                                        var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
                             
                                     }
                                 }
@@ -1916,6 +1915,11 @@ var app = angular
             }
 
             $scope.displaySolution = function(question) {
+
+                if(question.showSolution) {
+                    question.showSolution = false;
+                    return;
+                }
 
                 console.log(question.id);
                 if(question.kind=="descriptive") {
