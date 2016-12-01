@@ -387,7 +387,7 @@ var app = angular
                             $scope.accuracy = 0;
                         }
                         else {
-                            $scope.accuracy = ($scope.overallScore/$scope.overallMaxScore)*100;
+                            $scope.accuracy = parseFloat(($scope.overallScore/$scope.overallMaxScore)*100).toFixed(2);
                         }
                         
                         console.log(mockIDToSolvedMockBody);
