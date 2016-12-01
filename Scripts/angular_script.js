@@ -363,22 +363,40 @@ var app = angular
             listOfSolvedMockIds = [];
             mockIDToSolvedMockBody = [];
 
+            $scope.overallScore = 0;
+            $scope.overallMaxScore = 0;
+            $scope.numberOfTestsGiven = 0;
+            $scope.totalNumberOfTests = 0;
+            $scope.accuracy = 0;
+
             var getAllMockTests = function() {
 
                 $http.get(mock_myresults_API)
                     .then(function(response) {
                         $scope.allSolvedMocks = response.data;
                         console.log($scope.allSolvedMocks);
+                        $scope.numberOfTestsGiven = $scope.allSolvedMocks.length;
                         for(i=0;i<$scope.allSolvedMocks.length;i++) {
                             listOfSolvedMockIds.push($scope.allSolvedMocks[i].mockId);
                             mockIDToSolvedMockBody[$scope.allSolvedMocks[i].mockId] = $scope.allSolvedMocks[i];
+
+                            $scope.overallScore = $scope.overallScore + $scope.allSolvedMocks[i].score;
+                            $scope.overallMaxScore = $scope.overallMaxScore + $scope.allSolvedMocks[i].max_score;
                         }
+                        if($scope.overallMaxScore==0) {
+                            $scope.accuracy = 0;
+                        }
+                        else {
+                            $scope.accuracy = ($scope.overallScore/$scope.overallMaxScore)*100;
+                        }
+                        
                         console.log(mockIDToSolvedMockBody);
 
                         $http.get(mock_allMocks_API)
                             .then(function(response) {
                                 $scope.allMocks = response.data;
                                 console.log($scope.allMocks);
+                                $scope.totalNumberOfTests = $scope.allMocks.length;
                                 for(i=0;i<$scope.allMocks.length;i++) {
                                     if($scope.allMocks[i].duration=="30")
                                         $scope.allMocks[i].numberOfQuestions=10;
@@ -561,17 +579,6 @@ var app = angular
             
             $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
                 console.log("In validate choice function");
-                //console.log(question);
-                //console.log("question:"+question);
-                
-
-                //finalChoices.push(choicebody);
-                /*for(i=0;i<finalChoices.length;i++) {
-                    if()
-                }*/
-                
-
-                //console.log(finalChoices);
 
                 if($scope.isTestSubmitted)
                     return;
