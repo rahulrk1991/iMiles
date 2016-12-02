@@ -1756,7 +1756,7 @@ var app = angular
                     return "choice-green";
                 }
                 else {
-                    return "choice-red"
+                    return "choice-red";
                 }
             }
 
@@ -1910,12 +1910,12 @@ var app = angular
                             $scope.questions.splice(index,1);
                             console.log($scope.questions);
                             console.log("Question has been removed from saved list");        //on successfull posting of question                     
-                            var myAlert = $alert({title: "Question "+question.id+" has been removed from saved list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+question.id+" has been removed from favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be removed from favorites list!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
