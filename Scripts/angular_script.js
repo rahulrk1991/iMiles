@@ -1616,7 +1616,7 @@ var app = angular
                      .success(function(data,status,header,config) {
                             console.log("Question marked for later");        //on successfull posting of question
                             
-                            var myAlert = $alert({title: "Question "+question.id+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:4});
+                            var myAlert = $alert({title: "Question "+question.id+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
