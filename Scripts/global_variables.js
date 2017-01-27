@@ -4,7 +4,7 @@
 
 //URL BUILDER
 var protocol = "http://";
-var host_name ="interviewmiles.com";
+var host_name ="testinterviewmiles.com";
 var port_number = "80";
 var API_Start = protocol+host_name+":"+port_number;
 
@@ -57,6 +57,9 @@ var user_registration_API = API_Start + user_registration_End_Point;
 
 var user_login_End_Point = "/api/"+"user/login/";
 var user_login_API = API_Start + user_login_End_Point;
+
+var user_forgot = "/api/"+"user/forgot/";
+var user_forgot_API = API_Start + user_forgot;
 
 var user_isAdmin_End_Point = "/api/"+"user/isadmin/";
 var user_isAdmin_API = API_Start + user_isAdmin_API;

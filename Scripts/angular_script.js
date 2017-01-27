@@ -1,5 +1,5 @@
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
@@ -174,7 +174,7 @@ var app = angular
                 $scope.userModel = userService.logOut();
                 $timeout(function() {
 
-                    console.log("Logging out of interviewMiles.com!");
+                    console.log("Logging out of interviewmile.com!");
                     window.location.href = user_logout_API;
                     $scope.$apply();
 
@@ -685,6 +685,8 @@ var app = angular
         })
         .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies, $rootScope) {
 
+            $scope.forgot_password={};
+
             console.log('entered landingPageController')
             var isLoggedIn = function() {
                 $http.get(user_isLoggedIn_API)
@@ -716,6 +718,32 @@ var app = angular
                     $scope.$apply();
                 }, 100);
                 
+            }
+
+            $scope.sendResetLink = function() {
+                console.log($scope.forgot_password.username);
+                console.log($scope.forgot_password.email);
+
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_mark_Later_API;
+
+                body =  {"username":$scope.forgot_password.username};
+                            //{"email":$scope.forgot_password.email}];
+
+                $http.post( user_forgot_API, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Reset Link Sent");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Password reset link sent!", content: "Check your inbox", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error in sending the link");                //in case there is an error
+                        var myAlert = $alert({title: 'Password reset link could not be sent!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
             }
 
             $scope.submitLoginForm = function() {
@@ -958,7 +986,7 @@ var app = angular
             }
 
         })
-        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
+        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce,$cookies,$alert,$rootScope) {
 
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
@@ -984,13 +1012,123 @@ var app = angular
                 $scope.question.description = $sce.trustAsHtml($scope.question.description);
                 $scope.question.answer = $sce.trustAsHtml($scope.question.answer);
                 console.log($scope.question);
-                console.log($scope.question.id);
+                console.log($scope.question.pk);
                 $scope.panel.body=$scope.question.answer;
+                $scope.question.isSolved = false;
+                $scope.question.isSelected = -1;
+
+               /* for(i=0;i<$scope.question.choices.length;i++) {
+                    $scope.question.choices[i].is_correct = false;
+                }*/
 
             });
 
+            $scope.validateChoice = function(question,choice,index) {
+                console.log(question);
+                console.log(choice);
+                console.log(index);
+                
+                if(question.isSolved)
+                    return;
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+
+                postBody = {"choiceId":choice.id};
+                $http.post(post_mcq_Questions_API+$routeParams.questionID+"/solve",postBody,{ headers: cooksHeader })
+                    .success(function(data,status,header,config) {
+                            console.log("Solved Question!");        //on successfull posting of question
+                            console.log(data.value);
+                            //console.log($scope.questionIdToChoicesDictionary[question.id]);
+                            for(i=0;i<$scope.question.choices.length;i++) {
+                                if($scope.question.choices[i].id==data.value){
+                                    $scope.question.choices[i].is_correct = true;
+                                    if(choice.id==data.value) {
+                                        $rootScope.rootScope_score = $rootScope.rootScope_score+10;
+                                        var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top', type: 'success', show: true,duration:4});
+                            
+                                    }
+                                    else {
+                                        var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
+                            
+                                    }
+                                }
+                                else {
+                                    $scope.question.choices[i]["is_correct"] = false;
+                                }
+                                //console.log($scope.questionIdToChoicesDictionary[question.id][i]);
+                            }
+                            $scope.question.isSolved = true;
+                            $scope.question.isSelected = index;
+                            console.log($scope.question);
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+                /*if(question.isSolved)
+                    return;
+                question.isSolved = true;
+                question.isSelected = index;*/
+            }
+
+            $scope.markForLater = function(question) {
+                console.log("Mark "+$scope.question.pk+" for later");
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_mark_Later_API;
+                body =  [$scope.question.pk];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Question marked for later");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Question "+$scope.question.pk+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not saved to favorites list!");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.',placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+
+            }
+
             $scope.getChoiceStructure = function() {
                 return absolute_path+"QnACrunch/ViewQuestion/MCQTemplate/ChoiceTemplate/choice_structure.html"
+            }
+
+            $scope.applyClassToSelectedChoice = function(choice,index) {
+                if(!$scope.question.isSolved)
+                    return;
+                //console.log(question);
+                if($scope.question.isSelected==index)
+                    return "background-grey";
+            }
+
+            //Change color of the choice option to indicate correctness
+            $scope.applyColors = function(question,choice) {
+                if(!$scope.question.isSolved)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red";
+                }
+            }
+
+            $scope.getColorForDifficulty = function(difficulty_level) {
+                //console.log(difficulty_level);
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
             }
 
         })
@@ -1339,7 +1477,7 @@ var app = angular
                         };
 
                         // Instantiate and draw our chart, passing in some options.
-                        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
                         chart.draw(dataChart, options);
                       }
                       $scope.flag=false;
@@ -1468,6 +1606,10 @@ var app = angular
 
             }
 
+            /*$scope.returnShareLink = function(question) {
+                return question.shareLink;
+            }*/
+
 
             //Function to GET all Categories 
             var getAllCategories = function() {
@@ -1533,6 +1675,8 @@ var app = angular
                             var singleQuestion = allQuestions[i];
                             singleQuestion.isSolved = false;
                             singleQuestion.showSolution = false;
+                            singleQuestion.shareLink = API_Start+ "/#/ViewQuestion/"+allQuestions[i].kind+"/"+allQuestions[i].id;
+                            singleQuestion.inputIdLink = allQuestions[i].id;
                             singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
 
                             //If question is an MCQ, fetch the choices and all to dictionary
@@ -1621,10 +1765,21 @@ var app = angular
                         })
                      .error(function(response) {
                         console.log("Error:Question could not saved to favorites list!");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', questionIdToCategoriesDictionary, type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
+            }
+
+            $scope.shareLink = function(question) {
+                console.log("Mark "+question.id+" for later");
+
+                $scope.ShareLinkUrl = API_Start+ "/#/ViewQuestion/"+question.kind+"/"+question.id;
+                $scope.tooltipShareLink = {
+                  "title": $scope.ShareLinkUrl,
+                  "checked": true
+                };
+                console.log($scope.ShareLinkUrl);
             }
 
 
