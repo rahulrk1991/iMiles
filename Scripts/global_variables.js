@@ -3,7 +3,7 @@
 //APIs
 
 //URL BUILDER
-var protocol = "http://";
+var protocol = "https://";
 var host_name ="interviewmiles.com";
 var port_number = "80";
 var API_Start = protocol+host_name+":"+port_number;
