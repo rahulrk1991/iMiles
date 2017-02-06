@@ -1400,6 +1400,10 @@ var app = angular
                 absolute_path+"ContactUs/Images/linkedin.png",
                 absolute_path+"ContactUs/Images/twitter.png"
             ];
+
+            $scope.thumbnails.facebook = absolute_path+"ContactUs/Images/Facebook_32x32.jpg";
+            $scope.thumbnails.linkedIn = absolute_path+"ContactUs/Images/linkedin.png";
+            $scope.thumbnails.twitter = absolute_path+"ContactUs/Images/twitter.png";
             
             $scope.submitMessage = function() {
                 alert($scope.contact.fullName,$scope.contact.email,$scope.contact.subject,$scope.contact.message);
