@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">
+  <url>
+	<loc>https://interviewmile.com/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+
+  <url>
+	<loc>http://interviewmile.com/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/QnACrunch/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/PuzzlingPuzzles/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/OnlineMockTests/ChooseATest/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/OnlineMockTests/TakeATest/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/Profile/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/Settings/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/ContactUs/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+   
+  <url>
+	<loc>https://interviewmile.com/#/AboutUs/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+   
+   <url>
+	<loc>https://interviewmile.com/#/TermsAndConditions/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+  
+  <url>
+	<loc>https://interviewmile.com/#/MarkForLater/</loc>
+	<lastmod>2017-02-07</lastmod>
+	<changefreq>Daily</changefreq>
+	<priority>1</priority>
+  </url>
+   
+</urlset>
