@@ -70,6 +70,10 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
+                        <li style="padding:10px" ng-show="!sidebarUserModel.active"><button type="button" class="btn dropdown-toggle" style="float:right;background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#registerModal"> SIGN UP </button></li>
+
+                        <li style="padding:10px" ng-show="!sidebarUserModel.active"><button type="button" class="btn dropdown-toggle" style="background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#signInModalEmail"> SIGN IN  </button></li>
+
                         <li ng-show="sidebarUserModel.active"><a class="font-size-class" href="#Profile"><span style="padding-right:7px" class="glyphicon glyphicon-user font-size-class" aria-hidden="true"></span>{{rootScope_full_name}}</a></li>
 
                         <li ng-show="sidebarUserModel.active"><a class="font-size-class" title="Your total score" style="color:#DC143C" href="javascript:void(0);"><span style="padding-right:7px;color:#DC143C;" class="glyphicon glyphicon-flash font-size-class" aria-hidden="true"></span>{{rootScope_score}}</a></li>

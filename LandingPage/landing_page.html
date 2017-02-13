@@ -12,6 +12,37 @@
             ga('create', 'UA-80250123-1', 'auto');
             ga('send', 'pageview');
     </script>
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("Feb 26, 2017 12:00:00").getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+
+          // Get todays date and time
+          var now = new Date().getTime();
+
+          // Find the distance between now an the count down date
+          var distance = countDownDate - now;
+
+          // Time calculations for days, hours, minutes and seconds
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          // Display the result in the element with id="demo"
+          document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+
+          // If the count down is finished, write some text 
+          if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+          }
+        }, 1000);
+
+</script>
 </head>
 <link href="LandingPage/Stylesheets/landing_page.css" rel="stylesheet" type="text/css"/>
 <style>
@@ -46,11 +77,12 @@
 
     <div style="height:130px"></div>
     <div class="register_signinDiv">
-        <h1 class = "textMod1" style="text-align:center;padding-top:20px">We help you shape your Career</h1>
-        <h3 style="text-align:center">Prepare. Crack Interview. Inspire.</h3>
+        <h1 class = "textMod1" style="text-align:center;padding-top:20px;font-weight:bold">Prepare, test yourself, Get Hired!</h1>
+        <p style="font-size:30px;text-align:center;font-color:black;padding-top:20px">Time till next hiring test. Register now!</p>
+        <p style="font-size:50px;text-align:center;font-color:black" id="demo"></p>
         <div class="row" style="margin-top:60px;">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn-lg" style="float:right;background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#registerModal"> REGISTER </button>
+                <button type="button" class="btn-lg" style="display:none;float:right;background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#registerModal"> REGISTER </button>
                 <div id="registerModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -170,7 +202,7 @@
             </div>
             <div class="col-md-6 col-sm-6">
 
-                <button type="button" class="btn-lg dropdown-toggle" style="background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#signInModalEmail"> SIGN IN  </button>
+                <button type="button" class="btn-lg dropdown-toggle" style="display:none;background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#signInModalEmail"> SIGN IN  </button>
 
 
                 <div id="signInModalEmail" class="modal fade" role="dialog">

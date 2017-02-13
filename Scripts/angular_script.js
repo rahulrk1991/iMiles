@@ -129,6 +129,10 @@ var app = angular
                 templateUrl: absolute_path+"OtherArtifacts/termsAndConditions.html",
                 controller:"OtherArtifactsController"
             })
+            .when("/FrequentlyAskedQuestions", {
+                templateUrl: absolute_path+"OtherArtifacts/faq.html",
+                controller:"OtherArtifactsController"
+            })
          })
         .controller("OtherArtifactsController",function($scope){
 
