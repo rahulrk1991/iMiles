@@ -133,6 +133,9 @@ var app = angular
                 templateUrl: absolute_path+"OtherArtifacts/faq.html",
                 controller:"OtherArtifactsController"
             })
+
+            $locationProvider.html5Mode(true);
+            
          })
         .controller("OtherArtifactsController",function($scope){
 
