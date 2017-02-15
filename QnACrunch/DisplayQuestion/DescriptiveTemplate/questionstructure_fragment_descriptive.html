@@ -29,10 +29,10 @@
  			<a title="Add question to Favorites list" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
  		</div>
 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
- 			<a href="ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
+ 			<a href="#ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
  		</div>
  		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
- 			<a href="EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+ 			<a href="#EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
  		</div>
  		<div title="Solution" ng-click="displaySolution(question)" style="float:right; width: 6%">
  			<a href="javascript:void(0)" ><span style="float: left" aria-hidden="true">Soln</span></a>
