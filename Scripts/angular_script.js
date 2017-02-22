@@ -117,6 +117,10 @@ var app = angular
                 templateUrl: absolute_path+"Profile/profile.html",
                 controller:"profileController"
             })
+            .when("/Statistics", {
+                templateUrl: absolute_path+"Statistics/statistics.html",
+                controller:"statisticsController"
+            })
             .when("/Settings", {
                 templateUrl: absolute_path+"Settings/settings.html",
                 controller:"settingsController"
@@ -1503,6 +1507,35 @@ var app = angular
 
         })
         .controller("profileController",function($scope,$http) {
+
+            $scope.Profile = {};
+            $scope.Profile.id = "";
+            $scope.Profile.username = "";
+            $scope.Profile.first_name = "";
+            $scope.Profile.last_name = "";
+            $scope.Profile.email = "";
+            $scope.Profile.contact_no = "";
+            $scope.Profile.profile_score = "-1";
+            $scope.Profile.profile_experience = "-1";
+            $scope.Profile.profile_questions_answered = "-1";
+
+
+            var loadUserInfo = function() {
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile = data;
+                        console.log("first name:"+$scope.Profile.first_name);
+
+                    });
+
+            }
+
+            loadUserInfo();
+              
+        })
+        .controller("statisticsController",function($scope,$http) {
 
             $scope.Profile = {};
             $scope.Profile.id = "";

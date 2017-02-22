@@ -12,54 +12,94 @@
             ga('send', 'pageview');
         </script>
 </head>
-	<div id="main_content_wrapper" style="width: 700px; margin: 0 auto;margin-top:30">
-		<div class="row">
+<div id="main_content_wrapper" style="width: 700px; margin: 0 auto;margin-top:30">
+	<div class="row" style="padding-top:50px">
 
-			<div class="page-header">
-				<h1>
-					{{Profile.first_name}} {{Profile.last_name}} <small>{{Profile.score}}</small>
-				</h1>
-				<p>
-					<b>Username</b> : <small>{{Profile.username}}</small>
-				</p>
-				<p>
-					<b>Email</b> : <small>{{Profile.email}}</small>
-				</p>
 
-			</div>
+		<h3 style="display:inline"><span class="glyphicon glyphicon-question-user" aria-hidden="true"></span></h3>
+        <h1 style="display:inline">Profile <small>| {{Profile.first_name}} {{Profile.last_name}}</small></h1>
+        <hr>
 
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<table style="width: 100%; table-layout: fixed">
-						<tr style="text-align: center">
-							<td>
-								<h3>
-									Solved Qs <small>{{rootScope_score/10}}</small>
-									<h3>
-							</td>
+		<div  style="width:100%" class="col-md-6">
+            
+        
+            <table style="width:90%">
+                <tr style="padding:10px">
+                    <td class="form_profile_td settings-page-label">
+                        <div class="input-group-lg">
+                        Username : 
+                     </div>
+                    </td>
+                    <td class="form_profile_td settings-page-inputs">
+                        <div class="input-group-lg">
+                        <input ng-disabled="true" ng-model="Profile.username" type="text" class="form-control">
+                     </div>
+                    </td>
+                    
+               </tr>
+               <tr>
+                    <td class="form_profile_td settings-page-label">
+                        <div class="input-group-lg">
+                        Email ID : 
+                     </div>
+                    </td>
+                    <td class="form_profile_td settings-page-inputs">
+                        <div class="input-group-lg">
+                        <input ng-disabled="true" ng-model="Profile.email" type="text" class="form-control">
+                     </div>
+                    </td>
+                    
+               </tr>
+               <tr>
+                    <td class="form_profile_td settings-page-label">
+                        <div class="input-group-lg">
+                        Joining Date : 
+                     </div>
+                    </td>
+                    <td class="form_profile_td settings-page-inputs">
+                        <div class="input-group-lg">
+                        <div ng-disabled="true" ng-bind="Profile.date_joined | date:'dd/MMM/yyyy'" type="text" class="form-control">
+                        </div>
+                     </div>
+                    </td>
+                    
+               </tr>
+               <tr>
+                    <td class="form_profile_td settings-page-label">
+                        <div class="input-group-lg">
+                        Contact No : 
+                     </div>
+                    </td>
+                    <td class="form_profile_td settings-page-inputs">
+                        <div class="input-group-lg">
+                        <input ng-disabled="true" ng-model="Profile.contact_no" type="text" class="form-control" placeholder="Contact Number" >
+                     </div>
+                    </td>
+                    
+               </tr>
+         		<tr>
+			        <td class="form_profile_td settings-page-label">
+			            <div class="input-group-lg">
+			            Resume : 
+			         </div>
+			        </td>
+			        <td class="form_profile_td settings-page-inputs">
+			        	<form action="https://interviewmile.com:8000/api/user/upload_resume/" method="post" enctype="multipart/form-data">
+			            <div class="input-group-lg">
+				            <p>
+				              <input style="display:inline-block;float:left;width:65%" id="id_image" type="file" class="" name="document">
+				              <input id="abc" type="hidden" class="" name="username" value="{{sidebarUserModel.userName}}">
+				              <input style="float:right;width:33%" type="submit" value="Upload Resume" />
+				            </p>
+			            
+			            </div>
+			            </form>
+			        </td> 
+			   </tr>
+            </table>
+            <br>
+         
+      </div>
 
-							<td>
-								<h3>
-									Score <small>{{rootScope_score}}</small>
-								</h3>
-							</td>
-							<td>
-								<h3>
-									Experience <small>{{rootScope_experience}}</small>
-								</h3>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-body">
-					
-					<div style="float:left" id="chart_div"></div>
-				</div>
-
-			</div>
-
-		</div>
 	</div>
+</div>
