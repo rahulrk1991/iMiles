@@ -1921,6 +1921,7 @@ var app = angular
                     question.answer = questionDetails.answer;
                     console.log(question.answer);
                     question.showSolution = true;
+                    $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
 
                 });
             }
@@ -1979,6 +1980,7 @@ var app = angular
                                     $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = true;
                                     if(choice.id==data.value) {
                                         $rootScope.rootScope_score = $rootScope.rootScope_score+10;
+
                                         var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top', type: 'success', show: true,duration:4});
                             
                                     }
@@ -1986,6 +1988,7 @@ var app = angular
                                         var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
                             
                                     }
+                                    $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
                                 }
                                 else {
                                     $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = false;
