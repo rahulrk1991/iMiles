@@ -2038,6 +2038,9 @@ var app = angular
             //console.log(userService.model.active);
             $scope.userModel = userService.returnState();
 
+            //Boolean value to decide if div ("there are no questions yet") is shown
+            $scope.showNoQuestionsYetDiv = false;
+
 
             //Dictionaries to map questionID : choices/categories of that quesitonID
             $scope.questionIdToChoicesDictionary = [];
@@ -2095,6 +2098,13 @@ var app = angular
                 //questionIDToMarkQuestionID = [];
                 $http.get(question_mark_Later_API)
                     .success(function(data,status,headers,config) {
+                        console.log(data);
+                        if(data.length==0) {
+                            $scope.showNoQuestionsYetDiv = true;
+                        }
+                        else {
+                            $scope.showNoQuestionsYetDiv = false;
+                        }
                         allQuestions = [];
                         for(i=0;i<data.length;i++) {
                             arrayOfQuestionIDs.push(data[i].questionId);
@@ -2102,6 +2112,7 @@ var app = angular
                             console.log(questionIDToMarkQuestionID);
                             $http.get(questions_API+"/"+data[i].questionId)
                                 .success(function(data,status,headers,config) {
+
                                     allQuestions.push(data);
                                     var singleQuestion = data;
                                     singleQuestion.isSolved = false;
@@ -2177,6 +2188,9 @@ var app = angular
                      .success(function(data,status,header,config) {
 
                             $scope.questions.splice(index,1);
+                            if($scope.questions.length==0) {
+                                $scope.showNoQuestionsYetDiv = true;
+                            }
                             console.log($scope.questions);
                             console.log("Question has been removed from saved list");        //on successfull posting of question                     
                             var myAlert = $alert({title: "Question "+question.id+" has been removed from favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});

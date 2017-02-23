@@ -26,7 +26,9 @@
     <div class="container" style="width:50%">
 
         <div style="width:90%;float:left;margin:0 auto;">
-
+            <div style="margin-top:50px;border:1px solid black" ng-show="showNoQuestionsYetDiv">
+                <p style="font-size:25px;padding:10px">You don't have any questions in your favorites list yet! Add them from the <a href="QnACrunch" ><u>QnA Crunch</u></a> section by clicking on the <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> symbol of that question.
+            </div>
             <br>
             <div  style="width:100%">
                 <div style="margin-bottom:50px" ng-repeat="question in questions track by $index">
