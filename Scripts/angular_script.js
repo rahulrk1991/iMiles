@@ -377,6 +377,8 @@ var app = angular
             $scope.totalNumberOfTests = 0;
             $scope.accuracy = 0;
 
+            //$scope.enableTestButton = true;
+
             // Hiring Test : Set the date we're counting down to
             var countDownDate = new Date("Feb 26, 2017 12:00:00").getTime();
 
@@ -395,14 +397,17 @@ var app = angular
               var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
               var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+
               // Display the result in the element with id="demo"
               document.getElementById("demo").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
 
               // If the count down is finished, write some text 
               if (distance < 0) {
-                clearInterval(x);
+                $scope.enableTestButton = false;
+                clearInterval(countdown_timer_function);
                 document.getElementById("demo").innerHTML = "EXPIRED";
+                $scope.$apply();
               }
             }, 1000);
 
@@ -413,6 +418,8 @@ var app = angular
             });
 
             var getAllMockTests = function() {
+
+                $scope.enableTestButton = true;
 
                 $http.get(mock_myresults_API)
                     .then(function(response) {
