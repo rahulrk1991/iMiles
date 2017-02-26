@@ -39,6 +39,8 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="LandingPage/Images/favicon.png" type="image/x-icon">
 
+        <base href="/">
+
         <!--  Following dependencies needed for landing page , try to reduce-->
 
         <!--<script src="/LandingPage/Scripts/project.js"></script>-->
@@ -60,7 +62,7 @@
                         <img alt="Brand" src="Images/IM_Logo1.png" style="width:95px;height:80px;">
                     </a>
 
-                    <a style="font-size:20px" class="navbar-brand" href="#QnACrunch"><b>InterviewMile</b></a>
+                    <a style="font-size:20px" class="navbar-brand" href="QnACrunch"><b>InterviewMile</b></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -74,7 +76,7 @@
 
                         <li style="padding:10px" ng-show="!sidebarUserModel.active"><button type="button" class="btn dropdown-toggle" style="background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#signInModalEmail"> SIGN IN  </button></li>
 
-                        <li ng-show="sidebarUserModel.active"><a class="font-size-class" href="#Profile"><span style="padding-right:7px" class="glyphicon glyphicon-user font-size-class" aria-hidden="true"></span>{{rootScope_full_name}}</a></li>
+                        <li ng-show="sidebarUserModel.active"><a class="font-size-class" href="Profile"><span style="padding-right:7px" class="glyphicon glyphicon-user font-size-class" aria-hidden="true"></span>{{rootScope_full_name}}</a></li>
 
                         <li ng-show="sidebarUserModel.active"><a class="font-size-class" title="Your total score" style="color:#DC143C" href="javascript:void(0);"><span style="padding-right:7px;color:#DC143C;" class="glyphicon glyphicon-flash font-size-class" aria-hidden="true"></span>{{rootScope_score}}</a></li>
 
