@@ -377,10 +377,13 @@ var app = angular
             $scope.totalNumberOfTests = 0;
             $scope.accuracy = 0;
 
+            //Hiring test mock ID
+            $scope.hiringTestMockID = 2563;
+
             //$scope.enableTestButton = true;
 
             // Hiring Test : Set the date we're counting down to
-            var countDownDate = new Date("Feb 26, 2017 12:00:00").getTime();
+            var countDownDate = new Date("Feb 26, 2017 12:05:00").getTime();
 
             // Update the count down every 1 second
             var countdown_timer_function = setInterval(function() {
@@ -448,6 +451,10 @@ var app = angular
                                 console.log($scope.allMocks);
                                 $scope.totalNumberOfTests = $scope.allMocks.length;
                                 for(i=0;i<$scope.allMocks.length;i++) {
+                                    if($scope.allMocks[i].title.includes("1")) {
+                                        console.log("Yes yes yes!");
+
+                                    }
                                     if($scope.allMocks[i].duration=="30")
                                         $scope.allMocks[i].numberOfQuestions=10;
                                     else
