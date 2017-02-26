@@ -44,11 +44,12 @@ var app = angular
                     .success(function(data,status,headers,config) {
                         //console.log(data);
                         userService.model.isAdmin = data.is_superuser;
+                        userService.model.userName = data.username;
                         console.log("isAdminfrom factory"+userService.model.isAdmin);
 
                     });
 
-                    userService.model.userName = data.username;
+                    //userService.model.userName = data.username;
                     userService.model.active = true;
                     return userService.model;
                 },
