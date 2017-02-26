@@ -42,13 +42,13 @@ var app = angular
 
                     $http.get(user_info_API)
                     .success(function(data,status,headers,config) {
-                    
+                        //console.log(data);
                         userService.model.isAdmin = data.is_superuser;
                         console.log("isAdminfrom factory"+userService.model.isAdmin);
 
                     });
 
-                    userService.model.userName = "rahulrk1991";
+                    userService.model.userName = data.username;
                     userService.model.active = true;
                     return userService.model;
                 },
