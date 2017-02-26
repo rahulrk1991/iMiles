@@ -138,6 +138,10 @@ var app = angular
                 templateUrl: absolute_path+"OtherArtifacts/faq.html",
                 controller:"OtherArtifactsController"
             })
+            .otherwise({
+                templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsChooseTestController"
+            })
          })
         .controller("OtherArtifactsController",function($scope){
 
