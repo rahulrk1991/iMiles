@@ -409,7 +409,7 @@ var app = angular
               if (distance < 0) {
                 $scope.enableTestButton = false;
                 clearInterval(countdown_timer_function);
-                document.getElementById("demo").innerHTML = "EXPIRED";
+                document.getElementById("demo").innerHTML = "Test can still be attempted!";
                 $scope.$apply();
               }
             }, 1000);
@@ -769,7 +769,7 @@ var app = angular
               // If the count down is finished, write some text 
               if (distance < 0) {
                 clearInterval(x);
-                document.getElementById("demo").innerHTML = "EXPIRED";
+                document.getElementById("demo").innerHTML = "Test can still be attempted";
               }
             }, 1000);
 
