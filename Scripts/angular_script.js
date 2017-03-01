@@ -142,9 +142,6 @@ var app = angular
                 templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
                 controller:"onlineMockTestsChooseTestController"
             })
-
-            $locationProvider.html5Mode(true);
-            
          })
         .controller("OtherArtifactsController",function($scope){
 
