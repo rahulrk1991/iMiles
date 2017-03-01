@@ -388,7 +388,7 @@ var app = angular
             //$scope.enableTestButton = true;
 
             // Hiring Test : Set the date we're counting down to
-            var countDownDate = new Date("Feb 26, 2017 12:05:00").getTime();
+            var countDownDate = new Date("Mar 26, 2017 14:00:00").getTime();
 
             // Update the count down every 1 second
             var countdown_timer_function = setInterval(function() {
