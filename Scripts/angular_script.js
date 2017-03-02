@@ -1,5 +1,5 @@
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard","lr.upload"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
