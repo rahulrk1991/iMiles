@@ -1,5 +1,5 @@
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard","lr.upload"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
@@ -750,7 +750,7 @@ var app = angular
             $scope.forgot_password={};
 
                     // Set the date we're counting down to
-            var countDownDate = new Date("Feb 26, 2017 12:00:00").getTime();
+            var countDownDate = new Date("Mar 26, 2017 02:00:00").getTime();
 
             // Update the count down every 1 second
             var x = setInterval(function() {
