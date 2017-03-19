@@ -388,7 +388,7 @@ var app = angular
             //$scope.enableTestButton = true;
 
             // Hiring Test : Set the date we're counting down to
-            var countDownDate = new Date("Mar 26, 2017 14:00:00").getTime();
+            var countDownDate = new Date("Apr 2, 2017 14:00:00").getTime();
 
             // Update the count down every 1 second
             var countdown_timer_function = setInterval(function() {
@@ -750,7 +750,7 @@ var app = angular
             $scope.forgot_password={};
 
                     // Set the date we're counting down to
-            var countDownDate = new Date("Mar 26, 2017 02:00:00").getTime();
+            var countDownDate = new Date("Apr 2, 2017 14:00:00").getTime();
 
             // Update the count down every 1 second
             var x = setInterval(function() {
@@ -1538,6 +1538,9 @@ var app = angular
             $scope.Profile.profile_experience = "-1";
             $scope.Profile.profile_questions_answered = "-1";
 
+            //Section to be loaded by default
+            $scope.load_profile_section = absolute_path+"Profile/Sections/general.html";
+
 
             var loadUserInfo = function() {
 
@@ -1549,6 +1552,11 @@ var app = angular
 
                     });
 
+            }
+
+            $scope.selectSection = function(section_to_load) {
+                console.log(section_to_load);
+                $scope.load_profile_section = absolute_path+"Profile/Sections/"+section_to_load+".html";
             }
 
             loadUserInfo();
