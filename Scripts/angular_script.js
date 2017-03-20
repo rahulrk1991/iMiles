@@ -382,6 +382,25 @@ var app = angular
             $scope.totalNumberOfTests = 0;
             $scope.accuracy = 0;
 
+            //Section to load (hiring or sample mock test)
+            $scope.load_test_section = absolute_path+"OnlineMockTests/sampleMockTestSection.html";
+            $scope.hiringSectionClass = "";
+            $scope.sampleTestSectionClass = "active";
+
+            $scope.changeTestSection = function(sectionName) {
+                $scope.load_test_section = absolute_path+"OnlineMockTests/"+sectionName+".html";
+
+                $scope.hiringSectionClass = "";
+                $scope.sampleTestSectionClass = "";
+
+                if(sectionName=="hiringTestSection") {
+                    $scope.hiringSectionClass = "active";
+                }
+                else {
+                    $scope.sampleTestSectionClass = "active";
+                }
+            }
+
             //Hiring test mock ID
             $scope.hiringTestMockID = 2563;
 
@@ -1525,7 +1544,7 @@ var app = angular
             }
 
         })
-        .controller("profileController",function($scope,$http) {
+        .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope) {
 
             $scope.Profile = {};
             $scope.Profile.id = "";
@@ -1538,9 +1557,35 @@ var app = angular
             $scope.Profile.profile_experience = "-1";
             $scope.Profile.profile_questions_answered = "-1";
 
+            //Summary section variables
+            $scope.Profile.profile_summary = "hi";
+
             //Section to be loaded by default
             $scope.load_profile_section = absolute_path+"Profile/Sections/general.html";
 
+            //Work and Education variables
+            $scope.workTemplate = absolute_path+"Profile/Sections/workTemplate.html";
+            $scope.educationTemplate = absolute_path+"Profile/Sections/educationTemplate.html";
+
+            $scope.fromDate = "2017-03-06T18:30:00.000Z"; // <- [object Date]
+            $scope.untilDate = "2017-03-13T18:30:00.000Z"; // <- [object Date]
+
+            var workJson = {
+                "userId" : $scope.Profile.id,
+                "companyName" : "",
+                "title" : "",
+                "startDate" : "",
+                "endDate" : "",
+                "projects" : ""
+            };
+
+            //Css variables for class selection
+            $scope.generalClass = "active";
+            $scope.resumeClass = "";
+            $scope.summaryClass = "";
+            $scope.userSkillClass = "";
+            $scope.workClass = "";
+            $scope.educationClass = "";
 
             var loadUserInfo = function() {
 
@@ -1554,12 +1599,84 @@ var app = angular
 
             }
 
+            loadUserInfo();
+
+            $scope.loadWorkInfo = function() {
+
+                $http.get(user_profile_work_education_API+$scope.Profile.username)
+                    .success(function(data,status,headers,config) {
+                        console.log("Fetched work and education info");
+                })
+
+            }
+
+            $scope.loadSummaryInfo = function() {
+                
+                $http.get(user_profile_summary_API+$scope.Profile.username)
+                    .success(function(data,status,headers,config) {
+                        console.log("Fetched summary info");
+                })
+
+            }
+
+
+            //Set headers
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+            url = question_mark_Later_API;
+
+            body =  {"summary":$scope.Profile.profile_summary};
+
+            $scope.updateSummary = function() {
+
+                $http.post( user_profile_summary_API+$scope.Profile.username, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Summary updated");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Summary updated!", content: "Edits made to your summary were updated", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Summary could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
             $scope.selectSection = function(section_to_load) {
                 console.log(section_to_load);
                 $scope.load_profile_section = absolute_path+"Profile/Sections/"+section_to_load+".html";
+
+                //Set active classes for CSS
+                $scope.generalClass = "";
+                $scope.resumeClass = "";
+                $scope.summaryClass = "";
+                $scope.userSkillClass = "";
+                $scope.workClass = "";
+                $scope.educationClass = "";
+
+                if(section_to_load=="general") {
+                    $scope.generalClass = "active";
+                }
+                else if (section_to_load=="summary") {
+                    $scope.summaryClass = "active";
+                }
+                else if (section_to_load=="userSkills") {
+                    $scope.userSkillClass = "active";
+                }
+                else if (section_to_load=="resume") {
+                    $scope.resumeClass = "active";
+                }
+                else if (section_to_load=="work") {
+                    $scope.workClass = "active";
+                }
+                else if (section_to_load=="education") {
+                    $scope.educationClass = "active";
+                }
+
             }
 
-            loadUserInfo();
+            
               
         })
         .controller("statisticsController",function($scope,$http) {

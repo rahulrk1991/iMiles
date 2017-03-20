@@ -12,57 +12,15 @@
             ga('send', 'pageview');
         </script>
 </head>
-<div id="main_container" style="width:1000px;margin:0 auto;">
-    <div style="padding:20px" class="container-fluid">
-    <div class="jumbotron">
-              <h1>Hiring Test 2 <small>| 2 April '17, 2:00 pm</small></h1>
-              <h2 style="font-size:40px">Time to go <small>| </small><small id="demo"></small></h2>
-              <p style="padding-top:20px">Get hired based on your performance in the test. Upload your resume <a style="font-weight:underlined" href="#Profile"><u>here</u></a> to get calls from companies!</p>
+<div id="main_container" style="width:950px;margin:0 auto;margin-top:50px">
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" ng-class="sampleTestSectionClass" ng-click="changeTestSection('sampleMockTestSection')"><a href="javascript:void(0);">Sample Mock Tests</a></li>
+        <li role="presentation" ng-class="hiringSectionClass" ng-click="changeTestSection('hiringTestSection')"><a href="javascript:void(0);">Hiring Test</a></li>
+    </ul>
 
-              <button ng-disabled="enableTestButton" ng-click="setMockToBeStarted(hiringTestMockID)" style="margin-top:10px" class="btn btn-success" type="button" data-toggle="modal" data-target="#startTheTestModal">Start Hiring Test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button>
-            </div> 
-            </div>   
-
-    <div class="container-fluid">
-        <div class="row">
-            <h1>Mock Tests <small>| Choose A Test</small></h1>
-            <br>
-            <p> Take online mock tests from a range of topics and get a statistical analysis after submitting the test</p>
-            <p style="font-weight:bold;font-size:15px">Want to practice questions first? Head to our <a style="color:red;text-decoration:underline" href="#QnACrunch">QnA Crunch</a> feature!</p>
-            <hr>
-
-            
-
-        </div> 
-      
-    </div>
-
-    <div style="background-color:#F5F5F5" class="panel panel-default">
-                <div class="panel-body">
-                    <table style="table-layout:fixed;width:100%">
-                        <tr style="text-align: center">
-                            <td style="width:33%;word-wrap:break-work">
-                                <h3>
-                                    Overall Score <small> {{overallScore}} / {{overallMaxScore}} </small>
-                                <h3>
-                            </td>
-
-                            <td style="width:33%">
-                                <h3>
-                                    Overall Accuracy <small> {{accuracy}} %</small>
-                                </h3>
-                            </td>
-                            <td style="width:33%">
-                                <h3>
-                                    Tests Given <small> {{numberOfTestsGiven}} / {{totalNumberOfTests}} </small>
-                                </h3>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+    <div ng-include="load_test_section" class="row" style="">
         
-    <div ng-include="getMockSummaryPanel(mock)" ng-repeat="mock in allMocks" style="width:100%;margin-top:10px;">
     </div>
+
       
 </div>
