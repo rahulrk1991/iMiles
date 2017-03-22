@@ -10,13 +10,20 @@
 
             ga('create', 'UA-80250123-1', 'auto');
             ga('send', 'pageview');
-        </script>
+    </script>
+    <style>
+        .SectedOptionCss {
+            color:red;
+            font-weight: bold;
+        }
+    </style>
+</head>
 </head>
 
 
 
 
-<div id="main_content_wrapper" style="width: 1000px; margin: 0 auto;margin-top:30">
+<div id="main_content_wrapper" style="width:900px; margin: 0 auto;margin-top:30">
     
     <div id="PageHeaderDiv" style="width:100%;padding-top:50px">
         <div class="row" style="width:20%;float:left">
@@ -31,20 +38,24 @@
         <div style="display: block; clear: both;"></div>
     </div>
 
-    <div class="row" style="width: 20%;float:left;margin-top:0px">
+    <div id="PageHeaderDiv" style="width:100%;">
 
-        <ul class="nav nav-pills nav-stacked">
-          <li role="presentation" ng-class="generalClass" ng-click="changeSelectedPage('why_we_started_it')"><a>Why we Started it</a></li>
-          <li role="presentation" ng-class="resumeClass" ng-click="changeSelectedPage('features')"><a>Features</a></li>
-          <li role="presentation" ng-class="summaryClass" ng-click="changeSelectedPage('short_video');loadSummaryInfo()"><a>Short Video</a></li>
-          <li role="presentation" ng-class="userSkillClass" ng-click="changeSelectedPage('the_team')"><a>The team</a></li>
-          <li role="presentation" ng-class="workClass" ng-click="changeSelectedPage('terms_and_conditions');loadWorkInfo()"><a>Terms & Conditions</a></li>
-        </ul>
+        <div class="row" style="width: 20%;float:left;margin-top:0px">
 
-    </div>
+            <ul class="nav nav-pills nav-stacked">
+              <li role="presentation" ng-class="whyWeStartedItClass" ng-click="changeSelectedPage('why_we_started_it')"><a>Why we Started it</a></li>
+              <li role="presentation" ng-class="featuresClass" ng-click="changeSelectedPage('features')"><a>Features</a></li>
+              <li role="presentation" ng-class="shortVideoClass" ng-click="changeSelectedPage('short_video');loadSummaryInfo()"><a>Short Video</a></li>
+              <li role="presentation" ng-class="theTeamClass" ng-click="changeSelectedPage('the_team')"><a>The Team</a></li>
+              <li role="presentation" ng-class="termsAndConditionsClass" ng-click="changeSelectedPage('terms_and_conditions');loadWorkInfo()"><a>Terms & Conditions</a></li>
+            </ul>
 
-    <div ng-include="load_profile_section" class="row" style="width:80%;float:right;margin-top:0px">
-        
+        </div>
+
+        <div ng-include="load_profile_section" class="row" style="width:80%;float:right;margin-top:15px">
+            
+        </div>
+        <div style="display: block; clear: both;"></div>
     </div>
 </div>
 
