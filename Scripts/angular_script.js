@@ -1545,12 +1545,42 @@ var app = angular
             $scope.theTeamClass = "";
             $scope.termsAndConditionsClass="";
 
+            $scope.load_profile_section = absolute_path+"AboutUs/subPages/why_we_started_it.html";
+
             $scope.setCSSClassVariable = function(page) {
 
             }
 
-            $scope.changeSelectedPage = function(page) {
-                $scope.selectedPage = absolute_path+"AboutUs/SubPages/"+page;
+            $scope.changeSelectedPage = function(section_to_load) {
+                console.log(section_to_load);
+                $scope.load_profile_section = absolute_path+"AboutUs/subPages/"+section_to_load+".html";
+
+                //Set active classes for CSS
+                $scope.generalClass = "";
+                $scope.resumeClass = "";
+                $scope.summaryClass = "";
+                $scope.userSkillClass = "";
+                $scope.workClass = "";
+                $scope.educationClass = "";
+
+                if(section_to_load=="general") {
+                    $scope.generalClass = "active";
+                }
+                else if (section_to_load=="summary") {
+                    $scope.summaryClass = "active";
+                }
+                else if (section_to_load=="userSkills") {
+                    $scope.userSkillClass = "active";
+                }
+                else if (section_to_load=="resume") {
+                    $scope.resumeClass = "active";
+                }
+                else if (section_to_load=="work") {
+                    $scope.workClass = "active";
+                }
+                else if (section_to_load=="education") {
+                    $scope.educationClass = "active";
+                }
             }
 
             /*$scope.returnSelectedPage = function() {
