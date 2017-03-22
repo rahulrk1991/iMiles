@@ -13,7 +13,7 @@
 
          <div id="sections_container" style="width:35%" class="col-md-6">
             <ul id="about_sections">
-               <li><a href="javascript:void(0)" ng-click='changeSelectedPage("why_we_started_it.html")'><h3>The site </h3></a>
+               <li ng-class="theSiteClass"><a href="javascript:void(0)" ng-click='changeSelectedPage("why_we_started_it.html")'><h3>The site </h3></a>
                   <ul>
                      <li><a href="javascript:void(0)" ng-click='changeSelectedPage("why_we_started_it.html")'><h4>Why we started it</h4></a></li>
                      <li><a href="javascript:void(0)" ng-click='changeSelectedPage("features.html")'><h4>Features</h4></a></li>
@@ -27,7 +27,7 @@
             </ul>
          </div>
 
-         <div ng-include="returnSelectedPage()" style="width:65%;height:auto;margin-top:20px" class="col-md-6">
+         <div ng-include="selectedPage" style="width:65%;height:auto;margin-top:20px" class="col-md-6">
             <b>InterviewMile</b> is dedicated to preparing candidates for interviews. 
       
          </div>

@@ -395,9 +395,11 @@ var app = angular
 
                 if(sectionName=="hiringTestSection") {
                     $scope.hiringSectionClass = "active";
+                    //countdown_timer_function();
                 }
                 else {
                     $scope.sampleTestSectionClass = "active";
+                    //clearInterval(countdown_timer_function);
                 }
             }
 
@@ -1533,15 +1535,27 @@ var app = angular
             }
         })
         .controller("aboutUsController",function($scope) {
-            $scope.selectedPage = "why_we_started_it.html";
+            $scope.selectedPage = absolute_path+"AboutUs/SubPages/why_we_started_it.html";
+
+            //CSS Class variable
+            $scope.theSiteClass="active";
+            $scope.whyWeStartedItClass ="";
+            $scope.featuresClass="";
+            $scope.shortVideoClass="";
+            $scope.theTeamClass = "";
+            $scope.termsAndConditionsClass="";
+
+            $scope.setCSSClassVariable = function(page) {
+
+            }
 
             $scope.changeSelectedPage = function(page) {
-                $scope.selectedPage = page;
+                $scope.selectedPage = absolute_path+"AboutUs/SubPages/"+page;
             }
 
-            $scope.returnSelectedPage = function() {
+            /*$scope.returnSelectedPage = function() {
                 return absolute_path+"AboutUs/SubPages/"+ $scope.selectedPage;
-            }
+            }*/
 
         })
         .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope) {
