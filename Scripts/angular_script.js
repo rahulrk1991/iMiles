@@ -1537,9 +1537,13 @@ var app = angular
         .controller("aboutUsController",function($scope) {
             $scope.selectedPage = absolute_path+"AboutUs/SubPages/why_we_started_it.html";
 
+            //Images links
+            $scope.happyAndSadImage = absolute_path+"AboutUs/Images/happy_and_sad.JPG";
+            $scope.teamImage = absolute_path+"AboutUs/Images/team.jpg";
+
             //CSS Class variable
-            $scope.theSiteClass="active";
-            $scope.whyWeStartedItClass ="";
+            //$scope.theSiteClass="SectedOptionCss";
+            $scope.whyWeStartedItClass ="SectedOptionCss";
             $scope.featuresClass="";
             $scope.shortVideoClass="";
             $scope.theTeamClass = "";
@@ -1556,30 +1560,26 @@ var app = angular
                 $scope.load_profile_section = absolute_path+"AboutUs/subPages/"+section_to_load+".html";
 
                 //Set active classes for CSS
-                $scope.generalClass = "";
-                $scope.resumeClass = "";
-                $scope.summaryClass = "";
-                $scope.userSkillClass = "";
-                $scope.workClass = "";
-                $scope.educationClass = "";
+                $scope.whyWeStartedItClass ="";
+                $scope.featuresClass="";
+                $scope.shortVideoClass="";
+                $scope.theTeamClass = "";
+                $scope.termsAndConditionsClass="";
 
-                if(section_to_load=="general") {
-                    $scope.generalClass = "active";
+                if(section_to_load=="why_we_started_it") {
+                    $scope.whyWeStartedItClass = "SectedOptionCss";
                 }
-                else if (section_to_load=="summary") {
-                    $scope.summaryClass = "active";
+                else if (section_to_load=="features") {
+                    $scope.featuresClass = "SectedOptionCss";
                 }
-                else if (section_to_load=="userSkills") {
-                    $scope.userSkillClass = "active";
+                else if (section_to_load=="short_video") {
+                    $scope.shortVideoClass = "SectedOptionCss";
                 }
-                else if (section_to_load=="resume") {
-                    $scope.resumeClass = "active";
+                else if (section_to_load=="the_team") {
+                    $scope.theTeamClass = "SectedOptionCss";
                 }
-                else if (section_to_load=="work") {
-                    $scope.workClass = "active";
-                }
-                else if (section_to_load=="education") {
-                    $scope.educationClass = "active";
+                else if (section_to_load=="terms_and_conditions") {
+                    $scope.termsAndConditionsClass = "SectedOptionCss";
                 }
             }
 
