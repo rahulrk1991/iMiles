@@ -1636,7 +1636,7 @@ var app = angular
                     .success(function(data,status,headers,config) {
                     
                         $scope.Profile.General = data;
-                        console.log("first name:"+$scope.Profile.first_name);
+                        console.log($scope.Profile.General);
 
                     });
 
@@ -1783,6 +1783,8 @@ var app = angular
                         dataChart.addColumn('string', 'Topic');
                         dataChart.addColumn('number', 'Score');
                         for(var cat in data) {
+                            if(cat=="Puzzles" || cat=="Descriptive" || cat=="Company")
+                                continue;
                             console.log(cat,data[cat]);
                             dataChart.addRows([
                                 [cat,data[cat]*10]
