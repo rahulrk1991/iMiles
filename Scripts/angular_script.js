@@ -1590,16 +1590,25 @@ var app = angular
         })
         .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope) {
 
+            //Set headers for GET/POST calls
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+            url = question_mark_Later_API;
+
             $scope.Profile = {};
-            $scope.Profile.id = "";
-            $scope.Profile.username = "";
-            $scope.Profile.first_name = "";
-            $scope.Profile.last_name = "";
-            $scope.Profile.email = "";
-            $scope.Profile.contact_no = "";
-            $scope.Profile.profile_score = "-1";
-            $scope.Profile.profile_experience = "-1";
-            $scope.Profile.profile_questions_answered = "-1";
+
+            //General section Variables
+            $scope.Profile.General = {};
+
+            $scope.Profile.General.username = "";
+            $scope.Profile.General.first_name = "";
+            $scope.Profile.General.last_name = "";
+            $scope.Profile.General.email = "";
+            $scope.Profile.General.contact_no = "";
+
+            //Resume and Link variables
+            $scope.Profile.ResumeAndLinks ={};
+            $scope.Profile.ResumeAndLinks.Link_github = "";
 
             //Summary section variables
             $scope.Profile.profile_summary = "hi";
@@ -1610,18 +1619,8 @@ var app = angular
             //Work and Education variables
             $scope.workTemplate = absolute_path+"Profile/Sections/workTemplate.html";
             $scope.educationTemplate = absolute_path+"Profile/Sections/educationTemplate.html";
-
             $scope.fromDate = "2017-03-06T18:30:00.000Z"; // <- [object Date]
             $scope.untilDate = "2017-03-13T18:30:00.000Z"; // <- [object Date]
-
-            var workJson = {
-                "userId" : $scope.Profile.id,
-                "companyName" : "",
-                "title" : "",
-                "startDate" : "",
-                "endDate" : "",
-                "projects" : ""
-            };
 
             //Css variables for class selection
             $scope.generalClass = "active";
@@ -1636,7 +1635,7 @@ var app = angular
                 $http.get(user_info_API)
                     .success(function(data,status,headers,config) {
                     
-                        $scope.Profile = data;
+                        $scope.Profile.General = data;
                         console.log("first name:"+$scope.Profile.first_name);
 
                     });
@@ -1654,26 +1653,51 @@ var app = angular
 
             }
 
-            $scope.loadSummaryInfo = function() {
+            //Resume and Links Functions
+            $scope.loadLinks = function() {
                 
-                $http.get(user_profile_summary_API+$scope.Profile.username)
+                $http.get(user_profile_resume_and_links_API+$scope.Profile.General.username)
                     .success(function(data,status,headers,config) {
-                        console.log("Fetched summary info");
+                        $scope.Profile.ResumeAndLinks = data;
+                        console.log($scope.Profile.ResumeAndLinks.githubLink);
                 })
 
             }
 
 
-            //Set headers
-            var cooks = $cookies.get("csrftoken");
-            var cooksHeader = { 'X-CSRFToken': cooks };
-            url = question_mark_Later_API;
+            $scope.updateLinks = function() {
 
-            body =  {"summary":$scope.Profile.profile_summary};
+                body =  $scope.Profile.ResumeAndLinks;
+
+                $http.post( user_profile_resume_and_links_API+$scope.Profile.General.username+"/", body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Links Updated");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Links Updated!", content: "Edits made to your links were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Links could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+            $scope.loadSummary = function() {
+                
+                $http.get(user_profile_summary_API+$scope.Profile.General.username)
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.profile_summary = data.summary;
+                })
+
+            }
+
 
             $scope.updateSummary = function() {
 
-                $http.post( user_profile_summary_API+$scope.Profile.username, body,{ headers: cooksHeader })
+                body =  {"summary":$scope.Profile.profile_summary};
+
+                $http.post( user_profile_summary_API+$scope.Profile.General.username+"/", body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                             console.log("Summary updated");        //on successfull posting of question
                             
@@ -1686,6 +1710,7 @@ var app = angular
 
                      });
             }
+
 
             $scope.selectSection = function(section_to_load) {
                 console.log(section_to_load);
@@ -1718,9 +1743,7 @@ var app = angular
                     $scope.educationClass = "active";
                 }
 
-            }
-
-            
+            }          
               
         })
         .controller("statisticsController",function($scope,$http) {
@@ -1757,7 +1780,7 @@ var app = angular
 
                         // Create the data table.
                         var dataChart = new google.visualization.DataTable();
-                        dataChart.addColumn('string', 'Topping');
+                        dataChart.addColumn('string', 'Topic');
                         dataChart.addColumn('number', 'Score');
                         for(var cat in data) {
                             console.log(cat,data[cat]);
@@ -1769,10 +1792,11 @@ var app = angular
                         // Set chart options
                         var options = {
                             'title':'',
-                            'width':700,
-                            'height':420,
-                            'chartArea':{width:"85%",height:"80%"},
-                            'legend': { position: 'none' }
+                            'width':1200,
+                            'height':430,
+                            'is3D':true,
+                            'chartArea':{width:"55%",height:"90%"},
+                            'legend': 'right'
                         };
 
                         // Instantiate and draw our chart, passing in some options.
