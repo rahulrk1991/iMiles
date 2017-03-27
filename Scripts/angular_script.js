@@ -1592,7 +1592,7 @@ var app = angular
 
             //Set headers for GET/POST calls
             var cooks = $cookies.get("csrftoken");
-            var cooksHeader = { 'X-CSRFToken': cooks };
+            var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/x-www-form-urlencoded'};
             url = question_mark_Later_API;
 
             $scope.Profile = {};
@@ -1607,20 +1607,29 @@ var app = angular
             $scope.Profile.General.contact_no = "";
 
             //Resume and Link variables
-            $scope.Profile.ResumeAndLinks ={};
+            $scope.Profile.ResumeAndLinks = {};
             $scope.Profile.ResumeAndLinks.Link_github = "";
 
             //Summary section variables
-            $scope.Profile.profile_summary = "hi";
+            $scope.Profile.Summary = {};
+            $scope.Profile.Summary.Summary = "Could not fetch summary!";
 
             //Section to be loaded by default
             $scope.load_profile_section = absolute_path+"Profile/Sections/general.html";
 
             //Work and Education variables
+            $scope.Profile.WorkAndEducation = {};
             $scope.workTemplate = absolute_path+"Profile/Sections/workTemplate.html";
             $scope.educationTemplate = absolute_path+"Profile/Sections/educationTemplate.html";
-            $scope.fromDate = "2017-03-06T18:30:00.000Z"; // <- [object Date]
-            $scope.untilDate = "2017-03-13T18:30:00.000Z"; // <- [object Date]
+            var workJson = {};
+            var educationJson = {};
+            var workJsonArray = [];
+            var educationJsonArray = [];
+
+            var setWorkAndEducationJson = function() {
+
+            }
+            
 
             //Css variables for class selection
             $scope.generalClass = "active";
@@ -1637,26 +1646,17 @@ var app = angular
                     
                         $scope.Profile.General = data;
                         console.log($scope.Profile.General);
-
+                        //setWorkAndEducationJson();
                     });
 
             }
 
             loadUserInfo();
 
-            $scope.loadWorkInfo = function() {
-
-                $http.get(user_profile_work_education_API+$scope.Profile.username)
-                    .success(function(data,status,headers,config) {
-                        console.log("Fetched work and education info");
-                })
-
-            }
-
             //Resume and Links Functions
             $scope.loadLinks = function() {
                 
-                $http.get(user_profile_resume_and_links_API+$scope.Profile.General.username)
+                $http.get(user_profile_resume_and_links_API+$scope.Profile.General.id)
                     .success(function(data,status,headers,config) {
                         $scope.Profile.ResumeAndLinks = data;
                         console.log($scope.Profile.ResumeAndLinks.githubLink);
@@ -1667,27 +1667,41 @@ var app = angular
 
             $scope.updateLinks = function() {
 
-                body =  $scope.Profile.ResumeAndLinks;
+                console.log($scope.Profile.ResumeAndLinks.githubLink);
 
-                $http.post( user_profile_resume_and_links_API+$scope.Profile.General.username+"/", body,{ headers: cooksHeader })
-                     .success(function(data,status,header,config) {
-                            console.log("Links Updated");        //on successfull posting of question
-                            
-                            var myAlert = $alert({title: "Links Updated!", content: "Edits made to your links were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+                $http({
+                    method: 'POST',
+                    url: user_profile_resume_and_links_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {
+                        tag : "",
+                        githubLink : $scope.Profile.ResumeAndLinks.githubLink,
+                        linkedInLink : $scope.Profile.ResumeAndLinks.linkedInLink,
+                        personalWebsiteLink : $scope.Profile.ResumeAndLinks.personalWebsiteLink,
+                        stackoverflowLink : $scope.Profile.ResumeAndLinks.stackoverflowLink
+                    }
+                }).success(function () {
+                    console.log("Links Updated");        //on successfull posting of question
+                    var myAlert = $alert({title: "Links Updated!", content: "Edits made to your links were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
 
-                        })
-                     .error(function(response) {
-                        console.log("Links could not be updated");                //in case there is an error
-                        var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
-
-                     });
+                }).error(function() {
+                    console.log("Links could not be updated");                //in case there is an error
+                    var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
             }
 
+            //Summary functions
             $scope.loadSummary = function() {
                 
-                $http.get(user_profile_summary_API+$scope.Profile.General.username)
+                $http.get(user_profile_summary_API+$scope.Profile.General.id+"/")
                     .success(function(data,status,headers,config) {
-                        //$scope.Profile.profile_summary = data.summary;
+                        $scope.Profile.Summary = data;
                 })
 
             }
@@ -1695,18 +1709,180 @@ var app = angular
 
             $scope.updateSummary = function() {
 
-                body =  {"summary":$scope.Profile.profile_summary};
+                $http({
+                    method: 'POST',
+                    url: user_profile_summary_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {summary: $scope.Profile.profile_summary}
+                }).success(function () {
+                    console.log("summary post success");
+                    var myAlert = $alert({title: "Summary updated!", content: "Edits made to your summary were updated", placement:'floater top', type: 'success', show: true,duration:5});
 
-                $http.post( user_profile_summary_API+$scope.Profile.General.username+"/", body,{ headers: cooksHeader })
-                     .success(function(data,status,header,config) {
-                            console.log("Summary updated");        //on successfull posting of question
-                            
-                            var myAlert = $alert({title: "Summary updated!", content: "Edits made to your summary were updated", placement:'floater top', type: 'success', show: true,duration:5});
-
-                        })
-                     .error(function(response) {
+                }).error(function() {
                         console.log("Summary could not be updated");                //in case there is an error
                         var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+
+
+            }
+
+            //Work and Education functions
+            $scope.addNewWorkJson = function() {
+                if($scope.Profile.WorkAndEducation.companies.length==3) {
+                    var myAlert = $alert({title: 'A maximum of only 3 entries can be added', content: '', placement:'floater top', type: 'danger', show: true,duration:5});
+                    return;
+                }
+
+                l = workJsonArray.length;
+                console.log(workJsonArray[l-1]);
+                $scope.Profile.WorkAndEducation.companies.push(workJsonArray[l-1]);
+                workJsonArray.splice(l-1,1);
+                console.log($scope.Profile.WorkAndEducation.companies);
+            }
+
+            $scope.addNewEducationJson = function() {
+                if($scope.Profile.WorkAndEducation.colleges.length==3) {
+                    var myAlert = $alert({title: 'A maximum of only 3 entries can be added', content: '', placement:'floater top', type: 'danger', show: true,duration:5});
+                    return;
+                }
+
+                l = educationJsonArray.length;
+                console.log(educationJsonArray[l-1]);
+                $scope.Profile.WorkAndEducation.colleges.push(educationJsonArray[l-1]);
+                educationJsonArray.splice(l-1,1);
+                console.log($scope.Profile.WorkAndEducation.colleges);
+            }
+
+            $scope.deleteWorkEntry = function(index) {
+                console.log(index);
+                $scope.Profile.WorkAndEducation.companies.splice(index,1)
+            }
+
+            $scope.deleteCollegeEntry = function(index) {
+                console.log(index);
+                $scope.Profile.WorkAndEducation.colleges.splice(index,1)
+            }
+
+            $scope.loadWorkAndEducationInfo = function() {
+
+                $http.get(user_profile_work_education_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.WorkAndEducation = data;
+                        //console.log($scope.Profile.WorkAndEducation);
+                        console.log($scope.Profile.WorkAndEducation.companies);
+                        console.log($scope.Profile.WorkAndEducation.colleges);
+                        if($scope.Profile.WorkAndEducation.companies.length==0) {
+                            $scope.addNewWorkJson();
+                        }
+                        if($scope.Profile.WorkAndEducation.colleges.length==0) {
+                            $scope.addNewEducationJson();
+                            //console.log($scope.Profile.WorkAndEducation.colleges);
+                        }
+                        console.log($scope.Profile.WorkAndEducation);
+                })
+
+                workJson1 = {
+
+                    "userId" : $scope.Profile.General.id,
+                    "companyName" : "",
+                    "title" : "",
+                    "startDate" : "",
+                    "endDate" : "",
+                    "projects" : ""
+
+                }
+
+                workJson2 = {
+
+                    "userId" : $scope.Profile.General.id,
+                    "companyName" : "",
+                    "title" : "",
+                    "startDate" : "",
+                    "endDate" : "",
+                    "projects" : ""
+
+                }
+
+                workJson3 = {
+
+                    "userId" : $scope.Profile.General.id,
+                    "companyName" : "",
+                    "title" : "",
+                    "startDate" : "",
+                    "endDate" : "",
+                    "projects" : ""
+
+                }
+
+                educationJson1 = {
+
+                        "userId" : $scope.Profile.General.id,
+                        "collegeName" : "",
+                        "branch" : "",
+                        "degree" : "",
+                        "startDate" : "",
+                        "endDate" : "",
+                        "isPercentage" : false,
+                        "finalresult" : 0,
+                        "projects" : ""
+                    
+                }
+
+                educationJson2 = {
+
+                        "userId" : $scope.Profile.General.id,
+                        "collegeName" : "",
+                        "branch" : "",
+                        "degree" : "",
+                        "startDate" : "",
+                        "endDate" : "",
+                        "isPercentage" : false,
+                        "finalresult" : 0,
+                        "projects" : ""
+                    
+                }
+
+                educationJson3 = {
+
+                        "userId" : $scope.Profile.General.id,
+                        "collegeName" : "",
+                        "branch" : "",
+                        "degree" : "",
+                        "startDate" : "",
+                        "endDate" : "",
+                        "isPercentage" : false,
+                        "finalresult" : 0,
+                        "projects" : ""
+                    
+                }
+
+                workJsonArray.push(workJson1);
+                workJsonArray.push(workJson2);
+                workJsonArray.push(workJson3);
+
+                educationJsonArray.push(educationJson1);
+                educationJsonArray.push(educationJson2);
+                educationJsonArray.push(educationJson3);
+
+            }
+
+            $scope.updateWorkAndEducationInfo = function() {
+
+                //body =  [$scope.question.pk];
+                $http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", $scope.Profile.WorkAndEducation,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Info updated successfully");
+                        var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Info could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Work Info could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
             }
@@ -1782,12 +1958,13 @@ var app = angular
                         var dataChart = new google.visualization.DataTable();
                         dataChart.addColumn('string', 'Topic');
                         dataChart.addColumn('number', 'Score');
+                        dataChart.addColumn({type: 'number', role: 'annotation'});
                         for(var cat in data) {
                             if(cat=="Puzzles" || cat=="Descriptive" || cat=="Company")
                                 continue;
                             console.log(cat,data[cat]);
                             dataChart.addRows([
-                                [cat,data[cat]*10]
+                                [cat,data[cat]*10,data[cat]*10]
                             ]);
                         }
 
@@ -2195,11 +2372,11 @@ var app = angular
                                     if(choice.id==data.value) {
                                         $rootScope.rootScope_score = $rootScope.rootScope_score+10;
 
-                                        var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top', type: 'success', show: true,duration:4});
+                                        var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top right', type: 'success', show: true,duration:4});
                             
                                     }
                                     else {
-                                        var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
+                                        var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top right', type: 'danger', show: true,duration:4});
                             
                                     }
                                     $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
