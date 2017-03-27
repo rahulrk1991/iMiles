@@ -15,7 +15,7 @@
 <link href="QnACrunch/Stylesheets/qnacrunch.css" rel="stylesheet" type="text/css"/>
 <div ng-controller="questionsController" class="outermostDiv">
 
-    <div class="container" style="width:75%;margin-right:70px">
+    <div class="container" style="width:85%;margin-right:30px">
 
         <div id="pageTitle" class="container" style="width:55%;float:left;margin:0 auto;">
             <h1>QnA Crunch</h1>
@@ -26,13 +26,13 @@
 
         
         <div  id="summaryContainer">
-            <div id="testSummaryDiv" class="display-inline" style="width:40%;float:right;">
+            <div id="testSummaryDiv" class="display-inline" style="width:45%;float:right;">
 
                 <div id="testSummaryInnerDiv" style="padding:10px;margin-top:65px">
                     
                     <div style="background-color:#F5F5F5;padding:10px">
-                        <h4><strong>Current Filter</strong></h4>
-                        <p>Indicates the current category by which the questions are filtered</p>
+                        <h4><strong>Currently Applied Filter</strong></h4>
+                        <!-- <p>Indicates the current category by which the questions are filtered</p> -->
 
                         <div ng-show="!isCategoryFilterOn">
                             None
@@ -53,7 +53,7 @@
                     
                     <div style="background-color:#F5F5F5;padding:10px">
                         <h4><strong>All Categories</strong></h4>
-                        <p>Indicates all the available categories. Click on a category to filter questions by it.</p>
+                        <p>Click on a category to filter questions by it.</p>
 
                         <div style="width:100%;height:auto;overflow:auto">
 
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div style="width:57%;float:left">
+            <div style="width:53%;float:left">
 
                 <div class="input-group input-group-lg" style="width:100%;margin-top:20px">    
 
