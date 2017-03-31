@@ -1654,7 +1654,7 @@ var app = angular
                 $http({
                     method: 'POST',
                     url: user_profile_contact_API+$scope.Profile.General.id+"/",
-                    headers: cooksHeaderApplicationJson,
+                    headers: cooksHeader,
                     transformRequest: function(obj) {
                         var str = [];
                         for(var p in obj)
@@ -1663,7 +1663,7 @@ var app = angular
                     },
                     data: {
                         contact_no : $scope.Profile.General.contact_no1,
-                        placement_rating : ""
+                        placement_rating : 0
                     }
                 }).success(function () {
                     console.log("Info Updated");        //on successfull posting of question
