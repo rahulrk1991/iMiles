@@ -2142,7 +2142,7 @@ var app = angular
                 //return;
 
                 //body =  [$scope.question.pk];
-                $http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", body,{ headers: cooksHeader })
+                $http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", body,{ headers: cooksHeader,'Content-Type': 'application/json' })
                      .success(function(data,status,header,config) {
                         console.log("Info updated successfully");
                         var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
