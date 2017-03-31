@@ -1593,6 +1593,8 @@ var app = angular
             //Set headers for GET/POST calls
             var cooks = $cookies.get("csrftoken");
             var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/x-www-form-urlencoded'};
+            var cooksHeaderApplicationJson = { 'X-CSRFToken': cooks ,'Content-Type': 'application/json'};
+            
             url = question_mark_Later_API;
 
             $scope.Profile = {};
@@ -2142,7 +2144,7 @@ var app = angular
                 //return;
 
                 //body =  [$scope.question.pk];
-                $http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", body,{ headers: cooksHeader,'Content-Type': 'application/json' })
+                /*$http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", body,{ headers: cooksHeader,'Content-Type': 'application/json' })
                      .success(function(data,status,header,config) {
                         console.log("Info updated successfully");
                         var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
@@ -2151,7 +2153,24 @@ var app = angular
                         console.log("Info could not be updated");                //in case there is an error
                         var myAlert = $alert({title: 'Work Info could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
-                     });
+                     });*/
+
+                $http({
+                    url: user_profile_work_education_API+$scope.Profile.General.id+"/",
+                    dataType: 'json',
+                    method: 'POST',
+                    data: body,
+                    headers: cooksHeaderApplicationJson
+
+                }).success(function(response){
+                    console.log("Info updated successfully");
+                    var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        
+                }).error(function(error){
+                    console.log("Info could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Work Info could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                });
             }
 
 
