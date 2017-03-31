@@ -1866,6 +1866,16 @@ var app = angular
                         $scope.Profile.userSkills.ChunkedRoles = chunk($scope.Profile.userSkills.roles, 3);
                 });
 
+                $http.get(user_profile_userProfileRoles_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.userSkills.roles = [];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.selectedRoles.push(data[i].role);
+                        }
+                        //console.log($scope.Profile.userSkills.roles);
+                        //$scope.Profile.userSkills.ChunkedRoles = chunk($scope.Profile.userSkills.roles, 3);
+                });
+
                 $http.get(user_profile_experience_API+$scope.Profile.General.id+"/")
                     .success(function(data,status,headers,config) {
                         $scope.Profile.userSkills.experience = data.experience;
