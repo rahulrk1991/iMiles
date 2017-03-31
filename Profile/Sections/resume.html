@@ -1,0 +1,89 @@
+<div style="width:100%" class="col-md-6">
+    <div>
+        <h3>Resume</h3>
+        <hr>
+        <table style="width:90%">
+            <tr>
+                <td class="form_profile_td settings-page-inputs">
+                    <form action="http://testinterviewmiles.com/api/user/upload_resume/" method="post" enctype="multipart/form-data">
+                        <div class="input-group-lg">
+                            <p>
+                              <input style="display:inline-block;float:left;width:65%" id="id_image" type="file" class="" name="document">
+                              <input id="abc" type="hidden" class="" name="username" value="{{sidebarUserModel.userName}}">
+                              <input style="float:right;width:33%" type="submit" value="Upload Resume" />
+                            </p>
+                        
+                        </div>
+                    </form>
+                </td> 
+            </tr>
+        </table>
+    </div>
+    <div style="margin-top:50px">
+        <h3>Links</h3>
+        <hr>
+        <table style="width:90%">
+            <tr style="padding:10px">
+                <td class="form_profile_td settings-page-label">
+                    <div class="input-group-lg">
+                    Github : 
+                 </div>
+                </td>
+                <td class="form_profile_td settings-page-inputs">
+                    <div class="input-group-lg">
+                    <input ng-model="Profile.ResumeAndLinks.githubLink" type="text" class="form-control">
+                 </div>
+                </td>
+            </tr>
+            <tr style="padding:10px">
+                <td class="form_profile_td settings-page-label">
+                    <div class="input-group-lg">
+                    LinkedIn : 
+                 </div>
+                </td>
+                <td class="form_profile_td settings-page-inputs">
+                    <div class="input-group-lg">
+                    <input ng-model="Profile.ResumeAndLinks.linkedInLink" type="text" class="form-control">
+                 </div>
+                </td>
+            </tr>
+            <tr style="padding:10px">
+                <td class="form_profile_td settings-page-label">
+                    <div class="input-group-lg">
+                    StackOverflow : 
+                 </div>
+                </td>
+                <td class="form_profile_td settings-page-inputs">
+                    <div class="input-group-lg">
+                    <input ng-model="Profile.ResumeAndLinks.stackoverflowLink" type="text" class="form-control">
+                 </div>
+                </td>
+            </tr>
+            <tr style="padding:10px">
+                <td class="form_profile_td settings-page-label">
+                    <div class="input-group-lg">
+                    Website : 
+                 </div>
+                </td>
+                <td class="form_profile_td settings-page-inputs">
+                    <div class="input-group-lg">
+                    <input ng-model="Profile.ResumeAndLinks.personalWebsiteLink" type="text" class="form-control">
+                 </div>
+                </td>
+            </tr>
+            <tr style="padding:10px">
+                <td class="form_profile_td settings-page-label">
+
+                </td>
+                <td class="form_profile_td settings-page-inputs">
+                    <div class="input-group-lg">
+                    <button id="updateLinksButton" style="width:35%;margin-top:20px;float:right" ng-click="updateLinks()" type="button" class="btn btn-default btn-primary">
+                        Update Links
+                    </button>
+                 </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>  
+</div>

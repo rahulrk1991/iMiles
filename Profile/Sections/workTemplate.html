@@ -1,0 +1,46 @@
+<div>
+    <div>
+        <h3 style="width:95%;float:left">Work {{$index+1}} <small>{{company.companyName}}</small><h3>
+        <h3 style="width:5%;float:right" ng-click="deleteWorkEntry($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><h3>
+        <br class="clear" />
+    </div>
+    <table style="width:100%">
+        <tr style="padding:10px">
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <input ng-model="company.companyName" placeholder="Company" type="text" class="form-control">
+                </div>
+            </td>
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <input ng-model="company.title" placeholder="Designation" type="text" class="form-control">
+                </div>
+            </td>
+        </tr>
+        <tr style="padding:10px">
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                Start : 
+                </div>
+                <div class="input-group-lg">
+                    <input type="text" class="form-control" ng-model="company.startDate" data-date-format="yyyy-MM-dd" data-max-date="{{company.endDate}}" placeholder="From" bs-datepicker>
+                </div>
+            </td>
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                End : 
+                </div>
+                <div class="input-group-lg">
+                    <input type="text" class="form-control" ng-model="company.endDate" data-date-format="yyyy-MM-dd" data-min-date="{{company.startDate}}" placeholder="Until" bs-datepicker>
+                </div>
+            </td>
+        </tr>
+        <tr style="padding:10px">
+            <td colspan="2" class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <textarea placeholder="Projects : List five bullets, including accomplishments, specific tools and technologies, and you responsibilities" rows="8" style="height:150px" ng-model="company.projects" type="text" class="form-control">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

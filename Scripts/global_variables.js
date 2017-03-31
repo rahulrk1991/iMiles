@@ -3,9 +3,9 @@
 //APIs
 
 //URL BUILDER
-var protocol = "https://";
-var host_name ="interviewmile.com";
-var port_number = "443";
+var protocol = "http://";
+var host_name ="testinterviewmiles.com";
+var port_number = "80";
 var API_Start = protocol+host_name+":"+port_number;
 
 //Questions API
@@ -66,6 +66,33 @@ var user_isAdmin_API = API_Start + user_isAdmin_API;
 
 var user_info_End_Point = "/api/" + "user/profile/";
 var user_info_API = API_Start + user_info_End_Point;
+
+var user_profile_summary_End_Point = "/api/" + "user/profile/summary/";
+var user_profile_summary_API = API_Start + user_profile_summary_End_Point;
+
+var user_profile_experience_End_Point = "/api/" + "user/profile/userProfileExperience/";
+var user_profile_experience_API = API_Start + user_profile_experience_End_Point;
+
+var user_profile_userSkills_End_Point = "/api/" + "user/profile/getSkills/";
+var user_profile_userSkills_API = API_Start + user_profile_userSkills_End_Point;
+
+var user_profile_Roles_End_Point = "/api/" + "user/profile/getRoles/";
+var user_profile_Roles_API = API_Start + user_profile_Roles_End_Point;
+
+var user_profile_userProfileRoles_End_Point = "/api/" + "user/profile/userProfileRoles/";
+var user_profile_userProfileRoles_API = API_Start + user_profile_userProfileRoles_End_Point;
+
+var user_profile_user_post_skills_End_Point = "/api/" + "user/profile/userSkills/";
+var user_profile_user_post_skills_API = API_Start + user_profile_user_post_skills_End_Point;
+
+var user_profile_contact_End_Point = "/api/" + "user/profile/userProfileContactAndPlacementRating/";
+var user_profile_contact_API = API_Start + user_profile_contact_End_Point;
+
+var user_profile_resume_and_links_End_Point = "/api/" + "user/profile/links/";
+var user_profile_resume_and_links_API = API_Start + user_profile_resume_and_links_End_Point;
+
+var user_profile_work_education_End_Point = "/api/" + "user/profile/workAndEducation/";
+var user_profile_work_education_API = API_Start + user_profile_work_education_End_Point;
 
 var user_stats_End_Point = "/api/" + "question/stats/";
 var user_stats_API = API_Start + user_stats_End_Point;

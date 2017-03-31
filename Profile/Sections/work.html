@@ -1,0 +1,20 @@
+<div style="width:100%" class="col-md-6">  
+    <div style="background-color:#F5F5F5;padding:10px">
+        <h4><b>Relevant Work Experience</b><small> Enter from latest to earliest</h4>
+        <br>
+        <div style="padding-top:0px" ng-include="workTemplate" ng-repeat="company in Profile.WorkAndEducation.companies track by $index">
+        </div>
+        <div style="width:100%">
+            <button id="submitWorkButton" style="width:15%;float:right;margin-top:30px" ng-click="addNewWorkJson()" type="button" class="btn btn-default btn-primary">
+               + Add Work
+            </button>
+            <br class="clear" />
+        </div>
+        <div style="width:100%">
+            <button id="submitWorkButton" style="width:35%;margin-top:50px;float:right" ng-click="updateWorkAndEducationInfo('work')" type="button" class="btn btn-default btn-primary">
+                Update Work Info
+            </button>
+            <br class="clear" />
+        <div>
+    </div>
+</div>

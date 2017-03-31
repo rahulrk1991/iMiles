@@ -1588,7 +1588,7 @@ var app = angular
             }*/
 
         })
-        .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope) {
+        .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope,$anchorScroll) {
 
             //Set headers for GET/POST calls
             var cooks = $cookies.get("csrftoken");
@@ -1613,6 +1613,8 @@ var app = angular
             //Summary section variables
             $scope.Profile.Summary = {};
             $scope.Profile.Summary.Summary = "Could not fetch summary!";
+
+            
 
             //Section to be loaded by default
             $scope.load_profile_section = absolute_path+"Profile/Sections/general.html";
@@ -1639,6 +1641,38 @@ var app = angular
             $scope.workClass = "";
             $scope.educationClass = "";
 
+            $scope.getContactNo = function() {
+                $http.get(user_profile_contact_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.General.contact_no1 = data.contact_no;
+                });
+            }
+
+            $scope.updateGeneralInfo = function() {
+                $http({
+                    method: 'POST',
+                    url: user_profile_contact_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {
+                        contact_no : $scope.Profile.General.contact_no1,
+                        placement_rating : ""
+                    }
+                }).success(function () {
+                    console.log("Info Updated");        //on successfull posting of question
+                    var myAlert = $alert({title: "Info Updated!", content: "Edits made to your Info were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                    console.log("Info could not be updated");                //in case there is an error
+                    var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+            }
+
             var loadUserInfo = function() {
 
                 $http.get(user_info_API)
@@ -1646,7 +1680,7 @@ var app = angular
                     
                         $scope.Profile.General = data;
                         console.log($scope.Profile.General);
-                        //setWorkAndEducationJson();
+                        $scope.getContactNo();
                     });
 
             }
@@ -1730,6 +1764,206 @@ var app = angular
                 });
 
 
+            }
+
+            //User Skills variables
+            $scope.Profile.userSkills = {};
+            $scope.Profile.userSkills.roles = {};
+            $scope.Profile.userSkills.selectedRoles = [];
+            $scope.Profile.userSkills.experiences = ["0-1","1-2","2-3","3-4","4-5","5+"];
+            $scope.Profile.userSkills.experience = "";
+            $scope.Profile.userSkills.filterValue = "";
+            $scope.Profile.userSkills.selectedUserSkills = [];
+
+            //User skills section
+
+            function chunk(arr, size) {
+              var newArr = [];
+              for (var i=0; i<arr.length; i+=size) {
+                newArr.push(arr.slice(i, i+size));
+              }
+              return newArr;
+            }
+
+            function isAlreadySelected(role) {
+                var arr = $scope.Profile.userSkills.selectedRoles;
+                for(i=0;i<arr.length;i++) {
+                    if(role==arr[i]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            $scope.clickUserRole = function(role) {
+                /*if($scope.Profile.userSkills.selectedRoles.length>=3)
+                    return;*/
+                var indexofRole = $scope.Profile.userSkills.selectedRoles.indexOf(role);
+                if(indexofRole>=0) {
+                    $scope.Profile.userSkills.selectedRoles.splice(indexofRole,1);
+                    return;
+                }
+                else {
+                    if($scope.Profile.userSkills.selectedRoles.length>=3)
+                        return;
+                    else
+                        $scope.Profile.userSkills.selectedRoles.push(role);
+                }
+                console.log($scope.Profile.userSkills.selectedRoles);
+            }
+
+            $scope.toggleSelectedRole = function(role) {
+                if($scope.Profile.userSkills.selectedRoles.indexOf(role)>=0) {
+                    return "background-grey";
+                }
+                else
+                    return "";
+            }
+
+            $scope.toggleExperience = function(experience) {
+                if($scope.Profile.userSkills.experience==experience) {
+                    return "background-grey";
+                }
+                else
+                    return "";
+            }
+
+            $scope.updateRoles = function() {
+
+                var userRoleJsonArray = [];
+
+                var selectedRoles = $scope.Profile.userSkills.selectedRoles;
+                for(i=0;i<selectedRoles.length;i++) {
+                    userRoleJsonArray.push({"userId":$scope.Profile.General.id,"role":selectedRoles[i]});
+                }
+                console.log(userRoleJsonArray);
+
+                var updateRolesPostBody = {"userRoles":userRoleJsonArray};
+
+                $http.post( user_profile_userProfileRoles_API+$scope.Profile.General.id+"/", updateRolesPostBody,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Roles updated successfully");
+                        var myAlert = $alert({title: "Roles updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Roles could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Roles could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+            $scope.loadAllUserSkillsData = function() {
+
+                $http.get(user_profile_Roles_API)
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.userSkills.roles = [];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.roles.push(data[i].role);
+                        }
+                        console.log($scope.Profile.userSkills.roles);
+                        $scope.Profile.userSkills.ChunkedRoles = chunk($scope.Profile.userSkills.roles, 3);
+                });
+
+                $http.get(user_profile_experience_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.userSkills.experience = data.experience;
+                        console.log($scope.Profile.userSkills.experience);
+                });
+
+                $http.get(user_profile_userSkills_API)
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.userSkills.skills = data;
+                        $scope.Profile.userSkills.skills =[];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.skills.push(data[i].skill);
+                        }
+                        console.log($scope.Profile.userSkills.skills);
+                        $scope.Profile.userSkills.ChunkedSkills = chunk($scope.Profile.userSkills.skills, 7);
+                        console.log($scope.Profile.userSkills.ChunkedSkills);
+                });
+
+                $http.get(user_profile_user_post_skills_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.userSkills.skills = data;
+                        $scope.Profile.userSkills.selectedUserSkills =[];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.selectedUserSkills.push(data[i].skill);
+                        }
+                        console.log($scope.Profile.userSkills.selectedUserSkills);
+
+                });
+            }
+
+            $scope.addUserSkills = function() {
+                $anchorScroll();
+                var filterString = $scope.Profile.userSkills.filterValue;
+                console.log(filterString); 
+                //var lastIndex = filterString.slice(-1);
+                console.log($scope.Profile.userSkills.skills.indexOf(filterString));
+
+                if($scope.Profile.userSkills.skills.indexOf(filterString)>-1) {
+                    $scope.Profile.userSkills.selectedUserSkills.push(filterString);
+                    $scope.Profile.userSkills.filterValue = "";
+                    return;
+                }
+
+            }
+
+            $scope.removeSkill = function(skillToBeRemoved) {
+                var indexOfskillToBeRemoved = $scope.Profile.userSkills.selectedUserSkills.indexOf(skillToBeRemoved);
+                $scope.Profile.userSkills.selectedUserSkills.splice(indexOfskillToBeRemoved,1);
+            }
+
+            $scope.updateSkills = function() {
+
+                var userSkillJsonArray = [];
+
+                var selectedSkills = $scope.Profile.userSkills.selectedUserSkills;
+                for(i=0;i<selectedSkills.length;i++) {
+                    userSkillJsonArray.push({"userId":$scope.Profile.General.id,"skill":selectedSkills[i]});
+                }
+                console.log(userSkillJsonArray);
+
+                var updateSkillsPostBody = {"skills":userSkillJsonArray};
+
+                $http.post( user_profile_user_post_skills_API+$scope.Profile.General.id+"/", updateSkillsPostBody,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Skills updated successfully");
+                        var myAlert = $alert({title: "Skills updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Skills could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Skills could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+
+
+
+            $scope.clickExperience = function(experience) {
+
+                $scope.Profile.userSkills.experience = experience;
+
+                $http({
+                    method: 'POST',
+                    url: user_profile_experience_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {experience: $scope.Profile.userSkills.experience}
+                }).success(function () {
+                    console.log("Experience updated successfully");
+                    var myAlert = $alert({title: "Experience updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                        console.log("Experience could not be updated!");                //in case there is an error
+                        var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
             }
 
             //Work and Education functions
@@ -1872,10 +2106,42 @@ var app = angular
 
             }
 
-            $scope.updateWorkAndEducationInfo = function() {
+            function getPostableBody() {
+                var collegeJsonPost = [];
+                var companiesJsonPost = [];
+                var companyJson = $scope.Profile.WorkAndEducation.companies;
+                for(i=0;i<companyJson.length;i++) {
+                    var singleCompanyJson = companyJson[i];
+                    if(singleCompanyJson.companyName=="" || singleCompanyJson.title=="" || singleCompanyJson.startDate=="" || singleCompanyJson.endDate=="") {
+                        $scope.dispplayErrorCompany = true;
+                    }
+                    else {
+                        companiesJsonPost.push(singleCompanyJson);
+                    }
+                }
+
+                var collegeJson = $scope.Profile.WorkAndEducation.colleges;
+                for(i=0;i<collegeJson.length;i++) {
+                    var singlecollegeJson = collegeJson[i];
+                    if(singlecollegeJson.collegeName=="" || singlecollegeJson.branch=="" || singlecollegeJson.degree=="" || singlecollegeJson.finalresult=="" || singlecollegeJson.startDate=="" || singlecollegeJson.endDate=="") {
+                        $scope.dispplayErrorCollege = true;
+                    }
+                    else {
+                        collegeJsonPost.push(singlecollegeJson);
+                    }
+                }
+                return {"colleges":collegeJsonPost,"companies":companiesJsonPost};
+            }
+
+            $scope.updateWorkAndEducationInfo = function(section) {
+                //$scope.dispplayError
+                //var body = $scope.Profile.WorkAndEducation;
+                var body = getPostableBody();
+                console.log(body)
+                //return;
 
                 //body =  [$scope.question.pk];
-                $http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", $scope.Profile.WorkAndEducation,{ headers: cooksHeader })
+                $http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                         console.log("Info updated successfully");
                         var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});

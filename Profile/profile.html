@@ -10,97 +10,40 @@
 
             ga('create', 'UA-80250123-1', 'auto');
             ga('send', 'pageview');
-        </script>
+    </script> 
 </head>
-<div id="main_content_wrapper" style="width: 700px; margin: 0 auto;margin-top:30">
-	<div class="row" style="padding-top:50px">
 
+<div id="main_content_wrapper" style="width: 1000px; margin: 0 auto;margin-top:30">
+    
+    <div id="PageHeaderDiv" style="width:100%;padding-top:50px">
+        <div class="row" style="width:20%;float:left">
 
-		<h3 style="display:inline"><span class="glyphicon glyphicon-question-user" aria-hidden="true"></span></h3>
-        <h1 style="display:inline">Profile <small>| {{Profile.first_name}} {{Profile.last_name}}</small></h1>
-        <p style="padding-top:20px">Get hired based on your performance in the <a style="font-color:red;font-weight:underlined" href="#OnlineMockTests/ChooseATest"><u><b>Hiring test !</b></u></a> Upload your resume here to get calls from companies!</p>
-        <hr>
+        </div>
 
-		<div  style="width:100%" class="col-md-6">
-            
+        <div class="row" style="width:80%;float:right">
+            <h3 style="display:inline"><span class="glyphicon glyphicon-question-user" aria-hidden="true"></span></h3>
+            <h1 style="display:inline">Profile <small>| {{Profile.General.first_name}} {{Profile.General.last_name}}</small></h1>
+            <p style="padding-top:20px">Get hired based on your performance in the <a style="font-color:red;font-weight:underlined" href="#OnlineMockTests/ChooseATest"><u><b>Hiring test !</b></u></a> Upload your resume here to get calls from companies!</p>
+            <hr>
+        </div>
+        <div style="display: block; clear: both;"></div>
+    </div>
+
+    <div class="row" style="width: 20%;float:left;margin-top:0px">
+
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation" ng-class="generalClass" ng-click="selectSection('general')"><a>General</a></li>
+          <li role="presentation" ng-class="resumeClass" ng-click="selectSection('resume');loadLinks()"><a>Resume and Links</a></li>
+          <li role="presentation" ng-class="summaryClass" ng-click="selectSection('summary');loadSummary()"><a>Summary</a></li>
+          <li role="presentation" ng-class="userSkillClass" ng-click="selectSection('userSkills');loadAllUserSkillsData()"><a>User Skills</a></li>
+          <li role="presentation" ng-class="workClass" ng-click="selectSection('work');loadWorkAndEducationInfo()"><a>Work</a></li>
+          <li role="presentation" ng-class="educationClass" ng-click="selectSection('education');loadWorkAndEducationInfo()"><a>Education</a></li>
+        </ul>
+
+    </div>
+
+	<div ng-include="load_profile_section" class="row" style="width:80%;float:right;margin-top:0px">
         
-            <table style="width:90%">
-                <tr style="padding:10px">
-                    <td class="form_profile_td settings-page-label">
-                        <div class="input-group-lg">
-                        Username : 
-                     </div>
-                    </td>
-                    <td class="form_profile_td settings-page-inputs">
-                        <div class="input-group-lg">
-                        <input ng-disabled="true" ng-model="Profile.username" type="text" class="form-control">
-                     </div>
-                    </td>
-                    
-               </tr>
-               <tr>
-                    <td class="form_profile_td settings-page-label">
-                        <div class="input-group-lg">
-                        Email ID : 
-                     </div>
-                    </td>
-                    <td class="form_profile_td settings-page-inputs">
-                        <div class="input-group-lg">
-                        <input ng-disabled="true" ng-model="Profile.email" type="text" class="form-control">
-                     </div>
-                    </td>
-                    
-               </tr>
-               <tr>
-                    <td class="form_profile_td settings-page-label">
-                        <div class="input-group-lg">
-                        Joining Date : 
-                     </div>
-                    </td>
-                    <td class="form_profile_td settings-page-inputs">
-                        <div class="input-group-lg">
-                        <div ng-disabled="true" ng-bind="Profile.date_joined | date:'dd/MMM/yyyy'" type="text" class="form-control">
-                        </div>
-                     </div>
-                    </td>
-                    
-               </tr>
-               <tr>
-                    <td class="form_profile_td settings-page-label">
-                        <div class="input-group-lg">
-                        Contact No : 
-                     </div>
-                    </td>
-                    <td class="form_profile_td settings-page-inputs">
-                        <div class="input-group-lg">
-                        <input ng-disabled="true" ng-model="Profile.contact_no" type="text" class="form-control" placeholder="Contact Number" >
-                     </div>
-                    </td>
-                    
-               </tr>
-         		<tr>
-			        <td class="form_profile_td settings-page-label">
-			            <div class="input-group-lg">
-			            Resume : 
-			         </div>
-			        </td>
-			        <td class="form_profile_td settings-page-inputs">
-			        	<form action="https://interviewmile.com/api/user/upload_resume/" method="post" enctype="multipart/form-data">
-			            <div class="input-group-lg">
-				            <p>
-				              <input style="display:inline-block;float:left;width:65%" id="id_image" type="file" class="" name="document">
-				              <input id="abc" type="hidden" class="" name="username" value="{{sidebarUserModel.userName}}">
-				              <input style="float:right;width:33%" type="submit" value="Upload Resume" />
-				            </p>
-			            
-			            </div>
-			            </form>
-			        </td> 
-			   </tr>
-            </table>
-            <br>
-         
-      </div>
-
 	</div>
 </div>
+

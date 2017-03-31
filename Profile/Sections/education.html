@@ -1,0 +1,20 @@
+<div style="width:100%" class="col-md-6">  
+    <div style="background-color:#F5F5F5;padding:10px">
+        <h4><b>Education</b><small> Enter from latest to earliest</h4>
+        <br>
+        <div style="padding-top:0px" ng-include="educationTemplate" ng-repeat="college in Profile.WorkAndEducation.colleges track by $index">
+        </div>
+        <div style="width:100%">
+            <button id="submitWorkButton" style="width:25%;float:right;margin-top:30px" ng-click="addNewEducationJson()" type="button" class="btn btn-default btn-primary">
+               + Add Education
+            </button>
+            <br class="clear" />
+        </div>
+        <div style="width:100%">
+            <button id="submitWorkButton" style="width:35%;margin-top:50px;float:right" ng-click="updateWorkAndEducationInfo('education')" type="button" class="btn btn-default btn-primary">
+                Update Education Info
+            </button>
+            <br class="clear" />
+        <div>
+    </div>
+</div>
