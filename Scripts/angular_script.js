@@ -2123,7 +2123,8 @@ var app = angular
                 var collegeJson = $scope.Profile.WorkAndEducation.colleges;
                 for(i=0;i<collegeJson.length;i++) {
                     var singlecollegeJson = collegeJson[i];
-                    if(singlecollegeJson.collegeName=="" || singlecollegeJson.branch=="" || singlecollegeJson.degree=="" || singlecollegeJson.finalresult=="" || singlecollegeJson.startDate=="" || singlecollegeJson.endDate=="") {
+                    console.log(singlecollegeJson);
+                    if(singlecollegeJson.collegeName=="" || singlecollegeJson.branch=="" || singlecollegeJson.degree=="" || singlecollegeJson.startDate=="" || singlecollegeJson.endDate=="") {
                         $scope.dispplayErrorCollege = true;
                     }
                     else {
