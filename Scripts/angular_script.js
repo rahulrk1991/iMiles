@@ -1654,7 +1654,7 @@ var app = angular
                 $http({
                     method: 'POST',
                     url: user_profile_contact_API+$scope.Profile.General.id+"/",
-                    headers: cooksHeader,
+                    headers: cooksHeaderApplicationJson,
                     transformRequest: function(obj) {
                         var str = [];
                         for(var p in obj)
@@ -1928,7 +1928,7 @@ var app = angular
 
                 var updateSkillsPostBody = {"skills":userSkillJsonArray};
 
-                $http.post( user_profile_user_post_skills_API+$scope.Profile.General.id+"/", updateSkillsPostBody,{ headers: cooksHeader })
+                $http.post( user_profile_user_post_skills_API+$scope.Profile.General.id+"/", updateSkillsPostBody,{ headers: cooksHeaderApplicationJson })
                      .success(function(data,status,header,config) {
                         console.log("Skills updated successfully");
                         var myAlert = $alert({title: "Skills updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
