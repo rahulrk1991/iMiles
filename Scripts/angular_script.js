@@ -1842,7 +1842,7 @@ var app = angular
 
                 var updateRolesPostBody = {"userRoles":userRoleJsonArray};
 
-                $http.post( user_profile_userProfileRoles_API+$scope.Profile.General.id+"/", updateRolesPostBody,{ headers: cooksHeader })
+                $http.post( user_profile_userProfileRoles_API+$scope.Profile.General.id+"/", updateRolesPostBody,{ headers: cooksHeaderApplicationJson })
                      .success(function(data,status,header,config) {
                         console.log("Roles updated successfully");
                         var myAlert = $alert({title: "Roles updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
