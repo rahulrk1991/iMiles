@@ -1755,7 +1755,7 @@ var app = angular
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                         return str.join("&");
                     },
-                    data: {summary: $scope.Profile.profile_summary}
+                    data: {summary: $scope.Profile.Summary.summary}
                 }).success(function () {
                     console.log("summary post success");
                     var myAlert = $alert({title: "Summary updated!", content: "Edits made to your summary were updated", placement:'floater top', type: 'success', show: true,duration:5});
