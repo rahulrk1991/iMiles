@@ -446,6 +446,15 @@ var app = angular
 
             });
 
+            function removeHiringMock() {
+                for(i=$scope.allMocks.length-1;i>=0;i--) {
+                    if($scope.allMocks[i].title.toLowerCase().includes("hiring") ) {
+                        $scope.allMocks.splice(i,1);
+                    }
+                }
+                console.log($scope.allMocks);
+            }
+
             var getAllMockTests = function() {
 
                 $scope.enableTestButton = true;
@@ -456,6 +465,7 @@ var app = angular
                         console.log($scope.allSolvedMocks);
                         $scope.numberOfTestsGiven = $scope.allSolvedMocks.length;
                         for(i=0;i<$scope.allSolvedMocks.length;i++) {
+                            console.log($scope.allSolvedMocks[i].title);
                             listOfSolvedMockIds.push($scope.allSolvedMocks[i].mockId);
                             mockIDToSolvedMockBody[$scope.allSolvedMocks[i].mockId] = $scope.allSolvedMocks[i];
 
@@ -474,13 +484,10 @@ var app = angular
                         $http.get(mock_allMocks_API)
                             .then(function(response) {
                                 $scope.allMocks = response.data;
+                                removeHiringMock();
                                 console.log($scope.allMocks);
                                 $scope.totalNumberOfTests = $scope.allMocks.length;
                                 for(i=0;i<$scope.allMocks.length;i++) {
-                                    if($scope.allMocks[i].title.includes("1")) {
-                                        console.log("Yes yes yes!");
-
-                                    }
                                     if($scope.allMocks[i].duration=="30")
                                         $scope.allMocks[i].numberOfQuestions=10;
                                     else
