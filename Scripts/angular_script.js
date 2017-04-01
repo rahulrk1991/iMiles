@@ -370,7 +370,7 @@ var app = angular
             }
             
         })
-        .controller("onlineMockTestsChooseTestController",function($scope,$http,$location,$timeout) {
+        .controller("onlineMockTestsChooseTestController",function($scope,$http,$location,$timeout,$rootScope) {
 
             $scope.mockToBeStarted=-1;
             listOfSolvedMockIds = [];
@@ -484,7 +484,9 @@ var app = angular
                         $http.get(mock_allMocks_API)
                             .then(function(response) {
                                 $scope.allMocks = response.data;
-                                removeHiringMock();
+                                if(!($rootScope.sidebarUserModel.isAdmin)) {
+                                    removeHiringMock();
+                                }
                                 console.log($scope.allMocks);
                                 $scope.totalNumberOfTests = $scope.allMocks.length;
                                 for(i=0;i<$scope.allMocks.length;i++) {
