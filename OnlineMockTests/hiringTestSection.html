@@ -1,9 +1,30 @@
 <div style="padding:5px;width:98%" class="container-fluid">
     <div class="jumbotron">
-        <h1>Hiring Test <small>| 2<sup>nd</sup> April '17, 2:00 pm</small></h1>
+        <h1>Hiring Test <small>| {{displayDate.date}}<sup>{{displayDate.superscript}}</sup> {{displayDate.month}} '{{displayDate.year}}, {{displayDate.time}}</small></h1>
         <h2 style="font-size:40px">Time to go <small>| </small><small id="demo"></small></h2>
         <p style="padding-top:20px">Get hired based on your performance in the test. Upload your resume <a style="font-weight:underlined" href="#Profile"><u>here</u></a> to get calls from companies!</p>
 
         <button ng-disabled="enableTestButton" ng-click="setMockToBeStarted(hiringTestMockID)" style="margin-top:10px" class="btn btn-success" type="button" data-toggle="modal" data-target="#startTheTestModal">Start Hiring Test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button>
     </div> 
+</div>
+<div id="startTheTestModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#187FD6">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Start an Online Mock Test</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" style="background-color:white;">
+                    <div>
+                        You are going to start an online mock test.<br><br> If you navigate away or close the tab, the test will be automatically submitted with whatever you have attempted and you will not get another chance to give the test.<br><br> Are you sure you want to start the test?
+                    </div>
+
+
+                    <button style="margin-top:20px;margin-right:20px" class="btn btn-success" type="button" ng-click="startMockTestWithID(mock.id)">Start test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

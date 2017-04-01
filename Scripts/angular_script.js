@@ -382,10 +382,55 @@ var app = angular
             $scope.totalNumberOfTests = 0;
             $scope.accuracy = 0;
 
+            //Hiring test variables-------------------//
+            $scope.hiringTestMockID = 3142;
+            //Hiring Test 2 id : 3142
+
+            $scope.dateOfHiringTest = "Apr 2, 2017 14:00:00";
+            $scope.dateTillItCanBeGiven = "Apr 2, 2017 21:00:00"
+            $scope.dateOfNextHiringTest = "Apr 16, 2017 14:00:00";
+            $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
+            
+            function nth(d) {
+              if(d>3 && d<21) return 'th'; // thanks kennebec
+              switch (d % 10) {
+                    case 1:  return "st";
+                    case 2:  return "nd";
+                    case 3:  return "rd";
+                    default: return "th";
+                }
+            }
+
+            function setDisplayDateVariables() {
+                $scope.displayDate = {};
+                var dataInDateFormat = new Date($scope.dateOfHiringTest);
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"
+                ];
+                $scope.displayDate.date = dataInDateFormat.getDate();
+                $scope.displayDate.month = monthNames[dataInDateFormat.getMonth()];
+                $scope.displayDate.year = dataInDateFormat.getFullYear().toString().substr(-2);
+                $scope.displayDate.time = dataInDateFormat.toTimeString();
+                $scope.displayDate.superscript = nth(dataInDateFormat.getDate());
+            }
+
+            setDisplayDateVariables();
+            //---------------------------------------//
+
             //Section to load (hiring or sample mock test)
             $scope.load_test_section = absolute_path+"OnlineMockTests/sampleMockTestSection.html";
             $scope.hiringSectionClass = "";
             $scope.sampleTestSectionClass = "active";
+
+            function checkIfHiringTestSectionToBeDisplayed() {
+                if($scope.daysLeftForTest<3) {
+                    $scope.load_test_section = absolute_path+"OnlineMockTests/hiringTestSection.html";
+                    $scope.hiringSectionClass = "active";
+                    $scope.sampleTestSectionClass = "";
+                }
+            }
+
+            checkIfHiringTestSectionToBeDisplayed();
 
             $scope.changeTestSection = function(sectionName) {
                 $scope.load_test_section = absolute_path+"OnlineMockTests/"+sectionName+".html";
@@ -403,13 +448,12 @@ var app = angular
                 }
             }
 
-            //Hiring test mock ID
-            $scope.hiringTestMockID = 2563;
+            
 
-            //$scope.enableTestButton = true;
 
             // Hiring Test : Set the date we're counting down to
-            var countDownDate = new Date("Apr 2, 2017 14:00:00").getTime();
+            var countDownDate = new Date($scope.dateOfHiringTest).getTime();
+            var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
 
             // Update the count down every 1 second
             var countdown_timer_function = setInterval(function() {
@@ -419,6 +463,7 @@ var app = angular
 
               // Find the distance between now an the count down date
               var distance = countDownDate - now;
+              var distanceToCloseTest = countDownToClosing - now;
 
               // Time calculations for days, hours, minutes and seconds
               var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -432,10 +477,20 @@ var app = angular
               + minutes + "m " + seconds + "s ";
 
               // If the count down is finished, write some text 
-              if (distance < 0) {
+              if (distance < 0 && distanceToCloseTest>0) {
                 $scope.enableTestButton = false;
-                clearInterval(countdown_timer_function);
-                document.getElementById("demo").innerHTML = "Test can still be attempted!";
+                //clearInterval(countdown_timer_function);
+                document.getElementById("demo").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
+                $scope.$apply();
+              }
+              else if(distance < 0 && distanceToCloseTest<0) {
+                $scope.enableTestButton = true;
+                $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
+                setDisplayDateVariables();
+                //clearInterval(countdown_timer_function);
+                countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
+                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
                 $scope.$apply();
               }
             }, 1000);
