@@ -386,9 +386,9 @@ var app = angular
             $scope.hiringTestMockID = 3142;
             //Hiring Test 2 id : 3142
 
-            $scope.dateOfHiringTest = "Apr 2, 2017 14:00:00";
-            $scope.dateTillItCanBeGiven = "Apr 2, 2017 21:00:00"
-            $scope.dateOfNextHiringTest = "Apr 16, 2017 14:00:00";
+            $scope.dateOfHiringTest = "Apr 16, 2017 14:00:00";
+            $scope.dateTillItCanBeGiven = "Apr 16, 2017 21:00:00"
+            $scope.dateOfNextHiringTest = "Apr 30, 2017 14:00:00";
             $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
             
             function nth(d) {
@@ -835,7 +835,7 @@ var app = angular
             $scope.forgot_password={};
 
                     // Set the date we're counting down to
-            var countDownDate = new Date("Apr 2, 2017 14:00:00").getTime();
+            var countDownDate = new Date("Apr 16, 2017 14:00:00").getTime();
 
             // Update the count down every 1 second
             var x = setInterval(function() {
