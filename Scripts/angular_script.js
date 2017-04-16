@@ -457,9 +457,9 @@ var app = angular
             $scope.hiringTestMockID = 3697;
             //Hiring Test 2 id : 3142
 
-            $scope.dateOfHiringTest = "Apr 16, 2017 14:00:00";
-            $scope.dateTillItCanBeGiven = "Apr 16, 2017 15:00:00"
-            $scope.dateOfNextHiringTest = "Apr 23, 2017 14:00:00";
+            $scope.dateOfHiringTest = "Apr 30, 2017 14:00:00";
+            $scope.dateTillItCanBeGiven = "Apr 30, 2017 21:00:00"
+            $scope.dateOfNextHiringTest = "May 14, 2017 14:00:00";
             $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
             
             function nth(d) {
