@@ -34,7 +34,8 @@ var app = angular
             userService.model = {
                 userName : undefined,
                 active : false,
-                isAdmin : false
+                isAdmin : false,
+                id : undefined
             };
             return {
 
@@ -42,9 +43,10 @@ var app = angular
 
                     $http.get(user_info_API)
                     .success(function(data,status,headers,config) {
-                        //console.log(data);
+                        console.log(data);
                         userService.model.isAdmin = data.is_superuser;
                         userService.model.userName = data.username;
+                        userService.model.id = data.id;
                         console.log("isAdminfrom factory"+userService.model.isAdmin);
 
                     });
@@ -250,21 +252,69 @@ var app = angular
 
             isLoggedIn();
         })
-        .controller("jobsController",function($scope,$http){
+        .controller("jobsController",function($scope,$http,userService,$cookies,$alert){
+
+            $scope.userModel = userService.returnState();
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeaderApplicationJson = { 'X-CSRFToken': cooks ,'Content-Type': 'application/json'};
+            console.log($scope.userModel);
+            $scope.allJobs = {};
+
+            $scope.showMessageForNoJobs = true;
+
 
             //Function to GET questions
             var getAllJobs = function() {
 
                 //Fetching puzzles here
-                $http.get(all_jobs_API+"1")
+                $http.get(all_jobs_API)
                     .success(function(data,status,headers,config) {
-                        
+                        $scope.allJobs = data;
+                        if(data.length==0) {
+                            $scope.showMessageForNoJobs = true;
+                        }
+                        else {
+                            $scope.showMessageForNoJobs = false;
+                        }
                         console.log(data);
                 });
             
             }
-
             getAllJobs();
+
+            $scope.applyForJob = function(id) {
+                console.log(id);
+                var postBody = {
+                    "userJob" :
+                        {
+                            "userId": $scope.userModel.id,
+                            "jobId": id,
+                            "isApplied" : true
+                        }
+                };
+
+                console.log(postBody);
+
+                $http.post(user_jobs_API+$scope.userModel.id+"/", postBody,{ headers: cooksHeaderApplicationJson })
+                     .success(function(data,status,header,config) {
+                        console.log("Applied for job successfully");
+                        var myAlert = $alert({title: "Applied for job successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Error in applying for job!");                //in case there is an error
+                        var myAlert = $alert({title: 'Error in applying for job', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+
+                
+
+            }
+
+            $scope.getJobTemplate = function() {
+                return absolute_path+"Jobs/job_template.html";
+            }
+
+            
 
         })
         .controller("PuzzlingPuzzlesController",function($scope,$http,$sce,userService) {

@@ -64,6 +64,12 @@ var user_forgot_API = API_Start + user_forgot;
 var user_isAdmin_End_Point = "/api/"+"user/isadmin/";
 var user_isAdmin_API = API_Start + user_isAdmin_API;
 
+var user_jobs_End_Point = "/api/" + "user/userProfileJob/";
+var user_jobs_API = API_Start + user_jobs_End_Point;
+
+var all_jobs_End_Point = "/api/" + "job/getJobs/";
+var all_jobs_API = API_Start + all_jobs_End_Point;
+
 var user_info_End_Point = "/api/" + "user/profile/";
 var user_info_API = API_Start + user_info_End_Point;
 

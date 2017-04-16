@@ -1,0 +1,38 @@
+ <head>
+    <title>Puzzling Puzzles - Solve Puzzles | InterviewMile</title>
+    <meta name="keywords" content="puzzles, solve, solve puzzles">
+    <meta name="description" content="Solve the most popular and commonly asked interview puzzles from our collection of over a 100 puzzles, solve puzzles asked in companies and interviews">
+    <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-80250123-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+</head>
+<div class="outermostDiv" style="margin-top:30px">
+
+    <div class="container" style="width:50%">
+        <div id="pageTitle" class="container" style="width:100%;float:left;margin:0 auto;">
+            <h1>Job Opportunites</h1>
+            <p>Apply for jobs here. If shorlisted you will get an interview call.</p>
+            <p>Make sure to fill your <a href="#Profile"><u>Profile</u></a> section to increase your chances!</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="container" style="width:45%">    
+        <br>
+        <div ng-show="showMessageForNoJobs" style="width:100%">
+            <h3>You have not qualified for any jobs yet. Give our next <a href="#OnlineMockTest/ChooseATest"><u>Hiring Test</u></a> to qualify.</h3>
+        </div>
+        <div style="width:100%">
+            <div ng-repeat="job in allJobs track by $index">
+                <div ng-include="getJobTemplate()"></div>            
+         
+            </div>
+        </div>
+    </div>
+</div>
