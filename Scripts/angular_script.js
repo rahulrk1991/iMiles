@@ -898,7 +898,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("Profile");
+                            $location.url("OnlineMockTests/ChooseATest");
                             //$scope.$apply();
                         }
                         else {
