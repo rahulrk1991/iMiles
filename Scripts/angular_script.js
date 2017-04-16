@@ -90,6 +90,10 @@ var app = angular
                 templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
                 controller:"onlineMockTestsChooseTestController"
             })
+            .when("/Jobs", {
+                templateUrl: absolute_path+"Jobs/jobs.html",
+                controller:"jobsController"
+            })
             .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
                 controller:"editQuestionsController"
@@ -246,6 +250,23 @@ var app = angular
 
             isLoggedIn();
         })
+        .controller("jobsController",function($scope,$http){
+
+            //Function to GET questions
+            var getAllJobs = function() {
+
+                //Fetching puzzles here
+                $http.get(all_jobs_API+"1")
+                    .success(function(data,status,headers,config) {
+                        
+                        console.log(data);
+                });
+            
+            }
+
+            getAllJobs();
+
+        })
         .controller("PuzzlingPuzzlesController",function($scope,$http,$sce,userService) {
 
             //Feed contains array of 10 sets of questions all the questions 
@@ -383,12 +404,12 @@ var app = angular
             $scope.accuracy = 0;
 
             //Hiring test variables-------------------//
-            $scope.hiringTestMockID = 3142;
+            $scope.hiringTestMockID = 3697;
             //Hiring Test 2 id : 3142
 
             $scope.dateOfHiringTest = "Apr 16, 2017 14:00:00";
-            $scope.dateTillItCanBeGiven = "Apr 16, 2017 21:00:00"
-            $scope.dateOfNextHiringTest = "Apr 30, 2017 14:00:00";
+            $scope.dateTillItCanBeGiven = "Apr 16, 2017 15:00:00"
+            $scope.dateOfNextHiringTest = "Apr 23, 2017 14:00:00";
             $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
             
             function nth(d) {
