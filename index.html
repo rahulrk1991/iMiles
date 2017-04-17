@@ -49,7 +49,6 @@
         <!--text editor -->
         <script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
 
-
     </head>
     <body ng-app="iMiles_Module">
         <nav ng-controller="sideBarController" class="navbar navbar-default navbar-fixed-top">
@@ -66,7 +65,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        
+                        <li ng-show="sidebarUserModel.active"><a href="#OnlineMockTest/ChooseATest" class="a_class"><p style="font-size:20px">Next test in <small>| </small><small id="demo"></small></p></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
