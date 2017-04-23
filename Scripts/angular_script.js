@@ -2498,6 +2498,7 @@ var app = angular
 
             //Dictionaries to map questionID : choices/categories of that quesitonID
             $scope.questionIdToChoicesDictionary = [];
+            $scope.questionIdToChoicesDictionaryChunked = [];
             $scope.questionIdToCategoriesDictionary = [];
 
             //Dictionary for storing mapping of category_text : category_id
@@ -2519,6 +2520,7 @@ var app = angular
                 $scope.tags.tagsNamesToAddToQuestion = "";
                 $scope.isCategoryFilterOn = false;
                 $scope.questionIdToChoicesDictionary = [];
+                $scope.questionIdToChoicesDictionaryChunked = [];
                 $scope.questionIdToCategoriesDictionary = [];
                 feedNum=0;
                 $scope.feed = {};
@@ -2629,6 +2631,14 @@ var app = angular
               "title": "To filter questions of a particular topic, start typing the topic here!",
               "checked": true
             };
+
+            function chunk(arr, size) {
+              var newArr = [];
+              for (var i=0; i<arr.length; i+=size) {
+                newArr.push(arr.slice(i, i+size));
+              }
+              return newArr;
+            }
             
 
             //Function to GET questions
@@ -2674,6 +2684,7 @@ var app = angular
                                     .success(function(data,status,headers,config) {
                                         //Populate Question ID to choices Dictionary
                                         $scope.questionIdToChoicesDictionary[data.choices[0].questionId] = data.choices;
+                                        $scope.questionIdToChoicesDictionaryChunked[data.choices[0].questionId] = chunk(data.choices,2);
                                 })
                             }
 
@@ -2718,6 +2729,7 @@ var app = angular
                     //Here a new category filter has been added, we need to update the questions
                     $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion];
                     $scope.questionIdToChoicesDictionary = [];
+                    $scope.questionIdToChoicesDictionaryChunked = [];
                     $scope.questionIdToCategoriesDictionary = [];
                     $scope.isCategoryFilterOn = true;
                     feedNum=0;
@@ -2835,9 +2847,9 @@ var app = angular
 
             //Returing if the selected choice is the correct choice
             $scope.validateChoice = function(question,choice,index) {
-                console.log(question);
-                console.log(choice);
-                console.log(index);
+                //console.log(question);
+                //console.log(choice);
+                //console.log(index);
                 
                 if(question.isSolved)
                     return;
@@ -2887,6 +2899,7 @@ var app = angular
 
             //The choice selected get a grey background
             $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                //console.log(index);
                 if(!question.isSolved)
                     return;
                 if(question.isSelected==index)

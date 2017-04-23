@@ -14,19 +14,26 @@
 
 	<div class="panel-body">
 		<div style="width:100%" class="btn-group"  aria-label="...">
-			<div style="visibility:hidden"></div>
-			<div id="choicesDiv" ng-repeat="choice in questionIdToChoicesDictionary[question.id]" style="display:inline">
-				<div ng-class="applyClassToSelectedChoice(question,choice,$index)" ng-click="validateChoice(question,choice,$index)" style="width:49%;height:auto;overflow:auto;border:0px"  class="btn btn-default">
-					<h4 style="float:left;vertical-align:middle;display:inline">
-						<span style="float:left;vertical-align:middle;display:inline" ng-class="applyColors(question,choice)" class="label label-default">{{'ABCDEFGH'[$index]}}
-						</span> 
-						<div style="float:right;vertical-align:middle;display:inline;padding-left:4px" ng-bind-html="choice.choice_text"></div>
-					</h4>
-				</div>
-			</div>
 			
-			<div style="visibility:hidden" ></div>		
+				
+<table style="width:100%;border-spacing:5px;border-collapse:separate;table-layout:fixed">
+                <tbody>
+                    <tr ng-repeat="choices in questionIdToChoicesDictionaryChunked[question.id]" ng-init="parentIndex = $index" class="settings-page-label">
+                        <td ng-repeat="choice in choices" style="align:center" class="btn-default">
+                            <div style="width:100%;padding:5px;">
+                                <span style="float:left;width:10%;display:inline;padding:5px;" ng-class="applyColors(question,choice)" class="label label-default">{{'ABCDEFGH'[($parent.$index)*2+$index]}}
+                                </span> 
+                                <div id="choicesDiv" style="float:right;width:87%;display:inline;padding:5px;padding-top:0px" ng-class="applyClassToSelectedChoice(question,choice,($parent.$index)*2+$index)" ng-click="validateChoice(question,choice,($parent.$index)*2+$index)" class="input-group-lg" ng-bind-html="choice.choice_text">
+                                    
+                                </div>
+                            </div>
+                        </td> 
+                    </tr>
+                </tbody>
+            </table>
+				
 
+			
 		</div>
 	</div>
 
