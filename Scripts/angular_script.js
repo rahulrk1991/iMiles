@@ -2488,6 +2488,11 @@ var app = angular
             //console.log(userService.model.active);
             $scope.userModel = userService.returnState();
 
+            $scope.tooltipShare = {
+                "title": "Question Link copied to clipboard!",
+                "checked": false
+            };
+
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
             $scope.tags.allTagNames = [];

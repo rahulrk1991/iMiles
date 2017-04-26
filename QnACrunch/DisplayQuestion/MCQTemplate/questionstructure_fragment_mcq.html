@@ -46,9 +46,13 @@
 			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:black">{{question.difficulty_level}}</span>
 			</a>
 		</div>
-		<!-- <div ngclipboard data-clipboard-target="{{'#'+question.id}}" style="float: right; width: 4%;padding-right:15px">
-		 			<a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
-		 		</div> -->
+		<div style="float: right; width: 4%;padding-right:15px">
+			<div ngclipboard data-clipboard-text="{{question.shareLink}}">
+			    <a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span data-trigger="click" data-placement="bottom" data-type="info" data-title="{{tooltipShare.title}}" bs-tooltip style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+			</div>
+ 			
+		</div>
+
 	<!-- Target -->
 	<input type="hidden" id="{{''+question.id}}" ng-model="question.shareLink">
 
