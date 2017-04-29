@@ -92,6 +92,10 @@ var app = angular
                 templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
                 controller:"onlineMockTestsChooseTestController"
             })
+            .when("/OnlineMockTests/HiringTest/:id", {
+                templateUrl: absolute_path+"OnlineMockTests/hiring_test.html",
+                controller:"hiringTestController"
+            })
             .when("/Jobs", {
                 templateUrl: absolute_path+"Jobs/jobs.html",
                 controller:"jobsController"
@@ -191,7 +195,7 @@ var app = angular
 
             //Timer that appears in navigation bar
             $rootScope.dateOfHiringTest = "Apr 30, 2017 14:00:00";
-            $rootScope.dateTillItCanBeGiven = "Apr 30, 2017 21:00:00"
+            $rootScope.dateTillItCanBeGiven = "Apr 30, 2017 18:00:00"
             $rootScope.dateOfNextHiringTest = "May 14, 2017 14:00:00";
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
@@ -599,14 +603,14 @@ var app = angular
 
 
               // Display the result in the element with id="demo"
-              document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+              document.getElementById("hiringTestSectionCountdown").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
 
               // If the count down is finished, write some text 
               if (distance < 0 && distanceToCloseTest>0) {
                 $scope.enableTestButton = false;
                 //clearInterval(countdown_timer_function);
-                document.getElementById("demo").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
+                document.getElementById("hiringTestSectionCountdown").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
                 $scope.$apply();
               }
               else if(distance < 0 && distanceToCloseTest<0) {
@@ -615,7 +619,7 @@ var app = angular
                 setDisplayDateVariables();
                 //clearInterval(countdown_timer_function);
                 countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
-                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+                document.getElementById("hiringTestSectionCountdown").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
                 $scope.$apply();
               }
@@ -717,6 +721,15 @@ var app = angular
                 })
             }
 
+            $scope.startHiringTestWithID = function(mockID) {
+                $("#startTheTestModal").modal('hide');
+
+                $('#startTheTestModal').on('hidden.bs.modal', function () {
+                    $location.url("/OnlineMockTests/HiringTest/"+$scope.mockToBeStarted);
+                    $scope.$apply();
+                })
+            }
+
         })
         .controller("onlineMockTestsTakeATestController",function($scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
 
@@ -774,13 +787,12 @@ var app = angular
                 else
                     $scope.secStr = $scope.sec.toString();
                 if($scope.min==0 && $scope.sec==0) {
-                    //var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
                     $scope.submitTest();
                 }
-                    
 
                 mytimeout = $timeout($scope.onTimeout,1000);
             }
+
             var mytimeout = $timeout($scope.onTimeout,1000);
 
             $scope.stop = function () {
@@ -806,40 +818,8 @@ var app = angular
                         singleQuestion.usersChoice = -1;
                         singleQuestion.testId = i+1;
 
-
                     }
 
-
-                    var getAllCategories = function() {
-                        //console.log("Got categories");
-                        $http.get(question_categories_API)
-                            .then(function(response) {
-                                                    
-                                for(i=0;i<response.data.length;i++) {
-                                    $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                                    categoryDict[response.data[i].category_text] = response.data[i].id
-                                }
-                                console.log($scope.tags.allTagNames);
-                                console.log(categoryDict);
-
-                            });
-                    }
-
-                    getAllCategories();     
-
-                    $scope.updateCategories = function() {
-                        var filterString = $scope.tags.filterValue;
-                        var lastIndex = filterString.slice(-1);
-                        if(filterString==" ") {
-                            $scope.tags.filterValue = "";
-                            return;
-                        }
-                        if(lastIndex==' ' && filterString.length>1) {
-                            $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
-                            console.log($scope.tags.tagsNamesToAddToQuestion);
-                            $scope.tags.filterValue = "";
-                        }
-                    }
             });
 
             
@@ -858,7 +838,6 @@ var app = angular
 
                 if(question.isSolved == false) {
                     $scope.attemptedQuestions++;
-                    //finalChoices.push(choicebody);
                 }
 
                 question.isSolved = true;
@@ -869,9 +848,209 @@ var app = angular
                     question.isSolved = false;
                 }
                 question.isSelected = index;
-                //console.log(finalChoices);
-                //console.log("Is the question solved:"+question.isSolved);
+
+            }
+
+            var finalChoices = [];
+            $scope.submitTest = function() {
+                for(i=0;i<$scope.questions.length;i++) {
+                    if($scope.questions[i].isSolved) {
+                        var choicebody = {"questionId":$scope.questions[i].pk,
+                                    "choiceId":$scope.questions[i].usersChoice};
+                        finalChoices.push(choicebody);
+                    }
+                }
+                console.log(finalChoices);
+
+
+                $http.put(mock_mock_API+$routeParams.id+"/end", finalChoices,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Test submitted successfully");        //on successfull posting of question
+                        var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
+                        $scope.score = data.score;
+                        $scope.maxScore = data.max_score;
+                        $http.get(mock_mock_API+$routeParams.id+"/solution")
+                            .then(function(response) {
+                                //var allQuestions = response.data;
+                                //$scope.questions.choices = allQuestions.choices;
+                                //$scope.isTestSubmitted = true;               
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.questions[i].choices = response.data[i].choices;
+                                }
+                                $scope.isTestSubmitted = true;
+
+                            });
+                        $scope.isTestSubmitted = true;
+                        })
+                     .error(function(response) {
+                        console.log("Test could not be submitted");                //in case there is an error
+                        var myAlert = $alert({title: 'Test could not be submitted', content: '', placement:'floater top', type: 'danger', show: true,duration:15});
+
+                     });
+
+                $scope.isTestSubmitted = true;
+                $("#submitTestModal").modal('hide');
+                console.log("Test submitted");
+                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: false});
+            }
+
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
                 
+                if(question.isDoneTwice){
+                    question.isSelected=-1;
+                    question.isSolved = false;
+                    question.usersChoice = -1;
+                    question.isDoneTwice = false;
+                    $scope.attemptedQuestions--;
+                }
+
+                if(question.isSelected==index)
+                    return "background-grey";
+                else
+                    return "";
+            }
+
+            $scope.applyColors = function(question,choice) {
+                if(!$scope.isTestSubmitted)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red"
+                }
+            }
+
+            $scope.markAttemptedQuestion = function(question) {
+                if(question.isSolved)
+                    return "background-grey";
+                else
+                    return;
+            }
+
+            //Edit Question
+            $scope.editQuestion = function(questionID) {
+                alert("Editing Question:"+questionID);
+            }
+        })
+        .controller("hiringTestController",function($scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                if (!confirm("Are you sure you want to navigate away from the test? The test will be automatically submitted and you will not be able to give it again")) { 
+                    event.preventDefault(); 
+                }
+                else {
+                    $scope.submitTest();
+                    $scope.stop();
+                }
+            });
+
+
+            $scope.attemptedQuestions=0;
+            $scope.totalQuestions;
+            $scope.score = 0;
+            $scope.maxScore = 0;
+            $scope.testName = "";
+
+            //Review Test modal variable
+            $scope.title = "Your Time is up!";
+            $scope.content = "Click on the below button to get a comprehensive review of your test";
+
+
+            $(window).scroll(function(){
+                $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
+            });
+
+
+            $http.get(mock_mock_API+$routeParams.id)
+                .then(function(response) {
+                    var testInfo = response.data;
+                    var durationInMinutes = testInfo.duration;
+                    $scope.testName = testInfo.title;
+                    $scope.counter = testInfo.duration*60;
+                })
+
+
+            //$scope.counter = 10;
+            $scope.onTimeout = function(){
+                $scope.counter--;
+                $scope.min = parseInt(($scope.counter)/60);
+                $scope.sec = ($scope.counter)%60;
+                if($scope.min<10)
+                    $scope.minStr = "0"+$scope.min.toString();
+                else
+                    $scope.minStr = $scope.min.toString();
+                if($scope.sec<10)
+                    $scope.secStr = "0"+$scope.sec.toString();
+                else
+                    $scope.secStr = $scope.sec.toString();
+                if($scope.min==0 && $scope.sec==0) {
+                    $scope.submitTest();
+                }
+
+                mytimeout = $timeout($scope.onTimeout,1000);
+            }
+
+            var mytimeout = $timeout($scope.onTimeout,1000);
+
+            $scope.stop = function () {
+                console.log("stop called");
+                $timeout.cancel(mytimeout);
+            };
+
+
+            $scope.isTestSubmitted = false;
+
+            //Get all the question data using http get
+            $http.get(mock_mock_API+$routeParams.id+"/start")
+                .then(function(response) {
+                    var allQuestions = response.data;
+                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    console.log($scope.questions);
+                    var dict = [];                              // dict['question id'] = choice
+                    $scope.totalQuestions = allQuestions.length;
+                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
+                        var singleQuestion = allQuestions[i];
+
+                        singleQuestion.isSolved = false;
+                        singleQuestion.usersChoice = -1;
+                        singleQuestion.testId = i+1;
+
+                    }
+
+            });
+
+            
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return getQuestionInfo["mcq"].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+            
+            $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
+                console.log("In validate choice function");
+
+                if($scope.isTestSubmitted)
+                    return;
+
+                if(question.isSolved == false) {
+                    $scope.attemptedQuestions++;
+                }
+
+                question.isSolved = true;
+                question.usersChoice = choice.id;
+                if(question.isSelected==index) {
+                    console.log("Clicking same twice");
+                    question.isDoneTwice=true;
+                    question.isSolved = false;
+                }
+                question.isSelected = index;
+                          
             }
 
             var finalChoices = [];
