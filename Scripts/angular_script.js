@@ -202,9 +202,9 @@ var app = angular
             $rootScope.rootScope_experience = -1;
 
             //Timer that appears in navigation bar
-            $rootScope.dateOfHiringTest = "May 14, 2017 14:00:00";
-            $rootScope.dateTillItCanBeGiven = "May 14, 2017 21:00:00"
-            $rootScope.dateOfNextHiringTest = "May 28, 2017 14:00:00";
+            $rootScope.dateOfHiringTest = "May 21, 2017 14:00:00";
+            $rootScope.dateTillItCanBeGiven = "May 21, 2017 21:00:00"
+            $rootScope.dateOfNextHiringTest = "Jun 4, 2017 14:00:00";
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
             $scope.dateTillItCanBeGiven = $rootScope.dateTillItCanBeGiven;
