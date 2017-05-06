@@ -1,0 +1,58 @@
+<div>
+    <div>
+        <h3 style="width:95%;float:left">Education {{$index+1}} <small>{{college.collegeName}}</small><h3>
+        <h3 style="width:5%;float:right" ng-click="deleteCollegeEntry($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><h3>
+        <br class="clear" />
+    </div>
+    <table style="width:100%">
+        <tr style="padding:10px">
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <input ng-model="college.collegeName" placeholder="University/College" type="text" class="form-control">
+                </div>
+            </td>
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <input ng-model="college.branch" placeholder="Branch" type="text" class="form-control">
+                </div>
+            </td>
+        </tr>
+        <tr style="padding:10px">
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <input ng-model="college.degree" placeholder="Degree" type="text" class="form-control">
+                </div>
+            </td>
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <input ng-model="college.finalResult" placeholder="Percentage/CGPA" type="text" class="form-control">
+                </div>
+            </td>
+        </tr>
+        <tr style="padding:10px">
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                Start : 
+                </div>
+                <div class="input-group-lg">
+                    <input type="text" class="form-control" ng-model="college.startDate" data-date-format="yyyy-MM-dd" data-max-date="{{college.endDate}}" placeholder="From" bs-datepicker>
+                </div>
+            </td>
+            <td class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                End : 
+                </div>
+                <div class="input-group-lg">
+                    <input type="text" class="form-control" ng-model="college.endDate" data-date-format="yyyy-MM-dd" data-min-date="{{college.startDate}}" placeholder="Until" bs-datepicker>
+                </div>
+            </td>
+        </tr>
+        <tr style="padding:10px">
+            <td colspan="2" class="form_profile_work_td settings-page-label">
+                <div class="input-group-lg">
+                    <textarea placeholder="Projects : List five bullets, including accomplishments, specific tools and technologies, and you responsibilities" rows="8" style="height:150px" ng-model="college.projects" type="text" class="form-control">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

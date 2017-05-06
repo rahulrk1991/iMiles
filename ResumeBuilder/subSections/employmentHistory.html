@@ -1,0 +1,69 @@
+<div ng-controller="controllerGeneralInfoToDisplayData">
+<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
+<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Employment History</h2>
+<p class="text-align:center;" ng-repeat="x in employmentRelatedInformations track by $id($index)">
+{{"Job Title : "+x.jobTitle}}<span ng-click="removeItemEmp($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right" ng-show="showRemove">Remove!</span></br>
+{{"Company : "+x.company}}</br>
+{{"Location : "+x.location}}</br>
+{{"Start Date :"+x.starDate+" End Date :"+x.endDate}}</br>
+{{"Compensation :"+x.compensation+" "+x.currency.label+" "+x.intervals.label}}</br>
+<span style="font-weight: bold;font-style: italic;">{{x.Description}}</span></br>
+</p>
+</div>
+    <button class="btn btn-responsive btn-lg" style="background-color:#008B8B;color:black;margin-top:15px;float:right;margin-top:-10px;" ng-click="postEmploymentData()" ng-show="saveEmploymentChanges">Save your changes</button>
+    <br/>
+    <br/>
+<center>
+<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()" ng-show="addingEmployment">Add Employment</button>
+</center>
+<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfEmployment">
+<p><strong> Add Employment History</strong></p>
+<h7>In this section you should describe all of your relevant previous employment that directly relates to the position for which you are currently applying.</h7>
+<div class="row">
+<div>
+<div class="col-md-4 col-sm-4">
+<input ng-model="jobTitle" placeholder="Job Title" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4">
+<input ng-model="company" placeholder="Company" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4">
+<!--
+<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
+</select>
+-->
+<input ng-model="location" placeholder="Location" type="text" class="input-large form-control" style="width:100%;">
+</div>
+</div>
+<div>
+<div class="col-md-4 col-sm-4" style="margin-top:30px;">
+<input ng-model="startDate" placeholder="Start Date MM/YYYY" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4" style="margin-top:30px;">
+<input ng-model="endDate" placeholder="End Date MM/YYYY" type="text" class="input-large form-control" style="width:100%;">
+</div>
+</div>
+<div>
+<div class="col-md-6 col-sm-6" style="margin-top:30px;">
+<input ng-model="compensation" placeholder="Compensation" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-3 col-sm-3" style="margin-top:30px;">
+<select class="selectpicker show-tick form-control" ng-model="data1" ng-options="opt as opt.label for opt in units1 " style="width:100%;float:left;">
+</select>
+</div>
+<div class="col-md-3 col-sm-3" style="margin-top:30px;">
+<select class="selectpicker show-tick form-control" ng-model="data2" ng-options="opt as opt.label for opt in units2 " style="width:100%;float:left;">
+</select>
+</div>
+</div>
+<div>
+<textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="employmentDescription"></textarea>
+</div>
+<div style="margin-top:30px;float:right;">
+<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheListEmployment()">Add</button>&nbsp;
+<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addEmployment()">Cancel</button>
+</div>
+
+</div>
+</div>
+</div>

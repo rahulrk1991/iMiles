@@ -1,0 +1,61 @@
+ <head>
+    <title>About Us | InterviewMile</title>
+       <meta name="keywords" content="about us,why we started it,the Team, who we are,features,short video">
+       <meta name="description" content="We are a bunch of software engineers who have gone through many gruelling interviews. We have felt the pain of scavenging through online and offline material to search for information relevant to interview peparations. And this is precisely the reason we are introducing this website. So you don't have to feel that pain anymore. We are committed to make this website better and would like to see it grow into an online community.">
+    <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-80250123-1', 'auto');
+            ga('send', 'pageview');
+    </script>
+    <style>
+        .SectedOptionCss {
+            color:red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+</head>
+
+
+
+
+<div id="main_content_wrapper" style="width:900px; margin: 0 auto;margin-top:30">
+    
+    <div id="PageHeaderDiv" style="width:100%;padding-top:50px">
+        <div class="row" style="width:20%;float:left">
+
+        </div>
+
+        <div class="row" style="width:80%;float:right">
+            <h3 style="display:inline"><span class="glyphicon glyphicon-question-user" aria-hidden="true"></span></h3>
+            <h1 style="display:inline">About Us</h1>
+            <hr>
+        </div>
+        <div style="display: block; clear: both;"></div>
+    </div>
+
+    <div id="PageHeaderDiv" style="width:100%;">
+
+        <div class="row" style="width: 20%;float:left;margin-top:0px">
+
+            <ul class="nav nav-pills nav-stacked">
+              <li role="presentation" ng-class="whyWeStartedItClass" ng-click="changeSelectedPage('why_we_started_it')"><a>Why we Started it</a></li>
+              <li role="presentation" ng-class="featuresClass" ng-click="changeSelectedPage('features')"><a>Features</a></li>
+              <li role="presentation" ng-class="shortVideoClass" ng-click="changeSelectedPage('short_video');loadSummaryInfo()"><a>Short Video</a></li>
+              <li role="presentation" ng-class="theTeamClass" ng-click="changeSelectedPage('the_team')"><a>The Team</a></li>
+              <li role="presentation" ng-class="termsAndConditionsClass" ng-click="changeSelectedPage('terms_and_conditions');loadWorkInfo()"><a>Terms & Conditions</a></li>
+            </ul>
+
+        </div>
+
+        <div ng-include="load_profile_section" class="row" style="width:80%;float:right;margin-top:15px">
+            
+        </div>
+        <div style="display: block; clear: both;"></div>
+    </div>
+</div>
+

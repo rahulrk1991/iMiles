@@ -1,0 +1,30 @@
+<div ng-controller="controllerGeneralInfoToDisplayData">
+<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">
+<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Professional Skills</h2>
+<p class="text-align:center;"><span ng-repeat="x in allSkills track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;background-color: blanchedalmond;">{{x.levele.label + " in"}}  {{x.skill}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItemSkills($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right" ng-show="showRemove">×</span><br/></span></p>
+</div>
+<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;" ng-show="showAdditonOfSkillsOperation">
+<p><strong> Add Skills</strong></p>
+<form class="form-inline" role="form">
+<div class="form-group col-md-6 col-sm-6">
+<input ng-model="addSkillType" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="form-group col-md-4 col-sm-4">
+<!--
+<select class="selectpicker show-tick form-control" style="width:100%;float:left;">
+<option>Begineer</option>
+<option>Intermediate</option>
+<option>Advanced</option>
+<option>Expert</option>
+</select>
+-->
+<select class="selectpicker show-tick form-control" ng-model="data321" ng-options="opt as opt.label for opt in units321 " style="width:100%;float:left;">
+</select>
+</div>
+<div class="form-group col-md-2 col-sm-2">
+<button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem123()" ng-show="showAddSkill">Add</button>
+    <button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="saveSkills()" ng-show="saveAddSkill">Save</button>
+</div>
+</form>
+
+</div>

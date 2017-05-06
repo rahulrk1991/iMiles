@@ -1,0 +1,48 @@
+<div ng-controller="controllerGeneralInfoToDisplayData">
+
+    <div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">
+    <h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Languages</h2>
+    <p class="text-align:center;"><span ng-repeat="x in allLanguages track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;background-color: blanchedalmond;">{{x.level.label + " in"}}  {{x.lang}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItemLanguages($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right" ng-show="showRemove">×</span><br/></span></p>
+    </div>
+    <div class="jumbotron" style="background-color:#808080;color:black;text-align: center;" ng-show="showAdditonOfLanguagesOperation">
+    <p><strong> Add Skills</strong></p>
+    <form class="form-inline" role="form">
+    <div class="form-group col-md-6 col-sm-6">
+    <input ng-model="languages" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">
+    </div>
+    <div class="form-group col-md-4 col-sm-4">
+
+    <select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
+    </select>
+    </div>
+    <div class="form-group col-md-2 col-sm-2">
+    <button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem()" ng-show="showAddLanguages">Add</button>
+        <button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="saveLanguagesKnown()" ng-show="saveKnownLanguages">Save</button>
+    </div>
+    </form>
+
+    </div>
+</div>
+
+
+<!--<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:200px;overflow:auto;">-->
+    <!--<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Languages</h2>-->
+    <!--<p class="text-align:center;"><span ng-repeat="x in allLanguages track by $id($index)" style="font-style: italic;font-weight: bold;color:blue;">{{x.level.label + " in"}}  {{x.lang}}&nbsp;&nbsp;&nbsp;<span ng-click="removeItem($index)" style="cursor:pointer;color:black;" class="w3-right w3-margin-right">×</span><br/></span></p>-->
+<!--</div>-->
+<!--<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;">-->
+    <!--<p><strong> Add Skills</strong></p>-->
+    <!--<form class="form-inline" role="form">-->
+        <!--<div class="form-group col-md-6 col-sm-6">-->
+            <!--<input ng-model="languages" placeholder="Skill Name" type="text" class="input-large form-control" style="width:100%;">-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-4 col-sm-4">-->
+
+            <!--<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-2 col-sm-2">-->
+            <!--<button class="btn btn-responsive btn-sm" style="background-color:black;color:white;" ng-click="addItem()">Add</button>-->
+        <!--</div>-->
+    <!--</form>-->
+
+<!--</div>-->

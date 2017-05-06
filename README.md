@@ -1,2 +1,2 @@
 # iMiles
-InterviewMiles Web UI
+interviewmile Web UI

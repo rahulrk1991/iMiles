@@ -1,0 +1,67 @@
+<div ng-controller="controllerGeneralInfoToDisplayData">
+
+<div class="jumbotron" style="margin-top:20px;background-color:aqua;max-height:300px;overflow:auto;">
+<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">References</h2>
+<p class="text-align:center;" ng-repeat="x in referenceRelatedInformations track by $id($index)">
+{{"Name : "+x.referenceName}}<span ng-click="removeItemReferences($index)" style="cursor:pointer;color:black;float:right;" class="w3-right w3-margin-right" ng-show="showRemove">Remove!</span></br>
+{{"Relationship : "+x.referenceRelationship}}</br>
+{{"Contact Number : "+x.referencePhone}}</br>
+{{"Company :"+x.referenceCompany}}</br>
+{{"Email ID :"+x.referenceEmailID}}</br>
+{{"Primary Address :"+x.referenceAddress}}</br>
+{{"Address1 :"+x.referenceAddress1}}</br>
+<span style="font-weight: bold;font-style: italic;">{{x.referenceDescription}}</span></br>
+</p>
+</div>
+    <button class="btn btn-responsive btn-lg" style="background-color:#008B8B;color:black;margin-top:15px;float:right;margin-top:-10px;" ng-click="postReferencesData()" ng-show="saveReferenceChanges">Save your changes</button>
+    <br/>
+    <br/>
+<center>
+<button id = "" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()" ng-show="addingReferences">Add References</button>
+</center>
+<div class="jumbotron" style="background-color:#808080;color:black;text-align: center;margin-top:25px;" ng-show="showAdditionOfReferences">
+<p><strong> Add References</strong></p>
+<div class="row">
+<div>
+<div class="col-md-4 col-sm-4">
+<input ng-model="referenceName" placeholder="Name" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4">
+<input ng-model="referenceRelationship" placeholder="Relationship" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-4 col-sm-4">
+<!--
+<select class="selectpicker show-tick form-control" ng-model="data" ng-options="opt as opt.label for opt in units " style="width:100%;float:left;">
+</select>
+-->
+<input ng-model="referencePhone" placeholder="Phone" type="text" class="input-large form-control" style="width:100%;">
+</div>
+</div>
+<div>
+<div class="col-md-5 col-sm-5" style="margin-top:30px;">
+<input ng-model="referenceCompany" placeholder="Company" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-5 col-sm-5" style="margin-top:30px;">
+<input ng-model="referenceEmailID" placeholder="Email" type="text" class="input-large form-control" style="width:100%;">
+</div>
+</div>
+<div>
+<div class="col-md-6 col-sm-6" style="margin-top:30px;">
+<input ng-model="referenceAddress" placeholder="Address" type="text" class="input-large form-control" style="width:100%;">
+</div>
+<div class="col-md-6 col-sm-6" style="margin-top:30px;">
+<input ng-model="referenceAddress1" placeholder="Address1" type="text" class="input-large form-control" style="width:100%;">
+</div>
+</div>
+<div>
+<textarea rows="3" id="comment" placeholder="Description" style="width:100%;margin-top:20px;" ng-model="referenceDescription"></textarea>
+</div>
+<div style="margin-top:30px;float:right;">
+<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addTheListReferences()">Add</button>&nbsp;
+<button id = "" class="btn btn-responsive btn-sm" style="background-color:black;color:white;margin-top:15px;" ng-click="addReferences()">Cancel</button>
+</div>
+
+</div>
+</div>
+
+</div>

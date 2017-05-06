@@ -1,0 +1,38 @@
+<script>
+    $(document).ready(function(){
+
+    $("#saveChangesHobbies").click(function(e){
+        $("#hobbiesEditor").hide();
+        $("#editHobbies").css("visibility","visible");
+        if($("#check2").text() == ''){
+            alert("Please tell us your Hobbies and Interest to improve your Resume.");
+        }
+    })
+
+    $("#editHobbiesbutton").click(function(e){
+        $("#hobbiesEditor").show();
+        $("#editHobbies").css("visibility","hidden");
+    })
+    });
+</script>
+
+
+<div ng-controller="controllerGeneralInfoToDisplayData">
+<div class="jumbotron" id = "hobbiesEditor" style="background-color:#808080;color:black;text-align: center;margin-top:60px;">
+<p><strong> Enter a brief description of your hobbies and interests. Make them true, unique, demonstrable and relatable to fit the job you are seeking.</strong></p>
+<div text-angular="text-angular" name="hobbies" ng-model="hobbies"></div>
+<button id = "saveChangesHobbies" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="handleClick(hobbies);">Save Changes</button>
+
+</div>
+<div id="editHobbies" style="visibility:hidden;">
+<div style="margin-top:170px;background-color:aqua;" class="jumbotron">
+<h2 style="text-align:center;font-family: Times New Roman;font-weight: bold;">Hobbies and Interest</h2>
+<div><p id = "check2" ta-bind="text" ng-model="hobbies">{{hobbies}}</p></div>
+</div>
+<div style="float:right;">
+    <button id = "saveHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-click="saveHobbiesInfo()" ng-show="saveButtonHobbies">Save</button>
+
+    <button id = "editHobbiesbutton" class="btn btn-responsive btn-lg" style="background-color:black;color:white;margin-top:15px;" ng-show="editButtonHobbies">Edit</button>
+</div>
+</div>
+</div>

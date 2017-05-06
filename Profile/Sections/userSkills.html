@@ -1,0 +1,66 @@
+<style>
+    .background-grey {
+        background-color: #d7d7d7;
+    }
+</style> 
+<div style="width:100%">  
+    <div>
+        <h4>What roles are you most interested in? <small>Choose upto 3</small></h4>
+        <hr>
+        <table style="width:100%;border-spacing:5px;border-collapse:separate;table-layout:fixed">
+            <tbody>
+            <tr ng-repeat="oneChunk in Profile.userSkills.ChunkedRoles" class="settings-page-label">
+                <td ng-repeat="role in oneChunk" style="background-color:#f1f1f1;align:center">
+                    <div style="padding:10px;text-align:center" ng-click="clickUserRole(role)" ng-class="toggleSelectedRole(role)" class="input-group-lg">
+                        {{role}}
+                    </div>
+                </td> 
+            </tr>
+        </tbody>
+        </table>
+        <button id="updateLinksButton" style="width:25%;margin-top:20px;float:right" ng-click="updateRoles()" type="button" class="btn btn-default btn-primary">
+            Update Roles
+        </button>
+        <br class="clear" />
+    </div>
+    <div style="margin-top:20px">
+        <h4>How much experience do you have?</h4>
+        <hr>
+        <table style="width:100%;border-spacing:5px;border-collapse:separate;table-layout:fixed">
+            <tbody>
+            <tr class="settings-page-label">
+                <td class="" ng-repeat="experience in Profile.userSkills.experiences" style="background-color:#f1f1f1;align:center">
+                    <div style="text-align:center;padding:10px" ng-click="clickExperience(experience)" ng-class="toggleExperience(experience)" class="input-group-lg">
+                        {{experience}}
+                    </div>
+                </td> 
+            </tr>
+        </tbody>
+        </table>
+        <br class="clear" />
+    </div>
+    <div style="margin-bottom:100px;margin-top:20px">
+        <h4>What skills do you have? <small>Choose upto 5</small></h4>
+        <hr>
+        <div class="input-group input-group-lg" style="width:100%;margin-top:20px">
+            <div class="input-group input-group-lg" style="width:100%;margin-top:20px">    
+
+                <input type="text" class="form-control" ng-change="addUserSkills()" ng-model="Profile.userSkills.filterValue" ng-trim="false" bs-options="tag for tag in Profile.userSkills.skills" placeholder="Search for skills here..." bs-typeahead data-trigger="focus" bs-tooltip="tooltip" >
+                    
+            </div>
+            <div style="margin-top:20px">
+                <p style="display:inline;font-size:20px;padding:5px" >
+                    <b>Your skills : </b>
+                </p>
+                <p style="display:inline;font-size:20px;padding:5px;padding-right:10px" ng-repeat="selectedUserSkill in Profile.userSkills.selectedUserSkills">
+                    {{selectedUserSkill}} <small><a ng-click="removeSkill(selectedUserSkill)">x</a><small> 
+                </p>
+            <div>
+            <button id="updateLinksButton" style="width:25%;margin-top:20px;float:right" ng-click="updateSkills()" type="button" class="btn btn-default btn-primary">
+            Update Skills
+            </button>
+            <br class="clear" />
+        </div>
+        </table>
+    </div>
+</div>

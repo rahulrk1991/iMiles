@@ -1,0 +1,36 @@
+<div style="width:23%;display:inline;float:left;margin:10px"  class="panel panel-info">
+    <div class="panel-heading" >
+        <b>{{mock.title}}</b>
+    </div>
+    <div class="panel-body">
+        Number of Questions : <b>{{mock.numberOfQuestions}}</b>
+        <br>
+        Duration : <b>{{mock.duration}} min
+        <br>
+        Score : <b>{{mock.score}} / {{mock.max_score}}</b>
+        <br>
+        <button ng-disabled="true" ng-click="setMockToBeStarted(mock.id)" style="margin-top:10px" class="btn btn-success" type="button" data-toggle="modal" data-target="#startTheTestModal">Start test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button>
+    </div>
+</div>
+
+    <div id="startTheTestModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#187FD6">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Start an Online Mock Test</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" style="background-color:white;">
+                    <div>
+                        You are going to start an online mock test.<br><br> If you navigate away or close the tab, the test will be automatically submitted with whatever you have attempted and you will not get another chance to give the test.<br><br> Are you sure you want to start the test?
+                    </div>
+
+
+                    <button style="margin-top:20px;margin-right:20px" class="btn btn-success" type="button" ng-click="startMockTestWithID(mock.id)">Start test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

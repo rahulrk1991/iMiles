@@ -1,0 +1,89 @@
+
+<div id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
+
+	<div id="questionBlock">
+
+		<div style="display:inline">
+			<div id="questionTags" class="input-group" style="width:500px;float:left">
+                <span class="input-group-addon" id="basic-addon1"><span
+                    class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
+                    <input type="text" class="form-control" ng-change="updateCategories()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Add tags here..." bs-typeahead>
+            </div>
+			
+			<div id="difficulty_rating" style="float:right" >
+			
+				<h5 style="display:inline">Difficulty:</h5>
+
+				<button ng-click="changeDifficulty('minus')" type="button" class="btn btn-default " aria-label="minus button">
+					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				</button>
+			
+				<h4 style="display:inline"><span id="difficulty_span" class="label label-danger">{{question.difficulty_level}}</span></h4>
+			
+				<button ng-click="changeDifficulty('plus')" type="button" class="btn btn-default " aria-label="plus button">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</button>						
+			
+			</div>
+
+		</div>
+		<br>
+		<br>
+		<div class="panel panel-default" style="width:100%;height:auto;overflow:auto">
+            <div id="tagsToAssociateDiv" style="padding:7px">
+                <b>Tags to associate:</b>
+            </div>
+            
+            <div ng-repeat="tagToAddToQuestion in tags.tagsNamesToAddToQuestion" style="display:inline;float:left;padding:3px;padding-right:8px">
+         
+                <div ng-include="getTagTemplate()"></div>            
+         
+            </div>
+
+        </div>
+        <button ng-click="changeTagsAssociatedWithQuestion()" type="submit" class="btn btn-primary">Replace Tags</button>
+		<br>
+		<div class="input-group">
+			<input ck-editor ng-model="question.title" id="questionText" type="text" class="form-control"
+				placeholder="Question" aria-describedby="basic-addon1"> <span
+				class="input-group-addon" id="basic-addon1"><span
+				class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></span>
+		</div>
+		<br>
+		<div id="answerstothemcq" style="overflow: hidden">
+
+			<div class="col-lg-6">
+
+				<div ng-repeat="choice in question.choices track by $index">
+				
+					<div ng-include="getChoiceStructure()"></div>
+
+				</div> 
+
+				<!-- <div ng-repeat="option in options" class="input-group">
+					<span class="input-group-addon"> <input type="radio" id="option1" name="mcqanswers" aria-label="..."></span>
+					<input type="text" id="optiontext1" name="radiotexts" class="form-control" aria-label="...">
+				</div> -->
+				
+				<br>
+
+				
+				<div id="buttonsForChoices">
+					<button ng-click="increaseChoices()" type="submit" class="btn btn-primary">+</button>
+					<button ng-click="decreaseChoices()" type="submit" class="btn btn-primary">-</button>
+				</div>
+			</div>
+			<!-- /.col-lg-6 -->
+		</div>
+	</div>
+	<br> <br>
+	<div id="button">
+		<button ng-click="putMCQQuestion()" type="submit" class="btn btn-primary">Submit</button>
+		<button type="button" class="btn btn-primary">Clear</button>
+		<button ng-click="deleteQuestion()" style="float:right" type="button" class="btn btn-danger">Delete</button>
+	</div>
+
+</div>
+
+</script>
+

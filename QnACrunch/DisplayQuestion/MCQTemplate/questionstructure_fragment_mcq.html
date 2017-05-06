@@ -1,0 +1,74 @@
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" > -->
+<style>
+    p {
+        font-size: 18px;
+    }
+</style>
+<div style="margin-top:40px;margin-bottom:40px" class="panel panel-default">
+	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
+		<div style="float: left; width: 100%">
+			<div style="display:inline;width:10%">
+				<h3 style="display:inline;color:#187FD6"> [Q] </h3>
+			</div>
+			<div style="display:inline;width:90%">
+				<h3 style="float:top;display:inline" class="panel-title" ng-bind-html="question.title"></h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel-body">
+		<div style="width:100%" class="btn-group"  aria-label="...">
+			
+				
+<table style="width:100%;border-spacing:5px;border-collapse:separate;table-layout:fixed">
+                <tbody>
+                    <tr ng-repeat="choices in questionIdToChoicesDictionaryChunked[question.id]" ng-init="parentIndex = $index" class="settings-page-label">
+                        <td ng-repeat="choice in choices" style="align:center" class="btn-default">
+                            <div style="width:100%;padding:5px;">
+                                <span style="float:left;width:10%;display:inline;padding:5px;" ng-class="applyColors(question,choice)" class="label label-default">{{'ABCDEFGH'[($parent.$index)*2+$index]}}
+                                </span> 
+                                <div id="choicesDiv" style="float:right;width:87%;display:inline;padding:5px;padding-top:0px" ng-class="applyClassToSelectedChoice(question,choice,($parent.$index)*2+$index)" ng-click="validateChoice(question,choice,($parent.$index)*2+$index)" class="input-group-lg" ng-bind-html="choice.choice_text">
+                                    
+                                </div>
+                            </div>
+                        </td> 
+                    </tr>
+                </tbody>
+            </table>
+				
+
+			
+		</div>
+	</div>
+
+	<div class="panel-footer" style="width: 100%; overflow:auto">
+		<div style="display:inline;width:75%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
+			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
+		</div>
+		<div style="display:inline;width:10%:float:right">
+			<a title="Difficulty" href="javascript:void(0)" style="color:inherit" >
+			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:black">{{question.difficulty_level}}</span>
+			</a>
+		</div>
+		<div style="float: right; width: 4%;padding-right:15px">
+			<div ngclipboard data-clipboard-text="{{question.shareLink}}">
+			    <a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span data-trigger="click" data-placement="bottom" data-type="info" data-title="{{tooltipShare.title}}" bs-tooltip style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+			</div>
+ 			
+		</div>
+
+	<!-- Target -->
+	<input type="hidden" id="{{''+question.id}}" ng-model="question.shareLink">
+
+
+		<div ng-click="markForLater(question)" style="float: right; width: 4%;padding-right:15px">
+ 			<a title="Add question to Favorites list" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+ 		</div>
+		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
+ 			<a href="#ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
+ 		</div>
+ 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
+ 			<a  href="#EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+ 		</div>
+	</div>
+</div>
