@@ -1,5 +1,5 @@
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard","ui.ace"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
@@ -99,6 +99,14 @@ var app = angular
             .when("/Jobs", {
                 templateUrl: absolute_path+"Jobs/jobs.html",
                 controller:"jobsController"
+            })
+            .when("/Coding", {
+                templateUrl: absolute_path+"Coding/codingQuestions.html",
+                controller:"codingQuestionsController"
+            })
+            .when("/SubmitCode/:questionID", {
+                templateUrl: absolute_path+"Coding/submitCode.html",
+                controller:"submitCodeController"
             })
             .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
@@ -373,6 +381,13 @@ var app = angular
                 return absolute_path+"Jobs/job_template.html";
             }
 
+            
+
+        })
+        .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert){
+
+            $scope.editorContent = "";
+            $scope.codingLanguages = ["C","C++","Java","Python"];
             
 
         })

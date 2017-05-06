@@ -1,0 +1,55 @@
+ <head>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-80250123-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <style>
+        .ace_editor {
+            height: 400px;
+            width:100%;
+            float:left;
+        }
+    </style>
+</head>
+
+<div class="outermostDiv">
+    <div class="container" style="width:60%">
+
+        <div class="row">
+            <div style="margin-top:50px" id="codingQuestionTitleDiv">
+                <h1>Question title | <small></small></h1>
+                <hr>
+                <p>
+                    Question description
+                </p>
+            </div>
+
+            <div style="padding:10px"  ng-model="editorContent" ui-ace="{
+              useWrapMode : true,
+              mode: language,
+              theme : 'dawn',
+              showPrintMargin : false
+            }"></div>
+
+            <hr>
+
+            <div style="width:100%">
+                <div style="float:right">
+                    <select sytle="padding-right:20px;" id="languageSelector" ng-model="codingLanguage">
+                        <option selected ng-repeat="language in codingLanguages" value="{{language}}">{{language}}</option>
+                    </select>
+
+                    <button sytle="float:right" id="submitCodeButton" type="button" class="btn btn-default btn-lg btn-success" data-toggle="modal" >
+                        Run Code
+                    </button>
+                </div> 
+
+            </div>
+        </div>
+    </div>
+</div>
