@@ -1,5 +1,17 @@
 <div ng-controller="postQuestion" id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
     <div>
+        <h2>Create A Mock Test</h2>
+        <div>
+            <input type="text" class="form-control" ng-model="mock.mockTitle"  placeholder="Mock Title here"><br>
+            <input type="text" class="form-control" ng-model="mock.mockDuration"  placeholder="Mock Duration here"><br>
+            <input type="text" class="form-control" ng-model="mock.mockDifficulty"  placeholder="Mock difficulty here"><br>
+        </div>
+        <div id="button">
+            <button ng-click="addMockTest()" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <hr>
+    </div>
+    <div>
         <h2>Add your Question here</h2>
     </div>
     <br>
@@ -11,5 +23,26 @@
     <br> <br>
     <div ng-include="load_question">
         
+    </div>
+    <div>
+        <h2>Add a new tag</h2>
+        <div>
+            <input type="text" class="form-control" ng-model="addTags.categoryText"  placeholder="Category name here"><br>
+            <input type="text" class="form-control" ng-model="addTags.parentCategory"  placeholder="ID of parent category"><br>
+        </div>
+        <div id="button">
+            <button ng-click="addNewTag()" type="submit" class="btn btn-primary">Add a new tag</button>
+        </div>
+        <hr>
+    </div>
+        <div>
+        <h2>Delete a tag</h2>
+        <div>
+            <input type="text" class="form-control" ng-model="addTags.categoryIDToDelete"  placeholder="Category ID to be delted here.."><br>
+        </div>
+        <div id="button">
+            <button ng-click="deleteATag()" type="submit" class="btn btn-primary">Delete Tag</button>
+        </div>
+        <hr>
     </div>
 </div>

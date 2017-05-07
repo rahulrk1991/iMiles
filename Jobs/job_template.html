@@ -1,0 +1,49 @@
+<style>
+    td {
+        padding :5px;
+        padding-right:10px;
+    }
+    .left_col {
+        font-weight: bold;
+    }
+</style>
+
+<div class="panel panel-default">
+    <div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
+        <div style="float: left; width: 100%">
+            <div style="display:inline;width:10%">
+                <h3 style="display:inline;color:#187FD6"> [{{$index + 1}}] </h3>
+            </div>
+            <div style="display:inline;width:90%">
+                <h2 style="float:top;display:inline" class="panel-title"><b>{{job.companyName}}</b></h2>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td class="left_col">Title</td>
+                    <td>{{job.title}}</td>
+                </tr>
+                <tr>
+                    <td class="left_col">Skills</td>
+                    <td>{{job.skills}}</td>
+                </tr>
+                <tr>
+                    <td class="left_col">Experience</td>
+                    <td>{{job.min_years}} years</td>
+                </tr>
+                <tr>
+                    <td class="left_col">Description</td>
+                    <td>{{job.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer" style="width: 100%; overflow:auto">
+        <div title="Solution" style="float:right; width: 25%">
+            <button class="btn btn-success" type="button" ng-click="applyForJob(job.id)">Apply for job<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button>
+        </div>
+    </div>
+</div>

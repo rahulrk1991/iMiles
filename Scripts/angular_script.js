@@ -1,13 +1,19 @@
-
 var app = angular
-        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize"])
+        .module("iMiles_Module",["textAngular","ngRoute","mgcrea.ngStrap","ngSanitize","ngCookies","ngclipboard","ui.ace"])
         .directive('ckEditor', function() {
           return {
             require: '?ngModel',
             link: function(scope, elm, attr, ngModel) {
               var ck = CKEDITOR.replace(elm[0]);
+              
 
               if (!ngModel) return;
+
+              CKEDITOR.editorConfig = function( config ) {
+                    config.pasteFromWordRemoveFontStyles=false;
+                    config.pasteFromWordRemoveStyles=false;
+                    config.allowedContent=true; 
+                };
 
               ck.on('pasteState', function() {
                 scope.$apply(function() {
@@ -21,18 +27,31 @@ var app = angular
             }
           };
         })
-        .factory('userService',function() {
+        .factory('userService',function($http) {
 
             userService = {};
 
             userService.model = {
                 userName : undefined,
-                active : false
+                active : false,
+                isAdmin : false,
+                id : undefined
             };
             return {
 
                 logIn : function() {
-                    userService.model.userName = "rahulrk1991";
+
+                    $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                        console.log(data);
+                        userService.model.isAdmin = data.is_superuser;
+                        userService.model.userName = data.username;
+                        userService.model.id = data.id;
+                        console.log("isAdminfrom factory"+userService.model.isAdmin);
+
+                    });
+
+                    //userService.model.userName = data.username;
                     userService.model.active = true;
                     return userService.model;
                 },
@@ -61,13 +80,33 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/OnlineMockTests/TakeATest/:category/:duration/:difficulty", {
+            .when("/MarkForLater", {
+                templateUrl: absolute_path+"MarkLater/markLater.html",
+                controller:"markedForLaterController"
+            })
+            .when("/OnlineMockTests/TakeATest/:id", {
                 templateUrl: absolute_path+"OnlineMockTests/take_a_test.html",
                 controller:"onlineMockTestsTakeATestController"
             })
             .when("/OnlineMockTests/ChooseATest", {
                 templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
                 controller:"onlineMockTestsChooseTestController"
+            })
+            .when("/OnlineMockTests/HiringTest/:id", {
+                templateUrl: absolute_path+"OnlineMockTests/hiring_test.html",
+                controller:"hiringTestController"
+            })
+            .when("/Jobs", {
+                templateUrl: absolute_path+"Jobs/jobs.html",
+                controller:"jobsController"
+            })
+            .when("/Coding", {
+                templateUrl: absolute_path+"Coding/codingQuestions.html",
+                controller:"codingQuestionsController"
+            })
+            .when("/SubmitCode/:questionID", {
+                templateUrl: absolute_path+"Coding/submitCode.html",
+                controller:"submitCodeController"
             })
             .when("/EditQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/EditQuestion/edit_question.html",
@@ -76,6 +115,10 @@ var app = angular
             .when("/ViewQuestion/:kind/:questionID", {
                 templateUrl: absolute_path+"QnACrunch/ViewQuestion/view_question.html",
                 controller:"viewQuestionsController"
+            })
+            .when("/PuzzlingPuzzles", {
+                templateUrl: absolute_path+"PuzzlingPuzzles/puzzlingPuzzles.html",
+                controller:"PuzzlingPuzzlesController"
             })
             .when("/PostQuestion", {
                 templateUrl: absolute_path+"PostQuestion/post_question.html",
@@ -93,94 +136,659 @@ var app = angular
                 templateUrl: absolute_path+"Profile/profile.html",
                 controller:"profileController"
             })
-            $locationProvider.html5Mode(true);
-            //$locationProvider.baseHref("Angular");
-
+            .when("/Statistics", {
+                templateUrl: absolute_path+"Statistics/statistics.html",
+                controller:"statisticsController"
+            })
+            .when("/Settings", {
+                templateUrl: absolute_path+"Settings/settings.html",
+                controller:"settingsController"
+            })
+            .when("/ResetPassword", {
+                templateUrl: absolute_path+"OtherArtifacts/resetPassword.html",
+                controller:"OtherArtifactsController"
+            })
+            .when("/TermsAndConditions", {
+                templateUrl: absolute_path+"OtherArtifacts/termsAndConditions.html",
+                controller:"OtherArtifactsController"
+            })
+            .when("/FrequentlyAskedQuestions", {
+                templateUrl: absolute_path+"OtherArtifacts/faq.html",
+                controller:"OtherArtifactsController"
+            })
+            .otherwise({
+                templateUrl: absolute_path+"OnlineMockTests/choose_a_test.html",
+                controller:"onlineMockTestsChooseTestController"
+            })
          })
-        .controller("onlineMockTestsChooseTestController",function($scope,$http) {
+        .controller("OtherArtifactsController",function($scope){
 
-            //Variable to display tags/search them in autocomplete search bar
-            $scope.tags = {};
-            $scope.tags.allTagNames = [];
-            $scope.tags.allTagId = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
-            $scope.tags.filterValue = "Aptitude";
+            $scope.password = {};
+            $scope.password.newPassword = "";
+            $scope.password.confirmNewPassword = "";
 
-            //Category TextBox
-            $scope.selectedCategory="Aptitude";
+            $scope.message = "Password is too short";
+            $scope.isReadyToReset = false;
 
-            //Duration TextBox
-            $scope.durations = [15,30,45,60];
-            $scope.duration=15;
-            $scope.durationText = "15";
+            $scope.checkIfIdenticalAndReturnClass = function() {
+                var newPasswordLocal = $scope.password.newPassword;
+                var confirmNewPasswordLocal = $scope.password.confirmNewPassword;
+                if(newPasswordLocal.length<8) {
+                    $scope.message = "Password is too short";
+                    $scope.isReadyToReset = false;
+                    return;
+                }
+                if(newPasswordLocal==confirmNewPasswordLocal) {
+                    $scope.message = "Passwords are identical";
+                    $scope.isReadyToReset = true;
+                }
+                else {
+                    $scope.message = "Passwords are not identical";
+                    $scope.isReadyToReset = false;
+                }
+            }
+        })
+        .controller("sideBarController",function(userService,$scope,$rootScope,$timeout,$http) {
 
-            //Difficulty TextBox
-            $scope.difficulties = ["Easy","Medium","Hard"];
-            $scope.difficulty = "Easy";
+            console.log("Entered side bar controller!");
 
-            categoryDict = [];
+            $rootScope.title="iMiles Menu";
+            $scope.userModel = userService.returnState();
+            $rootScope.sidebarUserModel = $scope.userModel;
 
-            var getAllCategories = function() {
-                //console.log("Got categories");
-                $http.get(question_categories_API)
-                    .then(function(response) {
-                                            
-                        for(i=0;i<response.data.length;i++) {
-                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                            categoryDict[response.data[i].category_text] = response.data[i].id
-                        }
-                        console.log($scope.tags.allTagNames);
-                        console.log(categoryDict);
+            //Stats that appear in navigation bar
+            $rootScope.rootScope_full_name = "";
+            $rootScope.rootScope_score = -1;
+            $rootScope.rootScope_experience = -1;
+
+            //Timer that appears in navigation bar
+            $rootScope.dateOfHiringTest = "May 21, 2017 14:00:00";
+            $rootScope.dateTillItCanBeGiven = "May 21, 2017 21:00:00"
+            $rootScope.dateOfNextHiringTest = "Jun 4, 2017 14:00:00";
+
+            $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
+            $scope.dateTillItCanBeGiven = $rootScope.dateTillItCanBeGiven;
+            $scope.dateOfNextHiringTest = $rootScope.dateOfNextHiringTest;
+            $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
+            
+
+            // Hiring Test : Set the date we're counting down to
+            var countDownDate = new Date($scope.dateOfHiringTest).getTime();
+            var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
+
+            // Update the count down every 1 second
+            var countdown_timer_function = setInterval(function() {
+
+              // Get todays date and time
+              var now = new Date().getTime();
+
+              // Find the distance between now an the count down date
+              var distance = countDownDate - now;
+              var distanceToCloseTest = countDownToClosing - now;
+
+              // Time calculations for days, hours, minutes and seconds
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+              // Display the result in the element with id="demo"
+              document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+
+              // If the count down is finished, write some text 
+              if (distance < 0 && distanceToCloseTest>0) {
+                $scope.enableTestButton = false;
+                //clearInterval(countdown_timer_function);
+                document.getElementById("demo").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
+                $scope.$apply();
+              }
+              else if(distance < 0 && distanceToCloseTest<0) {
+                $scope.enableTestButton = true;
+                $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
+                setDisplayDateVariables();
+                //clearInterval(countdown_timer_function);
+                countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
+                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+                $scope.$apply();
+              }
+            }, 1000);
+
+            $scope.logout = function() {
+                $scope.userModel = userService.logOut();
+                $timeout(function() {
+
+                    console.log("Logging out of interviewmile.com!");
+                    window.location.href = user_logout_API;
+                    $scope.$apply();
+
+                }, 100);
+                
+            }
+
+
+            $rootScope.loadUserInfo = function() {
+
+                $scope.Profile = {};
+
+                //Get first name of user
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+
+                        $rootScope.rootScope_full_name = data.first_name;
 
                     });
+
+                //Get score of user
+                $http.get(user_score_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $rootScope.rootScope_score = data.value*10;
+
+                    });
+
+                //Get experience points of user
+                $http.get(user_experience_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $rootScope.rootScope_experience  = data.value;
+
+                    });
+
             }
 
-            getAllCategories();
 
-            $scope.setCategory = function() {
-                $scope.selectedCategory = $scope.tags.filterValue;
+            $rootScope.loadUserInfo();
+
+            var isLoggedIn = function() {
+                $http.get(user_isLoggedIn_API)
+                    .then(function(response) {
+                        if(response.data.result=="yes") {
+                            $scope.userModel = userService.logIn();
+
+                            console.log("isAdmin"+$scope.userModel.isAdmin);
+
+                        }
+                        else {
+                            console.log("Not logged in!");
+                        }
+                    })
             }
 
-            $scope.setDuration = function(durationSetByUser) {
-                $scope.duration = durationSetByUser;
-                $scope.durationText = durationSetByUser + " minutes";
+            isLoggedIn();
+        })
+        .controller("jobsController",function($scope,$http,userService,$cookies,$alert){
+
+            $scope.userModel = userService.returnState();
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeaderApplicationJson = { 'X-CSRFToken': cooks ,'Content-Type': 'application/json'};
+            console.log($scope.userModel);
+            $scope.allJobs = {};
+
+            $scope.showMessageForNoJobs = true;
+
+
+            //Function to GET questions
+            var getAllJobs = function() {
+
+                //Fetching puzzles here
+                $http.get(all_jobs_API)
+                    .success(function(data,status,headers,config) {
+                        $scope.allJobs = data;
+                        if(data.length==0) {
+                            $scope.showMessageForNoJobs = true;
+                        }
+                        else {
+                            $scope.showMessageForNoJobs = false;
+                        }
+                        console.log(data);
+                });
+            
+            }
+            getAllJobs();
+
+            $scope.applyForJob = function(id) {
+                console.log(id);
+                var postBody = {
+                    "userJob" :
+                        {
+                            "userId": $scope.userModel.id,
+                            "jobId": id,
+                            "isApplied" : true
+                        }
+                };
+
+                console.log(postBody);
+
+                $http.post(user_jobs_API+$scope.userModel.id+"/", postBody,{ headers: cooksHeaderApplicationJson })
+                     .success(function(data,status,header,config) {
+                        console.log("Applied for job successfully");
+                        var myAlert = $alert({title: "Applied for job successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Error in applying for job!");                //in case there is an error
+                        var myAlert = $alert({title: 'Error in applying for job', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+
+                
+
             }
 
-            $scope.setDifficulty = function(difficultySetByUser) {
-                $scope.difficulty = difficultySetByUser;
+            $scope.getJobTemplate = function() {
+                return absolute_path+"Jobs/job_template.html";
+            }
+
+            
+
+        })
+        .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert){
+
+            $scope.editorContent = "";
+            $scope.codingLanguages = ["C","C++","Java","Python"];
+            
+
+        })
+        .controller("PuzzlingPuzzlesController",function($scope,$http,$sce,userService) {
+
+            //Feed contains array of 10 sets of questions all the questions 
+            $scope.feed = {};
+            var feedNum = 0;
+            var isFetchingQuestions = false;
+
+            $scope.questionIdToAnswerDictionary=[];
+
+            $scope.getColorForDifficulty = function(difficulty_level) {
+
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
+            }
+
+            //Function to GET questions
+            var getQuestions = function(feedNum) {
+
+                console.log("Feed Number:"+feedNum);
+
+                //Fetching puzzles here
+                $http.get(category_enabled_questions_API+PUZZLE_CATEGORY_ID+"?start="+feedNum*10)
+                    .success(function(data,status,headers,config) {
+                        
+                        var allQuestions = data;
+                        console.log("Hitting URL:"+config.url);
+                        $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
+                        //console.log($scope.feed);
+
+                        $scope.questions = allQuestions;        //Assigning the response data to questions in $scope object
+                        
+                        //Loop through the questions, and fetch the choices for the MCQs
+                        for(var i=0;i<allQuestions.length;i++) {
+
+                            var singleQuestion = allQuestions[i];
+                            singleQuestion.isSolved = false;
+                            singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
+                            console.log(singleQuestion.difficulty_level);
+
+                            $http.get(post_descriptive_questions_API+singleQuestion.id)
+                                .success(function(data,status,headers,config) {
+                                    var idOfQuestion = data.id;
+                                    //Populate Question ID to Categories Dictionary
+                                    $scope.questionIdToAnswerDictionary[idOfQuestion] = data.answer;
+                                })
+
+                            isFetchingQuestions = false;
+                        }
+                });
+            
+            }
+
+            //Makes first call for questions when controller is executed
+            getQuestions(feedNum);
+
+            $scope.displaySolution = function(question) {
+                console.log("Solution displayed");
+                question.isSolved = !question.isSolved;
+
+            }
+
+
+            $(window).scroll(function () {
+               if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+                    if(!isFetchingQuestions) {
+                        feedNum++;
+                        console.log("Getting feed number:"+feedNum);
+                        isFetchingQuestions=true;
+                        getQuestions(feedNum);
+                    }     
+
+               }
+            });
+
+            //Returning the template file from getQuestonInfo using question 
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return puzzlingPuzzles_file;
+
             }
 
         })
-        .controller("onlineMockTestsTakeATestController",function($scope,$http,$timeout,$routeParams,$modal) {
+        .controller("settingsController",function($scope,$http) {
+
+            $scope.Profile = {};
+            $scope.Profile.id = "";
+            $scope.Profile.username = "";
+            $scope.Profile.first_name = "";
+            $scope.Profile.last_name = "";
+            $scope.Profile.email = "";
+            $scope.Profile.contact_no = "";
 
 
-            //Variable to display tags/search them in autocomplete search bar
-            $scope.tags = {};
-            $scope.tags.allTagNames = [];
-            $scope.tags.allTagId = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
+            var loadUserInfo = function() {
 
-            choiceDict = [];
-            categoryDict = [];
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile = data;
+                        $scope.Profile.new_password = "";
+                        $scope.Profile.confirm_new_password = "";
+                        console.log($scope.Profile);
+
+                    });
+
+            }
+
+            loadUserInfo();
+
+            $scope.resetForm = function() {
+                /*$scope.Profile.first_name = "";
+                $scope.Profile.last_name = "";
+                $scope.Profile.contact_no = "";
+                $scope.Profile.new_password = "";
+                $scope.Profile.confirm_new_password = "";*/
+            }
+            
+        })
+        .controller("onlineMockTestsChooseTestController",function($scope,$http,$location,$timeout,$rootScope) {
+
+            $scope.mockToBeStarted=-1;
+            listOfSolvedMockIds = [];
+            mockIDToSolvedMockBody = [];
+
+            $scope.overallScore = 0;
+            $scope.overallMaxScore = 0;
+            $scope.numberOfTestsGiven = 0;
+            $scope.totalNumberOfTests = 0;
+            $scope.accuracy = 0;
+
+            //Hiring test variables-------------------//
+            $scope.hiringTestMockID = 3697;
+            //Hiring Test 2 id : 3142
+
+            $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
+            $scope.dateTillItCanBeGiven = $rootScope.dateTillItCanBeGiven;
+            $scope.dateOfNextHiringTest = $rootScope.dateOfNextHiringTest;
+            $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
+            
+            function nth(d) {
+              if(d>3 && d<21) return 'th'; // thanks kennebec
+              switch (d % 10) {
+                    case 1:  return "st";
+                    case 2:  return "nd";
+                    case 3:  return "rd";
+                    default: return "th";
+                }
+            }
+
+            function setDisplayDateVariables() {
+                $scope.displayDate = {};
+                var dataInDateFormat = new Date($scope.dateOfHiringTest);
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"
+                ];
+                $scope.displayDate.date = dataInDateFormat.getDate();
+                $scope.displayDate.month = monthNames[dataInDateFormat.getMonth()];
+                $scope.displayDate.year = dataInDateFormat.getFullYear().toString().substr(-2);
+                $scope.displayDate.time = dataInDateFormat.toTimeString();
+                $scope.displayDate.superscript = nth(dataInDateFormat.getDate());
+            }
+
+            setDisplayDateVariables();
+            //---------------------------------------//
+
+            //Section to load (hiring or sample mock test)
+            $scope.load_test_section = absolute_path+"OnlineMockTests/sampleMockTestSection.html";
+            $scope.hiringSectionClass = "";
+            $scope.sampleTestSectionClass = "active";
+
+            function checkIfHiringTestSectionToBeDisplayed() {
+                if($scope.daysLeftForTest<3) {
+                    $scope.load_test_section = absolute_path+"OnlineMockTests/hiringTestSection.html";
+                    $scope.hiringSectionClass = "active";
+                    $scope.sampleTestSectionClass = "";
+                }
+            }
+
+            checkIfHiringTestSectionToBeDisplayed();
+
+            $scope.changeTestSection = function(sectionName) {
+                $scope.load_test_section = absolute_path+"OnlineMockTests/"+sectionName+".html";
+
+                $scope.hiringSectionClass = "";
+                $scope.sampleTestSectionClass = "";
+
+                if(sectionName=="hiringTestSection") {
+                    $scope.hiringSectionClass = "active";
+                    //countdown_timer_function();
+                }
+                else {
+                    $scope.sampleTestSectionClass = "active";
+                    //clearInterval(countdown_timer_function);
+                }
+            }
+
+            
+
+
+            // Hiring Test : Set the date we're counting down to
+            var countDownDate = new Date($scope.dateOfHiringTest).getTime();
+            var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
+
+            // Update the count down every 1 second
+            var countdown_timer_function = setInterval(function() {
+
+              // Get todays date and time
+              var now = new Date().getTime();
+
+              // Find the distance between now an the count down date
+              var distance = countDownDate - now;
+              var distanceToCloseTest = countDownToClosing - now;
+
+              // Time calculations for days, hours, minutes and seconds
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+              // Display the result in the element with id="demo"
+              document.getElementById("hiringTestSectionCountdown").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+
+              // If the count down is finished, write some text 
+              if (distance < 0 && distanceToCloseTest>0) {
+                $scope.enableTestButton = false;
+                //clearInterval(countdown_timer_function);
+                document.getElementById("hiringTestSectionCountdown").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
+                $scope.$apply();
+              }
+              else if(distance < 0 && distanceToCloseTest<0) {
+                $scope.enableTestButton = true;
+                $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
+                setDisplayDateVariables();
+                //clearInterval(countdown_timer_function);
+                countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
+                document.getElementById("hiringTestSectionCountdown").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+                $scope.$apply();
+              }
+            }, 1000);
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                clearInterval(countdown_timer_function);
+
+            });
+
+            function removeHiringMock() {
+                for(i=$scope.allMocks.length-1;i>=0;i--) {
+                    if($scope.allMocks[i].title.toLowerCase().includes("hiring") ) {
+                        $scope.allMocks.splice(i,1);
+                    }
+                }
+                console.log($scope.allMocks);
+            }
+
+            var getAllMockTests = function() {
+
+                $scope.enableTestButton = true;
+
+                $http.get(mock_myresults_API)
+                    .then(function(response) {
+                        $scope.allSolvedMocks = response.data;
+                        console.log($scope.allSolvedMocks);
+                        $scope.numberOfTestsGiven = $scope.allSolvedMocks.length;
+                        for(i=0;i<$scope.allSolvedMocks.length;i++) {
+                            console.log($scope.allSolvedMocks[i].title);
+                            listOfSolvedMockIds.push($scope.allSolvedMocks[i].mockId);
+                            mockIDToSolvedMockBody[$scope.allSolvedMocks[i].mockId] = $scope.allSolvedMocks[i];
+
+                            $scope.overallScore = $scope.overallScore + $scope.allSolvedMocks[i].score;
+                            $scope.overallMaxScore = $scope.overallMaxScore + $scope.allSolvedMocks[i].max_score;
+                        }
+                        if($scope.overallMaxScore==0) {
+                            $scope.accuracy = 0;
+                        }
+                        else {
+                            $scope.accuracy = parseFloat(($scope.overallScore/$scope.overallMaxScore)*100).toFixed(2);
+                        }
+                        
+                        console.log(mockIDToSolvedMockBody);
+
+                        $http.get(mock_allMocks_API)
+                            .then(function(response) {
+                                $scope.allMocks = response.data;
+                                if(!($rootScope.sidebarUserModel.isAdmin)) {
+                                    removeHiringMock();
+                                }
+                                console.log($scope.allMocks);
+                                $scope.totalNumberOfTests = $scope.allMocks.length;
+                                for(i=0;i<$scope.allMocks.length;i++) {
+                                    if($scope.allMocks[i].duration=="30")
+                                        $scope.allMocks[i].numberOfQuestions=10;
+                                    else
+                                        $scope.allMocks[i].numberOfQuestions=15;
+                                    if(listOfSolvedMockIds.indexOf($scope.allMocks[i].id)>-1) {
+                                        //Unsolved mock
+                                        $scope.allMocks[i].score = mockIDToSolvedMockBody[$scope.allMocks[i].id].score;
+                                        $scope.allMocks[i].max_score = mockIDToSolvedMockBody[$scope.allMocks[i].id].max_score;
+                                    }
+                                    else {
+                                        //Solved mock
+
+                                    }
+                                }
+                            })
+                    })
+
+                
+            }
+
+            getAllMockTests();
+
+            $scope.getMockSummaryPanel = function(mock) {
+                //console.log(mock);
+                if(listOfSolvedMockIds.indexOf(mock.id)>-1) {
+                    return mock_summary_panel_solved;   
+                }
+                else {
+                    return mock_summary_panel_unsolved;
+                }
+                
+            }
+
+            $scope.setMockToBeStarted = function(id) {
+                $scope.mockToBeStarted = id;
+            }
+
+            $scope.startMockTestWithID = function(mockID) {
+                $("#startTheTestModal").modal('hide');
+
+                $('#startTheTestModal').on('hidden.bs.modal', function () {
+                    $location.url("/OnlineMockTests/TakeATest/"+$scope.mockToBeStarted);
+                    $scope.$apply();
+                })
+            }
+
+            $scope.startHiringTestWithID = function(mockID) {
+                $("#startTheTestModal").modal('hide');
+
+                $('#startTheTestModal').on('hidden.bs.modal', function () {
+                    $location.url("/OnlineMockTests/HiringTest/"+$scope.mockToBeStarted);
+                    $scope.$apply();
+                })
+            }
+
+        })
+        .controller("onlineMockTestsTakeATestController",function($scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                if (!confirm("Are you sure you want to navigate away from the test? The test will be automatically submitted and you will not be able to give it again")) { 
+                    event.preventDefault(); 
+                }
+                else {
+                    $scope.submitTest();
+                    $scope.stop();
+                }
+            });
+
 
             $scope.attemptedQuestions=0;
             $scope.totalQuestions;
+            $scope.score = 0;
+            $scope.maxScore = 0;
+            $scope.testName = "";
 
             //Review Test modal variable
             $scope.title = "Your Time is up!";
             $scope.content = "Click on the below button to get a comprehensive review of your test";
 
-            //Timer variables
-            var durationInMinutes = $routeParams.duration;
-            var durationInSeconds = $routeParams.duration*60;
 
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
-                });
-            //$scope.min=durationInMinutes;
-            //$scope.sec=0;
+            });
 
-            $scope.counter = 10;
+
+            $http.get(mock_mock_API+$routeParams.id)
+                .then(function(response) {
+                    var testInfo = response.data;
+                    var durationInMinutes = testInfo.duration;
+                    $scope.testName = testInfo.title;
+                    $scope.counter = testInfo.duration*60;
+                })
+
+
+            //$scope.counter = 10;
             $scope.onTimeout = function(){
                 $scope.counter--;
                 $scope.min = parseInt(($scope.counter)/60);
@@ -194,13 +802,12 @@ var app = angular
                 else
                     $scope.secStr = $scope.sec.toString();
                 if($scope.min==0 && $scope.sec==0) {
-                    var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: true});
                     $scope.submitTest();
                 }
-                    
 
                 mytimeout = $timeout($scope.onTimeout,1000);
             }
+
             var mytimeout = $timeout($scope.onTimeout,1000);
 
             $scope.stop = function () {
@@ -212,10 +819,11 @@ var app = angular
             $scope.isTestSubmitted = false;
 
             //Get all the question data using http get
-            $http.get(post_mcq_Questions_API)
+            $http.get(mock_mock_API+$routeParams.id+"/start")
                 .then(function(response) {
                     var allQuestions = response.data;
                     $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    console.log($scope.questions);
                     var dict = [];                              // dict['question id'] = choice
                     $scope.totalQuestions = allQuestions.length;
                     for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
@@ -225,75 +833,21 @@ var app = angular
                         singleQuestion.usersChoice = -1;
                         singleQuestion.testId = i+1;
 
-                        var the_url = post_mcq_Questions_API + singleQuestion.id+"/choice/";
-                        $http.get(the_url)
-                            .then(function(response) {
-                                var allChoices = response.data;                    //get all the choices of a question in allChoices
-                                //console.log(response.data);
-                                dict[allChoices[0].questionId] = allChoices;          //allChoices[0]. question is the question id
-                                //console.log(singleQuestion);
-                            })
-                        
-
-                        //The following piece of code is causing problems becaues singleQuestion.id is changing coz its a global vairable
-                        //Solution : tell arpit to return the question id the category belongs to like the choices in above call
-                        /*var catURL = "http://localhost:8000/question/question/"+singleQuestion.id+"/category"
-                            $http.get(catURL)
-                                .then(function(response) {
-                                    var cats = response.data;                    //get all the choices of a question in allChoices
-                                    //console.log(response.data);
-                                    console.log("For question:"+singleQuestion.id);
-                                    console.log(response.data);
-                                    if(response.data)
-                                        $scope.tags.categorydictionary[singleQuestion.id] = response.data;          //allChoices[0]. question is the question id
-                                })*/
-
                     }
 
-                    $scope.choiceDict = dict;                  //assign this dictionary to the scope to access in the view
-
-
-                    var getAllCategories = function() {
-                        //console.log("Got categories");
-                        $http.get(question_categories_API)
-                            .then(function(response) {
-                                                    
-                                for(i=0;i<response.data.length;i++) {
-                                    $scope.tags.allTagNames[i] = (response.data[i].category_text);
-                                    categoryDict[response.data[i].category_text] = response.data[i].id
-                                }
-                                console.log($scope.tags.allTagNames);
-                                console.log(categoryDict);
-
-                            });
-                    }
-
-                    getAllCategories();     
-
-                    $scope.updateCategories = function() {
-                        var filterString = $scope.tags.filterValue;
-                        var lastIndex = filterString.slice(-1);
-                        if(filterString==" ") {
-                            $scope.tags.filterValue = "";
-                            return;
-                        }
-                        if(lastIndex==' ' && filterString.length>1) {
-                            $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
-                            console.log($scope.tags.tagsNamesToAddToQuestion);
-                            $scope.tags.filterValue = "";
-                        }
-                    }
             });
 
             
             $scope.getQuestionTemplateByType = function(question) {
                 
-                return getQuestionInfo[question.kind].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
+                return getQuestionInfo["mcq"].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
 
             }
 
+            
             $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
-                
+                console.log("In validate choice function");
+
                 if($scope.isTestSubmitted)
                     return;
 
@@ -306,10 +860,53 @@ var app = angular
                 if(question.isSelected==index) {
                     console.log("Clicking same twice");
                     question.isDoneTwice=true;
+                    question.isSolved = false;
                 }
                 question.isSelected = index;
 
-                
+            }
+
+            var finalChoices = [];
+            $scope.submitTest = function() {
+                for(i=0;i<$scope.questions.length;i++) {
+                    if($scope.questions[i].isSolved) {
+                        var choicebody = {"questionId":$scope.questions[i].pk,
+                                    "choiceId":$scope.questions[i].usersChoice};
+                        finalChoices.push(choicebody);
+                    }
+                }
+                console.log(finalChoices);
+
+
+                $http.put(mock_mock_API+$routeParams.id+"/end", finalChoices,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Test submitted successfully");        //on successfull posting of question
+                        var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
+                        $scope.score = data.score;
+                        $scope.maxScore = data.max_score;
+                        $http.get(mock_mock_API+$routeParams.id+"/solution")
+                            .then(function(response) {
+                                //var allQuestions = response.data;
+                                //$scope.questions.choices = allQuestions.choices;
+                                //$scope.isTestSubmitted = true;               
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.questions[i].choices = response.data[i].choices;
+                                }
+                                $scope.isTestSubmitted = true;
+
+                            });
+                        $scope.isTestSubmitted = true;
+                        })
+                     .error(function(response) {
+                        console.log("Test could not be submitted");                //in case there is an error
+                        var myAlert = $alert({title: 'Test could not be submitted', content: '', placement:'floater top', type: 'danger', show: true,duration:15});
+
+                     });
+
+                $scope.isTestSubmitted = true;
+                $("#submitTestModal").modal('hide');
+                console.log("Test submitted");
+                var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: false});
             }
 
             $scope.applyClassToSelectedChoice = function(question,choice,index) {
@@ -346,10 +943,206 @@ var app = angular
                     return;
             }
 
+            //Edit Question
+            $scope.editQuestion = function(questionID) {
+                alert("Editing Question:"+questionID);
+            }
+        })
+        .controller("hiringTestController",function($scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                if (!confirm("Are you sure you want to navigate away from the test? The test will be automatically submitted and you will not be able to give it again")) { 
+                    event.preventDefault(); 
+                }
+                else {
+                    $scope.submitTest();
+                    $scope.stop();
+                }
+            });
+
+
+            $scope.attemptedQuestions=0;
+            $scope.totalQuestions;
+            $scope.score = 0;
+            $scope.maxScore = 0;
+            $scope.testName = "";
+
+            //Review Test modal variable
+            $scope.title = "Your Time is up!";
+            $scope.content = "Click on the below button to get a comprehensive review of your test";
+
+
+            $(window).scroll(function(){
+                $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
+            });
+
+
+            $http.get(mock_mock_API+$routeParams.id)
+                .then(function(response) {
+                    var testInfo = response.data;
+                    var durationInMinutes = testInfo.duration;
+                    $scope.testName = testInfo.title;
+                    $scope.counter = testInfo.duration*60;
+                })
+
+
+            //$scope.counter = 10;
+            $scope.onTimeout = function(){
+                $scope.counter--;
+                $scope.min = parseInt(($scope.counter)/60);
+                $scope.sec = ($scope.counter)%60;
+                if($scope.min<10)
+                    $scope.minStr = "0"+$scope.min.toString();
+                else
+                    $scope.minStr = $scope.min.toString();
+                if($scope.sec<10)
+                    $scope.secStr = "0"+$scope.sec.toString();
+                else
+                    $scope.secStr = $scope.sec.toString();
+                if($scope.min==0 && $scope.sec==0) {
+                    $scope.submitTest();
+                }
+
+                mytimeout = $timeout($scope.onTimeout,1000);
+            }
+
+            var mytimeout = $timeout($scope.onTimeout,1000);
+
+            $scope.stop = function () {
+                console.log("stop called");
+                $timeout.cancel(mytimeout);
+            };
+
+
+            $scope.isTestSubmitted = false;
+
+            //Get all the question data using http get
+            $http.get(mock_mock_API+$routeParams.id+"/start")
+                .then(function(response) {
+                    var allQuestions = response.data;
+                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
+                    console.log($scope.questions);
+                    var dict = [];                              // dict['question id'] = choice
+                    $scope.totalQuestions = allQuestions.length;
+                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
+                        var singleQuestion = allQuestions[i];
+
+                        singleQuestion.isSolved = false;
+                        singleQuestion.usersChoice = -1;
+                        singleQuestion.testId = i+1;
+
+                    }
+
+            });
+
+            
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return getQuestionInfo["mcq"].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+            
+            $scope.validateChoice = function(question,choice,index) {     //returing if the selected choice is the correct choice
+                console.log("In validate choice function");
+
+                if($scope.isTestSubmitted)
+                    return;
+
+                if(question.isSolved == false) {
+                    $scope.attemptedQuestions++;
+                }
+
+                question.isSolved = true;
+                question.usersChoice = choice.id;
+                if(question.isSelected==index) {
+                    console.log("Clicking same twice");
+                    question.isDoneTwice=true;
+                    question.isSolved = false;
+                }
+                question.isSelected = index;
+                          
+            }
+
+            var finalChoices = [];
             $scope.submitTest = function() {
+                for(i=0;i<$scope.questions.length;i++) {
+                    if($scope.questions[i].isSolved) {
+                        var choicebody = {"questionId":$scope.questions[i].pk,
+                                    "choiceId":$scope.questions[i].usersChoice};
+                        finalChoices.push(choicebody);
+                    }
+                }
+                console.log(finalChoices);
+
+
+                $http.put(mock_mock_API+$routeParams.id+"/end", finalChoices,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                        console.log("Test submitted successfully");        //on successfull posting of question
+                        var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
+                        $scope.score = data.score;
+                        $scope.maxScore = data.max_score;
+                        $http.get(mock_mock_API+$routeParams.id+"/solution")
+                            .then(function(response) {
+                                //var allQuestions = response.data;
+                                //$scope.questions.choices = allQuestions.choices;
+                                //$scope.isTestSubmitted = true;               
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.questions[i].choices = response.data[i].choices;
+                                }
+                                $scope.isTestSubmitted = true;
+
+                            });
+                        $scope.isTestSubmitted = true;
+                        })
+                     .error(function(response) {
+                        console.log("Test could not be submitted");                //in case there is an error
+                        var myAlert = $alert({title: 'Test could not be submitted', content: '', placement:'floater top', type: 'danger', show: true,duration:15});
+
+                     });
+
                 $scope.isTestSubmitted = true;
+                $("#submitTestModal").modal('hide');
                 console.log("Test submitted");
                 var myOtherModal = $modal({scope: $scope, template: 'OnlineMockTests/review_test_modal.html', show: false});
+            }
+
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                
+                if(question.isDoneTwice){
+                    question.isSelected=-1;
+                    question.isSolved = false;
+                    question.usersChoice = -1;
+                    question.isDoneTwice = false;
+                    $scope.attemptedQuestions--;
+                }
+
+                if(question.isSelected==index)
+                    return "background-grey";
+                else
+                    return "";
+            }
+
+            $scope.applyColors = function(question,choice) {
+                if(!$scope.isTestSubmitted)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red"
+                }
+            }
+
+            $scope.markAttemptedQuestion = function(question) {
+                if(question.isSolved)
+                    return "background-grey";
+                else
+                    return;
             }
 
             //Edit Question
@@ -357,51 +1150,135 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService) {
+        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies, $rootScope) {
 
-            $scope.title="iMiles Menu";
-            $scope.userModel = userService.returnState();
+            $scope.forgot_password={};
 
-            $scope.registerUser = function() {
-                var myModal = $modal({title: 'My Title', template:'LandingPage/registration_template.html', show: true});
+            // Set the date we're counting down to
+            var countDownDate = new Date($rootScope.dateOfHiringTest).getTime();
+
+            // Update the count down every 1 second
+            var x = setInterval(function() {
+
+              // Get todays date and time
+              var now = new Date().getTime();
+
+              // Find the distance between now an the count down date
+              var distance = countDownDate - now;
+
+              // Time calculations for days, hours, minutes and seconds
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+              // Display the result in the element with id="demo"
+              document.getElementById("demoID").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+
+              // If the count down is finished, write some text 
+              if (distance < 0) {
+                countDownDate = new Date($rootScope.dateOfNextHiringTest).getTime();
+              }
+            }, 1000);
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                clearInterval(x);
+
+            });
+
+            console.log('entered landingPageController')
+            var isLoggedIn = function() {
+                $http.get(user_isLoggedIn_API)
+                    .then(function(response) {
+                        if(response.data.result=="yes") {
+                            $scope.userModel = userService.logIn();
+                            //$scope.$apply();
+                            console.log("isAdmin"+$scope.userModel.isAdmin);
+                            $location.url("OnlineMockTests/ChooseATest");
+                            //$scope.$apply();
+                        }
+                        else {
+                            console.log("Not logged in!");
+                        }
+                    })
             }
 
+            isLoggedIn();
+
+
             $scope.logout = function() {
+                console.log("Starting to execute logout");
                 $scope.userModel = userService.logOut();
                 $timeout(function() {
-                    $location.url("/");
+                    //$location.url("/");
+                    console.log("In logout function");
+                    window.location.href = user_logout_API;
+
                     $scope.$apply();
                 }, 100);
                 
             }
 
-            $scope.submitLoginForm = function() {
-                console.log($scope.email);
-                console.log($scope.password);
+            $scope.sendResetLink = function() {
+                console.log($scope.forgot_password.username);
+                console.log($scope.forgot_password.email);
 
-                $http.get("http://example.com/api/user/token/")
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_mark_Later_API;
+
+                body =  {"username":$scope.forgot_password.username};
+                            //{"email":$scope.forgot_password.email}];
+
+                $http.post( user_forgot_API, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Reset Link Sent");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Password reset link sent!", content: "Check your inbox", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error in sending the link");                //in case there is an error
+                        var myAlert = $alert({title: 'Password reset link could not be sent!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+            $scope.submitLoginForm = function() {
+
+                console.log($scope.login.email);
+                console.log($scope.login.password);
+
+                $http.get(user_token_API)
                     .then(function(response){
                         //console.log(response.data);
 
                         var tokenHTML = response.data;
                         var token = tokenHTML.split(" ")[3].split("\'")[1];
+                        console.log("Token:"+token);
                         //console.log("CSRF Token:"+token);
 
                         var form = new FormData();
                         form.append("csrfmiddlewaretoken", token); //get this token from above api
-                        form.append("username", $scope.email); //get this field from user
-                        form.append("password", $scope.password); //get this field from user
+                        form.append("username", $scope.login.email); //get this field from user
+                        form.append("password", $scope.login.password); //get this field from user
 
-                        var cookie = "csrftoken=";
+                        /*var cookie = "csrftoken=";
                         cookie = cookie+token;
-                        document.cookie = "csrftoken="+token;
+                        document.cookie = "csrftoken="+token;*/
 
-                        //console.log("Cookie plus token:"+cookie);
+                        $cookies.put("csrftoken",token);
+
+
+                        //console.log("Cookie plus token:"+$cookies.get("csrftoken"));
 
                         var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://example.com/api/user/login/",
+                        "url": user_login_API,
                         "method": "POST",
                         "headers": {
                         "cache-control": "no-cache"
@@ -414,40 +1291,138 @@ var app = angular
 
                         $.ajax(settings).done(function (response) {
                             var responseString = response.split("\"")[3];
+                            console.log("Response string:"+responseString);
                             //console.log(responseString);
                             if(responseString=="success") {
                                 console.log("Logged in successfully");
                                 $("#signInModalEmail").modal('hide');
-                                //$('#myModal').hide('hide');
-                                //$window.location.assign("QnACrunch");
+                                
+                                $alert({title: 'Logged in successfully!', content: '', placement:'floater top', type: 'success', show: true,duration:4});
+
+                                $rootScope.loadUserInfo();
+
                                 $timeout(function() {
                                     //userService.logIn();
-                                    console.log($scope.userModel.active);
+                                    //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
-                                    console.log($scope.userModel.active);
-                                    $location.url("QnACrunch");
+                                    //console.log($scope.userModel.active);
+                                    $location.url("OnlineMockTests/ChooseATest");
                                     $scope.$apply();
-                                }, 1000);
+                                }, 200);
                                 
                             }
                             else if (responseString=="Invalid login details") {
-                                console.log("Log in error!");
+                                //$("#signInModalEmail").modal('hide');
+                                $alert({title: 'Invalid credentials!', content: '', placement:'floater top', type: 'danger', show: true,duration:4});
+
                             }
                             else {
-                                console.log("Theres been an error! Please check console for clues");
+                                $("#signInModalEmail").modal('hide');
+                                $alert({title: 'There was an error logging you in! Please try again.', content: '', placement:'floater top', type: 'success', show: true,duration:4});
+
                             }
                         });
                     });
             }
 
+            $scope.validation = {};
+            $scope.validation.message = "No error as of now";
+            $scope.validation.isValid = false;
+            $scope.register={};
+            $scope.register.name="";
+            $scope.register.username="";
+            $scope.register.email="";
+            $scope.register.password="";
+            $scope.register.confirmpassword="";
+            $scope.register.mobile="";
+
+
+            var validateRegistrationForm = function() {
+
+                    $scope.validation.message = "No error as of now";
+                    $scope.validation.isValid = false;
+
+                    ck_name = /^[A-Za-z ]{3,20}$/;
+                    if($scope.register.name==undefined || !ck_name.test($scope.register.name)) {
+                        $scope.validation.message = "Full Name is invalid";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_username = /^[A-Za-z0-9_]{3,20}$/;
+                    if(!ck_username.test($scope.register.username)) {
+                        console.log("Inside username validation");
+                        $scope.validation.message = "Username is invalid.\nMake sure it is 3-20 characters.\nNo characters other than A-Z,a-z,0-9";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                    if(!ck_email.test($scope.register.email)) {
+                        $scope.validation.message = "Invalid Email ID.\nEnter valid one.";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_password =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+                    if(!ck_password.test($scope.register.password)) {
+                        $scope.validation.message = "Invalid password.\nMake sure it is 6-20 characters.\nDon't user escape characters like /or \\";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    ck_confirmpassword =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+                    if(!ck_password.test($scope.register.confirmpassword)) {
+                        $scope.validation.message = "Invalid password.\nMake sure it is 6-20 characters.\nDon't user escape characters like /or \\";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    //ck_confirmpassword =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+                    if($scope.register.confirmpassword!=$scope.register.password) {
+                        $scope.validation.message = "Passwords you entered donot match";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    if($scope.register.mobile=="") {
+                        $scope.register.mobile="9999999999";
+                        return true;
+                    }
+
+                    ck_phonenumber =  /^[0-9]{10,10}$/
+                    if(!ck_phonenumber.test($scope.register.mobile)) {
+                        $scope.validation.message = "Mobile number is not valid.\nMake sure it contains exactly 10 digits.\n";
+                        $scope.validation.isValid = true;
+                        return false;
+                    }
+
+                    return true;
+                }
+
+            
             $scope.submitRegisterForm = function() {
 
-                console.log($scope.name)
-                console.log($scope.email);
-                console.log($scope.password);
-                console.log($scope.mobile);
+                $scope.validation.isValid = false;
 
-                $http.get("http://localhost:8000/api/user/token/")
+
+                console.log($scope.register.name);
+                console.log($scope.register.username);
+                console.log($scope.register.email);
+                console.log($scope.register.password);
+                console.log($scope.register.confirmpassword);
+                console.log($scope.register.mobile);
+
+                if(!validateRegistrationForm()) {
+                    console.log("Form is invalid");
+                    return;
+                }
+
+                $alert({title: 'Wait!', content: 'Registration in progress...', placement:'floater top', type: 'info', show: true,duration:4});
+                $scope.validation.message = "Wait! Registration in progress...";
+                $scope.validation.isValid = true;
+
+                $http.get(user_token_API)
                     .then(function(response){
                         console.log(response.data);
 
@@ -457,23 +1432,22 @@ var app = angular
 
                         var form = new FormData();
                         form.append("csrfmiddlewaretoken", token); //get this token from above api
-                        form.append("username", $scope.email); //get this field from user
-                        form.append("password", $scope.password); //get this field from user
+                        form.append("full_name", $scope.register.name); //get this field from user
+                        form.append("username", $scope.register.username); //get this field from user
+                        form.append("email", $scope.register.email);
+                        form.append("password", $scope.register.password);
+                        form.append("password2", $scope.register.confirmpassword);
+                        form.append("contact_no", $scope.register.mobile);
 
-                        var cookie = "csrftoken=";
-                        cookie = cookie+token;
-
-                        console.log("Cookie plus token:"+cookie);
+                        document.cookie = "csrftoken="+token;
 
                         var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://localhost:8000/api/user/register/",
+                        "url": user_registration_API,
                         "method": "POST",
                         "headers": {
-                        "cookie": cookie,
-                        "cache-control": "no-cache",
-                        "postman-token": "363f8225-6b4d-34c0-9d16-85dbd330f288"
+                        "cache-control": "no-cache"
                         },
                         "processData": false,
                         "contentType": false,
@@ -481,22 +1455,45 @@ var app = angular
                         "data": form
                         }
 
+                        //$scope.validation.isValid = false;
                         $.ajax(settings).done(function (response) {
                             console.log(response);
+                            var responseString = response.split("\"")[3];
+                            console.log("Response String:"+responseString);
+                            if(responseString=="success") {
+                                $("#registerModal").modal('hide');
+                                $alert({title: 'Registration successful!', content: 'Login using the Sign In button using the username/email and password you provided', placement:'floater top', type: 'success', show: true,duration:10});
+
+                                
+                            }
+                            else if(responseString=="Duplicate username or email") {
+                                //$("#registerModal").modal('hide');
+                                //$("#registerModal").modal('show');
+                                $scope.validation.message = "The username/email address you provided is already registered. Try another one!";
+                                $scope.validation.isValid = true;
+                                $alert({title: 'Duplicate username or email, choose another!', content: '', placement:'floater top', type: 'danger', show: true,duration:4});
+                                if($scope.register.phone=="999999999") {
+                                    $scope.register.phone="";
+                                }
+                            }
+                            else {
+                                //$("#registerModal").modal('hide');
+                                $alert({title: 'Registration unsuccessful!', content: 'Please try again.', placement:'floater top', type: 'danger', show: true,duration:4});
+
+                            }
                         });
                     });
 
             }
 
         })
-
-        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce) {
+        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce,$cookies,$alert,$rootScope) {
 
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
             $scope.panel={};
             $scope.panel.title = "Click here to view Solution";
-            $scope.panel.body = "Answer not retrieved, check JSON object in console for clues"
+            $scope.panel.body = "Answer not retrieved, check JSON object in console for clues";
             
 
             console.log($routeParams.questionID);
@@ -516,21 +1513,275 @@ var app = angular
                 $scope.question.description = $sce.trustAsHtml($scope.question.description);
                 $scope.question.answer = $sce.trustAsHtml($scope.question.answer);
                 console.log($scope.question);
-                console.log($scope.question.id);
+                console.log($scope.question.pk);
                 $scope.panel.body=$scope.question.answer;
+                $scope.question.isSolved = false;
+                $scope.question.isSelected = -1;
+
+               /* for(i=0;i<$scope.question.choices.length;i++) {
+                    $scope.question.choices[i].is_correct = false;
+                }*/
 
             });
+
+            $scope.validateChoice = function(question,choice,index) {
+                console.log(question);
+                console.log(choice);
+                console.log(index);
+                
+                if(question.isSolved)
+                    return;
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+
+                postBody = {"choiceId":choice.id};
+                $http.post(post_mcq_Questions_API+$routeParams.questionID+"/solve",postBody,{ headers: cooksHeader })
+                    .success(function(data,status,header,config) {
+                            console.log("Solved Question!");        //on successfull posting of question
+                            console.log(data.value);
+                            //console.log($scope.questionIdToChoicesDictionary[question.id]);
+                            for(i=0;i<$scope.question.choices.length;i++) {
+                                if($scope.question.choices[i].id==data.value){
+                                    $scope.question.choices[i].is_correct = true;
+                                    if(choice.id==data.value) {
+                                        $rootScope.rootScope_score = $rootScope.rootScope_score+10;
+                                        var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top', type: 'success', show: true,duration:4});
+                            
+                                    }
+                                    else {
+                                        var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top', type: 'danger', show: true,duration:4});
+                            
+                                    }
+                                }
+                                else {
+                                    $scope.question.choices[i]["is_correct"] = false;
+                                }
+                                //console.log($scope.questionIdToChoicesDictionary[question.id][i]);
+                            }
+                            $scope.question.isSolved = true;
+                            $scope.question.isSelected = index;
+                            console.log($scope.question);
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+                /*if(question.isSolved)
+                    return;
+                question.isSolved = true;
+                question.isSelected = index;*/
+            }
+
+            $scope.markForLater = function(question) {
+                console.log("Mark "+$scope.question.pk+" for later");
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_mark_Later_API;
+                body =  [$scope.question.pk];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Question marked for later");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Question "+$scope.question.pk+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not saved to favorites list!");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.',placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+
+            }
 
             $scope.getChoiceStructure = function() {
                 return absolute_path+"QnACrunch/ViewQuestion/MCQTemplate/ChoiceTemplate/choice_structure.html"
             }
 
+            $scope.applyClassToSelectedChoice = function(choice,index) {
+                if(!$scope.question.isSolved)
+                    return;
+                //console.log(question);
+                if($scope.question.isSelected==index)
+                    return "background-grey";
+            }
+
+            //Change color of the choice option to indicate correctness
+            $scope.applyColors = function(question,choice) {
+                if(!$scope.question.isSolved)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red";
+                }
+            }
+
+            $scope.getColorForDifficulty = function(difficulty_level) {
+                //console.log(difficulty_level);
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
+            }
+
         })
-        .controller("editQuestionsController",function($scope,$http,$routeParams,$location,$alert) {
+        .controller("editQuestionsController",function($scope,$http,$routeParams,$location,$alert,$cookies) {
             var url;
             $scope.choices = {};
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks };
+
+            //Scope variables needed for adding tags
+            $scope.tags = {};
+            $scope.tags.filterValue = "";                   //Value obtained from autocomplete search bar
+            $scope.tags.allTagNames = [];                   //Stores name of all tags, used as model for autocomplete search bar
+            $scope.tags.tagsNamesToAddToQuestion = [];      //Array which stores the names of the tags to associate with Q
+            $scope.tags.tagsToDissociate = [];
+
+            categoryDict = [];      //Used for mapping category name to category id
+
+            var getAllCategories = function() {
+                
+                $http.get(question_categories_API)
+                    .then(function(response) {
+                                            
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.allTagNames[i] = (response.data[i].category_text);
+                            categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
+                        }
+
+                        console.log("All tag names:"+$scope.tags.allTagNames);
+                        console.log(categoryDict);
+
+                    });
+            }
+
+            var getCategoriesAssociatedWithQuestion = function() {
+                $http.get(questions_API+"/"+$routeParams.questionID+"/category")
+                    .then(function(response){
+                        for(i=0;i<response.data.length;i++) {
+                            $scope.tags.tagsNamesToAddToQuestion[i] = (response.data[i].category_text);
+                            $scope.tags.tagsToDissociate[i] = (response.data[i].id);
+                            //categoryDict[response.data[i].category_text] = response.data[i].id      //Creating a dictionary with key as category name and value as categroy id
+                        }
+                    });
+            }
+
+            $scope.changeTagsAssociatedWithQuestion = function() {
+                var j=0;
+                if($scope.tags.tagsToDissociate.length==0) {
+                    associateNewTags();
+                    return;
+                }
+                for(i=0;i<$scope.tags.tagsToDissociate.length;i++) {
+                    $http.delete(questions_API+"/"+$routeParams.questionID+"/category/"+$scope.tags.tagsToDissociate[i], { headers: cooksHeader })
+                        .success(function(response) {
+                            console.log("Tags dissociated successfully");        //on successfull posting of question
+                            
+                            j=j+1;
+                            console.log("length of array:"+$scope.tags.tagsToDissociate.length+":"+i);
+                            if(j==($scope.tags.tagsToDissociate.length)) {
+
+                                console.log("All tags have been deleted!");
+                                associateNewTags();
+                            }
+                        
+                        })
+                        .error(function(response) {
+                            console.log("Tags could not be dissociated");                //in case there is an error
+                        });
+                }
+
+            }
+
+            var associateNewTags = function() {
+                var categoryBody = [];      //Will store the body of the url to add categories
+
+                for(i=0;i < $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                    var singleTag = {
+                        "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]
+                    }
+                    categoryBody.push(singleTag);       //Add single category to the body to create an array of categories
+                }
+
+                console.log(categoryBody);
+
+                var addCategoryURL = questions_API+"/"+$routeParams.questionID+"/category";
+
+                $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
+                    .success(function(data,status,header,config) {
+                        console.log("Categories posted successfully");
+                        var myAlert = $alert({title: 'Tags replaced successfully!', content: 'tags edited successfully', placement:'floater top', type: 'success', show: true,duration:5});
+
+                    getCategoriesAssociatedWithQuestion();
+                })
+                .error(function(response) {
+                        console.log("The question could not be deleted");                //in case there is an error
+                        var myAlert = $alert({title: 'Tag replace unsuccessful!', content: 'tags could not be edited successfully', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+            getAllCategories();
+            getCategoriesAssociatedWithQuestion();
+
+            $scope.getTagTemplate = function() {
+                
+                return tag_structure_file_postQuestion;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+
+            $scope.removeCategory = function(categoryToRemove) {
+
+                var index = $scope.tags.tagsNamesToAddToQuestion.indexOf(categoryToRemove);
+                console.log(index);
+
+                if (index > -1) {
+                    $scope.tags.tagsNamesToAddToQuestion.splice(index, 1);
+                }
+            }
+
+            $scope.increaseChoices = function() {                       //increases the number of choices to be added to the question
+                if($scope.number_of_choices==6)
+                    return;
+                $scope.number_of_choices++;
+                console.log("Added choice entry");
+            }
+
+            $scope.decreaseChoices = function() {                       //subtracts the number of choices to be added to the question
+                if($scope.number_of_choices==2)
+                    return;
+                $scope.number_of_choices--;
+                console.log("Removed choice entry");
+            }
+
+            $scope.updateCategories = function() {
+                var filterString = $scope.tags.filterValue;
+                var lastIndex = filterString.slice(-1);
+                if(filterString==" ") {
+                    $scope.tags.filterValue = "";
+                    return;
+                }
+                if(lastIndex==' ' && filterString.length>1) {
+                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                    console.log($scope.tags.tagsNamesToAddToQuestion);
+                    $scope.tags.filterValue = "";
+                }
+                
+            }
+
             //$scope.questionID = $routeParams.question_number;
             $scope.question = {};
             if($routeParams.kind=="descriptive") {
@@ -580,30 +1831,65 @@ var app = angular
                     "difficulty_level": $scope.question.difficulty_level,
                     "answer": $scope.question.answer
                 };
-                $http.put( url+"/", body)
+                $http.put( url+"/", body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                         console.log("Descriptive question edited successfully");        //on successfull posting of question
-                        var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+                        var myAlert = $alert({title: 'Edit successful!', content: 'Question '+$scope.question.id+' edited successfully', placement:'floater top', type: 'success', show: true,duration:15});
 
                         })
                      .error(function(response) {
                         console.log("The question could not be edited");                //in case there is an error
-                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' could no be edited. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Edit unsuccessful!', content: 'Question '+$scope.question.id+' could no be edited. Check logs for more information', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
 
+            $scope.putMCQQuestion = function() {
+                console.log("Trying to post MCQ question...");
+                    if(!$scope.question.title) {
+                        alert("Question has to have a title!");
+                        return;
+                    }
+
+                    var cooks = $cookies.get("csrftoken");
+                    var cooksHeader = { 'X-CSRFToken': cooks };
+                    //url = "http://localhost:8000/question/question_mcq/";
+                    post_mcq_questions_Body =  {
+                        "title": $scope.question.title,
+                        "difficulty_level": $scope.question.difficulty_level,
+                        "kind": mcq_kind,
+                    };
+                    $http.put( url+"/", post_mcq_questions_Body,{ headers: cooksHeader })
+                        .success(function(data,status,header,config) {
+                            
+                            //$scope.postResponse = data[0];
+                            //console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
+                            var myAlert = $alert({title: 'Title edited successfully!', content: 'Title edited', placement:'floater top', type: 'success', show: true,duration:5});
+
+
+
+                        })
+                        .error(function(response) {
+                            console.log("The question could not be posted");
+                                //Delete the question since choices were not added!
+                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
+
+                         });
+            }
+
             $scope.deleteQuestion = function() {
-                $http.delete( url+"/")
+
+
+                $http.delete( url+"/",{ headers: cooksHeader })
                      .success(function(response) {
                         console.log("Descriptive question deleted successfully");        //on successfull posting of question
-                        var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'alert-box', type: 'success', show: true,duration:15});
+                        var myAlert = $alert({title: 'Delete successful!', content: 'Question deleted successfully', placement:'floater top', type: 'success', show: true,duration:15});
 
                         $location.url("QnACrunch");
                         })
                      .error(function(response) {
                         console.log("The question could not be deleted");                //in case there is an error
-                        var myAlert = $alert({title: 'Delete unsuccessful!', content: 'Question '+$scope.question.id+' could no be deleted. Check logs for more information', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Delete unsuccessful!', content: 'Question '+$scope.question.id+' could no be deleted. Check logs for more information', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
@@ -615,6 +1901,10 @@ var app = angular
                 absolute_path+"ContactUs/Images/linkedin.png",
                 absolute_path+"ContactUs/Images/twitter.png"
             ];
+
+            $scope.thumbnails.facebook = absolute_path+"ContactUs/Images/Facebook_32x32.jpg";
+            $scope.thumbnails.linkedIn = absolute_path+"ContactUs/Images/linkedin.png";
+            $scope.thumbnails.twitter = absolute_path+"ContactUs/Images/twitter.png";
             
             $scope.submitMessage = function() {
                 alert($scope.contact.fullName,$scope.contact.email,$scope.contact.subject,$scope.contact.message);
@@ -628,37 +1918,786 @@ var app = angular
             }
         })
         .controller("aboutUsController",function($scope) {
-            $scope.selectedPage = "why_we_started_it.html";
+            $scope.selectedPage = absolute_path+"AboutUs/SubPages/why_we_started_it.html";
 
-            $scope.changeSelectedPage = function(page) {
-                $scope.selectedPage = page;
+            //Images links
+            $scope.happyAndSadImage = absolute_path+"AboutUs/Images/happy_and_sad.JPG";
+            $scope.teamImage = absolute_path+"AboutUs/Images/team.jpg";
+
+            //CSS Class variable
+            //$scope.theSiteClass="SectedOptionCss";
+            $scope.whyWeStartedItClass ="SectedOptionCss";
+            $scope.featuresClass="";
+            $scope.shortVideoClass="";
+            $scope.theTeamClass = "";
+            $scope.termsAndConditionsClass="";
+
+            $scope.load_profile_section = absolute_path+"AboutUs/subPages/why_we_started_it.html";
+
+            $scope.setCSSClassVariable = function(page) {
+
             }
 
-            $scope.returnSelectedPage = function() {
+            $scope.changeSelectedPage = function(section_to_load) {
+                console.log(section_to_load);
+                $scope.load_profile_section = absolute_path+"AboutUs/subPages/"+section_to_load+".html";
+
+                //Set active classes for CSS
+                $scope.whyWeStartedItClass ="";
+                $scope.featuresClass="";
+                $scope.shortVideoClass="";
+                $scope.theTeamClass = "";
+                $scope.termsAndConditionsClass="";
+
+                if(section_to_load=="why_we_started_it") {
+                    $scope.whyWeStartedItClass = "SectedOptionCss";
+                }
+                else if (section_to_load=="features") {
+                    $scope.featuresClass = "SectedOptionCss";
+                }
+                else if (section_to_load=="short_video") {
+                    $scope.shortVideoClass = "SectedOptionCss";
+                }
+                else if (section_to_load=="the_team") {
+                    $scope.theTeamClass = "SectedOptionCss";
+                }
+                else if (section_to_load=="terms_and_conditions") {
+                    $scope.termsAndConditionsClass = "SectedOptionCss";
+                }
+            }
+
+            /*$scope.returnSelectedPage = function() {
                 return absolute_path+"AboutUs/SubPages/"+ $scope.selectedPage;
-            }
+            }*/
 
         })
-        .controller("profileController",function($scope) {
-            //dummy controller for profile page
+        .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope,$anchorScroll) {
+
+            //Set headers for GET/POST calls
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/x-www-form-urlencoded'};
+            var cooksHeaderApplicationJson = { 'X-CSRFToken': cooks ,'Content-Type': 'application/json'};
+            
+            url = question_mark_Later_API;
+
+            $scope.Profile = {};
+
+            //General section Variables
+            $scope.Profile.General = {};
+
+            $scope.Profile.General.username = "";
+            $scope.Profile.General.first_name = "";
+            $scope.Profile.General.last_name = "";
+            $scope.Profile.General.email = "";
+            $scope.Profile.General.contact_no = "";
+
+            //Resume and Link variables
+            $scope.Profile.ResumeAndLinks = {};
+            $scope.Profile.ResumeAndLinks.Link_github = "";
+
+            //Summary section variables
+            $scope.Profile.Summary = {};
+            $scope.Profile.Summary.Summary = "Could not fetch summary!";
+
+            
+
+            //Section to be loaded by default
+            $scope.load_profile_section = absolute_path+"Profile/Sections/general.html";
+
+            //Work and Education variables
+            $scope.Profile.WorkAndEducation = {};
+            $scope.workTemplate = absolute_path+"Profile/Sections/workTemplate.html";
+            $scope.educationTemplate = absolute_path+"Profile/Sections/educationTemplate.html";
+            var workJson = {};
+            var educationJson = {};
+            var workJsonArray = [];
+            var educationJsonArray = [];
+
+            var setWorkAndEducationJson = function() {
+
+            }
+            
+
+            //Css variables for class selection
+            $scope.generalClass = "active";
+            $scope.resumeClass = "";
+            $scope.summaryClass = "";
+            $scope.userSkillClass = "";
+            $scope.workClass = "";
+            $scope.educationClass = "";
+
+            $scope.getContactNo = function() {
+                $http.get(user_profile_contact_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.General.contact_no1 = data.contact_no;
+                });
+            }
+
+            $scope.updateGeneralInfo = function() {
+                $http({
+                    method: 'POST',
+                    url: user_profile_contact_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {
+                        contact_no : $scope.Profile.General.contact_no1,
+                        placement_rating : 0
+                    }
+                }).success(function () {
+                    console.log("Info Updated");        //on successfull posting of question
+                    var myAlert = $alert({title: "Info Updated!", content: "Edits made to your Info were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                    console.log("Info could not be updated");                //in case there is an error
+                    var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+            }
+
+            var loadUserInfo = function() {
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile.General = data;
+                        console.log($scope.Profile.General);
+                        $scope.getContactNo();
+                    });
+
+            }
+
+            loadUserInfo();
+
+            //Resume and Links Functions
+            $scope.loadLinks = function() {
+                
+                $http.get(user_profile_resume_and_links_API+$scope.Profile.General.id)
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.ResumeAndLinks = data;
+                        console.log($scope.Profile.ResumeAndLinks.githubLink);
+                })
+
+            }
+
+
+            $scope.updateLinks = function() {
+
+                console.log($scope.Profile.ResumeAndLinks.githubLink);
+
+                $http({
+                    method: 'POST',
+                    url: user_profile_resume_and_links_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {
+                        tag : "",
+                        githubLink : $scope.Profile.ResumeAndLinks.githubLink,
+                        linkedInLink : $scope.Profile.ResumeAndLinks.linkedInLink,
+                        personalWebsiteLink : $scope.Profile.ResumeAndLinks.personalWebsiteLink,
+                        stackoverflowLink : $scope.Profile.ResumeAndLinks.stackoverflowLink
+                    }
+                }).success(function () {
+                    console.log("Links Updated");        //on successfull posting of question
+                    var myAlert = $alert({title: "Links Updated!", content: "Edits made to your links were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                    console.log("Links could not be updated");                //in case there is an error
+                    var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+            }
+
+            //Summary functions
+            $scope.loadSummary = function() {
+                
+                $http.get(user_profile_summary_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.Summary = data;
+                })
+
+            }
+
+
+            $scope.updateSummary = function() {
+
+                $http({
+                    method: 'POST',
+                    url: user_profile_summary_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {summary: $scope.Profile.Summary.summary}
+                }).success(function () {
+                    console.log("summary post success");
+                    var myAlert = $alert({title: "Summary updated!", content: "Edits made to your summary were updated", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                        console.log("Summary could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+
+
+            }
+
+            //User Skills variables
+            $scope.Profile.userSkills = {};
+            $scope.Profile.userSkills.roles = {};
+            $scope.Profile.userSkills.selectedRoles = [];
+            $scope.Profile.userSkills.experiences = ["0-1","1-2","2-3","3-4","4-5","5+"];
+            $scope.Profile.userSkills.experience = "";
+            $scope.Profile.userSkills.filterValue = "";
+            $scope.Profile.userSkills.selectedUserSkills = [];
+
+            //User skills section
+
+            function chunk(arr, size) {
+              var newArr = [];
+              for (var i=0; i<arr.length; i+=size) {
+                newArr.push(arr.slice(i, i+size));
+              }
+              return newArr;
+            }
+
+            function isAlreadySelected(role) {
+                var arr = $scope.Profile.userSkills.selectedRoles;
+                for(i=0;i<arr.length;i++) {
+                    if(role==arr[i]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            $scope.clickUserRole = function(role) {
+                /*if($scope.Profile.userSkills.selectedRoles.length>=3)
+                    return;*/
+                var indexofRole = $scope.Profile.userSkills.selectedRoles.indexOf(role);
+                if(indexofRole>=0) {
+                    $scope.Profile.userSkills.selectedRoles.splice(indexofRole,1);
+                    return;
+                }
+                else {
+                    if($scope.Profile.userSkills.selectedRoles.length>=3)
+                        return;
+                    else
+                        $scope.Profile.userSkills.selectedRoles.push(role);
+                }
+                console.log($scope.Profile.userSkills.selectedRoles);
+            }
+
+            $scope.toggleSelectedRole = function(role) {
+                if($scope.Profile.userSkills.selectedRoles.indexOf(role)>=0) {
+                    return "background-grey";
+                }
+                else
+                    return "";
+            }
+
+            $scope.toggleExperience = function(experience) {
+                if($scope.Profile.userSkills.experience==experience) {
+                    return "background-grey";
+                }
+                else
+                    return "";
+            }
+
+            $scope.updateRoles = function() {
+
+                var userRoleJsonArray = [];
+
+                var selectedRoles = $scope.Profile.userSkills.selectedRoles;
+                for(i=0;i<selectedRoles.length;i++) {
+                    userRoleJsonArray.push({"userId":$scope.Profile.General.id,"role":selectedRoles[i]});
+                }
+                console.log(userRoleJsonArray);
+
+                var updateRolesPostBody = {"userRoles":userRoleJsonArray};
+
+                $http.post( user_profile_userProfileRoles_API+$scope.Profile.General.id+"/", updateRolesPostBody,{ headers: cooksHeaderApplicationJson })
+                     .success(function(data,status,header,config) {
+                        console.log("Roles updated successfully");
+                        var myAlert = $alert({title: "Roles updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Roles could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Roles could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+            $scope.loadAllUserSkillsData = function() {
+
+                $http.get(user_profile_Roles_API)
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.userSkills.roles = [];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.roles.push(data[i].role);
+                        }
+                        console.log($scope.Profile.userSkills.roles);
+                        $scope.Profile.userSkills.ChunkedRoles = chunk($scope.Profile.userSkills.roles, 3);
+                });
+
+                $http.get(user_profile_userProfileRoles_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.userSkills.roles = [];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.selectedRoles.push(data[i].role);
+                        }
+                        //console.log($scope.Profile.userSkills.roles);
+                        //$scope.Profile.userSkills.ChunkedRoles = chunk($scope.Profile.userSkills.roles, 3);
+                });
+
+                $http.get(user_profile_experience_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.userSkills.experience = data.experience;
+                        console.log($scope.Profile.userSkills.experience);
+                });
+
+                $http.get(user_profile_userSkills_API)
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.userSkills.skills = data;
+                        $scope.Profile.userSkills.skills =[];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.skills.push(data[i].skill);
+                        }
+                        console.log($scope.Profile.userSkills.skills);
+                        $scope.Profile.userSkills.ChunkedSkills = chunk($scope.Profile.userSkills.skills, 7);
+                        console.log($scope.Profile.userSkills.ChunkedSkills);
+                });
+
+                $http.get(user_profile_user_post_skills_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        //$scope.Profile.userSkills.skills = data;
+                        $scope.Profile.userSkills.selectedUserSkills =[];
+                        for(i=0;i<data.length;i++) {
+                            $scope.Profile.userSkills.selectedUserSkills.push(data[i].skill);
+                        }
+                        console.log($scope.Profile.userSkills.selectedUserSkills);
+
+                });
+            }
+
+            $scope.addUserSkills = function() {
+                $anchorScroll();
+                var filterString = $scope.Profile.userSkills.filterValue;
+                console.log(filterString); 
+                //var lastIndex = filterString.slice(-1);
+                console.log($scope.Profile.userSkills.skills.indexOf(filterString));
+
+                if($scope.Profile.userSkills.skills.indexOf(filterString)>-1) {
+                    $scope.Profile.userSkills.selectedUserSkills.push(filterString);
+                    $scope.Profile.userSkills.filterValue = "";
+                    return;
+                }
+
+            }
+
+            $scope.removeSkill = function(skillToBeRemoved) {
+                var indexOfskillToBeRemoved = $scope.Profile.userSkills.selectedUserSkills.indexOf(skillToBeRemoved);
+                $scope.Profile.userSkills.selectedUserSkills.splice(indexOfskillToBeRemoved,1);
+            }
+
+            $scope.updateSkills = function() {
+
+                var userSkillJsonArray = [];
+
+                var selectedSkills = $scope.Profile.userSkills.selectedUserSkills;
+                for(i=0;i<selectedSkills.length;i++) {
+                    userSkillJsonArray.push({"userId":$scope.Profile.General.id,"skill":selectedSkills[i]});
+                }
+                console.log(userSkillJsonArray);
+
+                var updateSkillsPostBody = {"skills":userSkillJsonArray};
+
+                $http.post( user_profile_user_post_skills_API+$scope.Profile.General.id+"/", updateSkillsPostBody,{ headers: cooksHeaderApplicationJson })
+                     .success(function(data,status,header,config) {
+                        console.log("Skills updated successfully");
+                        var myAlert = $alert({title: "Skills updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Skills could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Skills could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+            }
+
+
+
+
+            $scope.clickExperience = function(experience) {
+
+                $scope.Profile.userSkills.experience = experience;
+
+                $http({
+                    method: 'POST',
+                    url: user_profile_experience_API+$scope.Profile.General.id+"/",
+                    headers: cooksHeader,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {experience: $scope.Profile.userSkills.experience}
+                }).success(function () {
+                    console.log("Experience updated successfully");
+                    var myAlert = $alert({title: "Experience updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                        console.log("Experience could not be updated!");                //in case there is an error
+                        var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+            }
+
+            //Work and Education functions
+            $scope.addNewWorkJson = function() {
+                if($scope.Profile.WorkAndEducation.companies.length==3) {
+                    var myAlert = $alert({title: 'A maximum of only 3 entries can be added', content: '', placement:'floater top', type: 'danger', show: true,duration:5});
+                    return;
+                }
+
+                l = workJsonArray.length;
+                console.log(workJsonArray[l-1]);
+                $scope.Profile.WorkAndEducation.companies.push(workJsonArray[l-1]);
+                workJsonArray.splice(l-1,1);
+                console.log($scope.Profile.WorkAndEducation.companies);
+            }
+
+            $scope.addNewEducationJson = function() {
+                if($scope.Profile.WorkAndEducation.colleges.length==3) {
+                    var myAlert = $alert({title: 'A maximum of only 3 entries can be added', content: '', placement:'floater top', type: 'danger', show: true,duration:5});
+                    return;
+                }
+
+                l = educationJsonArray.length;
+                console.log(educationJsonArray[l-1]);
+                $scope.Profile.WorkAndEducation.colleges.push(educationJsonArray[l-1]);
+                educationJsonArray.splice(l-1,1);
+                console.log($scope.Profile.WorkAndEducation.colleges);
+            }
+
+            $scope.deleteWorkEntry = function(index) {
+                console.log(index);
+                $scope.Profile.WorkAndEducation.companies.splice(index,1)
+            }
+
+            $scope.deleteCollegeEntry = function(index) {
+                console.log(index);
+                $scope.Profile.WorkAndEducation.colleges.splice(index,1)
+            }
+
+            $scope.loadWorkAndEducationInfo = function() {
+
+                $http.get(user_profile_work_education_API+$scope.Profile.General.id+"/")
+                    .success(function(data,status,headers,config) {
+                        $scope.Profile.WorkAndEducation = data;
+                        //console.log($scope.Profile.WorkAndEducation);
+                        console.log($scope.Profile.WorkAndEducation.companies);
+                        console.log($scope.Profile.WorkAndEducation.colleges);
+                        if($scope.Profile.WorkAndEducation.companies.length==0) {
+                            $scope.addNewWorkJson();
+                        }
+                        if($scope.Profile.WorkAndEducation.colleges.length==0) {
+                            $scope.addNewEducationJson();
+                            //console.log($scope.Profile.WorkAndEducation.colleges);
+                        }
+                        console.log($scope.Profile.WorkAndEducation);
+                })
+
+                workJson1 = {
+
+                    "userId" : $scope.Profile.General.id,
+                    "companyName" : "",
+                    "title" : "",
+                    "startDate" : "",
+                    "endDate" : "",
+                    "projects" : ""
+
+                }
+
+                workJson2 = {
+
+                    "userId" : $scope.Profile.General.id,
+                    "companyName" : "",
+                    "title" : "",
+                    "startDate" : "",
+                    "endDate" : "",
+                    "projects" : ""
+
+                }
+
+                workJson3 = {
+
+                    "userId" : $scope.Profile.General.id,
+                    "companyName" : "",
+                    "title" : "",
+                    "startDate" : "",
+                    "endDate" : "",
+                    "projects" : ""
+
+                }
+
+                educationJson1 = {
+
+                        "userId" : $scope.Profile.General.id,
+                        "collegeName" : "",
+                        "branch" : "",
+                        "degree" : "",
+                        "startDate" : "",
+                        "endDate" : "",
+                        "isPercentage" : false,
+                        "finalresult" : 0,
+                        "projects" : ""
+                    
+                }
+
+                educationJson2 = {
+
+                        "userId" : $scope.Profile.General.id,
+                        "collegeName" : "",
+                        "branch" : "",
+                        "degree" : "",
+                        "startDate" : "",
+                        "endDate" : "",
+                        "isPercentage" : false,
+                        "finalresult" : 0,
+                        "projects" : ""
+                    
+                }
+
+                educationJson3 = {
+
+                        "userId" : $scope.Profile.General.id,
+                        "collegeName" : "",
+                        "branch" : "",
+                        "degree" : "",
+                        "startDate" : "",
+                        "endDate" : "",
+                        "isPercentage" : false,
+                        "finalresult" : 0,
+                        "projects" : ""
+                    
+                }
+
+                workJsonArray.push(workJson1);
+                workJsonArray.push(workJson2);
+                workJsonArray.push(workJson3);
+
+                educationJsonArray.push(educationJson1);
+                educationJsonArray.push(educationJson2);
+                educationJsonArray.push(educationJson3);
+
+            }
+
+            function getPostableBody() {
+                var collegeJsonPost = [];
+                var companiesJsonPost = [];
+                var companyJson = $scope.Profile.WorkAndEducation.companies;
+                for(i=0;i<companyJson.length;i++) {
+                    var singleCompanyJson = companyJson[i];
+                    if(singleCompanyJson.companyName=="" || singleCompanyJson.title=="" || singleCompanyJson.startDate=="" || singleCompanyJson.endDate=="") {
+                        $scope.dispplayErrorCompany = true;
+                    }
+                    else {
+                        companiesJsonPost.push(singleCompanyJson);
+                    }
+                }
+
+                var collegeJson = $scope.Profile.WorkAndEducation.colleges;
+                for(i=0;i<collegeJson.length;i++) {
+                    var singlecollegeJson = collegeJson[i];
+                    console.log(singlecollegeJson);
+                    if(singlecollegeJson.collegeName=="" || singlecollegeJson.branch=="" || singlecollegeJson.degree=="" || singlecollegeJson.startDate=="" || singlecollegeJson.endDate=="") {
+                        $scope.dispplayErrorCollege = true;
+                    }
+                    else {
+                        collegeJsonPost.push(singlecollegeJson);
+                    }
+                }
+                return {"colleges":collegeJsonPost,"companies":companiesJsonPost};
+            }
+
+            $scope.updateWorkAndEducationInfo = function(section) {
+                //$scope.dispplayError
+                //var body = $scope.Profile.WorkAndEducation;
+                var body = getPostableBody();
+                console.log(body)
+                //return;
+
+                //body =  [$scope.question.pk];
+                /*$http.post( user_profile_work_education_API+$scope.Profile.General.id+"/", body,{ headers: cooksHeader,'Content-Type': 'application/json' })
+                     .success(function(data,status,header,config) {
+                        console.log("Info updated successfully");
+                        var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        })
+                     .error(function(response) {
+                        console.log("Info could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Work Info could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });*/
+
+                $http({
+                    url: user_profile_work_education_API+$scope.Profile.General.id+"/",
+                    dataType: 'json',
+                    method: 'POST',
+                    data: body,
+                    headers: cooksHeaderApplicationJson
+
+                }).success(function(response){
+                    console.log("Info updated successfully");
+                    var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        
+                }).error(function(error){
+                    console.log("Info could not be updated");                //in case there is an error
+                        var myAlert = $alert({title: 'Work Info could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                });
+            }
+
+
+            $scope.selectSection = function(section_to_load) {
+                console.log(section_to_load);
+                $scope.load_profile_section = absolute_path+"Profile/Sections/"+section_to_load+".html";
+
+                //Set active classes for CSS
+                $scope.generalClass = "";
+                $scope.resumeClass = "";
+                $scope.summaryClass = "";
+                $scope.userSkillClass = "";
+                $scope.workClass = "";
+                $scope.educationClass = "";
+
+                if(section_to_load=="general") {
+                    $scope.generalClass = "active";
+                }
+                else if (section_to_load=="summary") {
+                    $scope.summaryClass = "active";
+                }
+                else if (section_to_load=="userSkills") {
+                    $scope.userSkillClass = "active";
+                }
+                else if (section_to_load=="resume") {
+                    $scope.resumeClass = "active";
+                }
+                else if (section_to_load=="work") {
+                    $scope.workClass = "active";
+                }
+                else if (section_to_load=="education") {
+                    $scope.educationClass = "active";
+                }
+
+            }          
+              
         })
-        .controller("questionsController",function($scope,$http,$sce,userService) {
+        .controller("statisticsController",function($scope,$http) {
+
+            $scope.Profile = {};
+            $scope.Profile.id = "";
+            $scope.Profile.username = "";
+            $scope.Profile.first_name = "";
+            $scope.Profile.last_name = "";
+            $scope.Profile.email = "";
+            $scope.Profile.contact_no = "";
+            $scope.Profile.profile_score = "-1";
+            $scope.Profile.profile_experience = "-1";
+            $scope.Profile.profile_questions_answered = "-1";
+
+
+            var loadUserInfo = function() {
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile = data;
+                        console.log("first name:"+$scope.Profile.first_name);
+
+                    });
+
+            }
+
+            $http.get(user_stats_API)
+                .success(function(data,status,headers,config) {
+                    console.log(data);
+
+                    function drawChart() {
+
+                        // Create the data table.
+                        var dataChart = new google.visualization.DataTable();
+                        dataChart.addColumn('string', 'Topic');
+                        dataChart.addColumn('number', 'Score');
+                        dataChart.addColumn({type: 'number', role: 'annotation'});
+                        for(var cat in data) {
+                            if(cat=="Puzzles" || cat=="Descriptive" || cat=="Company")
+                                continue;
+                            console.log(cat,data[cat]);
+                            dataChart.addRows([
+                                [cat,data[cat]*10,data[cat]*10]
+                            ]);
+                        }
+
+                        // Set chart options
+                        var options = {
+                            'title':'',
+                            'width':1200,
+                            'height':430,
+                            'is3D':true,
+                            'chartArea':{width:"55%",height:"90%"},
+                            'legend': 'right'
+                        };
+
+                        // Instantiate and draw our chart, passing in some options.
+                        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                        chart.draw(dataChart, options);
+                      }
+                      $scope.flag=false;
+                        if(!($scope.flag)) {
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChart);
+                            console.log("Executed!");
+                            $scope.flag=true;
+                        }
+
+                });
+
+            loadUserInfo();
+              
+        })
+        .controller("questionsController",function($rootScope,$scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
 
             //this.userModel = userService.model;
-
+            console.log('Entered questions controller')
             //console.log(this.userModel.active);
             //console.log(userService.model.active);
+            $scope.userModel = userService.returnState();
+
+            $scope.tooltipShare = {
+                "title": "Question Link copied to clipboard!",
+                "checked": false
+            };
 
             //Variable to display tags/search them in autocomplete search bar
             $scope.tags = {};
             $scope.tags.allTagNames = [];
-            $scope.tags.tagsNamesToAddToQuestion = [];
+            $scope.tags.tagsNamesToAddToQuestion = "";
 
             //Variable to check if category filter is set On/Off
             $scope.isCategoryFilterOn = false;
 
             //Dictionaries to map questionID : choices/categories of that quesitonID
             $scope.questionIdToChoicesDictionary = [];
+            $scope.questionIdToChoicesDictionaryChunked = [];
             $scope.questionIdToCategoriesDictionary = [];
 
             //Dictionary for storing mapping of category_text : category_id
@@ -667,7 +2706,97 @@ var app = angular
             //Feed contains array of 10 sets of questions all the questions 
             $scope.feed = {};
             var feedNum = 0;
-            var isFetchingQuestions = false;
+            $scope.isFetchingQuestions = false;
+
+            $(window).scroll(function(){
+                $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
+            });
+
+            //Function to remove filter category
+            $scope.removeCategory = function(categoryToRemove) {
+
+                console.log("Removing category:"+categoryToRemove);
+                $scope.tags.tagsNamesToAddToQuestion = "";
+                $scope.isCategoryFilterOn = false;
+                $scope.questionIdToChoicesDictionary = [];
+                $scope.questionIdToChoicesDictionaryChunked = [];
+                $scope.questionIdToCategoriesDictionary = [];
+                feedNum=0;
+                $scope.feed = {};
+
+                getQuestions(feedNum);
+
+            }
+
+            $scope.changeCategory = function(categoryToRemove) {
+                //categoryToRemove=categoryToRemove+" ";
+                $scope.tags.filterValue=categoryToRemove;
+                $scope.updateCategories();
+            }
+
+
+            $scope.getTagTemplate = function() {
+                
+                return tag_structure_file_search_bar;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+            $scope.getTagTemplateForExampleBox = function() {
+                
+                return tag_structure_file_example_box;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+            $scope.getColorForDifficulty = function(difficulty_level) {
+                //console.log(difficulty_level);
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
+            }
+
+            $scope.makeImportantTagsBold = function(tagToAddToQuestion) {
+                var className = "make-font-bold";
+                switch(tagToAddToQuestion) {
+                    case "Aptitude" :
+                        return className;
+                    case "Puzzles" :
+                        return className;
+                    case "Data Structures" :
+                        return className;
+                    case "String" :
+                        return className;
+                    case "Algorithm" :
+                        return className;
+                    case "Bit Problem" :
+                        return className;
+                    case "Hashing" :
+                        return className;
+                    case "C Programming" :
+                        return className;
+                    case "C++" :
+                        return className;
+                    case "Sorting and Searching" :
+                        return className;
+                    case "Operating Systems" :
+                        return className;
+                    case "DBMS" :
+                        return className;
+                    case "Computer Networking" :
+                        return className;
+                    default:
+                        return "not-important-tag";
+                }
+
+            }
+
+            /*$scope.returnShareLink = function(question) {
+                return question.shareLink;
+            }*/
 
 
             //Function to GET all Categories 
@@ -675,24 +2804,47 @@ var app = angular
 
                 $http.get(question_categories_API)
                     .success(function(data,status,headers,config) {
-                        
+                    
                         //Populate the allCategoriesDictionary
+                        var j=0;
                         for(i=0;i<data.length;i++) {
-                            $scope.tags.allTagNames[i] = (data[i].category_text);
-                            allCategoriesDictionary[data[i].category_text] = data[i].id
+                            var singleCategory = data[i];
+                            if(!(singleCategory.parent_category==COMPANY_CATEGORY_ID) || singleCategory.id==COMPANY_CATEGORY_ID) {
+                                //console.log("Parent category:"+data[i].parent_category);
+                                $scope.tags.allTagNames[j++] = (singleCategory.category_text);
+                            }
+                                
+                            allCategoriesDictionary[singleCategory.category_text] = singleCategory.id;
                         }
+                        $scope.tags.allTagNames.sort();
                         console.log($scope.tags.allTagNames);
 
                     });
             }
 
+
             getAllCategories();     //Runs function to GET Categories as soon as controller is called
 
+            //Tooltips
+            $scope.tooltip = {
+              "title": "To filter questions of a particular topic, start typing the topic here!",
+              "checked": true
+            };
+
+            function chunk(arr, size) {
+              var newArr = [];
+              for (var i=0; i<arr.length; i+=size) {
+                newArr.push(arr.slice(i, i+size));
+              }
+              return newArr;
+            }
+            
 
             //Function to GET questions
             var getQuestions = function(feedNum) {
 
                 console.log("Feed Number:"+feedNum);
+                $scope.isFetchingQuestions = true;
 
                 //Deciding the Endpoint to hit based on whether there is a category selected or not
                 if(!($scope.isCategoryFilterOn)) {
@@ -718,16 +2870,20 @@ var app = angular
 
                             var singleQuestion = allQuestions[i];
                             singleQuestion.isSolved = false;
+                            singleQuestion.showSolution = false;
+                            singleQuestion.shareLink = API_Start+ "/#/ViewQuestion/"+allQuestions[i].kind+"/"+allQuestions[i].id;
+                            singleQuestion.inputIdLink = allQuestions[i].id;
                             singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
 
                             //If question is an MCQ, fetch the choices and all to dictionary
                             if(singleQuestion.kind==mcq_kind) {
                                 
-                                var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                                var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id;
                                 $http.get(fetchChoicesOfAQuestion_API)
                                     .success(function(data,status,headers,config) {
                                         //Populate Question ID to choices Dictionary
-                                        $scope.questionIdToChoicesDictionary[data[0].questionId] = data;
+                                        $scope.questionIdToChoicesDictionary[data.choices[0].questionId] = data.choices;
+                                        $scope.questionIdToChoicesDictionaryChunked[data.choices[0].questionId] = chunk(data.choices,2);
                                 })
                             }
 
@@ -742,7 +2898,7 @@ var app = angular
 
                             });
 
-                            isFetchingQuestions = false;
+                            $scope.isFetchingQuestions = false;
                         }
                 });
             
@@ -754,7 +2910,7 @@ var app = angular
 
             //Function determines the behavior of the Autocomplete Search Filter
             $scope.updateCategories = function() {
-
+                $anchorScroll();
                 var filterString = $scope.tags.filterValue;
                 var lastIndex = filterString.slice(-1);
 
@@ -763,14 +2919,16 @@ var app = angular
                     return;
                 }
 
-                if(lastIndex==' ' && filterString.length>1) {
-                    $scope.tags.tagsNamesToAddToQuestion.push(filterString.substring(0,filterString.length-1))
+                if(filterString.length>1 && allCategoriesDictionary[filterString]) {
+                    console.log("Dictionary for filter:"+filterString+":"+allCategoriesDictionary[filterString]);
+                    $scope.tags.tagsNamesToAddToQuestion = filterString.substring(0,filterString.length);
                     console.log($scope.tags.tagsNamesToAddToQuestion);
                     $scope.tags.filterValue = "";
 
                     //Here a new category filter has been added, we need to update the questions
-                    $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion[0]];
+                    $scope.categoryFilterNumber = allCategoriesDictionary[$scope.tags.tagsNamesToAddToQuestion];
                     $scope.questionIdToChoicesDictionary = [];
+                    $scope.questionIdToChoicesDictionaryChunked = [];
                     $scope.questionIdToCategoriesDictionary = [];
                     $scope.isCategoryFilterOn = true;
                     feedNum=0;
@@ -789,13 +2947,86 @@ var app = angular
 
             }
 
+            $scope.markForLater = function(question) {
+                console.log("Mark "+question.id+" for later");
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_mark_Later_API;
+                body =  [question.id];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Question marked for later");        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: "Question "+question.id+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not saved to favorites list!");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+
+            }
+
+            $scope.shareLink = function(question) {
+                console.log("Mark "+question.id+" for later");
+
+                $scope.ShareLinkUrl = API_Start+ "/#/ViewQuestion/"+question.kind+"/"+question.id;
+                $scope.tooltipShareLink = {
+                  "title": $scope.ShareLinkUrl,
+                  "checked": true
+                };
+                console.log($scope.ShareLinkUrl);
+            }
+
+
+            $scope.displaySolution = function(question) {
+
+                if(question.showSolution) {
+                    question.showSolution = false;
+                    return;
+                }
+
+                console.log(question.id);
+                if(question.kind=="descriptive") {
+                    console.log("des");
+                    url = post_descriptive_questions_API+ question.id;
+                }
+                else if(question.kind=="mcq") {
+                    console.log("mcq");
+                    url = post_mcq_Questions_API+ question.id;
+                }
+
+                $http.get(url)
+                .then(function(response) {
+                    
+                    var questionDetails = response.data;
+                    //$scope.question.description = $sce.trustAsHtml($scope.question.description);
+                    //$scope.question.answer = $sce.trustAsHtml($scope.question.answer);
+                    //console.log($scope.question);
+                    question.answer = questionDetails.answer;
+                    console.log(question.answer);
+                    question.showSolution = true;
+                    $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
+
+                });
+            }
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                console.log("changing location");
+                //scrolling_function.kill();
+                $(window).off();
+            });
+
 
             $(window).scroll(function () {
                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-                    if(!isFetchingQuestions) {
+                    if(!$scope.isFetchingQuestions) {
                         feedNum++;
                         console.log("Getting feed number:"+feedNum);
-                        isFetchingQuestions=true;
+                        $scope.isFetchingQuestions=true;
                         getQuestions(feedNum);
                     }     
 
@@ -810,6 +3041,304 @@ var app = angular
             $scope.getQuestionTemplateByType = function(question) {
                 
                 return getQuestionInfo[question.kind].templateFile;
+
+            }
+
+            //Returing if the selected choice is the correct choice
+            $scope.validateChoice = function(question,choice,index) {
+                //console.log(question);
+                //console.log(choice);
+                //console.log(index);
+                
+                if(question.isSolved)
+                    return;
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+
+                postBody = {"choiceId":choice.id};
+                $http.post(post_mcq_Questions_API+question.id+"/solve",postBody,{ headers: cooksHeader })
+                    .success(function(data,status,header,config) {
+                            console.log("Solved Question!");        //on successfull posting of question
+                            console.log(data.value);
+                            console.log($scope.questionIdToChoicesDictionary[question.id]);
+                            for(i=0;i<$scope.questionIdToChoicesDictionary[question.id].length;i++) {
+                                if($scope.questionIdToChoicesDictionary[question.id][i].id==data.value){
+                                    $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = true;
+                                    if(choice.id==data.value) {
+                                        $rootScope.rootScope_score = $rootScope.rootScope_score+10;
+
+                                        var myAlert = $alert({title: "Question "+question.id+" solved correctly!", content: "You scored 10 points", placement:'floater top right', type: 'success', show: true,duration:4});
+                            
+                                    }
+                                    else {
+                                        var myAlert = $alert({title: "The option you chose to question "+question.id+" was incorrect!", content: "You scored 0 points", placement:'floater top right', type: 'danger', show: true,duration:4});
+                            
+                                    }
+                                    $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
+                                }
+                                else {
+                                    $scope.questionIdToChoicesDictionary[question.id][i]["is_correct"] = false;
+                                }
+                                console.log($scope.questionIdToChoicesDictionary[question.id][i]);
+                            }
+                            question.isSolved = true;
+                            question.isSelected = index;
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+                /*if(question.isSolved)
+                    return;
+                question.isSolved = true;
+                question.isSelected = index;*/
+            }
+
+            //The choice selected get a grey background
+            $scope.applyClassToSelectedChoice = function(question,choice,index) {
+                //console.log(index);
+                if(!question.isSolved)
+                    return;
+                if(question.isSelected==index)
+                    return "background-grey";
+            }
+
+            //Change color of the choice option to indicate correctness
+            $scope.applyColors = function(question,choice) {
+                if(!question.isSolved)
+                    return;
+                if(choice.is_correct) {
+                    return "choice-green";
+                }
+                else {
+                    return "choice-red";
+                }
+            }
+
+        })
+        .controller("markedForLaterController",function($scope,$http,$sce,userService,$tooltip,$cookies,$alert) {
+
+            //this.userModel = userService.model;
+            console.log('entered questions controller')
+            //console.log(this.userModel.active);
+            //console.log(userService.model.active);
+            $scope.userModel = userService.returnState();
+
+            //Boolean value to decide if div ("there are no questions yet") is shown
+            $scope.showNoQuestionsYetDiv = false;
+
+
+            //Dictionaries to map questionID : choices/categories of that quesitonID
+            $scope.questionIdToChoicesDictionary = [];
+            $scope.questionIdToCategoriesDictionary = [];
+
+            //Dictionary for storing mapping of category_text : category_id
+            allCategoriesDictionary = [];
+
+            //Feed contains array of 10 sets of questions all the questions 
+            $scope.feed = {};
+            var feedNum = 0;
+            var isFetchingQuestions = false;
+
+            $(window).scroll(function(){
+                $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
+            });
+
+
+            $scope.getTagTemplate = function() {
+                
+                return tag_structure_file_search_bar;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+
+            $scope.getColorForDifficulty = function(difficulty_level) {
+                //console.log(difficulty_level);
+                if(difficulty_level>=1 && difficulty_level<=3)
+                    return "difficulty_1-3";
+                else if (difficulty_level>=4 && difficulty_level<=5)
+                    return "difficulty_4-5";
+                else if (difficulty_level>=6 && difficulty_level<=7)
+                    return "difficulty_6-7";
+                else
+                    return "difficulty_8-10";
+            }
+
+
+            //Tooltips
+            $scope.tooltip = {
+              "title": "To filter questions of a particular topic, start typing the topic here!",
+              "checked": true
+            };
+            
+
+            //Function to GET questions
+            var questionIDToMarkQuestionID = [];
+            var getQuestions = function(feedNum) {
+
+                console.log("Feed Number:"+feedNum);
+
+                var arrayOfQuestionIDs = [];
+                $scope.questions = [];
+                var allQuestions;
+                //questionIDToMarkQuestionID = [];
+                $http.get(question_mark_Later_API)
+                    .success(function(data,status,headers,config) {
+                        console.log(data);
+                        if(data.length==0) {
+                            $scope.showNoQuestionsYetDiv = true;
+                        }
+                        else {
+                            $scope.showNoQuestionsYetDiv = false;
+                        }
+                        allQuestions = [];
+                        for(i=0;i<data.length;i++) {
+                            arrayOfQuestionIDs.push(data[i].questionId);
+                            questionIDToMarkQuestionID[data[i].questionId] = data[i].id;
+                            console.log(questionIDToMarkQuestionID);
+                            $http.get(questions_API+"/"+data[i].questionId)
+                                .success(function(data,status,headers,config) {
+
+                                    allQuestions.push(data);
+                                    var singleQuestion = data;
+                                    singleQuestion.isSolved = false;
+                                    singleQuestion.showSolution = false;
+                                    singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
+
+                                    if(singleQuestion.kind==mcq_kind) {
+                                
+                                    var fetchChoicesOfAQuestion_API = post_mcq_Questions_API + singleQuestion.id+"/choice/";
+                                    $http.get(fetchChoicesOfAQuestion_API)
+                                        .success(function(data,status,headers,config) {
+                                            //Populate Question ID to choices Dictionary
+                                            $scope.questionIdToChoicesDictionary[data[0].questionId] = data;
+                                            console.log(config.url);
+                                        })
+
+                                    
+                                    }
+
+                                    var fetchCategoryOfAQuestion_API = questions_API+"/"+singleQuestion.id+"/category";
+                                    $http.get(fetchCategoryOfAQuestion_API)
+                                        .success(function(data,status,headers,config) {
+
+                                            //Get ID of the question to which it belongs
+                                            var idOfQuestion = config.url.split("/")[6];
+                                            //Populate Question ID to Categories Dictionary
+                                            $scope.questionIdToCategoriesDictionary[idOfQuestion] = data;
+
+                                    });
+                                        
+
+                                    isFetchingQuestions = false;
+                                })
+                            }
+                        console.log(allQuestions);
+
+                        $scope.questions = allQuestions;    //Set of fetch questions get assigned to an index in feed
+
+
+                    })
+
+                
+
+                //Fetching questions here
+                
+            
+            }
+
+            //Makes first call for questions when controller is executed
+            getQuestions(feedNum);
+
+
+
+            
+            $scope.getTagTemplateQnA = function() {
+                
+                return tag_structure_file_qna;         //returning the template file from getQuestonInfo using question 
+
+            }
+
+
+            $scope.unmarkQuestion = function(question,index) {
+                console.log($scope.questions.indexOf(question));
+                console.log(index);
+                //console.log(questionIDToMarkQuestionID);
+                //console.log(questionIDToMarkQuestionID[question.id]);
+
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = question_unmark_Later_API+questionIDToMarkQuestionID[question.id];
+                body =  [question.id];
+                $http.delete( url, { headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+
+                            $scope.questions.splice(index,1);
+                            if($scope.questions.length==0) {
+                                $scope.showNoQuestionsYetDiv = true;
+                            }
+                            console.log($scope.questions);
+                            console.log("Question has been removed from saved list");        //on successfull posting of question                     
+                            var myAlert = $alert({title: "Question "+question.id+" has been removed from favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        })
+                     .error(function(response) {
+                        console.log("Error:Question could not be marked for later");                //in case there is an error
+                        var myAlert = $alert({title: 'Error:Question could not be removed from favorites list!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+
+                     });
+
+            }
+
+            $scope.displaySolution = function(question) {
+
+                if(question.showSolution) {
+                    question.showSolution = false;
+                    return;
+                }
+
+                console.log(question.id);
+                if(question.kind=="descriptive") {
+                    console.log("des");
+                    url = post_descriptive_questions_API+ question.id;
+                }
+                else if(question.kind=="mcq") {
+                    console.log("mcq");
+                    url = post_mcq_Questions_API+ question.id;
+                }
+
+                $http.get(url)
+                .then(function(response) {
+                    
+                    var questionDetails = response.data;
+                    //$scope.question.description = $sce.trustAsHtml($scope.question.description);
+                    //$scope.question.answer = $sce.trustAsHtml($scope.question.answer);
+                    //console.log($scope.question);
+                    question.answer = questionDetails.answer;
+                    console.log(question.answer);
+                    question.showSolution = true;
+
+                });
+            }
+
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                console.log("changing location");
+                //scrolling_function.kill();
+                $(window).off();
+            });
+
+
+
+            //-------------Functions for styling the content-----------------------
+
+
+            //Returning the template file from getQuestonInfo using question 
+            $scope.getQuestionTemplateByType = function(question) {
+                
+                return getQuestionInfo[question.kind].markLaterTemplateFile;
 
             }
 
@@ -842,7 +3371,7 @@ var app = angular
             }
 
         })
-        .controller("postQuestion",function($scope,$http,$alert) {
+        .controller("postQuestion",function($scope,$http,$alert,$cookies) {
 
             //Scope Variables default values;
             $scope.question_types = question_types;
@@ -855,7 +3384,70 @@ var app = angular
             var classToAddToTab = "active";             //The class you want to apply when question type is selected
             $scope.tabClass = [classToAddToTab,""];     //By default the first one will have the class and second will not
 
+            //--------------Mock Tests--------------------
+            $scope.mock={};
+            $scope.mock.mockTitle="";
+            $scope.mock.mockDuration="";
+            $scope.mock.mockDifficulty="";
 
+            $scope.addMockTest = function() {
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = mock_mock_API;
+                body =  [{
+                    "title": $scope.mock.mockTitle,
+                    "duration": $scope.mock.mockDuration,
+                    "difficulty_level": $scope.mock.mockDifficulty
+                }];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: 'Mock added successfully!', content: 'The Mock ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
+
+                        })
+                     .error(function(response) {
+                        console.log("The question could not be posted");                //in case there is an error
+                        var myAlert = $alert({title: 'Error in posting mock test!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
+
+                     });
+            }
+
+            $scope.addNewTag = function() {
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                url = category_enabled_API;
+                body =  [{
+                    "category_text": $scope.addTags.categoryText,
+                    "parent_category": parseInt($scope.addTags.parentCategory)
+                }];
+                $http.post( url, body,{ headers: cooksHeader })
+                     .success(function(data,status,header,config) {
+                            console.log("New tag added successfully.ID:"+data[0].id);        //on successfull posting of question
+                            
+                            var myAlert = $alert({title: 'New tag added successfully!', content: 'The tag ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
+
+                        })
+                     .error(function(response) {
+                        console.log("The tag could not be added");                //in case there is an error
+                        var myAlert = $alert({title: 'Error in adding tag!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
+
+                     });
+            }
+
+            $scope.deleteATag = function() {
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
+                $http.delete(category_enabled_API+$scope.addTags.categoryIDToDelete, {headers : cooksHeader})
+                    .success(function(response) {
+                            console.log("Tags deleted successfully");        //on successfull posting of question
+                            
+                        
+                        })
+                        .error(function(response) {
+                            console.log("Tags could not be deleted");                //in case there is an error
+                        });
+            }
 
             $scope.changeTabClass = function(clickedTab) {
                 if(clickedTab=="mcq") {
@@ -989,6 +3581,9 @@ var app = angular
                     alert("Question has to have explanation");  //Will try to make border of question title red
                     return;
                 }
+                console.log("This is the:"+$cookies.get("csrftoken"));
+                var cooks = $cookies.get("csrftoken");
+                var cooksHeader = { 'X-CSRFToken': cooks };
                 url = post_descriptive_questions_API;
                 body =  [{
                     "title": $scope.question.questionText,
@@ -997,11 +3592,11 @@ var app = angular
                     "kind": descriptive_kind,
                     "answer": $scope.question.questionAnswer
                 }];
-                $http.post( url, body)
+                $http.post( url, body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                             console.log("Descriptive question posted successfully.ID:"+data[0].id);        //on successfull posting of question
                             
-                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
 
                             var categoryBody = [];      //Will store the body of the url to add categories
 
@@ -1016,7 +3611,7 @@ var app = angular
 
                             var addCategoryURL = questions_API+"/"+data[0].id+"/category";
 
-                            $http.post(addCategoryURL,categoryBody)
+                            $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
                             .success(function(data,status,header,config) {
                                 console.log("Categories posted successfully");
                             })
@@ -1024,904 +3619,137 @@ var app = angular
                         })
                      .error(function(response) {
                         console.log("The question could not be posted");                //in case there is an error
-                        var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                        var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
                      });
             }
 
+            //$scope.mockID="";
+
             $scope.postMCQQuestion = function () {
-                console.log("Trying to post MCQ question...");
-                if(!$scope.question.questionText) {
-                    alert("Question has to have a title!");
-                    return;
-                }
-                //url = "http://localhost:8000/question/question_mcq/";
-                post_mcq_questions_Body =  [{
-                    "title": $scope.question.questionText,
-                    "difficulty_level": $scope.question.difficulty,
-                    "kind": mcq_kind,
-                }];
-                $http.post( post_mcq_Questions_API, post_mcq_questions_Body)
-                    .success(function(data,status,header,config) {
-                        
-                        $scope.postResponse = data[0];
-                        console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
-                        var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'alert-box', type: 'success', show: true,duration:15});
+
+                if($scope.question.mockID) {
+
+                    console.log("trying to post in mock");
 
 
-                        //Add choices to the question here
-                        for(i=0;i<$scope.number_of_choices;i++) {
-                            if(!$scope.question.choices.choicesCorrect[i])
-                                $scope.question.choices.choicesCorrect[i]=false;   
+                    var choiceBodyMock = [];    //Will hold body of the url which posts choices
+
+                    for(i=0;i<$scope.number_of_choices;i++) {
+                        var text = $scope.question.choices.choiceText[i];
+                        if(text==null || text=="")
+                            continue;
+                        var isTrue = $scope.question.choices.choicesCorrect[i];
+                        var singleChoice = {
+                            "choice_text" : text,
+                            "is_correct" : isTrue
                         }
+                        choiceBodyMock.push(singleChoice);
 
-                        var choiceBody = [];    //Will hold body of the url which posts choices
+                    }
 
-                        for(i=0;i<$scope.number_of_choices;i++) {
-                            var text = $scope.question.choices.choiceText[i];
-                            if(text==null || text=="")
-                                continue;
-                            var isTrue = $scope.question.choices.choicesCorrect[i];
-                            var singleChoice = {
-                                "choice_text" : text,
-                                "is_correct" : isTrue,
-                                "questionId" : $scope.postResponse.id
-                            }
-                            choiceBody.push(singleChoice);
+                    post_mock_mcq_questions_Body =  [{
+                        "title": $scope.question.questionText,
+                        "difficulty_level": $scope.question.difficulty,
+                        "description" : $scope.question.solution,
+                        "choices": choiceBodyMock
+                    }];
 
-                        }
+                    console.log(post_mock_mcq_questions_Body);
 
+                    var cooks = $cookies.get("csrftoken");
+                    var cooksHeader = { 'X-CSRFToken': cooks };
 
-                        $http.post(question_add_choices_API,choiceBody)
+                    $http.post(mock_mock_API+$scope.question.mockID+"/adminquestions",post_mock_mcq_questions_Body,{ headers: cooksHeader })
                         .success(function(data,status,header,config) {
-                            console.log("Option posted successfully");
+                            $scope.postResponse = data[0];
+                            console.log("Question posted successfully");
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'Posted the question into mock ID :'+$scope.question.mockID, placement:'floater top', type: 'success', show: true,duration:15});
+
                         })
+                }
+                else {
+                    console.log("Trying to post MCQ question...");
+                    if(!$scope.question.questionText) {
+                        alert("Question has to have a title!");
+                        return;
+                    }
 
-                        //Add categories to question here
-                        var categoryBody = [];
-
-                        for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                    var cooks = $cookies.get("csrftoken");
+                    var cooksHeader = { 'X-CSRFToken': cooks };
+                    //url = "http://localhost:8000/question/question_mcq/";
+                    post_mcq_questions_Body =  [{
+                        "title": $scope.question.questionText,
+                        "difficulty_level": $scope.question.difficulty,
+                        "kind": mcq_kind,
+                    }];
+                    $http.post( post_mcq_Questions_API, post_mcq_questions_Body,{ headers: cooksHeader })
+                        .success(function(data,status,header,config) {
                             
-                            var singleCategory = {
-                                "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]     //Add category id to the choice body using categoryDict dictionary
+                            $scope.postResponse = data[0];
+                            console.log("Question posted successfully. ID is:"+$scope.postResponse.id);
+                            var myAlert = $alert({title: 'Posted Question successfully!', content: 'The Question ID is :'+data[0].id, placement:'floater top', type: 'success', show: true,duration:15});
+
+
+                            //Add choices to the question here
+                            for(i=0;i<$scope.number_of_choices;i++) {
+                                if(!$scope.question.choices.choicesCorrect[i])
+                                    $scope.question.choices.choicesCorrect[i]=false;   
                             }
-                            categoryBody.push(singleCategory);   //Add single category to the body
-                        }
 
-                        console.log(categoryBody);
+                            var choiceBody = [];    //Will hold body of the url which posts choices
 
-                        var addCategoryURL = questions_API + "/" + $scope.postResponse.id + "/category";
+                            for(i=0;i<$scope.number_of_choices;i++) {
+                                var text = $scope.question.choices.choiceText[i];
+                                if(text==null || text=="")
+                                    continue;
+                                var isTrue = $scope.question.choices.choicesCorrect[i];
+                                var singleChoice = {
+                                    "choice_text" : text,
+                                    "is_correct" : isTrue,
+                                    "questionId" : $scope.postResponse.id
+                                }
+                                console.log(singleChoice);
+                                choiceBody.push(singleChoice);
 
-                        $http.post(addCategoryURL,categoryBody)
+                            }
+
+
+                            $http.post(question_add_choices_API,choiceBody,{ headers: cooksHeader })
                             .success(function(data,status,header,config) {
-                                console.log("Categories posted successfully");
+                                console.log("Option posted successfully");
+                            })
+
+                            //Add categories to question here
+                            var categoryBody = [];
+
+                            for(i=0;i< $scope.tags.tagsNamesToAddToQuestion.length ;i++) {
+                                
+                                var singleCategory = {
+                                    "categoryId": categoryDict[$scope.tags.tagsNamesToAddToQuestion[i]]     //Add category id to the choice body using categoryDict dictionary
+                                }
+                                categoryBody.push(singleCategory);   //Add single category to the body
+                            }
+
+                            console.log(categoryBody);
+
+                            var addCategoryURL = questions_API + "/" + $scope.postResponse.id + "/category";
+
+                            $http.post(addCategoryURL,categoryBody,{ headers: cooksHeader })
+                                .success(function(data,status,header,config) {
+                                    console.log("Categories posted successfully");
+                            })
+
                         })
+                        .error(function(response) {
+                            console.log("The question could not be posted");
+                                //Delete the question since choices were not added!
+                                var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:15});
 
-                    })
-                    .error(function(response) {
-                        console.log("The question could not be posted");
-                            //Delete the question since choices were not added!
-                            var myAlert = $alert({title: 'Error in posting question!', content: 'Check the logs to know more.', placement:'alert-box', type: 'danger', show: true,duration:15});
+                         });
+                }
 
-                     });
+                
             }
 
         });
-
-
-
-//Ankurs angular code
-//
-//app.factory('sharedEducationInfoService', function($rootScope){
-//    var educationInfoSharedService ={};
-//    educationInfoSharedService.eduInstituteName = ''
-//    educationInfoSharedService.degreeLevel = ''
-//    educationInfoSharedService.percentageObtained = ''
-//    educationInfoSharedService.location = ''
-//    educationInfoSharedService.yearOfGraduation = ''
-//    educationInfoSharedService.educationDescription = ''
-//
-//
-//    educationInfoSharedService.prepForBroadcastGeneralInfo = function(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription){
-//        this.eduInstituteName = eduInstituteName;
-//        this.degreeLevel = degreeLevel;
-//        this.percentageObtained = percentageObtained;
-//        this.location = location;
-//        this.yearOfGraduation = yearOfGraduation;
-//        this.educationDescription = educationDescription;
-//        this.broadcastItem();
-//    };
-//
-//    educationInfoSharedService.broadcastItem = function(){
-//        $rootScope.$broadcast('handleBroadcast');
-//    };
-//
-//    return educationInfoSharedService;
-//});
-//
-////app.controller('controllerEducationInfo',function($scope){
-////    $scope.units = [
-////        {'id': 1, 'label': 'Graduated'},
-////        {'id': 2, 'label': 'Graduating'},
-////        {'id': 3, 'label': 'Enrolled'},
-////        {'id': 3, 'label': 'Deffered'},
-////        {'id': 3, 'label': 'Transferred'},
-////    ]
-////     $scope.data= $scope.units[0];
-////});
-//
-//app.controller('controllerEducationInfo',['$scope','sharedEducationInfoService',function($scope, educationInfoSharedService){
-//    $scope.units = [
-//        {'id': 1, 'label': 'Graduated'},
-//        {'id': 2, 'label': 'Graduating'},
-//        {'id': 3, 'label': 'Enrolled'},
-//        {'id': 3, 'label': 'Deffered'},
-//        {'id': 3, 'label': 'Transferred'},
-//    ]
-//     $scope.data= $scope.units[0];
-//    $scope.handleClick = function(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription){
-//        educationInfoSharedService.prepForBroadcastGeneralInfo(eduInstituteName,degreeLevel,percentageObtained,location,yearOfGraduation,educationDescription);
-//    };
-//
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.eduInstituteName = educationInfoSharedService.eduInstituteName;
-//        $scope.degreeLevel = educationInfoSharedService.degreeLevel;
-//        $scope.percentageObtained = educationInfoSharedService.percentageObtained;
-//        $scope.location = educationInfoSharedService.location;
-//        $scope.yearOfGraduation = educationInfoSharedService.yearOfGraduation;
-//        $scope.educationDescription = educationInfoSharedService.educationDescription;
-//    });
-//}]);
-//
-//
-//
-//
-//
-//app.controller('controllerEducationInfoToDisplayData',['$scope','sharedEducationInfoService',function($scope, educationInfoSharedService){
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.educationInfoDisplay = [];
-//        $scope.eduInstituteName = educationInfoSharedService.eduInstituteName;
-//        $scope.degreeLevel = educationInfoSharedService.degreeLevel;
-//        $scope.percentageObtained = educationInfoSharedService.percentageObtained;
-//        $scope.location = educationInfoSharedService.location;
-//        $scope.yearOfGraduation = educationInfoSharedService.yearOfGraduation;
-//        $scope.educationDescription = educationInfoSharedService.educationDescription;
-//        $scope.educationInfoDisplay.push({eduInstituteName:$scope.eduInstituteName,degreeLevel:$scope.degreeLevel,percentageObtained:$scope.percentageObtained,location:$scope.location,yearOfGraduation:$scope.yearOfGraduation,educationDescription:$scope.educationDescription});
-//
-//        $scope.eduInstituteName = '';
-//        $scope.degreeLevel = '';
-//        $scope.percentageObtained = '';
-//        $scope.location = '';
-//        $scope.yearOfGraduation = '';
-//        $scope.educationDescription = '';
-//    });
-//
-//
-//}]);
-//
-//
-////
-//
-//app.factory('sharedResumeGeneralInfoService', function($rootScope){
-//    var generalInfoSharedService ={};
-//    generalInfoSharedService.nameOnResume = ''
-//    generalInfoSharedService.email = ''
-//    generalInfoSharedService.mobileNumber = ''
-//    generalInfoSharedService.address = ''
-//
-//    generalInfoSharedService.prepForBroadcastGeneralInfo = function(nameOnResume,email,mobileNumber,address){
-//        this.nameOnResume = nameOnResume;
-//        this.email = email;
-//        this.mobileNumber = mobileNumber;
-//        this.address = address;
-//        this.broadcastItem();
-//    };
-//
-//    generalInfoSharedService.broadcastItem = function(){
-//        $rootScope.$broadcast('handleBroadcast');
-//    };
-//
-//    return generalInfoSharedService;
-//});
-//
-//app.controller('controllerGeneralInfo',['$scope','sharedResumeGeneralInfoService',function($scope, generalInfoSharedService){
-//    $scope.handleClick = function(nameOnResume,email,mobileNumber,address){
-//        generalInfoSharedService.prepForBroadcastGeneralInfo(nameOnResume,email,mobileNumber,address);
-//    };
-//
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.nameOnResume = generalInfoSharedService.nameOnResume;
-//        $scope.email = generalInfoSharedService.email;
-//        $scope.mobileNumber = generalInfoSharedService.mobileNumber;
-//        $scope.address = generalInfoSharedService.address;
-//    });
-//}]);
-//
-//
-//app.controller('controllerGeneralInfoToDisplayData',['$scope','sharedResumeGeneralInfoService',function($scope, generalInfoSharedService){
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.nameOnResume = generalInfoSharedService.nameOnResume;
-//        $scope.email = generalInfoSharedService.email;
-//        $scope.mobileNumber = generalInfoSharedService.mobileNumber;
-//        $scope.address = generalInfoSharedService.address;
-//    });
-//}]);
-//
-//
-////controllerGeneralInfo.$injector = ['$scope','sharedResumeGeneralInfoService'];
-////controllerGeneralInfoToDisplayData.$injector = ['$scope','sharedResumeGeneralInfoService'];
-//
-////app.controller('wysiwygeditor',function($scope) {
-////      $scope.orightml = '';
-////      $scope.htmlcontent = $scope.orightml;
-////        $scope.disabled = false;
-////  });
-//
-//app.factory('sharedObjectiveInfoService', function($rootScope){
-//    var ObjectiveInfoSharedService ={};
-//    ObjectiveInfoSharedService.objective = ''
-//
-//    ObjectiveInfoSharedService.prepForBroadcastObjectiveInfo = function(objective){
-//        this.objective = objective;
-//        this.broadcastItem();
-//    };
-//
-//    ObjectiveInfoSharedService.broadcastItem = function(){
-//        $rootScope.$broadcast('handleBroadcast');
-//    };
-//
-//    return ObjectiveInfoSharedService;
-//});
-//
-//app.controller('controllerObjectiveInfo',['$scope','sharedObjectiveInfoService',function($scope, ObjectiveInfoSharedService){
-//    $scope.handleClick = function(objective){
-//        ObjectiveInfoSharedService.prepForBroadcastObjectiveInfo(objective);
-//    };
-//
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.objective = ObjectiveInfoSharedService.objective;
-//    });
-//}]);
-//
-//
-//app.controller('controllerObjectiveInfoToDisplayData',['$scope','sharedObjectiveInfoService',function($scope, ObjectiveInfoSharedService){
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.objective = ObjectiveInfoSharedService.objective;
-//    });
-//}]);
-//
-//
-////Hobbies
-//
-//app.factory('sharedHobbiesInfoService', function($rootScope){
-//    var HobbiesInfoSharedService ={};
-//    HobbiesInfoSharedService.hobbies = ''
-//
-//    HobbiesInfoSharedService.prepForBroadcastHobbiesInfo = function(hobbies){
-//        this.hobbies = hobbies;
-//        this.broadcastItem();
-//    };
-//
-//    HobbiesInfoSharedService.broadcastItem = function(){
-//        $rootScope.$broadcast('handleBroadcast');
-//    };
-//
-//    return HobbiesInfoSharedService;
-//});
-//
-//app.controller('controllerHobbiesInfo',['$scope','sharedHobbiesInfoService',function($scope, HobbiesInfoSharedService){
-//    $scope.handleClick = function(hobbies){
-//        HobbiesInfoSharedService.prepForBroadcastHobbiesInfo(hobbies);
-//    };
-//
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.hobbies = HobbiesInfoSharedService.hobbies;
-//    });
-//}]);
-//
-//
-//app.controller('controllerHobbiesInfoToDisplayData',['$scope','sharedHobbiesInfoService',function($scope, HobbiesInfoSharedService){
-//    $scope.$on('handleBroadcast',function(){
-//        $scope.hobbies = HobbiesInfoSharedService.hobbies;
-//    });
-//}]);
-//
-////ProfessionalSkills
-//
-////app.controller('controllerProfessionalSkills',function($scope){
-////    $scope.units = [
-////        {'id': 1, 'label': 'Beginner'},
-////        {'id': 2, 'label': 'Intermediate'},
-////        {'id': 3, 'label': 'Advanced'},
-////        {'id': 3, 'label': 'Expert'},
-////    ]
-////
-////           $scope.data= $scope.units[0]; // Set by default the value "test1
-////});
-//
-//app .controller("controllerProfessionalSkills", function($scope,$rootScope) {
-//    $scope.skills = [];
-//    $rootScope.allSkills = [];
-//    $scope.level = [];
-//     $scope.units = [
-//        {'id': 1, 'label': 'Beginner'},
-//        {'id': 2, 'label': 'Intermediate'},
-//        {'id': 3, 'label': 'Advanced'},
-//        {'id': 3, 'label': 'Expert'},
-//    ]
-//     $scope.data= $scope.units[0]; // Set by default the value "test1
-//    $scope.addItem123 = function () {
-//        $scope.skills.push($scope.addSkillType);
-//        $scope.level.push($scope.data);
-//        $rootScope.allSkills.push({levele:$scope.data,skill:$scope.addSkillType});
-//        $scope.addSkillType = '';
-//        $scope.data= $scope.units[0];
-//    }
-//    $scope.removeItem = function (x) {
-//        $rootScope.allSkills.splice(x, 1);
-//    }
-//});
-//
-////LanguagesKnown
-//
-//app .controller("controllerLanguagesSkills", function($scope,$rootScope) {
-//    $scope.language = [];
-//    $rootScope.allLanguages = [];
-//    $scope.level = [];
-//     $scope.units = [
-//        {'id': 1, 'label': 'Beginner'},
-//        {'id': 2, 'label': 'Conversational'},
-//        {'id': 3, 'label': 'Fluent'},
-//        {'id': 3, 'label': 'Native'},
-//    ]
-//     $scope.data= $scope.units[0]; // Set by default the value "test1
-//    $scope.addItem = function () {
-//        $scope.language.push($scope.languages);
-//        $scope.level.push($scope.data);
-//        $rootScope.allLanguages.push({level:$scope.data,lang:$scope.languages});
-//        $scope.languages = '';
-//        $scope.data= $scope.units[0];
-//    }
-//    $scope.removeItem = function (x) {
-//        $rootScope.allLanguages.splice(x, 1);
-//    }
-//});
-//
-////Employment
-//
-//app .controller("controllerEmploymentSkills", function($scope,$rootScope) {
-//    $scope.showAdditionOfEmployment = false;
-//    $rootScope.jobTitles = [];
-//    $scope.companies = [];
-//    $scope.locations = [];
-//    $scope.startDates = [];
-//    $scope.endDates = [];
-//    $scope.compensations = [];
-//    $scope.employmentDescriptions = [];
-//    $scope.currency = [];
-//    $scope.intervals = [];
-//    $rootScope.employmentRelatedInformations = [];
-//    $scope.units1 = [
-//        {'id': 1, 'label': 'USD'},
-//        {'id': 2, 'label': 'EUR'},
-//        {'id': 3, 'label': 'GBP'},
-//        {'id': 3, 'label': 'CAD'},
-//        {'id': 3, 'label': 'AUD'},
-//        {'id': 3, 'label': 'CNY'},
-//        {'id': 3, 'label': 'UAH'},
-//        {'id': 3, 'label': 'RUB'},
-//    ]
-//     $scope.data1= $scope.units1[0];
-//
-//    $scope.units2 = [
-//        {'id': 1, 'label': 'Annually'},
-//        {'id': 2, 'label': 'Monthly'},
-//        {'id': 3, 'label': 'Daily'},
-//        {'id': 3, 'label': 'Hourly'},
-//    ]
-//     $scope.data2= $scope.units2[0];
-//
-//    $scope.addEmployment = function(){
-//        $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-//    }addItem
-//
-//    $scope.addTheList = function(){
-//        $rootScope.jobTitles.push($scope.jobTitle);
-//        $scope.companies.push($scope.company);
-//        $scope.locations.push($scope.location);
-//        $scope.startDates.push($scope.startDate);
-//        $scope.endDates.push($scope.endDate);
-//        $scope.compensations.push($scope.compensation);
-//        $scope.employmentDescriptions.push($scope.employmentDescription);
-//        $scope.currency.push($scope.data1);
-//        $scope.intervals.push($scope.data2);
-//        $rootScope.employmentRelatedInformations.push({jobTitle:$scope.jobTitle,company:$scope.company,location:$scope.location,starDate:$scope.startDate,endDate:$scope.endDate,compensation:$scope.compensation,currency:$scope.data1,intervals:$scope.data2,Description:$scope.employmentDescription});
-//        $scope.jobTitle = '';
-//        $scope.company = '';
-//        $scope.location = '';
-//        $scope.startDate = '';
-//        $scope.endDate = '';
-//        $scope.compensation = '';
-//        $scope.employmentDescription = '';
-//        $scope.data1= $scope.units1[0];
-//        $scope.data2= $scope.units2[0];
-//        $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-//    }
-//
-//    $scope.removeItem = function (x) {
-//        $rootScope.employmentRelatedInformations.splice(x, 1);
-//        console.log($scope.employmentRelatedInformations);
-//    }
-//});
-//
-////Reference
-//
-//app .controller("controllerReferences", function($scope,$rootScope) {
-//    $scope.showAdditionOfReferences = false;
-//    $scope.name = [];
-//    $scope.relationship = [];
-//    $scope.phone = [];
-//    $scope.company = [];
-//    $scope.email = [];
-//    $scope.address = [];
-//    $scope.address1 = [];
-//    $scope.descriptions = [];
-//    $rootScope.referenceRelatedInformations = [];
-//
-//    $scope.addReferences = function(){
-//        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
-//    }
-//
-//    $scope.addTheList = function(){
-//        $scope.name.push($scope.referenceName);
-//        $scope.relationship.push($scope.referenceRelationship);
-//        $scope.phone.push($scope.referencePhone);
-//        $scope.company.push($scope.referenceCompany);
-//        $scope.email.push($scope.referenceEmailID);
-//        $scope.address.push($scope.referenceAddress);
-//        $scope.address1.push($scope.referenceAddress1);
-//        $scope.descriptions.push($scope.referenceDescription);
-//        $rootScope.referenceRelatedInformations.push({referenceName:$scope.referenceName,referenceRelationship:$scope.referenceRelationship,referencePhone:$scope.referencePhone,referenceCompany:$scope.referenceCompany,referenceEmailID:$scope.referenceEmailID,referenceAddress:$scope.referenceAddress,referenceAddress1:$scope.referenceAddress1,referenceDescription:$scope.referenceDescription});
-//        $scope.referenceName = '';
-//        $scope.referenceRelationship = '';
-//        $scope.referencePhone = '';
-//        $scope.referenceCompany = '';
-//        $scope.referenceEmailID = '';
-//        $scope.referenceAddress = '';
-//        $scope.referenceAddress1 = '';
-//        $scope.referenceDescription = '';
-//        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
-//    }
-//
-//    $scope.removeItem = function (x) {
-//        $rootScope.referenceRelatedInformations.splice(x, 1);
-//    }
-//});
-
-///new code
-
-app.controller('controllerGeneralInfoToDisplayData',function($scope,$rootScope,$http,$location){
-            $scope.selectedSection = "basic_info.html";
-            $scope.language = [];
-            $rootScope.allLanguages = [];
-            $scope.level = [];
-            $scope.saveEducationChanges = false;
-            $scope.addingEducation = true;
-            $scope.showRemove = true;
-//            $scope.showRemoveEdu = true;
-            $scope.addingEmployment = true;
-            $scope.saveEmploymentChanges = false;
-            $scope.saveAddSkill = true;
-            $scope.showAddSkill = true;
-            $scope.showAdditonOfSkillsOperation = true;
-            $scope.addingReferences = true;
-            $scope.saveReferenceChanges = false;
-            $scope.showAddLanguages = true;
-            $scope.saveKnownLanguages = true;
-            $scope.showAdditonOfLanguagesOperation = true;
-
-            if($scope.nameOnResume == "" || $scope.email == "" || $scope.mobileNumber == "" || $scope.address == "" ){
-                alert("Please enter the complete information to proceed");
-            }
-
-
-            //generalInfo
-
-            $scope.nameOnResume = '';
-            $scope.email = '';
-            $scope.mobileNumber = '';
-            $scope.address = '';
-
-            //references
-                $scope.showAdditionOfReferences = false;
-                $scope.name = [];
-                $scope.relationship = [];
-                $scope.phone = [];
-                $scope.company = [];
-                $scope.email = [];
-                $scope.address = [];
-                $scope.address1 = [];
-                $scope.descriptions = [];
-                $rootScope.referenceRelatedInformations = [];
-            $scope.changeSelectedResumeSection = function(section) {
-                $scope.selectedSection = section;
-            }
-
-            //professionalSkills
-
-                $scope.skills = [];
-                $rootScope.allSkills = [];
-                $scope.level = [];
-                 $scope.units321 = [
-                    {'id': 1, 'label': 'Beginner'},
-                    {'id': 2, 'label': 'Intermediate'},
-                    {'id': 3, 'label': 'Advanced'},
-                    {'id': 3, 'label': 'Expert'},
-                ]
-                 $scope.data321= $scope.units321[0]; // Set by default the value "test1
-
-            //employmentHistory
-
-                     $scope.showAdditionOfEmployment = false;
-                     $rootScope.jobTitles = [];
-                     $scope.companies = [];
-                     $scope.locations = [];
-                     $scope.startDates = [];
-                     $scope.endDates = [];
-                     $scope.compensations = [];
-                     $scope.employmentDescriptions = [];
-                     $scope.currency = [];
-                     $scope.intervals = [];
-                     $rootScope.employmentRelatedInformations = [];
-                     $scope.units1 = [
-                         {'id': 1, 'label': 'USD'},
-                         {'id': 2, 'label': 'EUR'},
-                         {'id': 3, 'label': 'GBP'},
-                         {'id': 3, 'label': 'CAD'},
-                         {'id': 3, 'label': 'AUD'},
-                         {'id': 3, 'label': 'CNY'},
-                         {'id': 3, 'label': 'UAH'},
-                         {'id': 3, 'label': 'RUB'},
-                     ]
-                      $scope.data1= $scope.units1[0];
-
-                     $scope.units2 = [
-                         {'id': 1, 'label': 'Annually'},
-                         {'id': 2, 'label': 'Monthly'},
-                         {'id': 3, 'label': 'Daily'},
-                         {'id': 3, 'label': 'Hourly'},
-                     ]
-                      $scope.data2= $scope.units2[0];
-
-            //education
-                $scope.showAdditionOfEducation = false;
-                $scope.eduInstitutes = [];
-                $scope.degrees = [];
-                $scope.percentageObtain = [];
-                $scope.locations = [];
-                $scope.yearOfGraduations = [];
-                $scope.educationDescriptions = [];
-                $scope.levels=[];
-                $rootScope.educationRelatedInformations = [];
-
-                    $scope.units3 = [
-                        {'id': 1, 'label': 'Graduated'},
-                        {'id': 2, 'label': 'Graduating'},
-                        {'id': 3, 'label': 'Enrolled'},
-                        {'id': 3, 'label': 'Deffered'},
-                        {'id': 3, 'label': 'Transferred'},
-                    ]
-                     $scope.data= $scope.units3[0];
-
-
-
-            $scope.returnSelectedResumeSection = function() {
-                return absolute_path+"ResumeBuilder/subSections/"+ $scope.selectedSection;
-            }
-
-            $scope.units = [
-                    {'id': 1, 'label': 'Beginner'},
-                    {'id': 2, 'label': 'Conversational'},
-                    {'id': 3, 'label': 'Fluent'},
-                    {'id': 3, 'label': 'Native'},
-                ]
-                 $scope.data= $scope.units[0]; // Set by default the value "test1
-                $scope.addItem = function () {
-                    $scope.language.push($scope.languages);
-                    $scope.level.push($scope.data);
-                    $rootScope.allLanguages.push({level:$scope.data,lang:$scope.languages});
-                    $scope.languages = '';
-                    $scope.data= $scope.units[0];
-                }
-                $scope.removeItemLanguages = function (x) {
-                    $rootScope.allLanguages.splice(x, 1);
-                }
-
-                    $scope.addReferences = function(){
-                        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
-                    }
-
-                    $scope.addTheListReferences = function(){
-                    if($scope.referenceName == null || $scope.referenceName == "" || $scope.referenceRelationship == "" || $scope.referencePhone == "" || $scope.referenceCompany == "" || $scope.referenceEmailID == "" || $scope.referenceAddress == ""){
-                                                        alert("Please Enter the required information");
-                                                    }else{
-                                                        $scope.saveReferenceChanges = true;
-
-                        $scope.name.push($scope.referenceName);
-                        $scope.relationship.push($scope.referenceRelationship);
-                        $scope.phone.push($scope.referencePhone);
-                        $scope.company.push($scope.referenceCompany);
-                        $scope.email.push($scope.referenceEmailID);
-                        $scope.address.push($scope.referenceAddress);
-                        $scope.address1.push($scope.referenceAddress1);
-                        $scope.descriptions.push($scope.referenceDescription);
-                        $rootScope.referenceRelatedInformations.push({referenceName:$scope.referenceName,referenceRelationship:$scope.referenceRelationship,referencePhone:$scope.referencePhone,referenceCompany:$scope.referenceCompany,referenceEmailID:$scope.referenceEmailID,referenceAddress:$scope.referenceAddress,referenceAddress1:$scope.referenceAddress1,referenceDescription:$scope.referenceDescription});
-                        $scope.referenceName = '';
-                        $scope.referenceRelationship = '';
-                        $scope.referencePhone = '';
-                        $scope.referenceCompany = '';
-                        $scope.referenceEmailID = '';
-                        $scope.referenceAddress = '';
-                        $scope.referenceAddress1 = '';
-                        $scope.referenceDescription = '';
-                        $scope.showAdditionOfReferences = $scope.showAdditionOfReferences ? false : true;
-                    }
-                    }
-
-                    $scope.removeItemReferences = function (x) {
-                        $rootScope.referenceRelatedInformations.splice(x, 1);
-                    }
-
-                        $scope.addItem123 = function () {
-                            $scope.skills.push($scope.addSkillType);
-                            $scope.level.push($scope.data);
-                            $rootScope.allSkills.push({levele:$scope.data,skill:$scope.addSkillType});
-                            $scope.addSkillType = '';
-                            $scope.data= $scope.units[0];
-                        }
-                        $scope.removeItemSkills = function (x) {
-                            $rootScope.allSkills.splice(x, 1);
-                        }
-
-
-                            $scope.addEmployment = function(){
-                                $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-                            }
-
-                            $scope.addTheListEmployment = function(){
-                                if($scope.jobTitle == "" || $scope.company == "" || $scope.location == "" || $scope.startDate == "" || $scope.endDate == "" || $scope.compensation == ""){
-                                    alert("Please fill in the Required information");
-                                }else{
-                                    $scope.saveEmploymentChanges = true;
-
-                                $rootScope.jobTitles.push($scope.jobTitle);
-                                $scope.companies.push($scope.company);
-                                $scope.locations.push($scope.location);
-                                $scope.startDates.push($scope.startDate);
-                                $scope.endDates.push($scope.endDate);
-                                $scope.compensations.push($scope.compensation);
-                                $scope.employmentDescriptions.push($scope.employmentDescription);
-                                $scope.currency.push($scope.data1);
-                                $scope.intervals.push($scope.data2);
-                                $rootScope.employmentRelatedInformations.push({jobTitle:$scope.jobTitle,company:$scope.company,location:$scope.location,starDate:$scope.startDate,endDate:$scope.endDate,compensation:$scope.compensation,currency:$scope.data1,intervals:$scope.data2,Description:$scope.employmentDescription});
-                                $scope.jobTitle = '';
-                                $scope.company = '';
-                                $scope.location = '';
-                                $scope.startDate = '';
-                                $scope.endDate = '';
-                                $scope.compensation = '';
-                                $scope.employmentDescription = '';
-                                $scope.data1= $scope.units1[0];
-                                $scope.data2= $scope.units2[0];
-                                $scope.showAdditionOfEmployment = $scope.showAdditionOfEmployment ? false : true;
-                            }
-                            }
-
-                            $scope.removeItem = function (x) {
-                                $rootScope.employmentRelatedInformations.splice(x, 1);
-                                console.log($scope.employmentRelatedInformations);
-                            }
-
-                            $scope.addEducation = function(){
-                                $scope.showAdditionOfEducation = $scope.showAdditionOfEducation ? false : true;
-                            }
-
-                            $scope.addTheList = function(){
-                                if($scope.eduInstituteName == "" || $scope.degreeLevel == "" || $scope.percentageObtained == "" || $scope.location == "" || $scope.yearOfGraduation == "" ){
-                                    alert("Please enter the required information to proceed");
-                                }else{
-                                    $scope.saveEducationChanges = true;
-
-                                $scope.eduInstitutes.push($scope.eduInstituteName);
-                                $scope.degrees.push($scope.degreeLevel);
-                                $scope.percentageObtain.push($scope.percentageObtained);
-                                $scope.locations.push($scope.location);
-                                $scope.yearOfGraduations.push($scope.yearOfGraduation);
-                                $scope.educationDescriptions.push($scope.educationDescription);
-                                $scope.levels.push($scope.data);
-                                $rootScope.educationRelatedInformations.push({eduInstituteName:$scope.eduInstituteName,degreelevel:$scope.degreeLevel,percentageObtained:$scope.percentageObtained,location:$scope.location,yearOfGraduation:$scope.yearOfGraduation,levels:$scope.data,educationDescription:$scope.educationDescription});
-
-                                $scope.eduInstituteName = '';
-                                $scope.degreeLevel = '';
-                                $scope.percentageObtained = '';
-                                $scope.location = '';
-                                $scope.yearOfGraduation = '';
-                                $scope.educationDescription = '';
-                                $scope.data= $scope.units1[0];
-                                $scope.showAdditionOfEducation = $scope.showAdditionOfEducation ? false : true;
-                            }
-                            }
-
-                            $scope.removeItem = function (x) {
-                                $rootScope.educationRelatedInformations.splice(x, 1);
-                                console.log($scope.educationRelatedInformations);
-                            }
-
-                            $scope.removeItemEmp = function (x) {
-                                                            $rootScope.employmentRelatedInformations.splice(x, 1);
-                                                            console.log($scope.employmentRelatedInformations);
-                                                        }
-
-                             $scope.sendBasicInfoData = function(){
-                             if($scope.nameOnResume == "" || $scope.email == "" || $scope.mobileNumber == "" || $scope.address == ""){
-                                alert("Please enter the complete information to proceed");
-                             }
-                             else{
-                                            var basicInformation = {
-                                                Full_Name : $scope.nameOnResume,
-                                                Email_Address : $scope.email,
-                                                Mobile_Number : $scope.mobileNumber,
-                                                Resident_Address : $scope.address
-                                            }
-                                            console.log("Information")
-                                            console.log(basicInformation);
-                                            $http.post("http://localhost:8080/v1/api/resume/",basicInformation,{headers: {'Content-Type': 'application/json'} })
-                                            .success(function(data,status,header,config) {
-                                                console.log("Information Posted Successfully");
-                                                $scope.resumeID = data;
-                                            })
-                                            .error(function(data,status,header,config) {
-                                                console.log("Error Encountered while posting : "+status);
-                                            });
-                                 }
-                             };
-
-                             $scope.handleClick = function(objective){
-                                $scope.saveButtonObjective = true;
-                                $scope.editButtonObjective = true;
-                                $scope.saveButtonHobbies = true;
-                                $scope.editButtonHobbies = true;
-                             };
-
-                             $scope.saveObjectiveInfo = function(){
-                                $scope.saveButtonObjective = false;
-                                $scope.editButtonObjective = false;
-                                var objective = {
-                                    Objective_Explanation : $scope.objective
-                                }
-                                console.log(objective);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,objective,{headers: {'Content-Type': 'application/json'} })
-                                .success(function(data,status,header,config) {
-                                    console.log("Information Posted Successfully");
-                                })
-                                .error(function(data,status,header,config) {
-                                    console.log("Error Encountered while posting : "+status);
-                                });
-                             }
-
-                             $scope.postEducationData = function(){
-                                $scope.showRemove = false;
-                                $scope.addingEducation = false;
-                                var Education = $rootScope.educationRelatedInformations;
-                                console.log(Education);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Education,{headers: {'Content-Type': 'application/json'} })
-                                .success(function(data,status,header,config) {
-                                    console.log("Information Posted Successfully");
-                                })
-                                .error(function(data,status,header,config) {
-                                    console.log("Error Encountered while posting : "+status);
-                                });
-                             }
-
-                             $scope.postReferencesData = function(){
-                                $scope.showRemove = false;
-                                $scope.addingReferences = false;
-                                var References = $rootScope.referenceRelatedInformations;
-                                console.log(References);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,References,{headers: {'Content-Type': 'application/json'} })
-                                .success(function(data,status,header,config) {
-                                    console.log("Information Posted Successfully");
-                                })
-                                .error(function(data,status,header,config) {
-                                    console.log("Error Encountered while posting : "+status);
-                                });
-                             }
-
-                             $scope.postEmploymentData = function(){
-                                $scope.showRemove = false;
-                                $scope.addingEmployment = false;
-                                var Employment = $rootScope.employmentRelatedInformations;
-                                console.log(Employment);
-                                $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Employment,{headers: {'Content-Type': 'application/json'} })
-                                                                .success(function(data,status,header,config) {
-                                                                    console.log("Information Posted Successfully");
-                                                                })
-                                                                .error(function(data,status,header,config) {
-                                                                    console.log("Error Encountered while posting : "+status);
-                                                                });
-
-                             }
-
-                             $scope.saveHobbiesInfo = function(){
-                                                             $scope.saveButtonHobbies = false;
-                                                             $scope.editButtonHobbies = false;
-                                                             var Hobbies_And_Interest = {
-                                                                 HobbiesAndInterest : $scope.hobbies
-                                                             }
-                                                             console.log(Hobbies_And_Interest);
-                                                             $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,Hobbies_And_Interest,{headers: {'Content-Type': 'application/json'} })
-                                                             .success(function(data,status,header,config) {
-                                                                 console.log("Information Posted Successfully");
-                                                             })
-                                                             .error(function(data,status,header,config) {
-                                                                 console.log("Error Encountered while posting : "+status);
-                                                             });
-                                                          }
-
-                             $scope.saveSkills = function(){
-                                if($rootScope.allSkills.length == 0){
-                                    alert("Please enter you skill to add more value to Resume");
-                                }
-                                else{
-                                    $scope.showAddSkill = false;
-                                    $scope.saveAddSkill = false;
-                                    $scope.showRemove = false;
-                                    $scope.showAdditonOfSkillsOperation = false;
-                                    var professionalSkills = [];
-                                    for(var i =0;i<$rootScope.allSkills.length;i++){
-                                        var data = $rootScope.allSkills[i];
-                                        professionalSkills.push({"skillType":data.skill,"level":data.levele.label});
-                                    }
-                                    console.log(professionalSkills);
-                                    $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,professionalSkills,{headers: {'Content-Type': 'application/json'} })
-                                                                                                 .success(function(data,status,header,config) {
-                                                                                                     console.log("Information Posted Successfully");
-                                                                                                 })
-                                                                                                 .error(function(data,status,header,config) {
-                                                                                                     console.log("Error Encountered while posting : "+status);
-                                                                                                 });
-                                }
-                             }
-
-                             $scope.saveLanguagesKnown = function(){
-                                if($rootScope.allLanguages.length == 0){
-                                    alert("Please enter the languages you know to add more value to Resume");
-                                }
-                                else{
-                                    $scope.showAddLanguages = false;
-                                    $scope.saveKnownLanguages = false;
-                                    $scope.showRemove = false;
-                                    $scope.showAdditonOfLanguagesOperation = false;
-                                    var languages = [];
-                                    for(var i =0;i<$rootScope.allLanguages.length;i++){
-                                       var data = $rootScope.allLanguages[i];
-                                       languages.push({"name":data.lang,"level":data.level.label});
-                                    }
-                                    console.log(languages);
-                                    $http.put("http://localhost:8080/v1/api/resume/"+$scope.resumeID,languages,{headers: {'Content-Type': 'application/json'} })
-                                         .success(function(data,status,header,config) {
-                                             console.log("Information Posted Successfully");
-                                         })
-                                         .error(function(data,status,header,config) {
-                                             console.log("Error Encountered while posting : "+status);
-                                         });
-                                }
-                             }
-
-
-
-
-
-
-});
-

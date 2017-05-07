@@ -1,0 +1,44 @@
+<div style="padding:5px;width:98%" class="container-fluid">
+
+
+    <div style="width:98%;margin:5px;background-color:#F5F5F5" class="panel panel-default">
+        <div class="panel-body">
+            <table style="table-layout:fixed;width:100%">
+                <tr style="text-align: center">
+                    <td style="width:33%;word-wrap:break-work">
+                        <h3>
+                            Overall Score <small> {{overallScore}} / {{overallMaxScore}} </small>
+                        <h3>
+                    </td>
+
+                    <td style="width:33%">
+                        <h3>
+                            Overall Accuracy <small> {{accuracy}} %</small>
+                        </h3>
+                    </td>
+                    <td style="width:33%">
+                        <h3>
+                            Tests Given <small> {{numberOfTestsGiven}} / {{totalNumberOfTests}} </small>
+                        </h3>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="width:95%;margin-left:20px;margin-right:20px">
+        <div class="row">
+            <h1 style="display:none">Mock Tests <small>| Choose A Test</small></h1>
+            <br>
+            <br>
+            <p> Take online mock tests from a range of topics and get a statistical analysis after submitting the test</p>
+            <p style="font-weight:bold;font-size:15px">Want to practice questions first? Head to our <a style="color:red;text-decoration:underline" href="#QnACrunch">QnA Crunch</a> feature!</p>
+            <hr>
+        </div>
+        <div style="display:none" id="demo">
+        </div>
+    </div>
+        
+    <div ng-include="getMockSummaryPanel(mock)" ng-repeat="mock in allMocks" style="width:100%;margin-top:10px;">
+    </div>
+</div>

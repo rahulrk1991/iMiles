@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+
+    #editor {
+        margin: 0;
+        position: absolute;
+        top: 50px;
+		height:500px;
+        bottom: 0;
+        left: 50px;
+        right: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<pre id="editor">function foo(items) {
+    var i;
+    for (i = 0; i &lt; items.length; i++) {
+        alert("Ace Rocks " + items[i]);
+    }
+}</pre>
+
+
+<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/c_cpp");
+</script>
+
+<script>
+var languageSelected=1;
+function languageSelected() {
+    languageSelected = document.getElementById("languageSelector").value;
+	 var editor = ace.edit("editor");
+  
+    if(languageSelected == "C++")
+	{
+	languageSelected = 1;
+	editor.getSession().setMode("ace/mode/c_cpp");
+	}
+	else if(languageSelected == "C")
+	{
+	languageSelected = 11;
+	editor.getSession().setMode("ace/mode/c_cpp");
+	
+	}
+	else if(languageSelected == "Java")
+	{
+	languageSelected = 10;
+	editor.getSession().setMode("ace/mode/java");
+	
+	}
+	else
+	{
+	languageSelected = 4;
+	editor.getSession().setMode("ace/mode/python");
+	
+	}
+}
+
+function codeSubmit() {
+    var code = editor.getValue();
+	var urlencodedCode = encodeURIComponent(code);
+	
+	var http = new XMLHttpRequest();
+
+var url = "http://localhost:8000/api/question/programming_question_submit_getId/";
+var params = "lang="+languageSelected+"&qid=1&userid=1&code="+urlencodedCode;
+http.open("POST", url, true);
+
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+        alert(http.responseText);
+    }
+}
+http.send(params);
+}
+</script>
+
+<button onclick="codeSubmit()" name="button" value="OK" type="button">Submit</button>
+<select id="languageSelector" onclick="languageSelected()">
+  <option value="C++">C++</option>
+  <option value="C">C</option>
+  <option value="Java">Java</option>
+  <option value="Python">Python</option>
+</select>
+  
+</body>
+</html>

@@ -1,0 +1,63 @@
+<div  style="width:100%" class="col-md-6">
+
+    <table style="width:90%">
+        <tr style="padding:10px">
+            <td class="form_profile_td settings-page-label">
+                <div class="input-group-lg">
+                Username : 
+             </div>
+            </td>
+            <td class="form_profile_td settings-page-inputs">
+                <div class="input-group-lg">
+                <input ng-disabled="true" ng-model="Profile.General.username" type="text" class="form-control">
+             </div>
+            </td>
+            
+       </tr>
+       <tr>
+            <td class="form_profile_td settings-page-label">
+                <div class="input-group-lg">
+                Email ID : 
+             </div>
+            </td>
+            <td class="form_profile_td settings-page-inputs">
+                <div class="input-group-lg">
+                <input ng-disabled="true" ng-model="Profile.General.email" type="text" class="form-control">
+             </div>
+            </td>
+            
+       </tr>
+       <tr>
+            <td class="form_profile_td settings-page-label">
+                <div class="input-group-lg">
+                Joining Date : 
+             </div>
+            </td>
+            <td class="form_profile_td settings-page-inputs">
+                <div class="input-group-lg">
+                <div ng-disabled="true" ng-bind="Profile.General.date_joined | date:'dd/MMM/yyyy'" type="text" class="form-control">
+                </div>
+             </div>
+            </td>
+            
+       </tr>
+       <tr>
+            <td class="form_profile_td settings-page-label">
+                <div class="input-group-lg">
+                Contact No : 
+             </div>
+            </td>
+            <td class="form_profile_td settings-page-inputs">
+                <div class="input-group-lg">
+                <input ng-model="Profile.General.contact_no1" type="text" class="form-control" placeholder="Contact Number" >
+             </div>
+            </td>
+            
+       </tr>
+    </table>
+    <button id="updateLinksButton" style="width:25%;margin-top:20px;float:right" ng-click="updateGeneralInfo()" type="button" class="btn btn-default btn-primary">
+            Update Info
+            </button>
+    <br>
+         
+</div>

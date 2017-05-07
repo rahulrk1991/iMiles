@@ -3,10 +3,13 @@
 /* Padding below the footer and lighter body text */
 
 body {
-  padding-bottom: 40px;
+  /* padding-bottom: 40px; */
   color: #5a5a5a;
 }
 
+.lead {
+  padding-top: 20px;
+}
 
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */

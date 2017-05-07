@@ -1,56 +1,27 @@
+ <head>
+    <title>Online Mock Tests | InterviewMile</title>
+    <meta name="keywords" content="online tests, sample tests, mock tests,choose a test, free tests, free sample mock, aptitude test, online mock, practice test, C Programming tests, C++ Programming tests, C sample, C++ sample, interview preparation tests">
+    <meta name="description" content="Take online mock tests for practice from various topics like Aptitude, C Programming language, C++ Programming language and get test statistics">
+    <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-<div id="main_container" style="width:900px;margin:0 auto;">
-   <div class="container-fluid">
-      <div class="row">
+            ga('create', 'UA-80250123-1', 'auto');
+            ga('send', 'pageview');
 
-             <h1>Choose A Test</h1>
-             <hr>
 
-            <div class="container" style="width:100%">
-                <div id="testInputBox" style="width:50%;display:inline;float:left" class="display-inline padding-10px">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon" id="sizing-addon1">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </span>
-                            <input type="text" class="form-control" ng-blur="setCategory()" ng-model="tags.filterValue" ng-trim="false" bs-options="tag for tag in tags.allTagNames" placeholder="Add tags here..." bs-typeahead>
-                    </div>
-                </div>
-                
-                <div id="durationInput" style="width:20%;display:inline;float:left" class="display-inline padding-10px"> 
-                    <div class="dropdown">
-                      <button style="width:100%" class="btn btn-default btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        {{durationText}}
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li ng-repeat="duration in durations"><a ng-click="setDuration(duration)" href="">{{duration}} minutes</a></li>
-                      </ul>
-                    </div>
-                </div>
+        </script>
+</head>
+<div id="main_container" style="width:1000px;margin:0 auto;margin-top:50px">
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" ng-class="sampleTestSectionClass" ng-click="changeTestSection('sampleMockTestSection')"><a href="javascript:void(0);"><b>Sample Mock Tests</b></a></li>
+        <li role="presentation" ng-class="hiringSectionClass" ng-click="changeTestSection('hiringTestSection')"><a href="javascript:void(0);"><b>Hiring Test  <small>| {{displayDate.date}}<sup>{{displayDate.superscript}}</sup> {{displayDate.month}} '17</small></b></a></li>
+    </ul>
 
-                <div id="testInputBox" style="width:15%;display:inline;float:left" class="display-inline padding-10px"> 
-                    <div class="dropdown">
-                      <button style="width:100%" class="btn btn-default btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        {{difficulty}}
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li ng-repeat="difficulty in difficulties"><a ng-click="setDifficulty(difficulty)" href="">{{difficulty}}</a></li>
-                      </ul>
-                    </div>
-                </div>
+    <div ng-include="load_test_section" class="row" style="">
+        
+    </div>
 
-                <div id="startTestButton" class="display-inline padding-10px" style="width:8%">
-                        <a href="OnlineMockTests/TakeATest/{{selectedCategory}}/{{duration}}/{{difficulty}}">
-                        <button type="button" class="btn btn-default btn-lg btn-success">
-                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                        </button>
-                    </a>
-                </div>
-                <br>
-            </div> 
-      
-         </div>
-      </div>
-   </div>
 </div>

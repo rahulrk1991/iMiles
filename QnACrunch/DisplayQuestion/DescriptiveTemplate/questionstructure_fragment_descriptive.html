@@ -1,39 +1,51 @@
 <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" > -->
-
+<style>
+    p {
+        font-size: 18px;
+    }
+</style>
 <div class="panel panel-default">
-	<div style="width:100%;height:auto;overflow:auto" class="panel-heading">
-		<div style="display:inline;width:90%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
-			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
-		</div>
-		<div style="display:inline;width:10%:float:right">
-			<span class="badge" style="float: right">{{question.difficulty_level}}</span>
-		</div>
-	</div>
-	<div></div>
 	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
 		<div style="float: left; width: 100%">
 			<div style="display:inline;width:10%">
-				<h3 style="display:inline"> Q] </h3>
+				<h3 style="display:inline;color:#187FD6"> [Q] </h3>
 			</div>
 			<div style="display:inline;width:90%">
-				<h3 style="float:top;display:inline" class="panel-title">{{question.title}}</h3>
+				<h3 style="float:top;display:inline" class="panel-title" ng-bind-html="question.title"></h3>
 			</div>
 		</div>
 	</div>
 	<div class="panel-body" ng-bind-html="question.description"></div>
-	<div class="panel-footer" style="width: 100%; height: 35px">
-		<div style="float: left; width: 40%">
-			<h5 class="panel-title">Author: InterviewMile</h5>
+	<div style="width:90%;padding:20px" ng-show="question.showSolution">
+		Solution:
+		<div class="well well-sm" style="padding-left:20px" ng-bind-html="question.answer"></div>
+	</div>
+	<div class="panel-footer" style="width: 100%; overflow:auto">
+		<div style="display:inline;width:90%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
+			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
 		</div>
-		<div style="float: right; width: 60%">
-			<div style="float: right; width: 7%">
-				<a href="ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: right" class="glyphicon glyphicon-comment"
-					aria-hidden="true"></span></a>
-			</div>
-			<div style="float: right; width: 7%">
-				<a href="EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: right" class="glyphicon glyphicon-edit"
-					aria-hidden="true"></span></a>
-			</div>
+		<div style="display:inline;width:10%:float:right">
+			<a title="Difficulty" href="javascript:void(0)" style="color:inherit" >
+			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:black">{{question.difficulty_level}}</span>
+			</a>
 		</div>
+		<div style="float: right; width: 4%;padding-right:15px">
+			<div ngclipboard data-clipboard-text="{{question.shareLink}}">
+			    <a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span data-trigger="click" data-placement="bottom" data-type="info" data-title="{{tooltipShare.title}}" bs-tooltip style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+			</div>
+ 			
+		</div>
+		<div ng-click="markForLater(question)" style="float: right; width: 4%;padding-right:15px">
+ 			<a title="Add question to Favorites list" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+ 		</div>
+		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
+ 			<a href="#ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
+ 		</div>
+ 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
+ 			<a href="#EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+ 		</div>
+ 		<div title="Solution" ng-click="displaySolution(question)" style="float:right; width: 6%">
+ 			<a href="javascript:void(0)" ><span style="float: left" aria-hidden="true">Soln</span></a>
+ 		</div>
 	</div>
 </div>

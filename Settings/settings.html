@@ -1,0 +1,128 @@
+ <head>
+        <title>Account Settings | InterviewMile</title>
+        <meta name="description" content="Change modify configure all your account related settings here">
+        <meta name="keywords" content="account settings,account,settings,change password,username,email">
+        <meta name="author" content="interviewmile.com">
+</head>
+<style>
+.form_td {
+    padding:5px;
+}
+</style>
+
+<div id="main_container" style="width:900px;margin:0 auto;margin-top:40px" class="container">
+    <div class="container-fluid">
+       <div class="row">
+
+          <h3 style="display:inline"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></h3>
+          <h1 style="display:inline;padding:10px">Account Settings</h1>
+          <br>
+          <p style="padding-top:15px"> Account settings page will be ready in a few weeks.<br><br> If you happen to forget your password, logout, click the sign in button and click on forget password. A reset link will be sent to your registered email ID.</p>
+          <hr>
+          <br>
+          <div id="form_container" style="width:80%" class="col-md-6">
+                
+            <form>
+                <table style="width:100%">
+                    <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Username : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.username" type="text" class="form-control">
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Full Name : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.first_name" type="text" class="form-control" placeholder="First Name" >
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            New Password : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.new_password" type="text" class="form-control" placeholder="Type New password here" >
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Confirm New Password : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.confirm_new_password" type="text" class="form-control" placeholder="Confirm new password here" >
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Email ID : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.email" type="text" class="form-control">
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Joining Date : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <div ng-disabled="true" ng-bind="Profile.date_joined | date:'dd/MMM/yyyy'" type="text" class="form-control">
+                            </div>
+                         </div>
+                        </td>
+                        
+                   </tr>
+                   <tr>
+                        <td class="form_td settings-page-label">
+                            <div class="input-group-lg">
+                            Contact No : 
+                         </div>
+                        </td>
+                        <td class="form_td settings-page-inputs">
+                            <div class="input-group-lg">
+                            <input ng-disabled="true" ng-model="Profile.contact_no" type="text" class="form-control" placeholder="Contact Number" >
+                         </div>
+                        </td>
+                        
+                   </tr>
+             
+                </table>
+                <br>
+                <button ng-click="updateProfile()" style="float:left" type="button" class="btn btn-lg">Update</button>
+                <button ng-click="resetForm()" style="float:left;margin-left:10px" type="button" class="btn btn-lg">Reset</button>
+             </form>
+          </div>
+       </div>
+    </div>
+</div>

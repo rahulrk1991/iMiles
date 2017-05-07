@@ -2,8 +2,16 @@
 <div id="main_content_wrapper" style="width: 700px; margin: 0 auto;">
 
 	<div id="questionBlock">
-
+		
+		<div id="mock" class="input-group" style="width:100%">
+			<span class="input-group-addon" id="basic-addon1">
+				<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></span>
+				
+				<input type="text" class="form-control" ng-model="question.mockID"  placeholder="If you want to add to mock, give mock ID here">
+		</div>
+		<br>
 		<div style="display:inline">
+
 			<div id="questionTags" class="input-group" style="width:500px;float:left">
 				<span class="input-group-addon" id="basic-addon1"><span
 					class="glyphicon glyphicon-tags" aria-hidden="true"></span></span>
@@ -44,10 +52,11 @@
 		</div>
 
 		<div class="input-group">
-			<input ng-model="question.questionText" id="questionText" type="text" class="form-control"
+			<input ck-editor ng-model="question.questionText" id="questionText" type="text" class="form-control"
 				placeholder="Question" aria-describedby="basic-addon1"> <span
 				class="input-group-addon" id="basic-addon1"><span
 				class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></span>
+
 		</div>
 		<br>
 		<div id="answerstothemcq" style="overflow: hidden">
@@ -66,6 +75,9 @@
 				</div> -->
 				
 				<br>
+	
+				
+
 
 				
 				<div id="buttonsForChoices">
@@ -75,6 +87,12 @@
 			</div>
 			<!-- /.col-lg-6 -->
 		</div>
+
+		<input ck-editor ng-model="question.solution" id="questionSolution" type="text" class="form-control" placeholder="Question" aria-describedby="basic-addon1">
+		<span class="input-group-addon" id="basic-addon1">
+			<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+		</span>	
+
 	</div>
 	<br> <br>
 	<div id="button">

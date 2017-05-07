@@ -1,0 +1,38 @@
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" > -->
+
+<div class="panel panel-default">
+	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
+		<div style="float: left; width: 100%">
+			<div style="display:inline;width:10%">
+				<h3 style="display:inline;color:#187FD6"> [Q] </h3>
+			</div>
+			<div style="display:inline;width:80%">
+				<h3 style="float:top;display:inline" ng-bind-html="question.title" class="panel-title"></h3>
+			</div>
+			<div style="display:inline;width:10%;float:right;float:top;height:100%">
+			<span  class="badge" style="float:right" ></span>
+		</div>
+		</div>
+	</div>
+	<div class="panel-body" ng-bind-html="question.description"></div>
+
+	<div style="width:100%;padding:20px" ng-show="question.isSolved">
+		Solution:
+		<div class="well well-sm" style="padding-left:20px" ng-bind-html="questionIdToAnswerDictionary[question.id]"></div>
+	</div>
+
+	<div class="panel-footer" style="width: 100%; overflow:auto">
+		<div style="display:inline;width:90%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
+			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
+		</div>
+		<div style="display:inline;width:10%:float:right">
+			<span title="Difficulty level" ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float:right;color:black;font-size:15px">{{question.difficulty_level}}</span>
+		</div>
+
+ 		<div ng-click="displaySolution(question)" style="float:left; width: 15%">
+ 			<a href="javascript:void(0)" ><span style="float: left" aria-hidden="true">View Solution</span></a>
+ 		</div>
+	</div>
+
+</div>
+

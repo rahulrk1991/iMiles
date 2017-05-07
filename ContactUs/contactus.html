@@ -1,6 +1,19 @@
 <link href="/ContactUs/Stylesheets/icon_rotating_effect.css" rel="stylesheet" type="text/css">
+ <head>
+    <title>Contact Us | InterviewMile</title>
+    <meta name="keywords" content="contact us,share feedback, information, frequently asked questions,info">
+    <meta name="description" content="We'd love to hear from you! At InterviewMile, we're always looking to improve ourselves. You can help us in that process by sharing with us your valuable feedback, suggestions and comments about how you want the site to be. You can even get in touch with us on the social network.">
+    <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-<div id="main_container" style="width:900px;margin:50 auto;" class="container">
+            ga('create', 'UA-80250123-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+</head> 
+<div id="main_container" style="width:900px;margin:0 auto;margin-top:50px" class="container">
     <div class="container-fluid">
        <div class="row">
 
@@ -12,12 +25,24 @@
              <h3>We'd love to hear from you!</h3>
              <br>
 
-             <h4 style="text-align:justify;line-height:150%;padding-right:10px">At <b>InterviewMiles</b>, we're always looking to improve ourselves. You can help us in that process by sharing with us your valuable feedback, suggestions and comments about how you want the site to be. You can even get in touch with us on the social network.</h4>
+             <h4 style="text-align:justify;line-height:150%;padding-right:10px">At <b>InterviewMile</b>, we're always looking to improve ourselves. You can help us in that process by sharing with us your valuable feedback, suggestions and comments about how you want the site to be. You can even get in touch with us on the social network.</h4>
              <hr>
              <table width="100%;">
                 <tr>
-                   <td ng-repeat="thumbnail in thumbnails" class="social_td">
-                        <img ng-src="{{thumbnail}}">
+                   <td class="social_td">
+                        <a style="width:33%" ng-href="https://www.facebook.com/interviewmile">
+                          <img ng-src="{{thumbnails.facebook}}">
+                        </a>
+                    </td>
+                    <td class="social_td">
+                        <a style="width:33%" ng-href="https://www.linkedin.com/company/interviewmile">
+                          <img ng-src="{{thumbnails.linkedIn}}">
+                        </a>
+                    </td>
+                      <td class="social_td">
+                        <a style="width:33%" ng-href="https://twitter.com/InterviewMile">
+                          <img ng-src="{{thumbnails.twitter}}">
+                        </a>
                     </td>              
                 </tr>
              </table>
