@@ -2707,6 +2707,8 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             $scope.isFetchingQuestions = false;
+            $scope.areQuestionsExhausted = false;
+            $scope.showLoadingSign = true;
 
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
@@ -2857,11 +2859,19 @@ var app = angular
                 //Fetching questions here
                 $http.get(fetchQuestions_API+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
+
+                        $scope.showLoadingSign = false;
                         
                         var allQuestions = data;
                         console.log("Hitting URL:"+config.url);
+
+                        console.log("All questions length"+allQuestions.length);
+                        if(allQuestions.length==0) {
+                            $scope.areQuestionsExhausted = true;
+                            console.log("All questions of this category have been exhausted!");
+                        }
+
                         $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
-                        //console.log($scope.feed);
 
                         $scope.questions = allQuestions;        //Assigning the response data to questions in $scope object
                         
@@ -2898,8 +2908,9 @@ var app = angular
 
                             });
 
-                            $scope.isFetchingQuestions = false;
                         }
+
+                    $scope.isFetchingQuestions = false;
                 });
             
             }
@@ -2933,6 +2944,8 @@ var app = angular
                     $scope.isCategoryFilterOn = true;
                     feedNum=0;
                     $scope.feed = {};
+                    $scope.areQuestionsExhausted = false;
+                    $scope.showLoadingSign = true;
 
                     //Call getQuestions after resetting all variables
                     getQuestions(feedNum);
@@ -3023,7 +3036,7 @@ var app = angular
 
             $(window).scroll(function () {
                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-                    if(!$scope.isFetchingQuestions) {
+                    if(!($scope.areQuestionsExhausted) && !($scope.isFetchingQuestions)) {
                         feedNum++;
                         console.log("Getting feed number:"+feedNum);
                         $scope.isFetchingQuestions=true;
