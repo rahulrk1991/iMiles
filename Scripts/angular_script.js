@@ -1532,7 +1532,7 @@ var app = angular
                     $scope.question.kind = "Mcq";
                 }
 
-                $scope.question.shareLink = API_Start+ "/#/ViewQuestion/"+$scope.question.kind+"/"+$scope.question.pk;
+                $scope.question.shareLink = API_Start+ "/#/ViewQuestion/"+$routeParams.kind+"/"+$scope.question.pk;
 
             });
 
