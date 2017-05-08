@@ -1495,9 +1495,14 @@ var app = angular
             $scope.panel.title = "Click here to view Solution";
             $scope.panel.body = "Answer not retrieved, check JSON object in console for clues";
             
+            $scope.tooltipShare = {
+                "title": "Question Link copied to clipboard!",
+                "checked": false
+            };
 
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
+
             $scope.question = {};
             if($routeParams.kind=="descriptive") {
                 url = post_descriptive_questions_API+ $routeParams.questionID;
@@ -1517,10 +1522,17 @@ var app = angular
                 $scope.panel.body=$scope.question.answer;
                 $scope.question.isSolved = false;
                 $scope.question.isSelected = -1;
+                $scope.question.showSolution = false;
 
-               /* for(i=0;i<$scope.question.choices.length;i++) {
-                    $scope.question.choices[i].is_correct = false;
-                }*/
+                if($routeParams.kind=="descriptive") {
+                    $scope.question.kind = "Descriptive";
+                    $scope.question.pk = $scope.question.id;
+                }
+                else if($routeParams.kind=="mcq") {
+                    $scope.question.kind = "Mcq";
+                }
+
+                $scope.question.shareLink = API_Start+ "/#/ViewQuestion/"+$scope.question.kind+"/"+$scope.question.pk;
 
             });
 
@@ -1540,7 +1552,7 @@ var app = angular
                     .success(function(data,status,header,config) {
                             console.log("Solved Question!");        //on successfull posting of question
                             console.log(data.value);
-                            //console.log($scope.questionIdToChoicesDictionary[question.id]);
+                            
                             for(i=0;i<$scope.question.choices.length;i++) {
                                 if($scope.question.choices[i].id==data.value){
                                     $scope.question.choices[i].is_correct = true;
@@ -1572,6 +1584,37 @@ var app = angular
                     return;
                 question.isSolved = true;
                 question.isSelected = index;*/
+            }
+
+            $scope.displaySolution = function(question) {
+
+                question.showSolution = true;
+
+/*                if(question.showSolution) {
+                    question.showSolution = false;
+                    return;
+                }
+
+                console.log(question.id);
+                if(question.kind=="descriptive") {
+                    console.log("des");
+                    url = post_descriptive_questions_API+ question.id;
+                }
+                else if(question.kind=="mcq") {
+                    console.log("mcq");
+                    url = post_mcq_Questions_API+ question.id;
+                }
+
+                $http.get(url)
+                .then(function(response) {
+                    
+                    var questionDetails = response.data;
+                    question.answer = questionDetails.answer;
+                    console.log(question.answer);
+                    question.showSolution = true;
+                    $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
+
+                });*/
             }
 
             $scope.markForLater = function(question) {
@@ -2795,10 +2838,6 @@ var app = angular
                 }
 
             }
-
-            /*$scope.returnShareLink = function(question) {
-                return question.shareLink;
-            }*/
 
 
             //Function to GET all Categories 

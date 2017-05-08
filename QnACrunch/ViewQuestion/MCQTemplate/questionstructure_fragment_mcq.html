@@ -1,4 +1,7 @@
 <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" > -->
+<div style="margin-top:40px;margin-bottom:20px">
+    <h2>Question {{question.pk}} | {{question.kind}}</h2>
+</div>
 
 <div class="panel panel-default">
 	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
@@ -32,27 +35,40 @@
 	</div>
 	
 
-	<div class="panel-footer" style="width: 100%; overflow:auto">
+<div class="panel-footer" style="width: 100%; overflow:auto">
+
 		<div style="display:inline;width:75%:float:left" ng-repeat="category in questionIdToCategoriesDictionary[question.id]">
 			<div style="display:inline;float:left;margin-right:4px" ng-include="getTagTemplateQnA()"></div>
 		</div>
+
 		<div style="display:inline;width:10%:float:right">
 			<a title="Difficulty" href="javascript:void(0)" style="color:inherit" >
 			<span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:black">{{question.difficulty_level}}</span>
 			</a>
 		</div>
+
+		<div style="float: right; width: 4%;padding-right:15px">
+			<div ngclipboard data-clipboard-text="{{question.shareLink}}">
+			    <a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span data-trigger="click" data-placement="bottom" data-type="info" data-title="{{tooltipShare.title}}" bs-tooltip style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+			</div>
+
+		</div>
+
 		<div ng-click="markForLater(question)" style="float: right; width: 4%;padding-right:15px">
  			<a title="Add question to Favorites list" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
  		</div>
+
 		<div ng-show="userModel.isAdmin" style="float: right; width: 4%;padding-right:15px">
  			<a href="#ViewQuestion/{{question.kind}}/{{question.id}}" style="color:inherit" ><span style="float: left" class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
  		</div>
+
  		<div ng-show="userModel.isAdmin" style="float: right; width: 4%">
  			<a  href="#EditQuestion/{{question.kind}}/{{question.id}}" ><span style="float: left" class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
  		</div>
+ 		
 	</div>
 </div>
-<div class="panel-group" ng-model="panel.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+<div ng-show="false" class="panel-group" ng-model="panel.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
 	<div class="panel panel-default" >
 	  	<div class="panel-heading" role="tab">
 	  		<h4 class="panel-title">
