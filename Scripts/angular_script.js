@@ -1487,7 +1487,7 @@ var app = angular
             }
 
         })
-        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce,$cookies,$alert,$rootScope) {
+        .controller("viewQuestionsController",function($scope,$http,$routeParams,$sce,$cookies,$alert,$rootScope,$timeout) {
 
             $scope.load_question = getQuestionInfo[$routeParams.kind].viewFragment;
             $scope.question = {};
@@ -1495,10 +1495,6 @@ var app = angular
             $scope.panel.title = "Click here to view Solution";
             $scope.panel.body = "Answer not retrieved, check JSON object in console for clues";
             
-            $scope.tooltipShare = {
-                "title": "Question Link copied to clipboard!",
-                "checked": false
-            };
 
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
@@ -1637,6 +1633,26 @@ var app = angular
 
                      });
 
+            }
+
+
+            $scope.tooltipShare = {
+                "title": "Click to copy link to clipboard"
+            };
+
+            $scope.onSharedQuestion = function(question) {
+
+                $scope.tooltipShare = {
+                        "title": "Question link copied to clipboard!"
+                    };
+
+                $timeout(function() {
+                    $scope.tooltipShare = {
+                        "title": "Click to copy link to clipboard"
+                    };
+                }, 3000);
+
+                
             }
 
             $scope.getChoiceStructure = function() {
@@ -2717,7 +2733,7 @@ var app = angular
             loadUserInfo();
               
         })
-        .controller("questionsController",function($rootScope,$scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll) {
+        .controller("questionsController",function($rootScope,$scope,$http,$sce,userService,$tooltip,$cookies,$alert,$anchorScroll,$timeout) {
 
             //this.userModel = userService.model;
             console.log('Entered questions controller')
@@ -2726,8 +2742,7 @@ var app = angular
             $scope.userModel = userService.returnState();
 
             $scope.tooltipShare = {
-                "title": "Question Link copied to clipboard!",
-                "checked": false
+                "title": "Click to copy link to clipboard"
             };
 
             //Variable to display tags/search them in autocomplete search bar
@@ -2866,11 +2881,6 @@ var app = angular
 
             getAllCategories();     //Runs function to GET Categories as soon as controller is called
 
-            //Tooltips
-            $scope.tooltip = {
-              "title": "To filter questions of a particular topic, start typing the topic here!",
-              "checked": true
-            };
 
             function chunk(arr, size) {
               var newArr = [];
@@ -3021,17 +3031,22 @@ var app = angular
 
             }
 
-            $scope.shareLink = function(question) {
-                console.log("Mark "+question.id+" for later");
 
-                $scope.ShareLinkUrl = API_Start+ "/#/ViewQuestion/"+question.kind+"/"+question.id;
-                $scope.tooltipShareLink = {
-                  "title": $scope.ShareLinkUrl,
-                  "checked": true
-                };
-                console.log($scope.ShareLinkUrl);
+
+            $scope.onSharedQuestion = function(question) {
+
+                $scope.tooltipShare = {
+                        "title": "Question link copied to clipboard!"
+                    };
+
+                $timeout(function() {
+                    $scope.tooltipShare = {
+                        "title": "Click to copy link to clipboard"
+                    };
+                }, 3000);
+
+                
             }
-
 
             $scope.displaySolution = function(question) {
 
