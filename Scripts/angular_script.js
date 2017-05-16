@@ -1495,9 +1495,14 @@ var app = angular
             $scope.panel.title = "Click here to view Solution";
             $scope.panel.body = "Answer not retrieved, check JSON object in console for clues";
             
+            $scope.tooltipShare = {
+                "title": "Question Link copied to clipboard!",
+                "checked": false
+            };
 
             console.log($routeParams.questionID);
             console.log($routeParams.kind);
+
             $scope.question = {};
             if($routeParams.kind=="descriptive") {
                 url = post_descriptive_questions_API+ $routeParams.questionID;
@@ -1517,10 +1522,17 @@ var app = angular
                 $scope.panel.body=$scope.question.answer;
                 $scope.question.isSolved = false;
                 $scope.question.isSelected = -1;
+                $scope.question.showSolution = false;
 
-               /* for(i=0;i<$scope.question.choices.length;i++) {
-                    $scope.question.choices[i].is_correct = false;
-                }*/
+                if($routeParams.kind=="descriptive") {
+                    $scope.question.kind = "Descriptive";
+                    $scope.question.pk = $scope.question.id;
+                }
+                else if($routeParams.kind=="mcq") {
+                    $scope.question.kind = "Mcq";
+                }
+
+                $scope.question.shareLink = API_Start+ "/#/ViewQuestion/"+$routeParams.kind+"/"+$scope.question.pk;
 
             });
 
@@ -1540,7 +1552,7 @@ var app = angular
                     .success(function(data,status,header,config) {
                             console.log("Solved Question!");        //on successfull posting of question
                             console.log(data.value);
-                            //console.log($scope.questionIdToChoicesDictionary[question.id]);
+                            
                             for(i=0;i<$scope.question.choices.length;i++) {
                                 if($scope.question.choices[i].id==data.value){
                                     $scope.question.choices[i].is_correct = true;
@@ -1572,6 +1584,37 @@ var app = angular
                     return;
                 question.isSolved = true;
                 question.isSelected = index;*/
+            }
+
+            $scope.displaySolution = function(question) {
+
+                question.showSolution = true;
+
+/*                if(question.showSolution) {
+                    question.showSolution = false;
+                    return;
+                }
+
+                console.log(question.id);
+                if(question.kind=="descriptive") {
+                    console.log("des");
+                    url = post_descriptive_questions_API+ question.id;
+                }
+                else if(question.kind=="mcq") {
+                    console.log("mcq");
+                    url = post_mcq_Questions_API+ question.id;
+                }
+
+                $http.get(url)
+                .then(function(response) {
+                    
+                    var questionDetails = response.data;
+                    question.answer = questionDetails.answer;
+                    console.log(question.answer);
+                    question.showSolution = true;
+                    $rootScope.rootScope_experience = $rootScope.rootScope_experience+1;
+
+                });*/
             }
 
             $scope.markForLater = function(question) {
@@ -2707,6 +2750,8 @@ var app = angular
             $scope.feed = {};
             var feedNum = 0;
             $scope.isFetchingQuestions = false;
+            $scope.areQuestionsExhausted = false;
+            $scope.showLoadingSign = true;
 
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
@@ -2794,10 +2839,6 @@ var app = angular
 
             }
 
-            /*$scope.returnShareLink = function(question) {
-                return question.shareLink;
-            }*/
-
 
             //Function to GET all Categories 
             var getAllCategories = function() {
@@ -2857,11 +2898,19 @@ var app = angular
                 //Fetching questions here
                 $http.get(fetchQuestions_API+"?start="+feedNum*10)
                     .success(function(data,status,headers,config) {
+
+                        $scope.showLoadingSign = false;
                         
                         var allQuestions = data;
                         console.log("Hitting URL:"+config.url);
+
+                        console.log("All questions length"+allQuestions.length);
+                        if(allQuestions.length==0) {
+                            $scope.areQuestionsExhausted = true;
+                            console.log("All questions of this category have been exhausted!");
+                        }
+
                         $scope.feed[feedNum] = allQuestions;    //Set of fetch questions get assigned to an index in feed
-                        //console.log($scope.feed);
 
                         $scope.questions = allQuestions;        //Assigning the response data to questions in $scope object
                         
@@ -2898,8 +2947,9 @@ var app = angular
 
                             });
 
-                            $scope.isFetchingQuestions = false;
                         }
+
+                    $scope.isFetchingQuestions = false;
                 });
             
             }
@@ -2933,6 +2983,8 @@ var app = angular
                     $scope.isCategoryFilterOn = true;
                     feedNum=0;
                     $scope.feed = {};
+                    $scope.areQuestionsExhausted = false;
+                    $scope.showLoadingSign = true;
 
                     //Call getQuestions after resetting all variables
                     getQuestions(feedNum);
@@ -3023,7 +3075,7 @@ var app = angular
 
             $(window).scroll(function () {
                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-                    if(!$scope.isFetchingQuestions) {
+                    if(!($scope.areQuestionsExhausted) && !($scope.isFetchingQuestions)) {
                         feedNum++;
                         console.log("Getting feed number:"+feedNum);
                         $scope.isFetchingQuestions=true;

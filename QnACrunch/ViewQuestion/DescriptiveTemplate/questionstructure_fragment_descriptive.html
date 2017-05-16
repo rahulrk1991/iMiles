@@ -1,4 +1,7 @@
 <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" > -->
+<div style="margin-top:40px;margin-bottom:20px">
+    <h2>Question {{question.pk}} | {{question.kind}}</h2>
+</div>
 
 <div class="panel panel-default">
 	<div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
@@ -27,9 +30,9 @@
 		</div>
 		<div style="float: right; width: 4%;padding-right:15px">
 			<div ngclipboard data-clipboard-text="{{question.shareLink}}">
-			    <a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+			    <a title="Click to get link to share this question" href="javascript:void(0)" style="color:inherit" ><span data-trigger="click" data-placement="bottom" data-type="info" data-title="{{tooltipShare.title}}" bs-tooltip style="float: left;font-size:16px" class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
 			</div>
- 			
+
 		</div>
 		<div ng-click="markForLater(question)" style="float: right; width: 4%;padding-right:15px">
  			<a title="Add question to Favorites list" href="javascript:void(0)" style="color:inherit" ><span style="float: left;font-size:16px" class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
