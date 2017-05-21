@@ -22,11 +22,29 @@
 
         <div class="row">
             <div style="margin-top:50px" id="codingQuestionTitleDiv">
-                <h1>Question title | <small></small></h1>
-                <hr>
-                <p>
-                    Question description
-                </p>
+                <div style="width:100%">
+                    <h1>{{codingQuestion.title}} | <small>{{codingQuestion.type}}</small></h1>
+                    <hr>
+                </div>
+
+                <div style="width:100%">
+                    <b>Problem Description</b>
+                    <p ng-bind-html="codingQuestion.description">
+                    </p>
+                    <hr>
+                </div>
+
+                <div style="width:100%">
+                    <b>Sample Input</b>
+                    <p ng-bind-html="codingQuestion.sample_input"></p>
+                    <hr>
+                <div>
+
+                <div style="width:100%">
+                    <b>Sample Output</b>
+                    <p ng-bind-html="codingQuestion.sample_output"></p>
+                    <hr>
+                <div>
             </div>
 
             <div style="padding:10px"  ng-model="editorContent" ui-ace="{
@@ -44,7 +62,7 @@
                         <option selected ng-repeat="language in codingLanguages" value="{{language}}">{{language}}</option>
                     </select>
 
-                    <button sytle="float:right" id="submitCodeButton" type="button" class="btn btn-default btn-lg btn-success" data-toggle="modal" >
+                    <button ng-click="runCode()" sytle="float:right" id="submitCodeButton" type="button" class="btn btn-default btn-lg btn-success" data-toggle="modal" >
                         Run Code
                     </button>
                 </div> 

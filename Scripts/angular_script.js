@@ -384,10 +384,48 @@ var app = angular
             
 
         })
-        .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert){
+        .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert,$routeParams,$alert){
 
             $scope.editorContent = "";
             $scope.codingLanguages = ["C","C++","Java","Python"];
+            $scope.codingQuestion = {};
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/form-data'};
+            
+
+            $http.get(coding_get_question_API+$routeParams.questionID)
+                .success(function(data,status,headers,config) {
+                    $scope.codingQuestion = data;
+                    console.log($scope.codingQuestion);
+                })
+
+            $scope.runCode = function() {
+                console.log($scope.editorContent);
+
+                var payload = new FormData();
+                payload.append("lang","c");
+                payload.append("quid",201);
+                payload.append("userid",1);
+                payload.append("code",$scope.editorContent);
+                console.log(payload);
+
+                $http({
+                    method: 'POST',
+                    url: coding_post_question_API,
+                    headers: cooksHeader,
+                    data: payload,
+                    transformRequest: angular.identity
+                }).success(function (data) {
+                    console.log(data);
+                    console.log("Links Updated");        //on successfull posting of question
+                    var myAlert = $alert({title: "Links Updated!", content: "Edits made to your links were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+
+                }).error(function() {
+                    console.log("Links could not be updated");                //in case there is an error
+                    var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                });
+            }
             
 
         })
