@@ -1,0 +1,37 @@
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" > -->
+<style>
+    p {
+        font-size: 18px;
+    }
+</style>
+<div class="panel panel-default">
+    <div style="width: 100%; height: auto;overflow:auto" class="panel-heading">
+        <div style="float: left; width: 100%">
+            <div style="display:inline;width:6%">
+                <h3 style="display:inline;color:#187FD6"> [Q {{question.questionId}}] </h3>
+            </div>
+            <div style="display:inline;width:80%">
+                <h3 style="float:top;display:inline" class="panel-title" ng-bind-html="question.title"></h3>
+            </div>
+
+            <div style="display:inline;width:12%;float:right"> 
+                <a title="Difficulty" href="javascript:void(0)" >
+                    <span ng-class="getColorForDifficulty(question.difficulty_level)" class="badge" style="float: right;font-size:15px;color:white">Level : {{question.difficulty_level}}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" ng-bind-html="question.description"></div>
+
+    <div class="panel-footer" style="width: 100%; overflow:auto">
+        <div style="display:inline;width:40%:float:left">
+            <div style="display:inline;float:left;margin-right:4px" ng-include="codeCrunchQuestionsTagTemplate()"></div>
+        </div>
+
+        <div style="display:inline;width:8%;float:right">
+            <a href="#/CodeCrunch/SubmitCode/{{question.questionId}}" style="color:inherit">
+                <button ng-click="runCode()" sytle="float:right" id="submitCodeButton" type="button" class="btn btn-default btn-sm btn-success" data-toggle="modal" >Code</button>
+            </a>
+        </div>
+    </div>
+</div>

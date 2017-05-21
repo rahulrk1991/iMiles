@@ -100,12 +100,12 @@ var app = angular
                 templateUrl: absolute_path+"Jobs/jobs.html",
                 controller:"jobsController"
             })
-            .when("/Coding", {
-                templateUrl: absolute_path+"Coding/codingQuestions.html",
-                controller:"codingQuestionsController"
+            .when("/CodeCrunch", {
+                templateUrl: absolute_path+"CodeCrunch/codeCrunch.html",
+                controller:"codeCrunchController"
             })
-            .when("/SubmitCode/:questionID", {
-                templateUrl: absolute_path+"Coding/submitCode.html",
+            .when("/CodeCrunch/SubmitCode/:questionID", {
+                templateUrl: absolute_path+"CodeCrunch/submitCode.html",
                 controller:"submitCodeController"
             })
             .when("/EditQuestion/:kind/:questionID", {
@@ -382,6 +382,32 @@ var app = angular
             }
 
             
+
+        })
+        .controller("codeCrunchController",function($scope,$http,userService,$cookies,$alert,$routeParams,$alert){
+
+            var cooks = $cookies.get("csrftoken");
+            var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/form-data'};
+            
+            $scope.getCodeCruchQuestionTemplate = function() {
+                console.log("template returned!");
+                return codeCrunchTemplate;
+
+            }
+
+            $scope.codeCrunchQuestionsTagTemplate = function() {
+                
+                return codeCrunchQuestionsTagTemplate;         
+
+            }
+
+
+            $http.get(coding_get_all_question_API)
+                .success(function(data,status,headers,config) {
+                    $scope.allQuestions = data.questions;
+                    console.log($scope.allQuestions);
+                })
+        
 
         })
         .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert,$routeParams,$alert){
