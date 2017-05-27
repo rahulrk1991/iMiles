@@ -247,7 +247,7 @@ var app = angular
               else if(distance < 0 && distanceToCloseTest<0) {
                 $scope.enableTestButton = true;
                 $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
-                setDisplayDateVariables();
+                //setDisplayDateVariables();
                 //clearInterval(countdown_timer_function);
                 countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
                 document.getElementById("demo").innerHTML = days + "d " + hours + "h "
@@ -417,7 +417,7 @@ var app = angular
             $scope.codingQuestion = {};
 
             var cooks = $cookies.get("csrftoken");
-            var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/form-data'};
+            var cooksHeader = { 'X-CSRFToken': cooks ,'Content-Type': 'application/x-www-form-urlencoded'};
             
 
             $http.get(coding_get_question_API+$routeParams.questionID)
@@ -426,32 +426,55 @@ var app = angular
                     console.log($scope.codingQuestion);
                 })
 
-            $scope.runCode = function() {
-                console.log($scope.editorContent);
 
+            $scope.runCode = function() {
                 var payload = new FormData();
                 payload.append("lang","c");
                 payload.append("quid",201);
                 payload.append("userid",1);
-                payload.append("code",$scope.editorContent);
+                payload.append("code","");
                 console.log(payload);
+
+                $.ajax({
+                    url: coding_post_question_API,
+                    data: payload,
+                    cache: false,
+                    contentType: 'multipart/form-data',
+                    processData: false,
+                    type: 'POST',
+                    success: function(data){
+                        alert(data);
+                    }
+                });
 
                 $http({
                     method: 'POST',
                     url: coding_post_question_API,
                     headers: cooksHeader,
-                    data: payload,
-                    transformRequest: angular.identity
-                }).success(function (data) {
-                    console.log(data);
-                    console.log("Links Updated");        //on successfull posting of question
-                    var myAlert = $alert({title: "Links Updated!", content: "Edits made to your links were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {
+                        lang : "c",
+                        quid : 201,
+                        userid : 1,
+                        code : ""
+                    }
+                }).success(function () {
+                    console.log("Info Updated");        //on successfull posting of question
+                    var myAlert = $alert({title: "Info Updated!", content: "Edits made to your Info were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
 
                 }).error(function() {
-                    console.log("Links could not be updated");                //in case there is an error
+                    console.log("Info could not be updated");                //in case there is an error
                     var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
                 });
             }
+
+
+
             
 
         })

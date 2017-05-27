@@ -37,6 +37,18 @@ var questions_choices_mcq_API = API_Start + questions_choices_mcq_End_Point;
 var question_categories_End_Point = "/api/"+"question/category/all/";
 var question_categories_API = API_Start + question_categories_End_Point;
 
+//Get coding question with id API
+var coding_get_all_question_End_Point = "/api/"+"question/get_programming_questions/all/";
+var coding_get_all_question_API = API_Start + coding_get_all_question_End_Point;
+
+//Get coding question with id API
+var coding_get_question_End_Point = "/api/"+"question/programming_question/";
+var coding_get_question_API = API_Start + coding_get_question_End_Point;
+
+//Post coding question API
+var coding_post_question_End_Point = "/api/"+"question/programming_question_submit_getId/";
+var coding_post_question_API = API_Start + coding_post_question_End_Point;
+
 //Mark For Later API
 var question_mark_Later_End_Point = "/api/"+"question/marklater/";
 var question_mark_Later_API = API_Start + question_mark_Later_End_Point;
@@ -130,6 +142,10 @@ var absolute_path = "/";
 var mcq_kind = "mcq";
 var descriptive_kind = "descriptive";
 var question_types = [mcq_kind, descriptive_kind];
+
+var codeCrunchTemplate = absolute_path + "CodeCrunch/CodeCrunchQuestionTemplate/codeCrunchQuestionTemplate.html";
+var codeCrunchQuestionsTagTemplate = absolute_path + "CodeCrunch/CodeCrunchQuestionTemplate/codeCrunchQuestionsTagTemplate.html"
+
 
 var getQuestionInfo = {};
 
