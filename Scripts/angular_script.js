@@ -202,9 +202,9 @@ var app = angular
             $rootScope.rootScope_experience = -1;
 
             //Timer that appears in navigation bar
-            $rootScope.dateOfHiringTest = "May 21, 2017 14:00:00";
-            $rootScope.dateTillItCanBeGiven = "May 21, 2017 21:00:00"
-            $rootScope.dateOfNextHiringTest = "Jun 4, 2017 14:00:00";
+            $rootScope.dateOfHiringTest = "Jun 18, 2017 14:00:00";
+            $rootScope.dateTillItCanBeGiven = "Jun 18, 2017 21:00:00"
+            $rootScope.dateOfNextHiringTest = "Jun 25, 2017 14:00:00";
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
             $scope.dateTillItCanBeGiven = $rootScope.dateTillItCanBeGiven;
@@ -410,7 +410,7 @@ var app = angular
         
 
         })
-        .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert,$routeParams,$alert){
+        .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert,$routeParams,$alert,$timeout){
 
             $scope.editorContent = "";
             $scope.codingLanguages = ["C","C++","Java","Python"];
@@ -428,6 +428,7 @@ var app = angular
 
 
             $scope.runCode = function() {
+
                 var payload = new FormData();
                 payload.append("lang","c");
                 payload.append("quid",201);
@@ -435,42 +436,54 @@ var app = angular
                 payload.append("code","");
                 console.log(payload);
 
-                $.ajax({
-                    url: coding_post_question_API,
-                    data: payload,
-                    cache: false,
-                    contentType: 'multipart/form-data',
-                    processData: false,
-                    type: 'POST',
-                    success: function(data){
-                        alert(data);
-                    }
-                });
+                var recievedID = "xyz";
 
-                $http({
-                    method: 'POST',
-                    url: coding_post_question_API,
-                    headers: cooksHeader,
-                    transformRequest: function(obj) {
-                        var str = [];
-                        for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                        return str.join("&");
-                    },
-                    data: {
-                        lang : "c",
-                        quid : 201,
-                        userid : 1,
-                        code : ""
-                    }
-                }).success(function () {
-                    console.log("Info Updated");        //on successfull posting of question
-                    var myAlert = $alert({title: "Info Updated!", content: "Edits made to your Info were updated successfully", placement:'floater top', type: 'success', show: true,duration:5});
+                //var code = editor.getValue();
+                //var urlencodedCode = code;
+                
+                var http = new XMLHttpRequest();
 
-                }).error(function() {
-                    console.log("Info could not be updated");                //in case there is an error
-                    var myAlert = $alert({title: 'There was and error! Check the logs to know more..', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
-                });
+                var url = "http://testinterviewmiles.com/api/question/programming_question_submit_getId/";
+                var params = "lang=cpp&qid=201&userid=1&code=" + $scope.editorContent;
+                http.open("POST", url, true);
+
+                //Send the proper header information along with the request
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                http.setRequestHeader("X-CSRFToken", cooks);
+
+                http.onreadystatechange = function() {//Call a function when the state changes.
+                    if(http.readyState == 4 && http.status == 200) {
+                        //alert(http.responseText);
+                        recievedID = http.responseText;
+                        recievedID = recievedID.substring(1, recievedID.length - 1);
+                        console.log("ID recieved : "+ recievedID);
+                        $timeout(getResults, 5000);
+                    }
+                }
+                http.send(params);
+
+                var getResults = function() {
+                    console.log("Hello! Trying to get result");
+
+                    var http = new XMLHttpRequest();
+
+                    var url = "http://testinterviewmiles.com/api/question/programming_question_submit_getResult/";
+                    var params = "qid=201&userid=1&id="+recievedID;
+                    http.open("POST", url, true);
+
+                    //Send the proper header information along with the request
+                    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    http.setRequestHeader("X-CSRFToken", cooks);
+
+                    http.onreadystatechange = function() {//Call a function when the state changes.
+                        if(http.readyState == 4 && http.status == 200) {
+                            alert(http.responseText);
+
+                        }
+                    }
+                    http.send(params);
+
+                }
             }
 
 
