@@ -2053,7 +2053,7 @@ var app = angular
                      });
             }
         })
-        .controller("contactUsController",function($scope) {
+        .controller("contactUsController",function($scope,$cookies,$http,$alert) {
             
             $scope.thumbnails = [
                 absolute_path+"ContactUs/Images/Facebook_32x32.jpg",
@@ -2066,7 +2066,23 @@ var app = angular
             $scope.thumbnails.twitter = absolute_path+"ContactUs/Images/twitter.png";
             
             $scope.submitMessage = function() {
-                alert($scope.contact.fullName,$scope.contact.email,$scope.contact.subject,$scope.contact.message);
+                $alert({title: 'Wait ...', content: 'Submitting feedback', placement:'floater top', type: 'info', show: true,duration:4});
+                url = contact_us_API;
+                body =  {
+                    "name": $scope.contact.fullName,
+                    "email": $scope.contact.email,
+                    "title": $scope.contact.subject,
+                    "message": $scope.contact.message
+                };
+                $http.post( url, body,{})
+                     .success(function(data,status,header,config) {
+                            $alert({title: 'Thanks', content: 'We have recieved your feedback', placement:'floater top', type: 'success', show: true,duration:4});
+                            $scope.resetForm();
+
+                        })
+                     .error(function(response) {
+                        $alert({title: 'Sorry', content: 'We encountered error, please check internet connection', placement:'floater top', type: 'danger', show: true,duration:4});
+                     });
             }
 
             $scope.resetForm = function() {
