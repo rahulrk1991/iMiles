@@ -139,6 +139,11 @@ var mock_myresults_API = API_Start + mock_myresults_End_Point;
 var mock_allMocks_End_Point = "/api/"+"mock/mocks/all";
 var mock_allMocks_API = API_Start + mock_allMocks_End_Point;
 
+
+//contact us/feedback api
+var contact_us_End_Point = "/api/"+"user/feedback/";
+var contact_us_API = API_Start + contact_us_End_Point;
+
 //OTHER VARIABLES
 var absolute_path = "/";
 
