@@ -639,7 +639,7 @@ var app = angular
             $scope.accuracy = 0;
 
             //Hiring test variables-------------------//
-            $scope.hiringTestMockID = 3858;
+            $scope.hiringTestMockID = 1;
             //Hiring Test 2 id : 3142
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
@@ -1084,8 +1084,8 @@ var app = angular
             $scope.SectionsList = [];
             $scope.codingLanguages = ["C","C++","Java","Python"];
 
-            var durationInMinutes = 60;
-            $scope.testName = "hiring test 123";
+            var durationInMinutes = 90;
+            $scope.testName = "IM Advance Test";
             $scope.counter = 60*60;
 
             //Review Test modal variable
@@ -1135,7 +1135,7 @@ var app = angular
                     $scope.allSections = response.data;
                     for(var sectionName in $scope.allSections) $scope.SectionsList.push(sectionName);
                     $scope.SectionsList.sort();
-                    $scope.chosenSection=$scope.SectionsList[1];
+                    $scope.chosenSection=$scope.SectionsList[0];
                     var dict = [];                              // dict['question id'] = choice
                     for(var i=0;i<$scope.SectionsList.length;i++) {                //loop through the questions, and get the choices for each
 

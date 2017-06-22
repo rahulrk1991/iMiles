@@ -47,11 +47,11 @@
                     </div>
 
                     <div style="width:100%;overflow:hidden">
-                        <div ng-repeat="section in SectionsList" >
+                        <div style="margin-bottom:40px" ng-repeat="section in SectionsList" >
                             <hr style="width:100%">
-                            <p>{{section}}</p>
+                            <p><strong>{{section}}</strong></p>
 
-                            <div ng-repeat="question in allSections[section]" ng-class="markAttemptedQuestion(question)" style="width:20%;height:50px;float:left;text-align:center;padding-top:15px">
+                            <div ng-repeat="question in allSections[section]" ng-class="markAttemptedQuestion(question)" style="width:5%;height:20px;float:left;text-align:center;padding:0px">
                                             
                                 {{question.testId}}
                                 
