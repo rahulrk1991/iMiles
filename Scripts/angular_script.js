@@ -195,6 +195,17 @@ var app = angular
             $rootScope.title="iMiles Menu";
             $scope.userModel = userService.returnState();
             $rootScope.sidebarUserModel = $scope.userModel;
+            $scope.aside = {};
+            $scope.aside.showPracticeSection = true;
+            $scope.aside.showTestSection = true;
+
+            $scope.toggleSection = function(section) {
+                if(section=='practice') {
+                    $scope.aside.showPracticeSection = !$scope.aside.showPracticeSection;
+                }
+                else if(section=='test')
+                $scope.aside.showTestSection = !$scope.aside.showTestSection;
+            }
 
             //Stats that appear in navigation bar
             $rootScope.rootScope_full_name = "";
@@ -202,9 +213,9 @@ var app = angular
             $rootScope.rootScope_experience = -1;
 
             //Timer that appears in navigation bar
-            $rootScope.dateOfHiringTest = "Jun 18, 2017 14:00:00";
+            $rootScope.dateOfHiringTest = "Jun 25, 2017 14:00:00";
             $rootScope.dateTillItCanBeGiven = "Jun 18, 2017 21:00:00"
-            $rootScope.dateOfNextHiringTest = "Jun 25, 2017 14:00:00";
+            $rootScope.dateOfNextHiringTest = "Jul 2, 2017 14:00:00";
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
             $scope.dateTillItCanBeGiven = $rootScope.dateTillItCanBeGiven;
@@ -413,7 +424,7 @@ var app = angular
         .controller("submitCodeController",function($scope,$http,userService,$cookies,$alert,$routeParams,$alert,$timeout){
 
             $scope.editorContent = "";
-            $scope.codingLanguages = ["C","C++","Java","Python"];
+            $scope.codingLanguages = ["C","C++","Java"];
             $scope.codingQuestion = {};
 
             var cooks = $cookies.get("csrftoken");
@@ -628,7 +639,7 @@ var app = angular
             $scope.accuracy = 0;
 
             //Hiring test variables-------------------//
-            $scope.hiringTestMockID = 3697;
+            $scope.hiringTestMockID = 3858;
             //Hiring Test 2 id : 3142
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
@@ -1048,7 +1059,7 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("hiringTestController",function($scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
+        .controller("hiringTestController",function($rootScope,$scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
 
             var cooks = $cookies.get("csrftoken");
             var cooksHeader = { 'X-CSRFToken': cooks };
@@ -1064,12 +1075,18 @@ var app = angular
                 }
             });
 
-
+            $scope.allSections = {};
             $scope.attemptedQuestions=0;
-            $scope.totalQuestions;
+            $scope.totalQuestions = 0;
             $scope.score = 0;
             $scope.maxScore = 0;
             $scope.testName = "";
+            $scope.SectionsList = [];
+            $scope.codingLanguages = ["C","C++","Java","Python"];
+
+            var durationInMinutes = 60;
+            $scope.testName = "hiring test 123";
+            $scope.counter = 60*60;
 
             //Review Test modal variable
             $scope.title = "Your Time is up!";
@@ -1079,15 +1096,6 @@ var app = angular
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
             });
-
-
-            $http.get(mock_mock_API+$routeParams.id)
-                .then(function(response) {
-                    var testInfo = response.data;
-                    var durationInMinutes = testInfo.duration;
-                    $scope.testName = testInfo.title;
-                    $scope.counter = testInfo.duration*60;
-                })
 
 
             //$scope.counter = 10;
@@ -1121,29 +1129,47 @@ var app = angular
             $scope.isTestSubmitted = false;
 
             //Get all the question data using http get
-            $http.get(mock_mock_API+$routeParams.id+"/start")
+            $http.get(mock_hiring_API+"/"+$routeParams.id+"/start")
                 .then(function(response) {
-                    var allQuestions = response.data;
-                    $scope.questions = allQuestions;            //Assigning the response data to questions in $scope object
-                    console.log($scope.questions);
+                    //var allQuestions = response.data;
+                    $scope.allSections = response.data;
+                    for(var sectionName in $scope.allSections) $scope.SectionsList.push(sectionName);
+                    $scope.SectionsList.sort();
+                    $scope.chosenSection=$scope.SectionsList[1];
                     var dict = [];                              // dict['question id'] = choice
-                    $scope.totalQuestions = allQuestions.length;
-                    for(var i=0;i<allQuestions.length;i++) {                //loop through the questions, and get the choices for each
-                        var singleQuestion = allQuestions[i];
+                    for(var i=0;i<$scope.SectionsList.length;i++) {                //loop through the questions, and get the choices for each
 
-                        singleQuestion.isSolved = false;
-                        singleQuestion.usersChoice = -1;
-                        singleQuestion.testId = i+1;
+                        $scope.totalQuestions = $scope.totalQuestions + $scope.allSections[$scope.SectionsList[i]].length;
+                        for(var j=0;j<$scope.allSections[$scope.SectionsList[i]].length;j++) {
+
+                            var singleQuestion = $scope.allSections[$scope.SectionsList[i]][j];
+                            singleQuestion.isSolved = false;
+                            singleQuestion.usersChoice = -1;
+                            singleQuestion.testId = j+1;
+
+                            if($scope.SectionsList[i]=="programming") {
+                                singleQuestion.selectedLanguage = "";
+                            }
+
+                        }
 
                     }
+                    console.log($scope.allSections);
 
             });
 
             
-            $scope.getQuestionTemplateByType = function(question) {
+            $scope.getQuestionTemplateBySection = function(chosenSection) {
                 
-                return getQuestionInfo["mcq"].onlineMockTestFragment;         //returning the template file from getQuestonInfo using question 
-
+                if(chosenSection.toLowerCase()=="aptitude") {
+                    return getQuestionInfo["mcq"].onlineMockTestFragment;
+                }
+                else if(chosenSection.toLowerCase()=="technical") {
+                    return getQuestionInfo["mcq"].onlineMockTestFragment;
+                }
+                else if(chosenSection.toLowerCase()=="programming") {
+                    return absolute_path+"OnlineMockTests/HiringTest/codingQuestionTestTemplate.html";
+                }
             }
 
             
@@ -1168,36 +1194,158 @@ var app = angular
                           
             }
 
-            var finalChoices = [];
-            $scope.submitTest = function() {
-                for(i=0;i<$scope.questions.length;i++) {
-                    if($scope.questions[i].isSolved) {
-                        var choicebody = {"questionId":$scope.questions[i].pk,
-                                    "choiceId":$scope.questions[i].usersChoice};
-                        finalChoices.push(choicebody);
+            $scope.makeBoldIfSelected = function(section) {
+                if(section==$scope.chosenSection)
+                    return "active make-nav-title-bold"
+                else
+                    return ""
+            }
+            
+            $scope.changeChosenSection = function(section) {
+                console.log(section);
+                $scope.chosenSection = section;
+            }
+            
+            var covertLanguage = function(lang) {
+                if(lang=="C")
+                    return "c"
+                else if(lang=="C++")
+                    return "cpp"
+                else if(lang=="Java")
+                    return "java"
+                else if(lang=="Python")
+                    return "python"
+            } 
+
+            $scope.runCode = function(question) {
+
+                question.isSolved = true;
+                question.result = "";
+
+                var payload = new FormData();
+                payload.append("lang","c");
+                payload.append("quid",question.questionId);
+                payload.append("userid",1);
+                payload.append("code","");
+                console.log(payload);
+
+                var recievedID = "xyz";
+
+                //var code = editor.getValue();
+                //var urlencodedCode = code;
+                
+                var http = new XMLHttpRequest();
+
+                var url = coding_post_question_API;
+                console.log("Language : "+ question.selectedLanguage);
+                console.log($rootScope.sidebarUserModel);
+
+                var qid = question.questionId.toString();
+                console.log(qid);
+
+                var params = "lang=" + covertLanguage(question.selectedLanguage)+"&"+"qid="+"101"+"&"+
+                                "userid="+$rootScope.sidebarUserModel.id+"&"+"code="+"code";
+                http.open("POST", url, true);
+
+                //Send the proper header information along with the request
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                http.setRequestHeader("X-CSRFToken", cooks);
+
+                http.onreadystatechange = function() {//Call a function when the state changes.
+                    if(http.readyState == 4 && http.status == 200) {
+                        //alert(http.responseText);
+                        recievedID = http.responseText;
+                        recievedID = recievedID.substring(1, recievedID.length - 1);
+                        console.log("ID recieved : "+ recievedID);
+                        $timeout(getResults, 3000);
                     }
                 }
-                console.log(finalChoices);
+                http.send(params);
+
+                var getResults = function() {
+                    console.log("Hello! Trying to get result");
+
+                    var http = new XMLHttpRequest();
+
+                    var url = "http://testinterviewmiles.com/api/question/programming_question_submit_getResult/";
+                    var params = "qid=101&userid=1&id="+recievedID;
+                    http.open("POST", url, true);
+
+                    //Send the proper header information along with the request
+                    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    http.setRequestHeader("X-CSRFToken", cooks);
+
+                    http.onreadystatechange = function() {//Call a function when the state changes.
+                        if(http.readyState == 4 && http.status == 200) {
+
+                            question.result = http.responseText;
+                            console.log(question.result['finalStatus'])
+
+                        }
+                    }
+                    http.send(params);
+
+                }
+            }
+
+            var submitJson = {};
+            $scope.submitTest = function() {
+
+                for(var section in $scope.allSections) {                //loop through the questions, and get the choices for each
+                    var finalChoices = [];
+                    for(var j=0;j<$scope.allSections[section].length;j++) {
+
+                        var singleQuestion = $scope.allSections[section][j];
+                        if(singleQuestion.isSolved) {
+                            var choicebody = {"questionId":singleQuestion.pk,
+                                "choiceId":singleQuestion.usersChoice};
+                            finalChoices.push(choicebody);
+                        }
+                        if(section=="aptitude") {
+                            submitJson["apti"] = finalChoices
+                        }
+                        if(section=="technical") {
+                            submitJson["tech"] = finalChoices
+                        }
+                        
+                    }
+
+                }
+
+                console.log(submitJson);
 
 
-                $http.put(mock_mock_API+$routeParams.id+"/end", finalChoices,{ headers: cooksHeader })
+                $http.put(mock_hiring_API+"/"+$routeParams.id+"/end", submitJson,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
                         console.log("Test submitted successfully");        //on successfull posting of question
                         var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
                         $scope.score = data.score;
                         $scope.maxScore = data.max_score;
-                        $http.get(mock_mock_API+$routeParams.id+"/solution")
+                        $scope.isTestSubmitted = true;
+                        $http.get(mock_mock_API+$routeParams.id+"/aptisolution")
                             .then(function(response) {
                                 //var allQuestions = response.data;
                                 //$scope.questions.choices = allQuestions.choices;
-                                //$scope.isTestSubmitted = true;               
+                                //$scope.isTestSubmitted = true;
+                                //$scope.allSections['aptitude'] = response.data;            
                                 for(i=0;i<response.data.length;i++) {
-                                    $scope.questions[i].choices = response.data[i].choices;
+                                    $scope.allSections['aptitude'][i].choices = response.data[i].choices;
                                 }
-                                $scope.isTestSubmitted = true;
 
                             });
-                        $scope.isTestSubmitted = true;
+                        //$scope.isTestSubmitted = true;
+                        $http.get(mock_mock_API+$routeParams.id+"/techsolution")
+                            .then(function(response) {
+                                //var allQuestions = response.data;
+                                //$scope.questions.choices = allQuestions.choices;
+                                //$scope.isTestSubmitted = true;
+                                //$scope.allSections['technical'] = response.data;            
+                                for(i=0;i<response.data.length;i++) {
+                                    $scope.allSections['technical'][i].choices = response.data[i].choices;
+                                }
+
+                            });
+                        //$scope.isTestSubmitted = true;
                         })
                      .error(function(response) {
                         console.log("Test could not be submitted");                //in case there is an error
@@ -1239,6 +1387,7 @@ var app = angular
             }
 
             $scope.markAttemptedQuestion = function(question) {
+                //console.log(question)
                 if(question.isSolved)
                     return "background-grey";
                 else

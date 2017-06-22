@@ -1,0 +1,62 @@
+<div class="outermostDiv">
+    <div class="container" style="width:100%">
+
+        <div class="row">
+            <div style="margin-top:50px" id="questionTitleDiv">
+                <div style="width:100%">
+                    <h2>{{question.title}} | <small>{{question.type}}</small></h2>
+                    <hr>
+                </div>
+
+                <div style="width:100%">
+                    <b>Problem Description</b>
+                    <p ng-bind-html="question.description">
+                    </p>
+                    <hr>
+                </div>
+
+                <div style="width:100%">
+                    <b>Sample Input</b>
+                    <p ng-bind-html="question.sample_input"></p>
+                    <hr>
+                <div>
+
+                <div style="width:100%">
+                    <b>Sample Output</b>
+                    <p ng-bind-html="question.sample_output"></p>
+                    <hr>
+                <div>
+            </div>
+
+            <div style="padding:10px;height:200px"  ng-model="editorContent" ui-ace="{
+              useWrapMode : true,
+              mode: language,
+              theme : 'dawn',
+              height : 200,
+              showPrintMargin : false
+            }"></div>
+            
+            <div style="width:100%">
+                {{question.result}}
+                Status : {{question.result.finalStatus}}
+                Output : {{question.result.output}}
+            </div>
+
+            <hr>
+
+            <div style="width:100%">
+                <div style="float:right">
+
+                    <select sytle="padding-right:20px;" id="languageSelector" ng-model="question.selectedLanguage" ng-options="selectedlanguage for selectedlanguage in codingLanguages">
+                    </select>
+
+                    <button ng-click="runCode(question)" sytle="float:right" id="submitCodeButton" type="button" class="btn btn-default btn-lg btn-success" data-toggle="modal" >
+                        Run Code
+                    </button>
+                </div> 
+
+            </div>
+
+        </div>
+    </div>
+</div>

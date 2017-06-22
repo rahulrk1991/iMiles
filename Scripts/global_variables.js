@@ -130,6 +130,9 @@ var user_isLoggedIn_API = API_Start + user_isLoggedIn_End_Point;
 var mock_mocks_End_point = "/api/"+"mock/mocks/";
 var mock_mock_API = API_Start + mock_mocks_End_point;
 
+var mock_hiring_End_point = "/api/"+"mock/mocks/new";
+var mock_hiring_API = API_Start + mock_hiring_End_point;
+
 var mock_myresults_End_Point = "/api/"+"mock/myresults";
 var mock_myresults_API = API_Start + mock_myresults_End_Point;
 
