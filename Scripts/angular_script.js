@@ -639,7 +639,7 @@ var app = angular
             $scope.accuracy = 0;
 
             //Hiring test variables-------------------//
-            $scope.hiringTestMockID = 1;
+            $scope.hiringTestMockID = 3858;
             //Hiring Test 2 id : 3142
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
