@@ -1082,11 +1082,11 @@ var app = angular
             $scope.maxScore = 0;
             $scope.testName = "";
             $scope.SectionsList = [];
-            $scope.codingLanguages = ["C","C++","Java","Python"];
+            $scope.codingLanguages = ["C","C++","Java"];
 
             var durationInMinutes = 90;
             $scope.testName = "IM Advance Test";
-            $scope.counter = 60*60;
+            $scope.counter = durationInMinutes*60;
 
             //Review Test modal variable
             $scope.title = "Your Time is up!";
@@ -1135,7 +1135,7 @@ var app = angular
                     $scope.allSections = response.data;
                     for(var sectionName in $scope.allSections) $scope.SectionsList.push(sectionName);
                     $scope.SectionsList.sort();
-                    $scope.chosenSection=$scope.SectionsList[0];
+                    $scope.chosenSection=$scope.SectionsList[1];
                     var dict = [];                              // dict['question id'] = choice
                     for(var i=0;i<$scope.SectionsList.length;i++) {                //loop through the questions, and get the choices for each
 
@@ -1149,6 +1149,18 @@ var app = angular
 
                             if($scope.SectionsList[i]=="programming") {
                                 singleQuestion.selectedLanguage = "";
+                                for(var k=0;k<$scope.codingLanguages.length;k++) {
+
+                                    singleQuestion[$scope.codingLanguages[k]] = {};
+                                    //singleQuestion[$scope.codingLanguages[k]].editorCode = {}
+
+                                    if($scope.codingLanguages[k]=="C")
+                                        singleQuestion["C"].code = singleQuestion.function_signature_location_c;
+                                    else if($scope.codingLanguages[k]=="C++")
+                                        singleQuestion["C++"].code = singleQuestion.function_signature_location_cpp;
+                                    else if($scope.codingLanguages[k]=="Java")
+                                        singleQuestion["Java"].code = singleQuestion.function_signature_location_java;
+                                }
                             }
 
                         }
@@ -1215,7 +1227,7 @@ var app = angular
                     return "java"
                 else if(lang=="Python")
                     return "python"
-            } 
+            }
 
             $scope.runCode = function(question) {
 
@@ -1243,8 +1255,8 @@ var app = angular
                 var qid = question.questionId.toString();
                 console.log(qid);
 
-                var params = "lang=" + covertLanguage(question.selectedLanguage)+"&"+"qid="+"101"+"&"+
-                                "userid="+$rootScope.sidebarUserModel.id+"&"+"code="+"code";
+                var params = "lang=" + covertLanguage(question.selectedLanguage)+"&"+"qid="+qid+"&"+
+                                "userid="+$rootScope.sidebarUserModel.id+"&"+"code="+question[question.selectedLanguage].code;
                 http.open("POST", url, true);
 
                 //Send the proper header information along with the request
@@ -1257,18 +1269,18 @@ var app = angular
                         recievedID = http.responseText;
                         recievedID = recievedID.substring(1, recievedID.length - 1);
                         console.log("ID recieved : "+ recievedID);
-                        $timeout(getResults, 3000);
+                        $timeout(getResults(question), 3000);
                     }
                 }
                 http.send(params);
 
-                var getResults = function() {
+                var getResults = function(question) {
                     console.log("Hello! Trying to get result");
 
                     var http = new XMLHttpRequest();
 
-                    var url = "http://testinterviewmiles.com/api/question/programming_question_submit_getResult/";
-                    var params = "qid=101&userid=1&id="+recievedID;
+                    var url = coding_get_Result_API;
+                    var params = "qid="+question.questionId+"&userid="+$rootScope.sidebarUserModel.id+"&id="+recievedID;
                     http.open("POST", url, true);
 
                     //Send the proper header information along with the request
