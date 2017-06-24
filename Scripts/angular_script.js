@@ -1410,7 +1410,7 @@ var app = angular
                     return "";
             }
 
-            $scope.applyColors = function(question,choice) {
+/*            $scope.applyColors = function(question,choice) {
                 if(!$scope.isTestSubmitted)
                     return;
                 if(choice.is_correct) {
@@ -1419,7 +1419,7 @@ var app = angular
                 else {
                     return "choice-red"
                 }
-            }
+            }*/
 
             $scope.markAttemptedQuestion = function(question) {
                 //console.log(question)
