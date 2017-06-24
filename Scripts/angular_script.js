@@ -1059,7 +1059,7 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("hiringTestController",function($rootScope,$scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
+        .controller("hiringTestController",function($anchorScroll,$rootScope,$scope,$alert,$http,$timeout,$routeParams,$modal,$route,userService,$rootScope,$cookies) {
 
             var cooks = $cookies.get("csrftoken");
             var cooksHeader = { 'X-CSRFToken': cooks };
@@ -1096,6 +1096,19 @@ var app = angular
             $(window).scroll(function(){
                 $("#testSummaryDiv").css({"top": ($(window).scrollTop()) + "px"});
             });
+
+
+            $anchorScroll.yOffset = 200;
+            $scope.openQuestion = function(question,section) {
+                $scope.chosenSection = section;
+                if(section!='programming') {
+                    $timeout($anchorScroll(question.pk.toString()),1000);
+                }
+                else {
+                    console.log(question.questionId);
+                    $timeout($anchorScroll(question.questionId),1000);
+                }
+            }
 
 
             //$scope.counter = 10;
@@ -1139,6 +1152,7 @@ var app = angular
                     var index = $scope.SectionsList.indexOf('programming')
                     console.log(index);
                     $scope.SectionsList.splice(index,1);
+                    $scope.SectionsList.push('programming');
 
                     //var dict = [];                              // dict['question id'] = choice
                     for(var i=0;i<$scope.SectionsList.length;i++) {                //loop through the questions, and get the choices for each
@@ -1299,9 +1313,9 @@ var app = angular
 
                     http.onreadystatechange = function() {//Call a function when the state changes.
                         if(http.readyState == 4 && http.status == 200) {
-
-                            question.result = http.responseText;
-                            console.log(question.result['finalStatus'])
+                            var myAlert = $alert({title: 'Coding '+question.testId+' submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
+                            //question.result = http.responseText;
+                            //console.log(question.result['finalStatus'])
 
                         }
                     }
