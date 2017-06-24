@@ -1084,8 +1084,8 @@ var app = angular
             $scope.SectionsList = [];
             $scope.codingLanguages = ["C","C++","Java"];
 
-            var durationInMinutes = 90;
-            $scope.testName = "IM Advance Test";
+            var durationInMinutes = 60;
+            $scope.testName = "IM Advanced Test";
             $scope.counter = durationInMinutes*60;
 
             //Review Test modal variable
@@ -1135,8 +1135,12 @@ var app = angular
                     $scope.allSections = response.data;
                     for(var sectionName in $scope.allSections) $scope.SectionsList.push(sectionName);
                     $scope.SectionsList.sort();
-                    $scope.chosenSection=$scope.SectionsList[1];
-                    var dict = [];                              // dict['question id'] = choice
+                    $scope.chosenSection=$scope.SectionsList[0];
+                    var index = $scope.SectionsList.indexOf('programming')
+                    console.log(index);
+                    $scope.SectionsList.splice(index,1);
+
+                    //var dict = [];                              // dict['question id'] = choice
                     for(var i=0;i<$scope.SectionsList.length;i++) {                //loop through the questions, and get the choices for each
 
                         $scope.totalQuestions = $scope.totalQuestions + $scope.allSections[$scope.SectionsList[i]].length;
@@ -1148,7 +1152,7 @@ var app = angular
                             singleQuestion.testId = j+1;
 
                             if($scope.SectionsList[i]=="programming") {
-                                singleQuestion.selectedLanguage = "";
+                                singleQuestion.selectedLanguage = "C";
                                 for(var k=0;k<$scope.codingLanguages.length;k++) {
 
                                     singleQuestion[$scope.codingLanguages[k]] = {};
@@ -1229,6 +1233,11 @@ var app = angular
                     return "python"
             }
 
+            document.oncontextmenu = document.body.oncontextmenu = function() {
+                var myAlert = $alert({title: 'Right click has been disabled for tests!', content: '', placement:'floater top', type: 'warning', show: true,duration:3});
+                return false;
+            }
+
             $scope.runCode = function(question) {
 
                 question.isSolved = true;
@@ -1257,6 +1266,7 @@ var app = angular
 
                 var params = "lang=" + covertLanguage(question.selectedLanguage)+"&"+"qid="+qid+"&"+
                                 "userid="+$rootScope.sidebarUserModel.id+"&"+"code="+question[question.selectedLanguage].code;
+
                 http.open("POST", url, true);
 
                 //Send the proper header information along with the request
@@ -1334,30 +1344,23 @@ var app = angular
                         $scope.score = data.score;
                         $scope.maxScore = data.max_score;
                         $scope.isTestSubmitted = true;
-                        $http.get(mock_mock_API+$routeParams.id+"/aptisolution")
+                        //Code to get solutions, right now commented out
+                    /*  $http.get(mock_mock_API+$routeParams.id+"/aptisolution")
                             .then(function(response) {
-                                //var allQuestions = response.data;
-                                //$scope.questions.choices = allQuestions.choices;
-                                //$scope.isTestSubmitted = true;
-                                //$scope.allSections['aptitude'] = response.data;            
+                                //Code to show answers right after test submisstion
                                 for(i=0;i<response.data.length;i++) {
                                     $scope.allSections['aptitude'][i].choices = response.data[i].choices;
                                 }
 
                             });
-                        //$scope.isTestSubmitted = true;
                         $http.get(mock_mock_API+$routeParams.id+"/techsolution")
                             .then(function(response) {
-                                //var allQuestions = response.data;
-                                //$scope.questions.choices = allQuestions.choices;
-                                //$scope.isTestSubmitted = true;
-                                //$scope.allSections['technical'] = response.data;            
+                                //Code to show answers right after test submisstion
                                 for(i=0;i<response.data.length;i++) {
                                     $scope.allSections['technical'][i].choices = response.data[i].choices;
                                 }
 
-                            });
-                        //$scope.isTestSubmitted = true;
+                            });*/
                         })
                      .error(function(response) {
                         console.log("Test could not be submitted");                //in case there is an error
