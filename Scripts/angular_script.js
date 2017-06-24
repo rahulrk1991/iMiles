@@ -1084,7 +1084,7 @@ var app = angular
             $scope.SectionsList = [];
             $scope.codingLanguages = ["C","C++","Java"];
 
-            var durationInMinutes = 60;
+            var durationInMinutes = 90;
             $scope.testName = "IM Advanced Test";
             $scope.counter = durationInMinutes*60;
 
@@ -1313,7 +1313,7 @@ var app = angular
 
                     http.onreadystatechange = function() {//Call a function when the state changes.
                         if(http.readyState == 4 && http.status == 200) {
-                            var myAlert = $alert({title: 'Coding '+question.testId+' submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: 'Coding question '+question.testId+' submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
                             //question.result = http.responseText;
                             //console.log(question.result['finalStatus'])
 
@@ -1355,9 +1355,15 @@ var app = angular
                      .success(function(data,status,header,config) {
                         console.log("Test submitted successfully");        //on successfull posting of question
                         var myAlert = $alert({title: 'Test submitted successfully', content: '', placement:'floater top', type: 'success', show: true,duration:5});
-                        $scope.score = data.score;
-                        $scope.maxScore = data.max_score;
+                        
                         $scope.isTestSubmitted = true;
+                        $http.get(mock_my_Result_API+$routeParams.id)
+                            .then(function(response) {
+                                console.log(response.data);
+                                $scope.score = response.data.score;
+                                $scope.maxScore = response.data.max_score;
+                                
+                            });
                         //Code to get solutions, right now commented out
                     /*  $http.get(mock_mock_API+$routeParams.id+"/aptisolution")
                             .then(function(response) {

@@ -52,6 +52,9 @@ var coding_post_question_API = API_Start + coding_post_question_End_Point;
 var coding_get_Result_End_Point = "/api/"+"question/programming_question_submit_getResult/";
 var coding_get_Result_API = API_Start + coding_get_Result_End_Point;
 
+var mock_my_Result_End_Point = "/api/"+"mock/myMockResults/";
+var mock_my_Result_API = API_Start + mock_my_Result_End_Point;
+
 //Mark For Later API
 var question_mark_Later_End_Point = "/api/"+"question/marklater/";
 var question_mark_Later_API = API_Start + question_mark_Later_End_Point;
