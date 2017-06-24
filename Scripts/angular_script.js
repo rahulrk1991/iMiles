@@ -192,7 +192,7 @@ var app = angular
 
             console.log("Entered side bar controller!");
 
-            $rootScope.title="iMiles Menu";
+            $rootScope.title="iMile Menu";
             $scope.userModel = userService.returnState();
             $rootScope.sidebarUserModel = $scope.userModel;
             $scope.aside = {};
