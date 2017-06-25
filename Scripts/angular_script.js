@@ -1435,6 +1435,7 @@ var app = angular
 
             // Set the date we're counting down to
             var countDownDate = new Date($rootScope.dateOfHiringTest).getTime();
+            var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
 
             // Update the count down every 1 second
             var x = setInterval(function() {
@@ -1444,6 +1445,7 @@ var app = angular
 
               // Find the distance between now an the count down date
               var distance = countDownDate - now;
+              var distanceToCloseTest = countDownToClosing - now;
 
               // Time calculations for days, hours, minutes and seconds
               var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1455,17 +1457,31 @@ var app = angular
               document.getElementById("demoID").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
 
-              // If the count down is finished, write some text 
-              if (distance < 0) {
-                countDownDate = new Date($rootScope.dateOfNextHiringTest).getTime();
+              if (distance < 0 && distanceToCloseTest>0) {
+                $scope.enableTestButton = false;
+                document.getElementById("demoID").innerHTML = "Test open till "+$scope.dateTillItCanBeGiven.toString();
+                $scope.$apply();
+              }
+              else if(distance < 0 && distanceToCloseTest<0) {
+                $scope.enableTestButton = true;
+                $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
+                setDisplayDateVariables();
+                //clearInterval(countdown_timer_function);
+                countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
+                document.getElementById("demoID").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+                $scope.$apply();
               }
             }, 1000);
+
 
             $scope.$on("$locationChangeStart", function (event, next, current) {
                 
                 clearInterval(x);
 
             });
+
+
 
             console.log('entered landingPageController')
             var isLoggedIn = function() {
