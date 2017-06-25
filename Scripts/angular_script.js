@@ -1465,7 +1465,7 @@ var app = angular
               else if(distance < 0 && distanceToCloseTest<0) {
                 $scope.enableTestButton = true;
                 $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
-                setDisplayDateVariables();
+                //setDisplayDateVariables();
                 //clearInterval(countdown_timer_function);
                 countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
                 document.getElementById("demoID").innerHTML = days + "d " + hours + "h "
