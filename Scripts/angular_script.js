@@ -214,7 +214,7 @@ var app = angular
 
             //Timer that appears in navigation bar
             $rootScope.dateOfHiringTest = "Jun 25, 2017 14:00:00";
-            $rootScope.dateTillItCanBeGiven = "Jun 18, 2017 21:00:00"
+            $rootScope.dateTillItCanBeGiven = "Jun 25, 2017 21:00:00"
             $rootScope.dateOfNextHiringTest = "Jul 2, 2017 14:00:00";
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
@@ -247,19 +247,13 @@ var app = angular
               // Display the result in the element with id="demo"
               document.getElementById("demo").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
-
               // If the count down is finished, write some text 
               if (distance < 0 && distanceToCloseTest>0) {
-                $scope.enableTestButton = false;
-                //clearInterval(countdown_timer_function);
                 document.getElementById("demo").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
                 $scope.$apply();
               }
               else if(distance < 0 && distanceToCloseTest<0) {
-                $scope.enableTestButton = true;
                 $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
-                //setDisplayDateVariables();
-                //clearInterval(countdown_timer_function);
                 countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
                 document.getElementById("demo").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
@@ -712,6 +706,7 @@ var app = angular
             var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
 
             // Update the count down every 1 second
+            $scope.enableTestButton = true;
             var countdown_timer_function = setInterval(function() {
 
               // Get todays date and time
@@ -731,7 +726,7 @@ var app = angular
               // Display the result in the element with id="demo"
               document.getElementById("hiringTestSectionCountdown").innerHTML = days + "d " + hours + "h "
               + minutes + "m " + seconds + "s ";
-
+              console.log($scope.enableTestButton)  
               // If the count down is finished, write some text 
               if (distance < 0 && distanceToCloseTest>0) {
                 $scope.enableTestButton = false;
