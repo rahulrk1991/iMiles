@@ -1075,6 +1075,8 @@ var app = angular
             $scope.totalQuestions = 0;
             $scope.score = 0;
             $scope.maxScore = 0;
+            $scope.totalMarks = 0;
+            $scope.totalAttemptedMarks = 0;
             $scope.testName = "";
             $scope.SectionsList = [];
             $scope.codingLanguages = ["C","C++","Java"];
@@ -1156,6 +1158,8 @@ var app = angular
                         for(var j=0;j<$scope.allSections[$scope.SectionsList[i]].length;j++) {
 
                             var singleQuestion = $scope.allSections[$scope.SectionsList[i]][j];
+                            $scope.totalMarks = $scope.totalMarks + singleQuestion.correct_score;
+                            console.log($scope.SectionsList[i],singleQuestion.correct_score,$scope.totalMarks);
                             singleQuestion.isSolved = false;
                             singleQuestion.usersChoice = -1;
                             singleQuestion.testId = j+1;
@@ -1206,12 +1210,14 @@ var app = angular
 
                 if(question.isSolved == false) {
                     $scope.attemptedQuestions++;
+                    $scope.totalAttemptedMarks = $scope.totalAttemptedMarks + question.correct_score;
                 }
 
                 question.isSolved = true;
                 question.usersChoice = choice.id;
                 if(question.isSelected==index) {
                     console.log("Clicking same twice");
+                    $scope.totalAttemptedMarks = $scope.totalAttemptedMarks - question.correct_score;
                     question.isDoneTwice=true;
                     question.isSolved = false;
                 }
@@ -1248,6 +1254,11 @@ var app = angular
             }
 
             $scope.runCode = function(question) {
+
+                if(!question.isSolved) {
+                    $scope.totalAttemptedMarks = $scope.totalAttemptedMarks + question.correct_score;
+                    $scope.attemptedQuestions = $scope.attemptedQuestions + 1;
+                }
 
                 question.isSolved = true;
                 question.result = "";

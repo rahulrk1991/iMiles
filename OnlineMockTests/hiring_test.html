@@ -1,4 +1,5 @@
  <head>
+    <title>IM Advanced Test | InterviewMile</title>
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -27,20 +28,24 @@
                     <div style="width:100%">
                         <table id="statsTable" style="width:70%">
                             <tr ng-show="!isTestSubmitted">
-                                <td><p><strong>Time Remaining</strong></p></td>
-                                <td> {{minStr}} : {{secStr}} </td>
+                                <td><p align="bottom"><strong>Time Remaining</strong></p></td>
+                                <td style="float:top"> {{minStr}} : {{secStr}} </td>
                             </tr>
                             <tr ng-show="isTestSubmitted">
                                 <td><p><strong>Time Remaining</strong></p></td>
-                                <td> 00 : 00 </td>
+                                <td style="float:top"> 00 : 00 </td>
                             </tr>
                             <tr ng-show="isTestSubmitted">
                                 <td><p><strong>Score</strong></p></td>
                                 <td>{{score}} / {{maxScore}}</td>
                             </tr>
                             <tr>
-                                <td><p><strong>Attempted</strong></p></td>
+                                <td><p><strong>Questions Attempted</strong></p></td>
                                 <td>{{attemptedQuestions}} / {{totalQuestions}}</td>
+                            </tr>
+                            <tr>
+                                <td><p><strong>Marks Attempted</strong></p></td>
+                                <td>{{totalAttemptedMarks}} / {{totalMarks}}</td>
                             </tr>
                         </table>
 
@@ -51,7 +56,7 @@
                             <hr style="width:100%">
                             <a href="javascript:void(0)"><p ng-click="changeChosenSection(section)"><strong>{{section}}</strong></p></a>
 
-                            <div ng-repeat="question in allSections[section]" ng-click="openQuestion(question,section)" ng-class="markAttemptedQuestion(question)" style="width:10%;height:22px;float:left;text-align:center;padding:0px">
+                            <div ng-repeat="question in allSections[section]" ng-click="openQuestion(question,section)" ng-class="markAttemptedQuestion(question)" style="width:9%;height:22px;float:left;text-align:center;margin:1px">
                                             
                                 {{question.testId}}
                                 
