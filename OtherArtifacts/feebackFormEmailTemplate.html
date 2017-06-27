@@ -1,0 +1,112 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <style>
+        .bg_grey {
+            background-color: #F0F0F0;
+        }
+        td {
+            padding-left:0px;
+            
+        }
+        i {
+            padding :10px 0 0 0;
+        }
+        .no_border {
+            border :0px;
+        }
+        
+    </style>
+</head>
+<body style="background-color:#C0C0C0">
+    <div id="outer_container" style="width:500px;margin:0 auto;background-color:#F0F0F0">
+        <div class="panel panel-default">
+            <div style="width:120px;margin:0 auto;height:75px">
+                <img alt="Brand" src="http:interviewmile.com/OtherArtifacts/IM_Logo1.png" style="width:120px;height:100px;">
+            </div>
+            <div class="panel-footer" style="height:auto"><h2 align="center">Thanks for giving IM advanced Hiring Test, {{ user }} !</h2></div>
+        </div>
+        <div id="main_inner_content" style="padding:0px;padding-top:0px">
+            <div>
+                <h4 align="center">Please fill a small 3 question survey to give us feedback about the test. This information would be used to make the test better.</h4>
+                
+            </div>
+            <table>
+                <col width="100%" />
+                <tr>
+                    <td width="90%" style="padding:10px" >
+                        <div class="thumbnail bg_grey no_border">
+                            <h4>1. How likely are you to recommend this test to someone else? (1-not likely, 10-very likely)</h4>
+                        </div>
+                    </td>
+                    <td width="10%" style="padding:10px" >
+                        <div class="thumbnail bg_grey no_border" >
+                            <select name="cars">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <td width="90%" style="padding:10px" >
+                        <div class="thumbnail bg_grey no_border">
+                            <h4>2. How difficult did you find the test? (1-very easy, 10-very difficult)</h4>
+                        </div>
+                    </td>
+                    <td width="10%" style="padding:10px" >
+                        <div class="thumbnail bg_grey no_border" >
+                            <select name="cars">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="90%" style="padding:10px" >
+                        <div class="thumbnail bg_grey no_border">
+                            <h4>3. Do you want to get job recommendations on the basis of your score in the test?</h4>
+                        </div>
+                    </td>
+                    <td width="10%" style="padding:10px" >
+                        <div class="thumbnail bg_grey no_border" >
+                            <select name="cars">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div style="padding:20px">
+            <h4 align="center"><a href="https:interviewmile.com">
+                <button id="submitTestButton" style="width:50%" type="button" class="btn btn-default btn-lg btn-primary">
+                        Click to submit feedback !
+                </button><a>
+            </h4>
+        </div>
+    </div>
+</body>
+</html>
