@@ -2451,6 +2451,32 @@ var app = angular
 
             }
 
+            $scope.uploadResume = function() {
+                console.log("In upload Resume function");
+
+                var uploadResumeFormData = new FormData(document.getElementById("resume_upload_form"));
+                console.log(uploadResumeFormData);
+
+                $.ajax({
+                    url: user_profile_resume_upload_API,
+                    type: "POST",
+                    data: uploadResumeFormData,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false   // tell jQuery not to set contentType
+                }).success(function(data) {
+
+                    console.log("The resume was uploaded successfully")
+                    var myAlert = $alert({title: "Your resume was updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                
+                }).error(function(request, status, error) {
+
+                    console.log("Error causing Resume upload failure : "+error);
+                    var myAlert = $alert({title: 'There was and error in uploading the resume! Try again after sometime...', content: error, placement:'floater top', type: 'danger', show: true,duration:5});
+
+                });
+
+            }
+
             loadUserInfo();
 
             //Resume and Links Functions

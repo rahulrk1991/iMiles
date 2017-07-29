@@ -5,12 +5,12 @@
         <table style="width:90%">
             <tr>
                 <td class="form_profile_td settings-page-inputs">
-                    <form action="https://interviewmile.com/api/user/upload_resume/" method="post" enctype="multipart/form-data">
+                    <form id="resume_upload_form" name="resume_upload_form">
                         <div class="input-group-lg">
                             <p>
-                              <input style="display:inline-block;float:left;width:65%" id="id_image" type="file" class="" name="document">
+                              <input id="resume_file" style="display:inline-block;float:left;width:65%" type="file" class="" name="document">
                               <input id="abc" type="hidden" class="" name="username" value="{{sidebarUserModel.userName}}">
-                              <input style="float:right;width:33%" type="submit" value="Upload Resume" />
+                              <input style="float:right;width:33%" type="button" value="Upload Resume" ng-click="uploadResume()"/>
                             </p>
                         
                         </div>

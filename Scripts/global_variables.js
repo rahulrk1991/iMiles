@@ -112,6 +112,9 @@ var user_profile_user_post_skills_API = API_Start + user_profile_user_post_skill
 var user_profile_contact_End_Point = "/api/" + "user/profile/userProfileContactAndPlacementRating/";
 var user_profile_contact_API = API_Start + user_profile_contact_End_Point;
 
+var user_profile_resume_upload_End_Point = "/api/" + "user/upload_resume/";
+var user_profile_resume_upload_API = API_Start + user_profile_resume_upload_End_Point;
+
 var user_profile_resume_and_links_End_Point = "/api/" + "user/profile/links/";
 var user_profile_resume_and_links_API = API_Start + user_profile_resume_and_links_End_Point;
 
