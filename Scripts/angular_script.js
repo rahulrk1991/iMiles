@@ -1928,14 +1928,14 @@ var app = angular
                 body =  [$scope.question.pk];
                 $http.post( url, body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
-                            console.log("Question marked for later");        //on successfull posting of question
+                            console.log("Question added to Bookmarked Questions");        //on successfull posting of question
                             
-                            var myAlert = $alert({title: "Question "+$scope.question.pk+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+$scope.question.pk+" added to Bookmarked Questions list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
-                        console.log("Error:Question could not saved to favorites list!");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.',placement:'floater top', type: 'danger', show: true,duration:5});
+                        console.log("Error:Question could not be added to Bookmarked questions!");                //in case there is an error
+                        var myAlert = $alert({title: 'Error : Question could not be added to Bookmarked Questions!', content: 'Check the logs to know more.',placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
@@ -3370,14 +3370,14 @@ var app = angular
                 body =  [question.id];
                 $http.post( url, body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
-                            console.log("Question marked for later");        //on successfull posting of question
+                            console.log("Question has been added to Bookmarked questions");        //on successfull posting of question
                             
-                            var myAlert = $alert({title: "Question "+question.id+" saved to favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+question.id+" has been added to Bookmarked questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
-                        console.log("Error:Question could not saved to favorites list!");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be marked for later!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                        console.log("Error : Question could not be added to Bookmarked Questions.");                //in case there is an error
+                        var myAlert = $alert({title: 'Error : Question could not be added to Bookmarked Questions!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
@@ -3700,12 +3700,12 @@ var app = angular
                             }
                             console.log($scope.questions);
                             console.log("Question has been removed from saved list");        //on successfull posting of question                     
-                            var myAlert = $alert({title: "Question "+question.id+" has been removed from favorites list!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                            var myAlert = $alert({title: "Question "+question.id+" has been removed from Bookmarked Questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
                         console.log("Error:Question could not be marked for later");                //in case there is an error
-                        var myAlert = $alert({title: 'Error:Question could not be removed from favorites list!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Error : Question could not be removed from Bookmarked questions!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                      });
 
