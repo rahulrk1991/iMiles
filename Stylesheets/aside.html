@@ -8,7 +8,7 @@
             <h4 class="aside-title" ng-bind="title"></h4>
         </div>
         <div class="aside-body">
-            <ul style="margin-top:15px" class="nav nav-pills nav-stacked">
+            <ul style="margin-top:0px" class="nav nav-pills nav-stacked">
 
             <li role="presentation"><a href="javascript:void(0)" ng-click="toggleSection('practice')">
                 <span class="glyphicon glyphicon-tasks span_style" aria-hidden="true"></span>Practice</a>
@@ -36,11 +36,19 @@
           
         </ul>
 
-        <ul style="margin-top:15px" class="nav nav-pills nav-stacked">
+        <ul style="margin-top:10px" class="nav nav-pills nav-stacked">
             <li role="presentation"><a href="#OnlineMockTests/ChooseATest" ng-click="$hide()">
                 <span class="glyphicon glyphicon-flash span_style" aria-hidden="true"></span>Test Yourself</a>
             </li>
         </ul>
+
+        <ul style="margin-top:10px" class="nav nav-pills nav-stacked">
+            <li role="presentation"><a href="#Jobs" ng-click="$hide()">
+                <span class="glyphicon glyphicon-briefcase span_style" aria-hidden="true"></span>Job Opportunities</a>
+            </li>
+        </ul>
+
+
 
 <!--         <ul id="TestSectionAside" ng-show="aside.showTestSection" style="margin-top:15px;margin-left:30px" class="nav nav-pills nav-stacked">
   
@@ -60,10 +68,6 @@
 
             <li role="presentation"><a href="#Statistics" ng-click="$hide()">
                 <span class="glyphicon glyphicon-stats span_style" aria-hidden="true"></span>Statistics</a>
-            </li>
-
-            <li role="presentation"><a href="#Jobs" ng-click="$hide()">
-                <span class="glyphicon glyphicon-briefcase span_style" aria-hidden="true"></span>Job Opportunities</a>
             </li>
 
             <li ng-show="sidebarUserModel.isAdmin" role="presentation"><a href="#PostQuestion" ng-click="$hide()">
