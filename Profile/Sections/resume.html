@@ -8,7 +8,7 @@
                     <form id="resume_upload_form" name="resume_upload_form">
                         <div class="input-group-lg">
                             <p>
-                              <input id="resume_file" style="display:inline-block;float:left;width:65%" type="file" class="" name="document">
+                              <input id="resume_file" name="resume_file" ng-model="resume_file" style="display:inline-block;float:left;width:65%" type="file" class="" name="document">
                               <input id="abc" type="hidden" class="" name="username" value="{{sidebarUserModel.userName}}">
                               <input style="float:right;width:33%" type="button" value="Upload Resume" ng-click="uploadResume()"/>
                             </p>

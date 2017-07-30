@@ -2454,6 +2454,8 @@ var app = angular
             $scope.uploadResume = function() {
                 console.log("In upload Resume function");
 
+                console.log($scope.resume_file.name);
+
                 var uploadResumeFormData = new FormData(document.getElementById("resume_upload_form"));
                 console.log(uploadResumeFormData);
 
@@ -2596,8 +2598,10 @@ var app = angular
                     return;
                 }
                 else {
-                    if($scope.Profile.userSkills.selectedRoles.length>=3)
+                    if($scope.Profile.userSkills.selectedRoles.length>=3) {
+                        var myAlert = $alert({title: "You can select a maximum of 3 roles!", content: "Deselect another role and try again", placement:'floater top', type: 'warning', show: true,duration:5});
                         return;
+                    }
                     else
                         $scope.Profile.userSkills.selectedRoles.push(role);
                 }
@@ -2697,7 +2701,7 @@ var app = angular
             }
 
             $scope.addUserSkills = function() {
-                $anchorScroll();
+                //$anchorScroll();
                 var filterString = $scope.Profile.userSkills.filterValue;
                 console.log(filterString); 
                 //var lastIndex = filterString.slice(-1);
@@ -2964,11 +2968,11 @@ var app = angular
 
                 }).success(function(response){
                     console.log("Info updated successfully");
-                    var myAlert = $alert({title: "Work Info updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                    var myAlert = $alert({title: "Work/Education information updated successfully!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
                         
                 }).error(function(error){
                     console.log("Info could not be updated");                //in case there is an error
-                        var myAlert = $alert({title: 'Work Info could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
+                        var myAlert = $alert({title: 'Work/Education information could not be updated', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
 
                 });
             }
