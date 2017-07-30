@@ -80,7 +80,7 @@ var app = angular
                 templateUrl: absolute_path+"QnACrunch/DisplayQuestion/qnacrunch.html",
                 controller:"questionsController"
             })
-            .when("/MarkForLater", {
+            .when("/BookmarkedQuestions", {
                 templateUrl: absolute_path+"MarkLater/markLater.html",
                 controller:"markedForLaterController"
             })
