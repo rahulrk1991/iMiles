@@ -3,9 +3,9 @@
 //APIs
 
 //URL BUILDER
-var protocol = "https://";
-var host_name ="interviewmile.com";
-var port_number = "443";
+var protocol = "http://";
+var host_name ="testinterviewmiles.com";
+var port_number = "80";
 var API_Start = protocol+host_name+":"+port_number;
 
 //Questions API

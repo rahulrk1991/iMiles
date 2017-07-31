@@ -1,0 +1,224 @@
+ <head>
+ 	<title>Dashboard | InterviewMile</title>
+    <meta name="keywords" content="dashboard,key links,profile">
+    <meta name="description" content="Shows the dashboard and key statistics of the user, gives key links to other features and upcoming news or events or tests">
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-80250123-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <style>
+        .profile_table_p_tag {
+            font-size:15px;
+        }
+        .profile_table_col_1 {
+            width :35%;
+        }
+        .profile_table_col_2 {
+            width :65%;
+        }
+        .quick_links_table_p_tag {
+            font-size:15px;
+        }
+        .quick_links_table_col_1 {
+            width :55%;
+        }
+        .quick_links_table_col_2 {
+            width :45%;
+        }
+        .upcoming_events_table_p_tag {
+            font-size:15px;
+        }
+        .upcoming_events_table_col_1 {
+            width :40%;
+        }
+        .upcoming_events_table_col_2 {
+            width :60%;
+        }
+        .stats_table_p_tag {
+            font-size:15px;
+        }
+        .stats_table_col_1 {
+            width :50%;
+        }
+        .stats_table_col_2 {
+            width :50%;
+        }
+        .sections_background_color {
+            background-color:#E8E8E8
+        }
+    </style>
+</head>
+<div id="main_content_wrapper" style="width:1000px;margin:0 auto;margin-top:10px">
+	<div class="row" style="padding:10px">
+        <h1>Dashboard</h1>
+
+        <hr>
+
+        <div class="sections_background_color" style="width:57%;float:left;height:200px;margin:10px;padding:10px">
+            <table style="width: 100%">
+                <tr>
+                    <td colspan="2">
+                        <a style="float:left;padding:10px;text-decoration:none" href="javascript:void(0)"><span class="glyphicon glyphicon-bullhorn span_style" aria-hidden="true"></span></a>
+                        <p style="font-size:25px;float:left"><b>Upcoming Tests</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="upcoming_events_table_col_1">
+                        <p class="upcoming_events_table_p_tag">Pre-advanced hiring Test</p>
+                    </td>
+                    <td class="upcoming_events_table_col_2">
+                        <p class="upcoming_events_table_p_tag">{{displayDate.date}}<sup>{{displayDate.superscript}}</sup> {{displayDate.month}} '{{displayDate.year}}, {{displayDate.time}}</p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="upcoming_events_table_col_1">
+                        <p class="upcoming_events_table_p_tag">Number of days left</p>
+                    </td>
+                    <td class="upcoming_events_table_col_2">
+                        <p id="upcoming_events_countdown_timer" class="upcoming_events_table_p_tag"></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="upcoming_events_table_col_1">
+                        <p class="upcoming_events_table_p_tag"></p>
+                    </td>
+                    <td class="upcoming_events_table_col_2">
+                        <a href="#OnlineMockTests/ChooseATest">
+                        <button style="margin-top:10px" class="btn btn-primary" type="button" data-toggle="modal" data-target="#startTheTestModal">Give Test<span style="margin-left:5px" class="glyphicon glyphicon-play" aria-hidden="true" ></span></button></a>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        
+        <div class="sections_background_color" style="width:38%;float:right;height:200px;margin:10px;padding:15px">
+            
+            <table style="width: 100%">
+                <tr>
+                    <td colspan="2">
+                        <p style="font-size:25px;float:left"><b>{{Profile.first_name}} {{Profile.last_name}}</b></p>
+                        <a style="float:right;padding:10px;text-decoration: none" href="#Profile"><span class="glyphicon glyphicon-pencil span_style" aria-hidden="true"></span> Update info</a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="profile_table_col_1">
+                        <p class="profile_table_p_tag">Email</p>
+                    </td>
+                    <td class="profile_table_col_2">
+                        <p class="profile_table_p_tag"><b>{{Profile.email}}</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="profile_table_col_1">
+                        <p class="profile_table_p_tag">Username</p>
+                    </td>
+                    <td class="profile_table_col_2">
+                        <p class="profile_table_p_tag"><b>{{Profile.username}}</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="profile_table_col_1">
+                        <p class="profile_table_p_tag">Mobile Number</p>
+                    </td>
+                    <td class="profile_table_col_2">
+                        <p class="profile_table_p_tag"><b>{{Profile.contact_no}}</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="profile_table_col_1">
+                        <p class="profile_table_p_tag">Joining Date</p>
+                    </td>
+                    <td class="profile_table_col_2">
+                        <b><div style="margin-top: 0px" ng-bind="Profile.date_joined | date:'dd/MMM/yyyy'">
+                        </div></b>
+                    </td>
+                </tr>
+            </table>
+
+    	</div>
+
+        <div class="sections_background_color" style="width:57%;float:left;height:180px;margin:10px;padding:10px">
+        <table style="width: 100%">
+                <tr>
+                    <td colspan="2">
+                        <a style="float:left;padding:5px;text-decoration: none" href="javascript:void(0)"><span class="glyphicon glyphicon-link span_style" aria-hidden="true"></span></a>
+                        <p style="font-size:20px;float:left"><b>Quick Links</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="quick_links_table_col_1">
+                        <p class="quick_links_table_p_tag">Want to practice MCQ questions?</p>
+                    </td>
+                    <td class="quick_links_table_col_2">
+                        <a style="float:left;padding:5px;text-decoration: none" href="#QnACrunch"><span class="glyphicon glyphicon-th-list span_style" aria-hidden="true"></span> QnA Crunch</a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="quick_links_table_col_1">
+                        <p class="quick_links_table_p_tag">Want to take online mock tests?</p>
+                    </td>
+                    <td class="quick_links_table_col_2">
+                        <a style="float:left;padding:5px;text-decoration: none" href="#OnlineMockTests/ChooseATest"><span class="glyphicon glyphicon-flash span_style" aria-hidden="true"></span> Online Mock Tests</a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="quick_links_table_col_1">
+                        <p class="quick_links_table_p_tag">Want to solve puzzles?</p>
+                    </td>
+                    <td class="quick_links_table_col_2">
+                        <a style="float:left;padding:5px;text-decoration: none" href="#PuzzlingPuzzles"><span class="glyphicon glyphicon-qrcode span_style" aria-hidden="true"></span> Puzzling Puzzles</a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="quick_links_table_col_1">
+                        <p class="quick_links_table_p_tag">Looking for jobs?</p>
+                    </td>
+                    <td class="quick_links_table_col_2">
+                        <a style="float:left;padding:5px;text-decoration: none" href="#Jobs"><span class="glyphicon glyphicon-briefcase span_style" aria-hidden="true"></span> Job Opportunities</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        
+        <div class="sections_background_color" style="width:38%;float:right;height:180px;margin:10px;padding:15px">
+                        <table style="width: 100%">
+                <tr>
+                    <td colspan="2">
+                        <p style="font-size:20px;float:left"><b>Statistics</b></p>
+                        <a style="float:right;padding:10px;text-decoration: none" href="#Statistics"><span class="glyphicon glyphicon-stats span_style" aria-hidden="true"></span> View detailed stats</a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="stats_table_col_1">
+                        <p class="stats_table_p_tag">Total Score</p>
+                    </td>
+                    <td class="stats_table_col_2">
+                        <p class="stats_table_p_tag"><b>{{rootScope_score}}</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="stats_table_col_1">
+                        <p class="stats_table_p_tag">Experience earned</p>
+                    </td>
+                    <td class="stats_table_col_2">
+                        <p class="stats_table_p_tag"><b>{{rootScope_experience}}</b></p>
+                    </td>
+                </tr>
+                <tr>    
+                    <td class="stats_table_col_1">
+                        <p class="stats_table_p_tag">Questions solved correctly</p>
+                    </td>
+                    <td class="stats_table_col_2">
+                        <p class="stats_table_p_tag"><b>{{rootScope_score/10}}</b></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

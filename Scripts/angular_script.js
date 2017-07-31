@@ -136,6 +136,10 @@ var app = angular
                 templateUrl: absolute_path+"Profile/profile.html",
                 controller:"profileController"
             })
+            .when("/Dashboard", {
+                templateUrl: absolute_path+"Dashboard/dashboard.html",
+                controller:"dashboardController"
+            })
             .when("/Statistics", {
                 templateUrl: absolute_path+"Statistics/statistics.html",
                 controller:"statisticsController"
@@ -1502,7 +1506,7 @@ var app = angular
                             $scope.userModel = userService.logIn();
                             //$scope.$apply();
                             console.log("isAdmin"+$scope.userModel.isAdmin);
-                            $location.url("OnlineMockTests/ChooseATest");
+                            $location.url("Dashboard");
                             //$scope.$apply();
                         }
                         else {
@@ -1612,7 +1616,7 @@ var app = angular
                                     //console.log($scope.userModel.active);
                                     $scope.userModel = userService.logIn();
                                     //console.log($scope.userModel.active);
-                                    $location.url("OnlineMockTests/ChooseATest");
+                                    $location.url("Dashboard");
                                     $scope.$apply();
                                 }, 200);
                                 
@@ -2351,6 +2355,153 @@ var app = angular
                 return absolute_path+"AboutUs/SubPages/"+ $scope.selectedPage;
             }*/
 
+        })
+        .controller("dashboardController",function($scope,$rootScope,$http) {
+
+            $scope.Profile = {};
+            $scope.Profile.id = "";
+            $scope.Profile.username = "";
+            $scope.Profile.first_name = "";
+            $scope.Profile.last_name = "";
+            $scope.Profile.email = "";
+            $scope.Profile.contact_no = "";
+            $scope.Profile.profile_score = "-1";
+            $scope.Profile.profile_experience = "-1";
+            $scope.Profile.profile_questions_answered = "-1";
+
+
+            var loadUserInfo = function() {
+
+                $http.get(user_info_API)
+                    .success(function(data,status,headers,config) {
+                    
+                        $scope.Profile = data;
+                        if($scope.Profile.contact_no==9999999999) {
+                            $scope.Profile.contact_no="- Not set -";
+                        }
+                        console.log("first name:"+$scope.Profile.first_name);
+
+                    });
+
+            }
+
+            function nth(d) {
+              if(d>3 && d<21) return 'th'; // thanks kennebec
+              switch (d % 10) {
+                    case 1:  return "st";
+                    case 2:  return "nd";
+                    case 3:  return "rd";
+                    default: return "th";
+                }
+            }
+
+            $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
+            $scope.daysLeftForTest = Math.floor(((new Date($scope.dateOfHiringTest).getTime()) - (new Date().getTime())) / (1000 * 60 * 60 * 24));
+            
+            function setDisplayDateVariables() {
+                $scope.displayDate = {};
+                var dataInDateFormat = new Date($scope.dateOfHiringTest);
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"
+                ];
+                $scope.displayDate.date = dataInDateFormat.getDate();
+                $scope.displayDate.month = monthNames[dataInDateFormat.getMonth()];
+                $scope.displayDate.year = dataInDateFormat.getFullYear().toString().substr(-2);
+                $scope.displayDate.time = dataInDateFormat.toTimeString();
+                $scope.displayDate.superscript = nth(dataInDateFormat.getDate());
+            }
+
+            setDisplayDateVariables();
+
+            // Hiring Test : Set the date we're counting down to
+            var countDownDate = new Date($scope.dateOfHiringTest).getTime();
+            var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
+
+            // Update the count down every 1 second
+            $scope.enableTestButton = true;
+            var countdown_timer_function = setInterval(function() {
+
+              // Get todays date and time
+              var now = new Date().getTime();
+
+              // Find the distance between now an the count down date
+              var distance = countDownDate - now;
+              var distanceToCloseTest = countDownToClosing - now;
+
+              // Time calculations for days, hours, minutes and seconds
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+              // Display the result in the element with id="demo"
+              document.getElementById("upcoming_events_countdown_timer").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+              // If the count down is finished, write some text 
+              if (distance < 0 && distanceToCloseTest>0) {
+                $scope.enableTestButton = false;
+                //clearInterval(countdown_timer_function);
+                document.getElementById("upcoming_events_countdown_timer").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
+                $scope.$apply();
+              }
+              else if(distance < 0 && distanceToCloseTest<0) {
+                $scope.enableTestButton = true;
+                $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
+                setDisplayDateVariables();
+                //clearInterval(countdown_timer_function);
+                countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
+                document.getElementById("upcoming_events_countdown_timer").innerHTML = days + "d " + hours + "h "
+              + minutes + "m " + seconds + "s ";
+                $scope.$apply();
+              }
+            }, 1000);
+
+            $http.get(user_stats_API)
+                .success(function(data,status,headers,config) {
+                    console.log(data);
+
+                    function drawChart() {
+
+                        // Create the data table.
+                        var dataChart = new google.visualization.DataTable();
+                        dataChart.addColumn('string', 'Topic');
+                        dataChart.addColumn('number', 'Score');
+                        dataChart.addColumn({type: 'number', role: 'annotation'});
+                        for(var cat in data) {
+                            if(cat=="Puzzles" || cat=="Descriptive" || cat=="Company")
+                                continue;
+                            console.log(cat,data[cat]);
+                            dataChart.addRows([
+                                [cat,data[cat]*10,data[cat]*10]
+                            ]);
+                        }
+
+                        // Set chart options
+                        var options = {
+                            'title':'',
+                            'width':1200,
+                            'height':430,
+                            'is3D':true,
+                            'chartArea':{width:"55%",height:"90%"},
+                            'legend': 'right'
+                        };
+
+                        // Instantiate and draw our chart, passing in some options.
+                        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                        chart.draw(dataChart, options);
+                      }
+                      $scope.flag=false;
+                        if(!($scope.flag)) {
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChart);
+                            console.log("Executed!");
+                            $scope.flag=true;
+                        }
+
+                });
+
+            loadUserInfo();
         })
         .controller("profileController",function($scope,$http,$cookies,$alert,$rootScope,$anchorScroll) {
 
