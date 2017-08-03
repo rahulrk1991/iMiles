@@ -2457,6 +2457,12 @@ var app = angular
               }
             }, 1000);
 
+            $scope.$on("$locationChangeStart", function (event, next, current) {
+                
+                clearInterval(countdown_timer_function);
+
+            });
+
             $http.get(user_stats_API)
                 .success(function(data,status,headers,config) {
                     console.log(data);
@@ -2923,6 +2929,7 @@ var app = angular
                 });
             }
 
+            $scope.showWorkDeleteButton = false;
             //Work and Education functions
             $scope.addNewWorkJson = function() {
                 if($scope.Profile.WorkAndEducation.companies.length==3) {
@@ -2934,9 +2941,12 @@ var app = angular
                 console.log(workJsonArray[l-1]);
                 $scope.Profile.WorkAndEducation.companies.push(workJsonArray[l-1]);
                 workJsonArray.splice(l-1,1);
+                if($scope.Profile.WorkAndEducation.companies.length>1)
+                    $scope.showWorkDeleteButton = true;
                 console.log($scope.Profile.WorkAndEducation.companies);
             }
 
+            $scope.showEducationDeleteButton = false;
             $scope.addNewEducationJson = function() {
                 if($scope.Profile.WorkAndEducation.colleges.length==3) {
                     var myAlert = $alert({title: 'A maximum of only 3 entries can be added', content: '', placement:'floater top', type: 'danger', show: true,duration:5});
@@ -2947,17 +2957,23 @@ var app = angular
                 console.log(educationJsonArray[l-1]);
                 $scope.Profile.WorkAndEducation.colleges.push(educationJsonArray[l-1]);
                 educationJsonArray.splice(l-1,1);
+                if($scope.Profile.WorkAndEducation.colleges.length>1)
+                    $scope.showEducationDeleteButton = true;
                 console.log($scope.Profile.WorkAndEducation.colleges);
             }
 
             $scope.deleteWorkEntry = function(index) {
                 console.log(index);
-                $scope.Profile.WorkAndEducation.companies.splice(index,1)
+                $scope.Profile.WorkAndEducation.companies.splice(index,1);
+                if($scope.Profile.WorkAndEducation.companies.length<=1)
+                    $scope.showWorkDeleteButton = false;
             }
 
             $scope.deleteCollegeEntry = function(index) {
                 console.log(index);
-                $scope.Profile.WorkAndEducation.colleges.splice(index,1)
+                $scope.Profile.WorkAndEducation.colleges.splice(index,1);
+                if($scope.Profile.WorkAndEducation.colleges.length<=1)
+                    $scope.showEducationDeleteButton = false;
             }
 
             $scope.loadWorkAndEducationInfo = function() {
@@ -3067,6 +3083,7 @@ var app = angular
                 var collegeJsonPost = [];
                 var companiesJsonPost = [];
                 var companyJson = $scope.Profile.WorkAndEducation.companies;
+                console.log(companyJson);
                 for(i=0;i<companyJson.length;i++) {
                     var singleCompanyJson = companyJson[i];
                     if(singleCompanyJson.companyName=="" || singleCompanyJson.title=="" || singleCompanyJson.startDate=="" || singleCompanyJson.endDate=="") {

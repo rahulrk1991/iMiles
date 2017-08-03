@@ -1,7 +1,7 @@
 <div>
     <div>
         <h3 style="width:95%;float:left">Work {{$index+1}} <small>{{company.companyName}}</small><h3>
-        <h3 style="width:5%;float:right" ng-click="deleteWorkEntry($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><h3>
+        <h3 ng-show="showWorkDeleteButton" style="width:5%;float:right" ng-click="deleteWorkEntry($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><h3>
         <br class="clear" />
     </div>
     <table style="width:100%">
