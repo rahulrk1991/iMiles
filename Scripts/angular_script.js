@@ -3539,16 +3539,23 @@ var app = angular
                 body =  [question.id];
                 $http.post( url, body,{ headers: cooksHeader })
                      .success(function(data,status,header,config) {
-                            console.log("Question has been added to Bookmarked questions");        //on successfull posting of question
-                            
-                            var myAlert = $alert({title: "Question "+question.id+" has been added to Bookmarked questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                        if(!($scope.isCategoryFilterOn)) {
+                            fetchQuestions_API = questions_API;
+                            $alert({title: "Question "+question.displayNumber+" has been added to Bookmarked questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
-                        })
-                     .error(function(response) {
+                        }
+                        else {
+                            $alert({title: "Question "+question.displayNumber+" from the "+$scope.tags.tagsNamesToAddToQuestion+" category has been added to Bookmarked questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+
+                        }
+                        
+                        console.log("Question has been added to Bookmarked questions");        //on successfull posting of question    
+                            
+                    })
+                    .error(function(response) {
                         console.log("Error : Question could not be added to Bookmarked Questions.");                //in case there is an error
                         var myAlert = $alert({title: 'Error : Question could not be added to Bookmarked Questions!', content: 'Check the logs to know more.', placement:'floater top', type: 'danger', show: true,duration:5});
-
-                     });
+                    });
 
             }
 
