@@ -3801,6 +3801,7 @@ var app = angular
                                     singleQuestion.isSolved = false;
                                     singleQuestion.showSolution = false;
                                     singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
+                                    singleQuestion.displayNumber = i + 1;
 
                                     if(singleQuestion.kind==mcq_kind) {
                                 
@@ -3876,7 +3877,7 @@ var app = angular
                             }
                             console.log($scope.questions);
                             console.log("Question has been removed from saved list");        //on successfull posting of question                     
-                            var myAlert = $alert({title: "Question "+question.id+" has been removed from Bookmarked Questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
+                            $alert({title: "Question "+question.displayNumber+" has been removed from Bookmarked Questions!", content: "", placement:'floater top', type: 'success', show: true,duration:5});
 
                         })
                      .error(function(response) {
