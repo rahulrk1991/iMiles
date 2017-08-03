@@ -3453,7 +3453,7 @@ var app = angular
                             singleQuestion.shareLink = API_Start+ "/#/ViewQuestion/"+allQuestions[i].kind+"/"+allQuestions[i].id;
                             singleQuestion.inputIdLink = allQuestions[i].id;
                             singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
-                            singleQuestion.displayNumber = feedNum*10 + i;
+                            singleQuestion.displayNumber = feedNum*10 + i + 1;
 
                             //If question is an MCQ, fetch the choices and all to dictionary
                             if(singleQuestion.kind==mcq_kind) {
