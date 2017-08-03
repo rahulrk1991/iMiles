@@ -3801,7 +3801,6 @@ var app = angular
                                     singleQuestion.isSolved = false;
                                     singleQuestion.showSolution = false;
                                     singleQuestion.description = $sce.trustAsHtml(singleQuestion.description);
-                                    singleQuestion.displayNumber = i + 1;
 
                                     if(singleQuestion.kind==mcq_kind) {
                                 
@@ -3831,6 +3830,9 @@ var app = angular
                                     isFetchingQuestions = false;
                                 })
                             }
+                        for(i=0;i<allQuestions.length;i++) {
+                            allQuestions[i].displayNumber = i + 1;
+                        }
                         console.log(allQuestions);
 
                         $scope.questions = allQuestions;    //Set of fetch questions get assigned to an index in feed
