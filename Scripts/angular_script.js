@@ -217,9 +217,9 @@ var app = angular
             $rootScope.rootScope_experience = -1;
 
             //Timer that appears in navigation bar
-            $rootScope.dateOfHiringTest = "Aug 6, 2017 14:00:00";
-            $rootScope.dateTillItCanBeGiven = "Aug 6, 2017 21:00:00"
-            $rootScope.dateOfNextHiringTest = "Aug 13, 2017 14:00:00";
+            $rootScope.dateOfHiringTest = "Aug 13, 2017 14:00:00";
+            $rootScope.dateTillItCanBeGiven = "Aug 13, 2017 22:00:00"
+            $rootScope.dateOfNextHiringTest = "Aug 20, 2017 14:00:00";
 
             $scope.dateOfHiringTest = $rootScope.dateOfHiringTest;
             $scope.dateTillItCanBeGiven = $rootScope.dateTillItCanBeGiven;
@@ -231,39 +231,6 @@ var app = angular
             var countDownDate = new Date($scope.dateOfHiringTest).getTime();
             var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
 
-            // Update the count down every 1 second
-            var countdown_timer_function = setInterval(function() {
-
-              // Get todays date and time
-              var now = new Date().getTime();
-
-              // Find the distance between now an the count down date
-              var distance = countDownDate - now;
-              var distanceToCloseTest = countDownToClosing - now;
-
-              // Time calculations for days, hours, minutes and seconds
-              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-
-              // Display the result in the element with id="demo"
-              document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-              + minutes + "m " + seconds + "s ";
-              // If the count down is finished, write some text 
-              if (distance < 0 && distanceToCloseTest>0) {
-                document.getElementById("demo").innerHTML = "Test is open till "+$scope.dateTillItCanBeGiven.toString();
-                $scope.$apply();
-              }
-              else if(distance < 0 && distanceToCloseTest<0) {
-                $scope.dateOfHiringTest = $scope.dateOfNextHiringTest;
-                countDownDate = new Date($scope.dateOfNextHiringTest).getTime();
-                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-              + minutes + "m " + seconds + "s ";
-                $scope.$apply();
-              }
-            }, 1000);
 
             $scope.logout = function() {
                 $scope.userModel = userService.logOut();
@@ -1444,23 +1411,54 @@ var app = angular
                 alert("Editing Question:"+questionID);
             }
         })
-        .controller("landingPageController",function($scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies, $rootScope) {
+        .controller("landingPageController",function($interval,$scope,$aside,$modal,$http,$location,$timeout,userService,$alert,$cookies, $rootScope) {
 
             $scope.forgot_password={};
 
             // Set the date we're counting down to
             var countDownDate = new Date($rootScope.dateOfHiringTest).getTime();
             var countDownToClosing = new Date($scope.dateTillItCanBeGiven).getTime();
+            var countDownToNextHiringTest = new Date($scope.dateOfNextHiringTest).getTime();
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var distanceToCloseTest = countDownToClosing - now;
+
+            $scope.timeToGo = {};
+
+            $interval(function() {
+                now = new Date().getTime();
+                distance = countDownDate - now;
+
+                if(distance>0 && distanceToCloseTest>0) {
+                    distance = countDownDate - now;
+                    $scope.timeToGo.message = "Next Hiring Test in";
+                }
+                else if(distance < 0 && distanceToCloseTest>0) {
+                    distance = countDownToClosing - now;
+                    $scope.timeToGo.message = "Time left to attempt ongoing Hiring Test";
+                }
+                else if(distance < 0 && distanceToCloseTest<0) {
+                    distance = countDownToNextHiringTest - now;
+                    $scope.timeToGo.message = "Next Hiring Test in";
+                }
+
+                
+                $scope.timeToGo.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                $scope.timeToGo.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                $scope.timeToGo.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                $scope.timeToGo.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            }, 1000);
 
             // Update the count down every 1 second
-            var x = setInterval(function() {
+            /*var x = setInterval(function() {
 
               // Get todays date and time
-              var now = new Date().getTime();
+              
 
               // Find the distance between now an the count down date
-              var distance = countDownDate - now;
-              var distanceToCloseTest = countDownToClosing - now;
+              distance = countDownDate - now;
+              distanceToCloseTest = countDownToClosing - now;
 
               // Time calculations for days, hours, minutes and seconds
               var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1468,9 +1466,9 @@ var app = angular
               var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
               var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-              // Display the result in the element with id="demo"
-              document.getElementById("demoID").innerHTML = days + "d " + hours + "h "
-              + minutes + "m " + seconds + "s ";
+              //$scope.timeToGo.days = days;
+
+              console.log("days : "+$scope.timeToGo.days);
 
               if (distance < 0 && distanceToCloseTest>0) {
                 $scope.enableTestButton = false;
@@ -1487,7 +1485,7 @@ var app = angular
               + minutes + "m " + seconds + "s ";
                 $scope.$apply();
               }
-            }, 1000);
+            }, 1000);*/
 
 
             $scope.$on("$locationChangeStart", function (event, next, current) {

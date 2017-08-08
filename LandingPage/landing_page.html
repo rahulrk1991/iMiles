@@ -12,22 +12,8 @@
             ga('create', 'UA-80250123-1', 'auto');
             ga('send', 'pageview');
     </script>
-    <script>
-
-
-</script>
-</head>
-<link href="LandingPage/Stylesheets/landing_page.css" rel="stylesheet" type="text/css"/>
 <style>
 
-    .divMain1{
-    min-height: 530px;
-    background-color:#C0C0C0;
-    background-image: url('LandingPage/Images/background_image.jpg');
-    background-repeat:no-repeat;
-    background-size:cover;
-    width:100%;
-    }
     .register_signinDiv {
     width:800px;
     background-color: #FFFFFF;
@@ -45,17 +31,549 @@
         font-size: 40px;
     }
 </style>
+</head>
 
-<div class="container-fluid divMain1">
+<section class="banner-img-head">
+      <div class="container">
+        <div class="row">
+          <div style="margin-top:130px" class="col-sm-6 next-text">
+            <div class="flat-card">
+              <div class="flat-card-head text-center">
+                <h1 class="white-color">{{timeToGo.message}}</h1>
+              </div>
+              <div class="flat-card-body text-center padding-top-30">
+                <div class="circle white-color margin-right-15">
+                  <h3 class="font-weight-5 margin-top-0">{{timeToGo.days}}</h3>
+                  <p class="font-size-16 font-weight-5">DAYS</p>
+                </div>
+                <div class="circle white-color margin-right-15">
+                  <h3 class="font-weight-5 margin-top-0">{{timeToGo.hours}}</h3>
+                  <p class="font-size-16 font-weight-5">HOURS</p>
+                </div>
+                <div class="circle white-color margin-right-15">
+                  <h3 class="font-weight-5 margin-top-0">{{timeToGo.minutes}}</h3>
+                  <p class="font-size-16 font-weight-5">MINUTES</p>
+                </div>
+                <div class="circle white-color margin-right-15">
+                  <h3 class="font-weight-5 margin-top-0">{{timeToGo.seconds}}</h3>
+                  <p class="font-size-16 font-weight-5">SECOND</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <form class="login-resistration">
+              <div class="flat-card">
+                <div class="flat-card-head tapestry text-center">
+                  <p class="white-color">Sign in</p>
+                  <p class="white-color">[Simply add card-depth.js to your code directory and import it to your HTML.]</p>
+                </div>
+                <div class="flat-card-body">
+                  <div class="form-group">
+                    <input ng-model="login.email" type="email" class="form-control" name="" placeholder="Email">
+                  </div>
+                  <div class="form-group padding-top-30">
+                    <input ng-model="login.password" type="text" class="form-control" name="" placeholder="Password">
+                  </div>
+                </div>
+                <div class="flat-card-foot">
+                  <button ng-click="submitLoginForm()" class="btn">SUBMIT</button> <span class="padding-left-10 padding-right-10"> OR </span><span data-toggle="modal" data-target="#registerModal" class="sign-up font-weight-5">Sign up</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- banner-img-head end -->
+    
+    <!-- worlFull-possibilities -->
+    <section class="worlFull-possibilities padding-top-40 padding-bottom-40">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <h1>[Tag line here]</h1>
+            <p class="nobel-color font-size-16">Prevailed sincerity behaviour to so do principle departure.</p>
+          </div>
+        </div>
+        <div class="row padding-top-40">
+          <div class="col-sm-4">
+            <div class="flat-card flat-card-box text-center border-co-whisper-1">
+              <div class="flat-card-head ">
+                <img src="LandingPage/Images/qna.png">
+              </div>
+              <div class="flat-card-body padding-bottom-20">
+                <h2 class="padding-bottom-20">Practice</h2>
+                <p class="font-size-16 nobel-color">[Set up a targeted alert and be first to the latest jobs.]</p>
+              </div>
+              <div class="flat-card-foot">
+                <a href="#" class="btn btn-worldPosi">EXPLORE</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="flat-card flat-card-box text-center border-co-whisper-1">
+              <div class="flat-card-head ">
+                <img src="LandingPage/Images/codding.png">
+              </div>
+              <div class="flat-card-body padding-bottom-20">
+                <h2 class="padding-bottom-20">Jobs</h2>
+                <p class="font-size-16 nobel-color">Create an account and access your saved setting on any device.</p>
+              </div>
+              <div class="flat-card-foot">
+                <a href="#" class="btn btn-worldPosi">APPLY</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="flat-card flat-card-box text-center border-co-whisper-1">
+              <div class="flat-card-head ">
+                <img src="LandingPage/Images/puzzle.png">
+              </div>
+              <div class="flat-card-body padding-bottom-20">
+                <h2 class="padding-bottom-20">Online Mock Tests</h2>
+                <p class="font-size-16 nobel-color">Don't just find. Be found. Put your CV in front of great employers.</p>
+              </div>
+              <div class="flat-card-foot">
+                <a href="#" class="btn btn-worldPosi">TAKE TEST</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- worlFull-possibilities end-->
+    
+    <!-- job employer-->
+    <section class="job-employer padding-top-40 padding-bottom-30">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="flat-card">
+              <div class="flat-card-head padding-bottom-30">
+                <h1 class="font-weight-4">Featured jobs</h1>
+              </div>
+              <div class="flat-card-body border-co-whisper-1 white-smoke-bk">
+                <div class="media padding-top-20 padding-bottom-10">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/amazonlogo.png">
+                  </div>
+                  <div class="media-body ">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h4 class="margin-top-0 font-weight-4 margin-bottom-5">Preschool Music Teachers</h4>
+                        <p><span class="seagull-color">at</span> <span class="nobel-color">admin</span></p>
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <p class="padding-top-10">
+                              <span class="nobel-color padding-right-5">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              </span> 
+                              <span class="seagull-color">Banglore, Karnatka</span>
+                            </p>
+                          </div>
+                          <div class="col-sm-6 time-category">
+                            <p class="text-center">
+                              <span class="flat-btn casablanca-bk-color">FULL TIME</span>
+                            </p>
+                            <p class="font-size-10 text-center nobel-color">3 months ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <div style="height:130px"></div>
-    <div class="register_signinDiv">
-        <h1 class = "textMod1" style="text-align:center;padding-top:20px;font-weight:bold">Prepare, Take Tests, Get Hired!</h1>
-        <p style="font-size:30px;text-align:center;font-color:black;padding-top:20px">Time until <b>Hiring Test.</b> Register now!</p>
-        <p style="font-size:50px;text-align:center;font-color:black" id="demoID"></p>
-        <div class="row" style="margin-top:60px;">
-            <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn-lg" style="display:none;float:right;background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#registerModal"> REGISTER </button>
+              <div class="flat-card-body border-co-whisper-1">
+                <div class="media padding-top-20 padding-bottom-10">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/amazonlogo.png">
+                  </div>
+                  <div class="media-body ">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h4 class="margin-top-0 font-weight-4 margin-bottom-5">Preschool Music Teachers</h4>
+                        <p><span class="seagull-color">at</span> <span class="nobel-color">admin</span></p>
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <p class="padding-top-10">
+                              <span class="nobel-color padding-right-5">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              </span> 
+                              <span class="seagull-color">Banglore, Karnatka</span>
+                            </p>
+                          </div>
+                          <div class="col-sm-6 time-category">
+                            <p class="text-center">
+                              <span class="flat-btn fern-bk-color">FULL TIME</span>
+                            </p>
+                            <p class="font-size-10 text-center nobel-color">3 months ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flat-card-body border-co-whisper-1">
+                <div class="media padding-top-20 padding-bottom-10">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/amazonlogo.png">
+                  </div>
+                  <div class="media-body ">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h4 class="margin-top-0 font-weight-4 margin-bottom-5">Preschool Music Teachers</h4>
+                        <p><span class="seagull-color">at</span> <span class="nobel-color">admin</span></p>
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <p class="padding-top-10">
+                              <span class="nobel-color padding-right-5">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              </span> 
+                              <span class="seagull-color">Banglore, Karnatka</span>
+                            </p>
+                          </div>
+                          <div class="col-sm-6 time-category">
+                            <p class="text-center">
+                              <span class="flat-btn valencia-bk-color">FULL TIME</span>
+                            </p>
+                            <p class="font-size-10 text-center nobel-color">3 months ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flat-card-body border-co-whisper-1">
+                <div class="media padding-top-20 padding-bottom-10">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/amazonlogo.png">
+                  </div>
+                  <div class="media-body ">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h4 class="margin-top-0 font-weight-4 margin-bottom-5">Preschool Music Teachers</h4>
+                        <p><span class="seagull-color">at</span> <span class="nobel-color">admin</span></p>
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <p class="padding-top-10">
+                              <span class="nobel-color padding-right-5">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              </span> 
+                              <span class="seagull-color">Banglore, Karnatka</span>
+                            </p>
+                          </div>
+                          <div class="col-sm-6 time-category">
+                            <p class="text-center">
+                              <span class="flat-btn curious-blue-bk-color">FULL TIME</span>
+                            </p>
+                            <p class="font-size-10 text-center nobel-color">3 months ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flat-card-body border-co-whisper-1">
+                <div class="media padding-top-20 padding-bottom-10">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/amazonlogo.png">
+                  </div>
+                  <div class="media-body ">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h4 class="margin-top-0 font-weight-4 margin-bottom-5">Preschool Music Teachers</h4>
+                        <p><span class="seagull-color">at</span> <span class="nobel-color">admin</span></p>
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <p class="padding-top-10">
+                              <span class="nobel-color padding-right-5">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              </span> 
+                              <span class="seagull-color">Banglore, Karnatka</span>
+                            </p>
+                          </div>
+                          <div class="col-sm-6 time-category">
+                            <p class="text-center">
+                              <span class="flat-btn fern-bk-color">FULL TIME</span>
+                            </p>
+                            <p class="font-size-10 text-center nobel-color">3 months ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-sm-4 top-employer">
+            <div class="flat-card">
+              <div class="flat-card-head padding-bottom-30">
+                <h1 class="font-weight-4">Top Employers</h1>
+              </div>
+              <div class="flat-card-body">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="top-employer-card text-center">
+                      <div class="text-center padding-bottom-15">
+                        <img src="LandingPage/Images/airbnb.png" alt="">
+                      </div>
+
+                      <div class="text-center">
+                        <p class="margin-bottom-5">AirBNB</p>
+                        <p><span class="top-employer-btn nobel-color">View 2 job</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="top-employer-card text-center">
+                      <div class="text-center padding-bottom-15">
+                        <img src="LandingPage/Images/airbnb.png" alt="">
+                      </div>
+
+                      <div class="text-center">
+                        <p class="margin-bottom-5">AirBNB</p>
+                        <p><span class="top-employer-btn nobel-color">View 2 job</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 padding-top-30">
+                    <div class="top-employer-card text-center">
+                      <div class="text-center padding-bottom-15">
+                        <img src="LandingPage/Images/airbnb.png" alt="">
+                      </div>
+
+                      <div class="text-center">
+                        <p class="margin-bottom-5">AirBNB</p>
+                        <p><span class="top-employer-btn nobel-color">View 2 job</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 padding-top-30">
+                    <div class="top-employer-card text-center">
+                      <div class="text-center padding-bottom-15">
+                        <img src="LandingPage/Images/airbnb.png" alt="">
+                      </div>
+
+                      <div class="text-center">
+                        <p class="margin-bottom-5">AirBNB</p>
+                        <p><span class="top-employer-btn nobel-color">View 2 job</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 padding-top-30">
+                    <div class="top-employer-card text-center">
+                      <div class="text-center padding-bottom-15">
+                        <img src="LandingPage/Images/airbnb.png" alt="">
+                      </div>
+
+                      <div class="text-center">
+                        <p class="margin-bottom-5">AirBNB</p>
+                        <p><span class="top-employer-btn nobel-color">View 2 job</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 padding-top-30">
+                    <div class="top-employer-card text-center">
+                      <div class="text-center padding-bottom-15">
+                        <img src="LandingPage/Images/airbnb.png" alt="">
+                      </div>
+
+                      <div class="text-center">
+                        <p class="margin-bottom-5">AirBNB</p>
+                        <p><span class="top-employer-btn nobel-color">View 2 job</span></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- job employer end-->
+    
+    <!-- counter-number -->
+    <section class="counter-number">
+      
+    </section>
+    <!-- counter-number -->
+    
+    <!-- Suscribe to Our Newsletter -->
+    <section class="suscribe-news">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 text-center padding-bottom-30">
+                <h1 class="white-color">Suscribe to Our Newsletter</h1>
+              </div>
+            </div>
+            <div class="suscribe-news-box text-center">
+              <form class="row">
+                <div class="form-group col-sm-8">
+                  <input type="text" class="form-control" name="" placeholder="ENTER YOUR EMAIL">
+                </div>
+                <div class="col-sm-4">
+                  <button class="btn">SUBSCRIBE</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Suscribe to Our Newsletter end -->
+
+    <!-- skillSAnta-footer -->
+    <footer class="skillSAnta-footer padding-top-30 padding-bottom-30">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3 logo-section">
+            <div class="flat-card">
+              <div class="flat-card-head padding-bottom-30">
+                <h4 class="white-color">Logo</h4>
+              </div>
+              <div class="flat-card-body">
+                <p>[social media links here]</p>
+              </div>
+              <div class="flat-card-foot padding-top-20">
+                <a href="#" >
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                </a>
+                <a href="#" >
+                  <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="#" >
+                  <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+                <a href="#" >
+                  <i class="fa fa-instagram" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-3 quick-links-section">
+            <div class="flat-card">
+              <div class="flat-card-head padding-bottom-30">
+                <h2 class="white-color margin-top-0">Quick Links</h2>
+              </div>
+              <div class="flat-card-body">
+                <ul>
+                  <li class="padding-top-5">
+                    <a href="#" class="white-color">lorem</a>
+                  </li>
+                  <li class="padding-top-5">
+                    <a href="#" class="white-color">lorem</a>
+                  </li>
+                  <li class="padding-top-5">
+                    <a href="#" class="white-color">lorem</a>
+                  </li>
+                  <li class="padding-top-5">
+                    <a href="#" class="white-color">lorem</a>
+                  </li>
+                  <li>
+                    <a href="#" class="white-color">lorem</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-3 popular-section">
+            <div class="flat-card">
+              <div class="flat-card-head padding-bottom-30">
+                <h2 class="white-color margin-top-0">Popular</h2>
+              </div>
+              <div class="flat-card-body">
+                <div class="media">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/CIRUJANO.png" align="" class="img-circle">
+                  </div>
+                  <div class="media-body">
+                    <p class="white-color margin-bottom-0">QwA</p>
+                    <p class="num-icon">
+                      <span class="padding-right-5">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </span>
+                      <span>3397</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flat-card-body padding-top-30">
+                <div class="media">
+                  <div class="media-left">
+                    <img src="LandingPage/Images/CIRUJANO.png" align="" class="img-circle">
+                  </div>
+                  <div class="media-body">
+                    <p class="white-color margin-bottom-0">QwA</p>
+                    <p class="num-icon"><span class="padding-right-5"><i class="fa fa-eye" aria-hidden="true"></i></span><span>3397</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-3 contacts-section">
+            <div class="flat-card">
+              <div class="flat-card-head padding-bottom-30">
+                <h2 class="white-color margin-top-0">Contacts</h2>
+              </div>
+              <div class="flat-card-body phone-text">
+                <p class="white-color">Call Us Right Now</p>
+                <p class="text">9847234576</p>
+              </div>
+              <div class="flat-card-body phone-text padding-top-20">
+                <p class="white-color">Call Us Right Now</p>
+                <p class="text">9847234576</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row padding-top-40 padding-bottom-30">
+          <div class="col-sm-12 padding-top-40">
+            <div class="state-line-curve"></div>
+          </div>
+        </div>
+        <div class="row padding-top-40 padding-bottom-20">
+          <div class="col-sm-12">
+            <p class="font-weight-5 font-size-16 text-center"> 
+              <span class="white-color">COMPANY © 2017</span>
+              <span class="nobel-color">All rights reserved.</span> 
+              <span class="white-color">Terms of use</span>
+              <span class="nobel-color">and</span>
+              <span class="white-color">Privacy Policy</span> 
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
                 <div id="registerModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -70,21 +588,21 @@
 
                                     <div style="width:100%">
 
-                                            <a href="http://interviewmiles.com/api/user/login/google-oauth2/?next=">
+                                            <a href="http://skillsanta.com/api/user/login/google-oauth2/?next=">
                                             <button style="width:32%" type="button" class="btn btn-default">
                                             <img style="width:20%" src="/LandingPage/Images/googleplus_login.png">
                                             Google
                                             </button>
                                             </a>
                                             
-                                            <a href="http://interviewmiles.com/api/user/login/facebook/?next=">
+                                            <a href="http://skillsanta.com/api/user/login/facebook/?next=">
                                             <button style="width:32%" type="button" class="btn btn-default">
                                             <img style="width:20%" src="/LandingPage/Images/facebook_login.png">
                                             Facebook
                                             </button>
                                             </a>
                                             
-                                            <a href="http://interviewmiles.com/api/user/login/linkedin-oauth2/?next=">
+                                            <a href="http://skillsanta.com/api/user/login/linkedin-oauth2/?next=">
                                             <button style="width:32%" type="button" class="btn btn-default">
                                             <img style="width:20%" src="/LandingPage/Images/linkedin_login.png">
                                             LinkedIn
@@ -174,148 +692,3 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-
-                <button type="button" class="btn-lg dropdown-toggle" style="display:none;background-color:#0E0E0E;color:white;width:140px" data-toggle="modal" data-target="#signInModalEmail"> SIGN IN  </button>
-
-
-                <div id="signInModalEmail" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color:#187FD6">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title" style="color:white;font-weight: bold;text-align:center;">Log into InterviewMile</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="modal-body" style="background-color:white;">
-                                    <form class="form-horizontal">
-
-                                        <div style="width:100%">
-
-                                            <a href="http://interviewmiles.com/api/user/login/google-oauth2/?next=">
-                                            <button style="width:32%" type="button" class="btn btn-default">
-                                            <img style="width:20%" src="/LandingPage/Images/googleplus_login.png">
-                                            Google
-                                            </button>
-                                            </a>
-                                            
-                                            <a href="http://interviewmiles.com/api/user/login/facebook/?next=">
-                                            <button style="width:32%" type="button" class="btn btn-default">
-                                            <img style="width:20%" src="/LandingPage/Images/facebook_login.png">
-                                            Facebook
-                                            </button>
-                                            </a>
-                                            
-                                            <a href="http://interviewmiles.com/api/user/login/linkedin-oauth2/?next=">
-                                            <button style="width:32%" type="button" class="btn btn-default">
-                                            <img style="width:20%" src="/LandingPage/Images/linkedin_login.png">
-                                            LinkedIn
-                                            </button>
-                                            </a>
-
-                                        </div>
-                                        <br>
-                                        <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
-                                          <span style="font-size: 20px; background-color: white; padding: 0 10px;">
-                                            OR <!--Padding is optional-->
-                                          </span>
-                                        </div>
-                                        <br>
-                                        <br>
-
-                                        <div class="form-group form_input">
-                                            <div class="input-group-lg" class="col-sm-8" >
-                                                <span style="float:left;width:10%" class="glyphicon glyphicon-user" ></span>
-                                                <input ng-model="login.email" type="text" class="form-control" style="display:inline;float:left;width:80%" placeholder="Email ID/Username" >
-                                             </div>
-                                        </div>
-
-                                        <div class="form-group form_input">
-                                            <div class="input-group-lg" class="col-sm-8">
-                                                <span style="float:left;width:10%" class="glyphicon glyphicon-lock" ></span>
-                                                <input ng-model="login.password" type="password" class="form-control" style="display:inline;float:left;width:80%" placeholder="Password">
-                                            </div>
-                                        </div>
-
-                                        <div style="float:right;">
-                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#ForgotPasswordModal" style="color:blue;">Forgot Password?</a>
-                                        </div>
-
-                                        <div style="margin-top:30px" class="form-group">
-                                            <div class="col-sm-2 col-sm-offset-5 text-center"><button ng-click="submitLoginForm()" type="submit" class="btn-lg" style="background-color:#000000;color:white">Login</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- Marketing messaging and featurettes
-    ================================================== -->
-<!-- Wrap the rest of the page in another container to center all the content. -->
-
-<div id="StepByStepProcess" style="background-color:#F5F5F5">
-
-
-    <div style="width:100%">
-        <div style="width:50%;float:left">
-            <div style="padding-left:60px;padding-right:60px">
-                <h2 class="featurette-heading">Step 1. <span class="text-muted">Sharpen Your Edge</span></h2>
-                <p class="lead">Solve all the commonly asked interview questions from our constantly growing content. Aptitude, Puzzles, C++, Java, Data Structures, Algorithms. We've got you covered.</p>
-            </div>
-        </div>
-        <div style="width:50%;float:right">
-            <img style="width:100%;" src="LandingPage/Images/step1.jpg" alt="Generic placeholder image">
-        </div>
-    </div>
-    <hr>
-
-    <div style="width:100%;overflow:auto">
-        <div style="width:50%;float:right;height:100%">
-            <div style="padding-left:60px;padding-right:60px;">
-                <h2 class="featurette-heading">Step 2. <span class="text-muted">Analyze</span></h2>
-                <p class="lead">Using our comprehensive statistics, find your strengths and weaknesses. Iron out the chinks in your armour and become interveiw ready!</p>
-            </div>
-        </div>
-        <div style="width:50%;float:left">
-            <img style="width:100%;" src="LandingPage/Images/step2.jpg" alt="Generic placeholder image">
-        </div>
-    </div>
-
-    <div style="width:100%;overflow:auto">
-        <div style="width:50%;float:left">
-            <div style="padding-left:60px;padding-right:60px">
-                <h2 class="featurette-heading">Step 3. <span class="text-muted">Apply</span></h2>
-                <p class="lead">Getting the job you want is all about preparation. When you feel prepared, apply to the companies you want to work for.</p>
-            </div>
-        </div>
-        <div style="width:50%;float:right">
-            <img style="width:100%;" src="LandingPage/Images/step3.jpg" alt="Generic placeholder image">
-        </div>
-    </div>
-
-    <div style="width:100%;overflow:auto">
-        <div style="width:50%;float:right">
-            <div style="padding-left:60px;padding-right:60px">
-                <h2 class="featurette-heading">Step 4. <span class="text-muted">Get Hired</span></h2>
-                <p class="lead">Use the knowledge and practice you gained to crack the interviews and meet you career goals</p>
-            </div>
-        </div>
-        <div style="width:50%;float:left">
-            <img style="width:100%;" src="LandingPage/Images/step4.jpg" alt="Generic placeholder image">
-        </div>
-    </div>
-
-
-</div><!-- /.container -->

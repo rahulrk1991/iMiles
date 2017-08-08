@@ -1,0 +1,529 @@
+body{
+    font-family: 'Roboto','Helvetica','Arial',sans-serif!important;
+}
+
+/* ----header---- ---*/
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+/*section {
+  height: 100vh;
+}*/
+
+/*---skillsAnta-navbar-----*/
+
+/*.fixed-navbar{
+  background-color:#fff !important;
+  padding: 0px  !important;
+  margin-bottom: 5px;
+  position: fixed;
+  top:0;
+  z-index:888;
+  width: 100%;
+  border-bottom: 3px solid #e65100 !important; 
+}
+
+
+
+.header-right-menu{
+ padding: 5px 15px !important;      
+}
+
+.site-logo{
+    padding: 15px 20px !important; 
+    margin: 15px 10px !important;
+}
+
+.skillsAnta-navbar{
+  padding: 0px 0px;
+  background-color: grey;
+  top: 0px;
+  border: 0px;
+  color: #ffffff;
+  border-radius: 0px;
+  margin-bottom: 0;
+}*/
+
+/*.navbar-default .navbar-nav>li>a{
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 50px;
+}*/
+
+.navbar-center {
+    line-height: 78px;
+    width: 75%;
+    text-align: center;
+}
+
+/*.navbar-center  li {
+      float: none;
+      display: inline-block;
+    }*/
+
+/*---skillsAnta-navbar end-----*/
+
+/*-------- banner-img-head ------------*/
+.banner-img-head{
+  background-size: cover;
+  background-position: center center;
+  background-image: url('/LandingPage/Images/bg1.jpg');
+  background-repeat: no-repeat;
+  height: 700px;
+  margin-top: -80px;
+}
+
+.banner-img-head .next-text .flat-card,
+.banner-img-head .login-resistration .flat-card{
+  margin-top: 175px;
+}
+
+.banner-img-head .next-text .circle{
+  display: inline-block;
+  border: 1px solid #ffffff;
+  padding: 10px 10px 0px;
+  width: 95px;
+}
+
+/*.banner-img-head .login-resistration .flat-card-head:before {
+  margin-left: 178px;
+    bottom: -200px;
+    border-width: 100px;
+  border-color: #212322 transparent transparent transparent;
+  z-index: 1;
+}
+
+.banner-img-head .login-resistration .flat-card-head:before,
+.banner-img-head .login-resistration .flat-card-head:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.banner-img-head .login-resistration .flat-card-head:after {
+  margin-left: 178px;
+  bottom: -22px;
+  border-style: solid;
+  border-width: 11px;
+  border-color: #2e302f transparent transparent transparent;
+  z-index: 0;
+}*/
+
+.tapestry {
+  display: block;
+  position: relative;
+/*   top: -10px; */
+  
+  /*width: calc(100% - 2em);*/
+  margin: 0 auto;
+  margin-bottom: 3em;
+  padding: 1em 0;
+  
+  /*background: #cc0033;*/
+  background: -webkit-linear-gradient(to top, #cc0033, #B3002D);
+  background: linear-gradient(to top, #cc0033, #B3002D 75%);
+}
+
+.tapestry:after {
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  width: 0;
+  margin-left: -100px;
+  height: 0;
+  background: transparent;
+  border-left: 170px solid transparent;
+  border-right: 320px solid transparent;
+  border-top: 50px solid #cc0033;
+  border-bottom: 0;
+}
+
+/*.banner-img-head .login-resistration .flat-card{
+  background-color: #b00002;
+}*/
+
+
+.banner-img-head .login-resistration .flat-card{
+  background-color: rgba(61, 56, 53, 0.56);
+}
+
+.banner-img-head .login-resistration .flat-card-head{
+  background-color: #b00002;
+  padding: 40px 100px;
+}
+
+.banner-img-head .login-resistration .flat-card-body{
+  padding: 70px 40px 30px;
+}
+
+.banner-img-head .login-resistration .flat-card-body input{
+  background: transparent;
+  border-radius: 0;
+  color: white;
+}
+
+.banner-img-head .login-resistration .flat-card-body input::placeholder {
+  color: #fff;
+}
+
+.banner-img-head .login-resistration .flat-card-foot{
+  padding: 0px 40px 20px;
+}
+
+.banner-img-head .login-resistration .flat-card-foot button{
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 0;
+    padding: 5px 40px;
+}
+
+.banner-img-head .login-resistration .flat-card-foot span{
+  color: #f5d065;
+}
+
+/*---------worlFull-possibilities------------*/
+.worlFull-possibilities{
+  position: relative;
+  background-color: #f6f4f6;
+}
+
+.worlFull-possibilities .flat-card-box {
+  border-radius: 6px;
+  padding: 30px;
+}
+/*---------worlFull-possibilitiesn end------------*/
+
+
+/*---------top job employer------------*/
+.job-employer{
+  position: relative;
+}
+
+.job-employer .time-category .flat-btn{
+  font-size: 10px;
+  padding: 5px 30px;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.job-employer .top-employer .top-employer-card{
+  position: relative;
+}
+
+.job-employer .top-employer-card .top-employer-btn{
+  position: relative;
+  font-size: 10px;
+  padding: 3px 16px;
+  border-radius: 3px;
+  border: 1px solid #d4d4d4;
+}
+/*---------top job employer end------------*/
+
+/*---------counter-number------------*/
+.counter-number{
+  position: relative;
+  background-image: url('/LandingPage/Images/counting-bg.png');
+  background-color: #f4d266;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  height: 300px;
+
+}
+
+
+/*---------counter-number end------------*/
+
+/*--------- Suscribe to Our Newsletter ------------*/
+.suscribe-news{
+  background-color: #f86156;
+  position: relative;
+  padding-top: 65px;
+  padding-bottom: 65px;
+}
+
+.suscribe-news-box{
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.suscribe-news .suscribe-news-box input{
+  padding-left: 25px;
+  color: black;
+  font-weight: 500;
+  padding-right: 25px;
+}
+
+.suscribe-news .suscribe-news-box input::placeholder {
+  color: #000;
+}
+
+.suscribe-news .suscribe-news-box input,
+.suscribe-news .suscribe-news-box button{
+  border-radius: 40px;
+  border: 10px solid #fea9a6;
+  height: 70px;
+}
+
+
+.suscribe-news .suscribe-news-box button{
+  background-color: #fff;
+  padding: 15px 20px;
+  font-weight: 500;
+}
+/*--------- Suscribe to Our Newsletter end ------------*/
+
+/*--------- skillSAnta-footer ------------*/
+.skillSAnta-footer{
+  position: relative;
+  display: block;
+  background-color: #212322;
+}
+
+.skillSAnta-footer .logo-section .flat-card-body p{
+  color: #6a6d6c;
+}
+
+.skillSAnta-footer .logo-section .flat-card-foot a{
+  color: #ffffff;
+  display: inline-block;
+  height: 45px;
+  width: 45px;
+  background-color: #e00001;
+  border-radius: 50%;
+  margin-right: 10px;
+  padding: 14px 17px;
+}
+
+.skillSAnta-footer .quick-links-section ul{
+  list-style: none;
+  padding: 0;
+}
+
+.skillSAnta-footer .popular-section img{
+  height: 50px;
+}
+
+.skillSAnta-footer .popular-section .num-icon{
+  color: #4b4c50;
+}
+
+.skillSAnta-footer .contacts-section .phone-text .text{
+  color: #fd594d;
+}
+
+.skillSAnta-footer .state-line-curve{
+  border: 1px solid #2e302f;
+  width: 35%;
+  margin: 0 auto;
+}
+
+
+.state-line-curve:before {
+  margin-left: 178px;
+  bottom: -20px;
+  border-width: 11px;
+  border-color: #212322 transparent transparent transparent;
+  z-index: 1;
+}
+
+.state-line-curve:before,
+.state-line-curve:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.state-line-curve:after {
+  margin-left: 178px;
+  bottom: -22px;
+  border-style: solid;
+  border-width: 11px;
+  border-color: #2e302f transparent transparent transparent;
+  z-index: 0;
+}
+/*--------- skillSAnta-footer ------------*/
+
+
+/*===============common css=================*/
+
+
+.menu-ul{
+  list-style: none;
+  padding: 0;
+}
+
+.menu-ul li{
+  float: left;
+}
+
+/*------------  clard -------------*/
+
+.flat-card{
+  display: block;
+  position: relative;
+}
+
+.flat-card-head,
+.flat-card-body,
+.flat-card-foot{
+  position: relative;
+}
+
+.box-shadow{box-shadow: 0 0px 2px rgb(107, 107, 107), 0 0px 0px rgba(0,0,0,.24);}
+.box-shadow1{box-shadow: 0 2px 8px rgb(107, 107, 107), 0 1px 2px rgba(0,0,0,.24);}
+
+/*------------  clard end-------------*/
+
+/*------------  button -------------*/
+
+.btn-worldPosi{
+  background-color: #cc3433;
+  color: #ffffff;
+  padding: 9px 14px;
+  font-size: 12px;
+}
+
+.btn-worldPosi:hover{
+  color: #ffffff;
+}
+
+.btn:focus{
+  outline: none !important;
+}
+/*------------  button end-------------*/
+
+
+
+/*------------  width -------------*/
+.hr-line-red{
+  width: 6%;
+  border-top: 4px solid #ff4d4d;
+}
+.width-7{width: 7%;}
+.width-9{width: 9%;}
+.width-10{width: 10%;}
+.width-13{width: 13%;}
+.width-65{width: 65%;}
+.width-100{width: 100%;}
+
+.max-height-200{max-height: 200px;}
+.max-height-110{max-height: 110px;}
+
+/*------------  width end-------------*/
+
+/*------------border----------*/
+.border-top-2{border-top: 2px solid #004790 !important;}
+.border-flamingo-color{border: 1px solid #EA5E4D !important;}
+.border-radius-0{border-radius: 0px;}
+.border-radius-6{border-radius: 6px;}
+.border-radius-0{border-radius: 0px;}
+
+.border-co-whisper-1{border: 1px solid #EDEDED;}
+/*------------border end----------*/
+
+/*------------  color -------------*/
+.white-color{color: #ffffff;}
+.white-bk-color{background-color: #ffffff;}
+.black-color{color: #000;}
+.dim-gray-color{color: #727272;}
+.gray-color{color: #777;}
+.gray-nobel{color: #999999;}
+.myndtree-logo-color{color: #077c01;}
+.flamingo-color{color: #EA5E4D;}
+.flamingo-bk-color{background-color: #EA5E4D;}
+.dark-cerulean{color:#004790;}
+.ruby-color{color: #E91E63 !important;}
+.ruby-bk-color{background-color: #E91E63 !important;}
+
+.nobel-color{color: #A29696;}
+.seagull-color{color: #7BBDD7;}
+.white-smoke-bk{background-color: #F5F5F5;}
+
+.casablanca-bk-color{background-color: #EFAD4D;}
+.fern-bk-color{background-color: #5DB85B;}
+.valencia-bk-color{background-color: #D9544F;}
+.curious-blue-bk-color{background-color: #4388c9;}
+.la-palma-bk-color{background-color: #478824;}
+
+/*------------  color end-------------*/
+
+
+
+.myndtree-bk-color{background-color: #004790 !important;}
+
+/*------------  font -------------*/
+.font-size-10{font-size: 10px;}
+.font-size-12{font-size: 12px;}
+.font-size-16{font-size: 16px;}
+.font-size-17{font-size: 17px;}
+.font-size-18{font-size: 18px;}
+.font-size-25{font-size: 25px;}
+.font-size-48{font-size: 48px;}
+
+.font-weight-3{font-weight: 300;}
+.font-weight-4{font-weight: 400;}
+.font-weight-5{font-weight: 500;}
+
+.line-height-50{line-height: 50px;}
+/*------------  font end -------------*/
+
+/*------------  padding -------------*/
+
+.padding-0{padding: 0;}
+.padding-10{padding: 10px;}
+
+
+.padding-top-5{padding-top: 5px;}
+.padding-top-10{padding-top: 10px;}
+.padding-top-20{padding-top: 20px;}
+.padding-top-30{padding-top: 30px;}
+.padding-top-40{padding-top: 40px;}
+
+.padding-left-0{padding-left: 0;}
+.padding-left-5{padding-left: 5px;}
+.padding-left-10{padding-left: 5px;}
+.padding-left-15{padding-left: 15px;}
+.padding-left-30{padding-left: 30px;}
+
+.padding-right-0{padding-right: 0;}
+.padding-right-5{padding-right: 5px;}
+.padding-right-10{padding-right: 10px;}
+.padding-right-20{padding-right: 20px;}
+
+.padding-bottom-5{padding-bottom: 5px;}
+.padding-bottom-10{padding-bottom: 10px;}
+.padding-bottom-15{padding-bottom: 15px;}
+.padding-bottom-20{padding-bottom: 20px;}
+.padding-bottom-30{padding-bottom: 30px;}
+.padding-bottom-40{padding-bottom: 40px;}
+/*------------  padding end-------------*/
+
+
+
+/*------------  margin -------------*/
+.margin-top-0{margin-top: 0px;}
+.margin-top-1{margin-top: 1px;}
+.margin-top-2{margin-top: 2px;}
+.margin-top-5{margin-top: 5px;}
+
+.margin-left-0{margin-left: 0px !important;}
+
+.margin-right-0{margin-right: 0px !important;}
+.margin-right-15{margin-right: 15px !important;}
+
+.margin-bottom-0{margin-bottom: 0 !important;}
+.margin-bottom-5{margin-bottom: 5px !important;}
+
+
+/*------------  margin end-------------*/

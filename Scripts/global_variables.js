@@ -4,7 +4,7 @@
 
 //URL BUILDER
 var protocol = "https://";
-var host_name ="interviewmile.com";
+var host_name ="skillsanta.com";
 var port_number = "443";
 var API_Start = protocol+host_name+":"+port_number;
 
