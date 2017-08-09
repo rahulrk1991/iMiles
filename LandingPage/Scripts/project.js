@@ -122,7 +122,7 @@ $(document).ready(function(){
     //        $(".displayUserQuestions").css("min-height","300px");
             var imageSource = $(this).data('picture');
             if(imageSource){
-    //            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="#" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
+    //            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
                 $("#template-location").html('<img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style="">');
             }
             else{
@@ -139,7 +139,7 @@ $(document).ready(function(){
 ////        $(".displayUserQuestions").css("min-height","300px");
 //        var imageSource = $(this).data('picture');
 //        if(imageSource){
-////            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="#" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
+////            $("#template-location").html('<center><div class="row" style="background-color:gray;max-width:500px;min-width:200px;"><div class="col-md-6"><br><br><h3 style="color:#FFFFFF;">Template Selected!</h3><br><a href="" id="gotoResumeGeneralSection" data-rel="divMainResume3"><button class="btn btn-responsive" style="background-color:aqua;">Proceed</button></a></div><br><div class="col-md-6"><img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style=""></div></div></center>');
 //            $("#template-location").html('<img src="'+imageSource+'" alt="Hello" height="200px" width="200px" style="">');
 //        }
 //        else{

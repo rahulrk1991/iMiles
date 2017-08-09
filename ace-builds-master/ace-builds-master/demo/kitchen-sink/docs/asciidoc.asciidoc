@@ -4269,7 +4269,7 @@ It is exactly equivalent to a configuration file containing:
   used to set markup template sections. The following example sets the
   'xref2' inline macro markup template:
 
-  :xref2-inlinemacro.: <a href="#{1}">{2?{2}}</a>
+  :xref2-inlinemacro.: <a href="{1}">{2?{2}}</a>
 
 - No substitution is performed on configuration file attribute entries
   and they cannot be undefined.
